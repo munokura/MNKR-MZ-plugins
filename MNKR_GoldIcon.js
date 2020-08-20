@@ -9,7 +9,7 @@
 
 /*:
  * @target MZ MV
- * @url https://raw.githubusercontent.com/munokura/MNKR-MV-plugins/master/MNKR_GoldIcon.js
+ * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_GoldIcon.js
  * @plugindesc 通貨単位の表示をアイコンに置き換えます
  * @author munokura
  *
