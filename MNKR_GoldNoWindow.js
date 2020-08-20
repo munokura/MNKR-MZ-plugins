@@ -9,7 +9,7 @@
 
 /*:
  * @target MZ MV
- * @url https://raw.githubusercontent.com/munokura/MNKR-MV-plugins/master/MNKR_GoldNoWindow.js
+ * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_GoldNoWindow.js
  * @plugindesc メインメニューで所持金ウィンドウを非表示にします。
  * @author munokura
  *
