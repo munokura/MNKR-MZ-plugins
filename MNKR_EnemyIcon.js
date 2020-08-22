@@ -10,6 +10,9 @@
 /*:
  * @target MZ
  * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_EnemyIcon.js
+ * @plugindesc 戦闘画面で敵キャラの名前の前にアイコンを表示します。
+ * @author munokura
+ *
  * @param Default Icon
  * @text デフォルトアイコン
  * @type string
@@ -17,7 +20,6 @@
  * 0にすると、非表示で左に詰まります。
  * @default 16
  *
- * @plugindesc 戦闘画面で敵キャラの名前の前にアイコンを表示します。
  * @help
  * 戦闘画面で敵キャラの名前の前にアイコンを表示します。
  *
