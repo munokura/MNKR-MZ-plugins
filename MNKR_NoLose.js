@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_NoLose Ver.1.0.0
+ * MNKR_NoLose Ver.1.1.0
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -20,17 +20,10 @@
 (function () {
 	'use strict';
 
-	BattleManager.updateBattleEnd = function() {
-		if (this.isBattleTest()) {
-			AudioManager.stopBgm();
-			SceneManager.exit();
-		} else if (!this._escaped && $gameParty.isAllDead()) {
-				$gameParty.reviveBattleMembers();
-				SceneManager.pop();
-		} else {
-			SceneManager.pop();
-		}
-		this._phase = "";
-	};
+    const _BattleManager_setup = BattleManager.setup
+    BattleManager.setup = function(troopId, canEscape, canLose) {
+        _BattleManager_setup.apply(this, arguments);
+        this._canLose = true;
+    };
 	
 })();
