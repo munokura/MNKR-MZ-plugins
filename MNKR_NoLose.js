@@ -20,10 +20,17 @@
 (function () {
 	'use strict';
 
-	BattleManager.updateBattleEnd = function () {
-		$gameParty.reviveBattleMembers();
-		SceneManager.pop();
+	BattleManager.updateBattleEnd = function() {
+		if (this.isBattleTest()) {
+			AudioManager.stopBgm();
+			SceneManager.exit();
+		} else if (!this._escaped && $gameParty.isAllDead()) {
+				$gameParty.reviveBattleMembers();
+				SceneManager.pop();
+		} else {
+			SceneManager.pop();
+		}
 		this._phase = "";
 	};
-
+	
 })();
