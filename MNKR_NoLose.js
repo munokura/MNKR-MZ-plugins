@@ -18,12 +18,12 @@
  */
 
 (function () {
-	'use strict';
+    'use strict';
 
     const _BattleManager_setup = BattleManager.setup
-    BattleManager.setup = function(troopId, canEscape, canLose) {
+    BattleManager.setup = function (troopId, canEscape, canLose) {
         _BattleManager_setup.apply(this, arguments);
         this._canLose = true;
     };
-	
+
 })();
