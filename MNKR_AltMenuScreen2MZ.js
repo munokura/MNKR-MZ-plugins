@@ -14,6 +14,11 @@
 // [History]
 // 2020.Feb.17 0.0.1 First Release on closed community
 
+/* 
+ * MNKR_AltMenuScreen2MZ.js
+ * 2020/8/29 1.0.0 change in Munokura
+ */
+
 /*:
  * @target MZ
  * @plugindesc Yet another menu screen layout
@@ -256,7 +261,7 @@
 /*:ja
  * @target MZ
  * @plugindesc レイアウトの異なるメニュー画面
- * @author munokura (原作:神無月サスケ)
+ * @author ムノクラ (原作:神無月サスケ)
  *
  * @param allowWindowDisp
  * @text 背景未設定の時ウィンドウ表示？
@@ -498,9 +503,9 @@
 
 (() => {
     const pluginName = 'MNKR_AltMenuScreen2MZ'
-        //
-        // process parameters
-        //
+    //
+    // process parameters
+    //
     const parameters = PluginManager.parameters(pluginName)
     const allowWindowDisp = eval(parameters['allowWindowDisp'] || 'true')
 
@@ -538,15 +543,15 @@
     //
     // set window positions (based on AltMenuScreen.js MZ ver.)
     //
-    Scene_MenuBase.prototype.commandWindowHeight = function() {
+    Scene_MenuBase.prototype.commandWindowHeight = function () {
         return this.calcWindowHeight(rowsCommandWnd, true)
     }
 
-    Scene_MenuBase.prototype.goldWindowHeight = function() {
+    Scene_MenuBase.prototype.goldWindowHeight = function () {
         return this.calcWindowHeight(1, true)
     }
 
-    Scene_Menu.prototype.commandWindowRect = function() {
+    Scene_Menu.prototype.commandWindowRect = function () {
         const ww = Graphics.boxWidth
         const wh = this.commandWindowHeight()
         const wx = 0
@@ -554,7 +559,7 @@
         return new Rectangle(wx, wy, ww, wh)
     }
 
-    Scene_Menu.prototype.statusWindowRect = function() {
+    Scene_Menu.prototype.statusWindowRect = function () {
         const h1 = this.commandWindowHeight()
         const h2 = this.goldWindowHeight()
         const ww = Graphics.boxWidth
@@ -564,51 +569,33 @@
         return new Rectangle(wx, wy, ww, wh)
     }
 
-    Scene_ItemBase.prototype.actorWindowRect = function() {
+    Scene_ItemBase.prototype.actorWindowRect = function () {
         const rect = Scene_Menu.prototype.statusWindowRect()
         rect.y = this.mainAreaBottom() - rect.height
         return rect
     }
 
-    Window_MenuCommand.prototype.maxCols = function() {
+    Window_MenuCommand.prototype.maxCols = function () {
         return colsCommandWnd
     }
 
-    Window_MenuCommand.prototype.numVisibleRows = function() {
+    Window_MenuCommand.prototype.numVisibleRows = function () {
         return rowsCommandWnd
     }
 
-    Window_MenuStatus.prototype.maxCols = function() {
-        if (maxColsMenuWnd === 0) {
-            return $gameParty.members().length
-        } else {
-            return maxColsMenuWnd
-        }
+    Window_MenuStatus.prototype.maxCols = function () {
+        return (maxColsMenuWnd === 0) ? $gameParty.members().length : maxColsMenuWnd
     }
 
-    Sprite_Gauge.prototype.bitmapWidth = function() {
-        if (maxColsMenuWnd === 0) {
-            return 168 * 4 / $gameParty.members().length
-        } else {
-            return 168 * 4 / maxColsMenuWnd
-        }
+    Sprite_Gauge.prototype.bitmapWidth = function () {
+        return (maxColsMenuWnd === 0) ? 148 * 4 / $gameParty.members().length : 148 * 4 / maxColsMenuWnd
     }
 
-    Sprite_Name.prototype.bitmapWidth = function() {
-        if (maxColsMenuWnd === 0) {
-            return 168 * 4 / $gameParty.members().length
-        } else {
-            return 168 * 4 / maxColsMenuWnd
-        }
+    Sprite_Name.prototype.bitmapWidth = function () {
+        return (maxColsMenuWnd === 0) ? 168 * 4 / $gameParty.members().length : 168 * 4 / maxColsMenuWnd
     }
-    Sprite_Gauge.prototype.labelFontSize = function() {
-        if (maxColsMenuWnd === 0) {
-            return ($gameSystem.mainFontSize() - 2) * 4 / $gameParty.members().length
-        } else {
-            return ($gameSystem.mainFontSize() - 2) * 4 / maxColsMenuWnd
-        }
-    }
-    Window_MenuStatus.prototype.numVisibleRows = function() {
+
+    Window_MenuStatus.prototype.numVisibleRows = function () {
         return 1
     }
 
@@ -624,24 +611,24 @@
     const isWindowVisible = () => allowWindowDisp && !bgBitmapName()
 
     const _Scene_MenuBase_create = Scene_MenuBase.prototype.create
-    Scene_MenuBase.prototype.create = function() {
+    Scene_MenuBase.prototype.create = function () {
         this._allWindows = []
         _Scene_MenuBase_create.call(this)
     }
 
     const _Scene_MenuBase_start = Scene_MenuBase.prototype.start
-    Scene_MenuBase.prototype.start = function() {
+    Scene_MenuBase.prototype.start = function () {
         this._setWindowsOpacity()
         _Scene_MenuBase_start.call(this)
     }
 
     const _Scene_MenuBase_addWindow = Scene_MenuBase.prototype.addWindow
-    Scene_MenuBase.prototype.addWindow = function(window) {
+    Scene_MenuBase.prototype.addWindow = function (window) {
         _Scene_MenuBase_addWindow.call(this, window)
         this._allWindows.push(window)
     }
 
-    Scene_MenuBase.prototype._setWindowsOpacity = function() {
+    Scene_MenuBase.prototype._setWindowsOpacity = function () {
         if (!isWindowVisible()) {
             for (const window of this._allWindows) {
                 window.opacity = 0
@@ -651,7 +638,7 @@
 
     const _Scene_MenuBase_createBackground =
         Scene_MenuBase.prototype.createBackground
-    Scene_MenuBase.prototype.createBackground = function() {
+    Scene_MenuBase.prototype.createBackground = function () {
         const bgName = bgBitmapName()
         if (bgName) {
             this._backgroundSprite = new Sprite()
@@ -666,7 +653,7 @@
     // draw image and parameters
     //
     var _Window_MenuStatus_drawItem = Window_MenuStatus.prototype.drawItem
-    Window_MenuStatus.prototype.drawItem = function(index) {
+    Window_MenuStatus.prototype.drawItem = function (index) {
         const actor = $gameParty.members()[index]
         const bitmapName = $dataActors[actor.actorId()].meta.stand_picture
         const bitmap = bitmapName ? ImageManager.loadPicture(bitmapName) : null
@@ -677,13 +664,13 @@
         }
     }
 
-    Window_MenuStatus.prototype.drawItemImage = function(index) {
+    Window_MenuStatus.prototype.drawItemImage = function (index) {
         const actor = this.actor(index)
         if (!actor) {
             return
         }
         const rect = this.itemRectWithPadding(index)
-            // load stand_picture
+        // load stand_picture
         const bitmapName = $dataActors[actor.actorId()].meta.stand_picture
         const bitmap = bitmapName ? ImageManager.loadPicture(bitmapName) : null
         const lineHeight = this.lineHeight()
@@ -704,7 +691,7 @@
         this.changePaintOpacity(true)
     }
 
-    Window_MenuStatus.prototype.drawItemStatus = function(index) {
+    Window_MenuStatus.prototype.drawItemStatus = function (index) {
         if (!isDisplayStatus) {
             return
         }
@@ -722,7 +709,7 @@
         this.drawActorIcons(actor, x, bottom - lineHeight * 4, width)
     }
 
-    Window_StatusBase.prototype.drawActorLevel = function(actor, x, y, width) {
+    Window_StatusBase.prototype.drawActorLevel = function (actor, x, y, width) {
         width = width || 168
         this.changeTextColor(this.systemColor())
         this.drawText(TextManager.levelA, x, y, 48)
@@ -739,12 +726,12 @@
     }
 
     const _Scene_Menu_create = Scene_Menu.prototype.create
-    Scene_Menu.prototype.create = function() {
+    Scene_Menu.prototype.create = function () {
         _Scene_Menu_create.call(this)
         this.createMapNameWindow()
     }
 
-    Scene_Menu.prototype.createMapNameWindow = function() {
+    Scene_Menu.prototype.createMapNameWindow = function () {
         if (isDisplayMapName) {
             const rect = this.mapNameAlt3WindowRect()
             this._mapNameWindow = new Window_MapNameAlt3(rect)
@@ -753,14 +740,14 @@
     }
 
     const _Scene_Menu_terminate = Scene_Menu.prototype.terminate
-    Scene_Menu.prototype.terminate = function() {
+    Scene_Menu.prototype.terminate = function () {
         _Scene_Menu_terminate.call(this)
         if (isDisplayMapName) {
             this.removeChild(this._mapNameWindow)
         }
     }
 
-    Scene_Menu.prototype.mapNameAlt3WindowRect = function() {
+    Scene_Menu.prototype.mapNameAlt3WindowRect = function () {
         const ww = Graphics.boxWidth - this._goldWindow.width
         const wh = this.calcWindowHeight(1, true)
         const wx = 0
@@ -775,17 +762,17 @@
     Window_MapNameAlt3.prototype = Object.create(Window_MapName.prototype)
     Window_MapNameAlt3.prototype.constructor = Window_MapNameAlt3
 
-    Window_MapNameAlt3.prototype.initialize = function(rect) {
+    Window_MapNameAlt3.prototype.initialize = function (rect) {
         // not inherit super class, but Window_Base instead.
         Window_Base.prototype.initialize.call(this, rect)
         this.refresh()
     }
 
-    Window_MapNameAlt3.prototype.update = function() {
+    Window_MapNameAlt3.prototype.update = function () {
         // do nothing
     }
 
-    Window_MapNameAlt3.prototype.refresh = function() {
+    Window_MapNameAlt3.prototype.refresh = function () {
         // not inherit super class
         this.contents.clear()
         if (mapName()) {
