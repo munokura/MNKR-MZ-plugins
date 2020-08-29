@@ -23,6 +23,7 @@
  * @target MZ
  * @plugindesc Yet another menu screen layout
  * @author munokura (based on Sasuke KANNAZUKI)
+ * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_AltMenuScreen2MZ.js
  *
  * @param allowWindowDisp
  * @text Display Window At Default
@@ -262,6 +263,7 @@
  * @target MZ
  * @plugindesc レイアウトの異なるメニュー画面
  * @author ムノクラ (原作:神無月サスケ)
+ * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_AltMenuScreen2MZ.js
  *
  * @param allowWindowDisp
  * @text 背景未設定の時ウィンドウ表示？
