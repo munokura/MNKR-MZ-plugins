@@ -17,6 +17,7 @@
 /* 
  * MNKR_AltMenuScreen2MZ.js
  * 2020/8/29 1.0.0 change in Munokura
+ * 2020/8/29 1.0.1 Bug fix
  */
 
 /*:
@@ -675,9 +676,10 @@
         // load stand_picture
         const bitmapName = $dataActors[actor.actorId()].meta.stand_picture
         const bitmap = bitmapName ? ImageManager.loadPicture(bitmapName) : null
-        const lineHeight = this.lineHeight()
         const w = Math.min(rect.width, (bitmapName ? bitmap.width : 144))
         const h = Math.min(rect.height, (bitmapName ? bitmap.height : 144))
+        const lineHeight = this.lineHeight()
+        this.changePaintOpacity(actor.isBattleMember())
         if (bitmap) {
             const sx = (bitmap.width > w) ? (bitmap.width - w) / 2 : 0
             const sy = (bitmap.height > h) ? (bitmap.height - h) / 2 : 0
@@ -689,7 +691,6 @@
         } else {
             this.drawActorFace(actor, rect.x, rect.y + lineHeight * 2, w, h)
         }
-        this.changePaintOpacity(actor.isBattleMember())
         this.changePaintOpacity(true)
     }
 
