@@ -18,6 +18,7 @@
  * MNKR_AltMenuScreen2MZ.js
  * 2020/8/29 1.0.0 change in Munokura
  * 2020/8/29 1.0.1 Bug fix
+ * 2020/8/29 1.0.2 画像位置指定機能を追加
  */
 
 /*:
@@ -500,8 +501,19 @@
  * http://opensource.org/licenses/mit-license.php
  * 
  * ■ムノクラの変更点
- * 表示可能な人数に合わせて、名前等の表示の幅を自動調整します。
- * パーティ人数の変化で列数を自動調整する機能を追加。
+ * 1.表示可能な人数に合わせて、名前等の表示の幅を自動調整します。
+ * 2.パーティ人数の変化で列数を自動調整する機能を追加。
+ * 3.アクターのメモタグ<actor_offset_x> <actor_offset_y> で立ち絵の表示位置指定機能を追加
+ * この機能は<stand_picture:ファイル名>で指定したアクター表示にのみ反映されます。
+ * 通常の顔画像には反映されません。
+ * 
+ * 立ち絵を横にずらしたい場合
+ * <actor_offset_x: 100>
+ * ※100の部分をずらす量に指定してください。マイナスだと左に移動します。
+ *
+ * 立ち絵を縦にずらしたい場合
+ * <actor_offset_y: 100>
+ * ※100の部分をずらす量に指定してください。マイナスだと上に移動します。
  */
 
 (() => {
@@ -667,6 +679,8 @@
         }
     }
 
+    // <actor_offset_x > <actor_offset_y>
+
     Window_MenuStatus.prototype.drawItemImage = function (index) {
         const actor = this.actor(index)
         if (!actor) {
@@ -675,6 +689,8 @@
         const rect = this.itemRectWithPadding(index)
         // load stand_picture
         const bitmapName = $dataActors[actor.actorId()].meta.stand_picture
+        const offX = ($dataActors[actor.actorId()].meta.actor_offset_x) ? ($dataActors[actor.actorId()].meta.actor_offset_x) : 0
+        const offY = ($dataActors[actor.actorId()].meta.actor_offset_y) ? ($dataActors[actor.actorId()].meta.actor_offset_y) : 0
         const bitmap = bitmapName ? ImageManager.loadPicture(bitmapName) : null
         const w = Math.min(rect.width, (bitmapName ? bitmap.width : 144))
         const h = Math.min(rect.height, (bitmapName ? bitmap.height : 144))
@@ -687,7 +703,7 @@
                 rect.x + (rect.width - bitmap.width) / 2
             const dy = (bitmap.height > rect.height) ? rect.y :
                 rect.y + (rect.height - bitmap.height) / 2
-            this.contents.blt(bitmap, sx, sy, w, h, dx, dy)
+            this.contents.blt(bitmap, sx - offX, sy - offY, w, h, dx, dy)
         } else {
             this.drawActorFace(actor, rect.x, rect.y + lineHeight * 2, w, h)
         }
