@@ -36,6 +36,10 @@
  * プラグインパラメーターで設定してください。
  * 
  * プラグインコマンドはありません。
+ *
+ * 利用規約
+ * MITライセンスです。
+ * http://opensource.org/licenses/mit-license.php
  */
 
 const parameters = PluginManager.parameters('MNKR_EncounterEffect');
