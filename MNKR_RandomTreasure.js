@@ -68,6 +68,7 @@
  * と設定して使います。
  * ショップの処理内容がガチャの内容（アイテムと当選数）に置き換わります。
  *
+ * 最後に入手したアイテムの情報を $gameLastRandomTreasure から取得できます。
  * 
  * 利用規約
  *   MITライセンスです。
@@ -83,17 +84,16 @@
     const RATE_VAR = Number(parameters['itemLot'] || 0);
 
     const pluginName = "MNKR_RandomTreasure";
-    let lottery = "";
 
     PluginManager.registerCommand(pluginName, "randomTreasure", args => {
-        lottery = String(args.action);
+        const lottery = String(args.action);
 
         switch (lottery) {
             case 'start':
                 $gameTemp.randomTreasureStart = true;
                 break;
             case 'get':
-                getRandom.call(this);
+                getRandom();
                 break;
         }
     });
@@ -103,43 +103,30 @@
             $gameSystem.lastRandomTreasure = null;
             return null;
         }
+        let rand = Math.randomInt($gameSystem.randomTreasures
+            .reduce((current, previous) => current + previous.rate, 0)
+        );
         let sum = 0;
-        $gameSystem.randomTreasures.forEach(function (treasure) {
+        const winItem = $gameSystem.randomTreasures.find(treasure => {
             sum += treasure.rate;
+            return rand < sum;
         });
-        let rand = Math.randomInt(sum);
-        let item, id, type, rate;
-        sum = 0;
-        for (let i = 0; i < $gameSystem.randomTreasures.length; i++) {
-            sum += $gameSystem.randomTreasures[i].rate;
-            if (rand < sum) {
-                id = $gameSystem.randomTreasures[i].id;
-                type = $gameSystem.randomTreasures[i].type;
-                rate = $gameSystem.randomTreasures[i].rate;
-                item = getItem(type, id);
-                break;
-            }
-        }
+        const item = getItem(winItem.type, winItem.id);
 
-        let params = [id, 0, 0, 1, false];
-
-        switch (type) {
-            case 0:
-                Game_Interpreter.prototype.command126(params);
-                break;
-            case 1:
-                Game_Interpreter.prototype.command127(params);
-                break;
-            default:
-                Game_Interpreter.prototype.command128(params);
-        }
+        $gameParty.gainItem(item, 1);
 
         $gameSystem.lastRandomTreasure = item;
-        if (NAME_VAR != -1) $gameVariables.setValue(NAME_VAR, item.name);
-        if (ICON_VAR != -1) $gameVariables.setValue(ICON_VAR, item.iconIndex);
-        if (RATE_VAR != -1) $gameVariables.setValue(RATE_VAR, rate);
+        if (NAME_VAR !== -1) $gameVariables.setValue(NAME_VAR, item.name);
+        if (ICON_VAR !== -1) $gameVariables.setValue(ICON_VAR, item.iconIndex);
+        if (RATE_VAR !== -1) $gameVariables.setValue(RATE_VAR, winItem.rate);
     };
 
+    /**
+     * アイテム種別とアイテムIDからアイテムデータを返す
+     * @param {number} type アイテム種別
+     * @param {number} id アイテムID
+     * @return {MZ.Item | MZ.Weapon | MZ.Armor}
+     */
     function getItem(type, id) {
         let item;
         switch (type) {
@@ -167,16 +154,14 @@
                     this._index++;
                     goodsList.push(this.currentCommand().parameters);
                 }
-                let data = [];
-                goodsList.forEach(function (goods) {
+                $gameSystem.randomTreasures = goodsList.map(goods => {
                     let item = getItem(goods[0], goods[1]);
-                    data.push({
-                        type: goods[0],
-                        id: goods[1],
-                        rate: goods[2] === 0 ? item.price : goods[3]
-                    });
-                }, this);
-                $gameSystem.randomTreasures = data;
+                    return {
+                      type: goods[0],
+                      id: goods[1],
+                      rate: goods[2] === 0 ? item.price : goods[3]
+                    };
+                });
                 return true;
             }
         }
