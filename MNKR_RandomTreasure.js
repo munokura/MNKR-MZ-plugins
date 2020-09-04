@@ -8,19 +8,20 @@
 
 /*
  * --------------------------------------------------
- * MNKR_RandomTreasure Ver.1.0.0
+ * MNKR_RandomTreasure Ver.1.0.1
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
  * --------------------------------------------------
  */
 
+// v1.0.1 DarkPlasma氏にリファクタをいただき、修正。
 // v1.0.0 MZ用に移植。MVとの互換性なし。
 
 /*:
  * @target MZ
  * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_RandomTreasure.js
- * @plugindesc v1.0.0 ランダム宝箱プラグイン
+ * @plugindesc v1.0.1 ランダム宝箱プラグイン
  * @author munokura (原作:kido)
  * 
  * @param itemName
@@ -68,7 +69,9 @@
  * と設定して使います。
  * ショップの処理内容がガチャの内容（アイテムと当選数）に置き換わります。
  *
- * 最後に入手したアイテムの情報を $gameLastRandomTreasure から取得できます。
+ * 最後に入手したアイテムの情報を
+ *   $gameLastRandomTreasure
+ * から取得することもできます。
  * 
  * 利用規約
  *   MITライセンスです。
@@ -157,9 +160,9 @@
                 $gameSystem.randomTreasures = goodsList.map(goods => {
                     let item = getItem(goods[0], goods[1]);
                     return {
-                      type: goods[0],
-                      id: goods[1],
-                      rate: goods[2] === 0 ? item.price : goods[3]
+                        type: goods[0],
+                        id: goods[1],
+                        rate: goods[2] === 0 ? item.price : goods[3]
                     };
                 });
                 return true;
