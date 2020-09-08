@@ -6,10 +6,11 @@
 // http://opensource.org/licenses/mit-license.php
 //=============================================================================
 
+// v2.0.0 プラグインパラメーターを変更。MZ専用に変更。
 // v1.2.0 MZに移植。通路脇にイベントを配置しないように改変。
 
 /*:
- * @target MZ MV
+ * @target MZ
  * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_SAN_MapGenerator.js
  * @plugindesc v1.2.0 自動的にランダムマップを生成します。
  * @author ムノクラ 原作:サンシロ
@@ -91,7 +92,7 @@
  *  マップ毎の出現率:<RateMap: [1.0以下の正の小数]>
  *  部屋毎の出現率  :<RateRoom:[1.0以下の正の小数]>
  * 
- * ■プラグインコマンド（RPGツクールMV用）
+ * ■プラグインコマンド
  * ・MapGenerator RoomAndPass
  *  部屋と通路から構成されるマップを生成します。
  * 
@@ -1241,20 +1242,20 @@ Game_Event.prototype.event = function () {
 // インタープリタークラス
 
 // プラグインコマンド (RPGツクールMV用)
-Sanshiro.Game_MapGenerator.Game_Interpreter_pluginCommand = Game_Interpreter.prototype.pluginCommand;
-Game_Interpreter.prototype.pluginCommand = function (command, args) {
-    Sanshiro.Game_MapGenerator.Game_Interpreter_pluginCommand.call(this, command, args);
-    if (command === 'MapGenerator') {
-        switch (args[0]) {
-            case 'FillRoom':
-                $gameMap.generateMap(args[0]);
-                break;
-            case 'RoomAndPass':
-                $gameMap.generateMap(args[0]);
-                break;
-        }
-    }
-};
+// Sanshiro.Game_MapGenerator.Game_Interpreter_pluginCommand = Game_Interpreter.prototype.pluginCommand;
+// Game_Interpreter.prototype.pluginCommand = function (command, args) {
+//     Sanshiro.Game_MapGenerator.Game_Interpreter_pluginCommand.call(this, command, args);
+//     if (command === 'MapGenerator') {
+//         switch (args[0]) {
+//             case 'FillRoom':
+//                 $gameMap.generateMap(args[0]);
+//                 break;
+//             case 'RoomAndPass':
+//                 $gameMap.generateMap(args[0]);
+//                 break;
+//         }
+//     }
+// };
 
 // RPGツクールMZ用プラグインコマンド
 
