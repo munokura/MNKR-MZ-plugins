@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_BattleStartCommon Ver.2.0.0
+ * MNKR_BattleStartCommon Ver.2.0.1
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -58,16 +58,8 @@
  *     $gameMessage.add(TextManager.surprise.format($gameParty.name()));
  * }
  */
-$gameTroop.enemyNames().forEach(function(name) {
-    $gameMessage.add(TextManager.emerge.format(name));
-});
-if (this._preemptive) {
-    $gameMessage.add(TextManager.preemptive.format($gameParty.name()));
-} else if (this._surprise) {
-    $gameMessage.add(TextManager.surprise.format($gameParty.name()));
-}
 
-(function() {
+(function () {
     'use strict';
 
     const parameters = PluginManager.parameters('MNKR_BattleStartCommon');
@@ -75,7 +67,7 @@ if (this._preemptive) {
     const valueZero = eval(parameters['Value Zero'] || 0);
 
     const _BattleManager_displayStartMessages = BattleManager.displayStartMessages;
-    BattleManager.displayStartMessages = function() {
+    BattleManager.displayStartMessages = function () {
         if (valueZero) {
             _BattleManager_displayStartMessages.call(this);
         } else {
