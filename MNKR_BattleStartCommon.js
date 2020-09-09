@@ -32,7 +32,40 @@
  * 
  * パラメーターで使用する変数を指定してください。
  * 変数の値をコモンイベントIDとして実行します。
+ * 
+ * コモンイベント後に戦闘開始メッセージを表示したい場合、
+ * コモンイベントに下記のスクリプト（コアと同じ記述）を追加してください。
+ * 
+ * $gameTroop.enemyNames().forEach(function(name) {
+ *     $gameMessage.add(TextManager.emerge.format(name));
+ * });
+ * if (this._preemptive) {
+ *     $gameMessage.add(TextManager.preemptive.format($gameParty.name()));
+ * } else if (this._surprise) {
+ *     $gameMessage.add(TextManager.surprise.format($gameParty.name()));
+ * }
+ * 
+ * 例
+ * ◆戦闘アニメーションの表示：敵グループ全体, 光/全体3
+ * ◆ウェイト：60フレーム
+ * ◆スクリプト：
+ * $gameTroop.enemyNames().forEach(function(name) {
+ *     $gameMessage.add(TextManager.emerge.format(name));
+ * });
+ * if (this._preemptive) {
+ *     $gameMessage.add(TextManager.preemptive.format($gameParty.name()));
+ * } else if (this._surprise) {
+ *     $gameMessage.add(TextManager.surprise.format($gameParty.name()));
+ * }
  */
+$gameTroop.enemyNames().forEach(function(name) {
+    $gameMessage.add(TextManager.emerge.format(name));
+});
+if (this._preemptive) {
+    $gameMessage.add(TextManager.preemptive.format($gameParty.name()));
+} else if (this._surprise) {
+    $gameMessage.add(TextManager.surprise.format($gameParty.name()));
+}
 
 (function() {
     'use strict';
