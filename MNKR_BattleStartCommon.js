@@ -16,7 +16,7 @@
  * @param Variable Id
  * @text 指定変数
  * @type variable
- * @desc 指定する変数ID
+ * @desc コモンイベントを指定する変数ID。この変数の値のIDのコモンイベントを実行します。
  * @default 0
  * 
  * @param Value Zero
