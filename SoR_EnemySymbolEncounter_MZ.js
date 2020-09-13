@@ -5,211 +5,214 @@
 // ----------------------------------------------------------------------------
 // Latest version v1.07 (2020/09/11)
 //=============================================================================
-
 /*:ja
-* @plugindesc ＜シンボルエンカウント総合＞
-* @author 蒼竜　@soryu_rpmaker
-* @help　シンボルエンカウント方式のゲームデザインを実現するために
-* 　必要な一通りの仕組みを実装します。主に、
-* - 接敵時の状態に応じた先制攻撃、不意打ちの判定
-* - 敵シンボルの経路探索および追跡
-* - 戦闘後の処理(プレイヤーの無敵時間,敵シンボルの復帰)
-* に関して、一般のコンシューマゲームのような挙動を、
-* 単独のプラグインとして、自然な形で導入します。
-* 
-* 敵シンボルとしたいイベントを作成し、
-* <EnemySymbol> 
-* とメモに記述すると、このプラグインの効能を受けます。
-* シンボルごとの細かな挙動指定は、イベントコマンドの「注釈」を用いて行います。
-* 
-* 上のタグを記述するだけですぐに最低限の動作が可能ですが、より各製作者の
-* ゲームデザインに沿った挙動をさせるには様々なカスタマイズ(設定)が
-* 必要だと想定されます。
-* 
-* -----------------------------------------------------------
-* バージョン情報
-* -----------------------------------------------------------
-* v1.07 (2020/09/11)
-*      透明化に関するデフォルト仕様との競合緩和策の導入
-* v1.06 (2020/09/04)
-*      プレイヤー検出アルゴリズムの調整
-*      (異なる2つの通行領域をまたぐ場合のケースに正しく対応)
-* v1.05 (2020/08/26)
-*      MZ依存不具合/無条件起動ページのないイベントが動作しない不具合を修正
-* v1.04 (2020/08/25)
-*      追跡挙動変更/シンボルエンカウント発生後のプレイヤーの無敵時間の
-*      描画方式を追加
-* v1.03 (2020/08/22)
-*      MenuSubCommand.jsのマップメニューとの共存オプションを追加
-* v1.02 (2020/08/20)
-*      MZバージョン初版
-* 
-* @param IsFollowerAttacked
-* @text フォロワー判定
-* @desc 隊列歩行使用時、'true'にすると先頭キャラクター以外にもエンカウント(と向き)判定が付きます。 (デフォルト:false)
-* @type boolean
-* @on 判定あり
-* @off 判定なし
-* @default false
-* 
-* @param InvincibleTime_AfterBattle
-* @text 戦闘後の無敵時間
-* @desc 戦闘後の無敵(発見されない、接触しない)時間 (デフォルト:300)
-* @default 300
-* @type number
-* 
-* @param EnemySearchRange_scale
-* @text 敵の探索量倍率
-* @desc 敵シンボル移動経路探索量倍率 (デフォルト:2.0)
-* @default 2.0
-* @type number
-* @decimals 1
-* 
-* @param SymbolKeepOut_RegionID
-* @text 敵シンボル通行不可リージョンID
-* @desc 敵シンボル通行不可リージョンID, -1で無効 (デフォルト:-1)
-* @default -1
-* @type number
-* @min -1
-* 
-* @param BalloonID_PlayerDetected
-* @text プレイヤー発見時バルーンID
-* @desc プレイヤーを発見した時にシンボル頭上に表示するふきだしアイコン, -1で無効 (デフォルト:1)
-* @default 1
-* @type select
-* @option 表示しない
-* @value -1
-* @option びっくり
-* @value 1
-* @option はてな
-* @value 2
-* @option 音符
-* @value 3
-* @option ハート
-* @value 4
-* @option 怒り
-* @value 5
-* @option 汗
-* @value 6
-* @option くしゃくしゃ
-* @value 7
-* @option 沈黙
-* @value 8
-* @option 電球
-* @value 9
-* @option Zzz
-* @value 10
-* @option ユーザー定義1
-* @value 11
-* @option ユーザー定義2
-* @value 12
-* @option ユーザー定義3
-* @value 13
-* @option ユーザー定義4
-* @value 14
-* @option ユーザー定義5
-* @value 15
-* 
-* @param SE_PlayerDetected
-* @text プレイヤー発見時SE
-* @desc プレイヤーを発見した時に再生される効果音, 無指定で再生しない (デフォルト:Shot2)
-* @default Shot2
-* @dir audio/se/
-* @type file
-* 
-* @param BalloonID_PlayerFled
-* @text プレイヤーを見失った時のバルーンID
-* @desc プレイヤーを見失った時にシンボル頭上に表示するふきだしアイコン, -1で無効 (デフォルト:6)
-* @default 6
-* @type select
-* @option 表示しない
-* @value -1
-* @option びっくり
-* @value 1
-* @option はてな
-* @value 2
-* @option 音符
-* @value 3
-* @option ハート
-* @value 4
-* @option 怒り
-* @value 5
-* @option 汗
-* @value 6
-* @option くしゃくしゃ
-* @value 7
-* @option 沈黙
-* @value 8
-* @option 電球
-* @value 9
-* @option Zzz
-* @value 10
-* @option ユーザー定義1
-* @value 11
-* @option ユーザー定義2
-* @value 12
-* @option ユーザー定義3
-* @value 13
-* @option ユーザー定義4
-* @value 14
-* @option ユーザー定義5
-* @value 15
-* 
-* @param SE_PlayerFled
-* @text プレイヤー逃走時SE
-* @desc プレイヤーを見失った時に再生される効果音, 無指定で再生しない (デフォルト:Down1)
-* @default Down1
-* @dir audio/se/
-* @type file
-* 
-* @param BattleBGM_surprised
-* @text 不意打ち状態の戦闘BGM
-* @desc 不意打ち状態で戦闘突入時の戦闘BGM, 無指定で変更なし (デフォルト:なし)
-* @default
-* @dir audio/bgm/
-* @type file
-* 
-* @param Use_MenuSubCommandMap
-* @text メニューサブコマンドマップを使用
-* @desc トリアコンタン氏のMenuSubCommand.jsでマップを用いたメニューを作成する場合、trueにしてください。 (デフォルト:false)
-* @type boolean
-* @on 使用する
-* @off 使用しない
-* @default false
-* 
-* @param InvincibleStyle_Flash
-* @text プレイヤー無敵時間の点滅
-* @desc シンボルエンカウント発生後のプレイヤー無敵時間における表示方法(点滅)(デフォルト:true)
-* @type boolean
-* @on 点滅する
-* @off 点滅しない
-* @default true
-* 
-* @param InvincibleStyle_Opaque
-* @text プレイヤー無敵時間の透明
-* @desc シンボルエンカウント発生後のプレイヤー無敵時間における表示方法(透明)(デフォルト:false)
-* @type boolean
-* @on 透明にする
-* @off 透明にしない
-* @default false
-* 
-* @param InvincibleStyle_Blend
-* @text プレイヤー無敵時間の合成
-* @desc シンボルエンカウント発生後のプレイヤー無敵時間における表示方法(合成方法変更)(デフォルト:0)
-* @type select
-* @option 通常
-* @value 0
-* @option 加算
-* @value 1
-* @option 乗算
-* @value 2
-* @option スクリーン
-* @value 3
-* @default 0
-* 
-* @target MZ
-* @url http://dragonflare.dip.jp/dcave/
-*/
+ * @plugindesc ＜シンボルエンカウント総合＞
+ * @author 蒼竜  @soryu_rpmaker
+ * @help  シンボルエンカウント方式のゲームデザインを実現するために
+ *   必要な一通りの仕組みを実装します。主に、
+ * - 接敵時の状態に応じた先制攻撃、不意打ちの判定
+ * - 敵シンボルの経路探索および追跡
+ * - 戦闘後の処理(プレイヤーの無敵時間,敵シンボルの復帰)
+ * に関して、一般のコンシューマゲームのような挙動を、
+ * 単独のプラグインとして、自然な形で導入します。
+ *
+ * 敵シンボルとしたいイベントを作成し、
+ * <EnemySymbol>
+ * とメモに記述すると、このプラグインの効能を受けます。
+ * シンボルごとの細かな挙動指定は、イベントコマンドの「注釈」を用いて行います。
+ *
+ * 上のタグを記述するだけですぐに最低限の動作が可能ですが、より各製作者の
+ * ゲームデザインに沿った挙動をさせるには様々なカスタマイズ(設定)が
+ * 必要だと想定されます。
+ *
+ * -----------------------------------------------------------
+ * バージョン情報
+ * -----------------------------------------------------------
+ * v1.07m (2020/09/13)
+ *      ムノクラによるプラグインパラメーター関連の調整(日本語のみ)
+ * v1.07 (2020/09/11)
+ *      透明化に関するデフォルト仕様との競合緩和策の導入
+ * v1.06 (2020/09/04)
+ *      プレイヤー検出アルゴリズムの調整
+ *      (異なる2つの通行領域をまたぐ場合のケースに正しく対応)
+ * v1.05 (2020/08/26)
+ *      MZ依存不具合/無条件起動ページのないイベントが動作しない不具合を修正
+ * v1.04 (2020/08/25)
+ *      追跡挙動変更/シンボルエンカウント発生後のプレイヤーの無敵時間の
+ *      描画方式を追加
+ * v1.03 (2020/08/22)
+ *      MenuSubCommand.jsのマップメニューとの共存オプションを追加
+ * v1.02 (2020/08/20)
+ *      MZバージョン初版
+ *
+ * @param IsFollowerAttacked
+ * @text フォロワー判定
+ * @desc 隊列歩行使用時、'true'にすると先頭キャラクター以外にもエンカウント(と向き)判定が付きます。 (デフォルト:false)
+ * @type boolean
+ * @on 判定あり
+ * @off 判定なし
+ * @default false
+ *
+ * @param InvincibleTime_AfterBattle
+ * @text 戦闘後の無敵時間
+ * @desc 戦闘後の無敵(発見されない、接触しない)時間 (デフォルト:300)
+ * @type number
+ * @decimals 0
+ * @default 300
+ *
+ * @param EnemySearchRange_scale
+ * @text 敵の探索量倍率
+ * @desc 敵シンボル移動経路探索量倍率 (デフォルト:2.0)
+ * @type number
+ * @decimals 1
+ * @default 2.0
+ *
+ * @param SymbolKeepOut_RegionID
+ * @text 敵シンボル通行不可リージョンID
+ * @desc 敵シンボル通行不可リージョンID, -1で無効 (デフォルト:-1)
+ * @type number
+ * @decimals 0
+ * @min -1
+ * @default -1
+ *
+ * @param BalloonID_PlayerDetected
+ * @text プレイヤー発見時バルーンID
+ * @desc プレイヤーを発見した時にシンボル頭上に表示するふきだしアイコン, -1で無効 (デフォルト:1)
+ * @default 1
+ * @type select
+ * @option 表示しない
+ * @value -1
+ * @option びっくり
+ * @value 1
+ * @option はてな
+ * @value 2
+ * @option 音符
+ * @value 3
+ * @option ハート
+ * @value 4
+ * @option 怒り
+ * @value 5
+ * @option 汗
+ * @value 6
+ * @option くしゃくしゃ
+ * @value 7
+ * @option 沈黙
+ * @value 8
+ * @option 電球
+ * @value 9
+ * @option Zzz
+ * @value 10
+ * @option ユーザー定義1
+ * @value 11
+ * @option ユーザー定義2
+ * @value 12
+ * @option ユーザー定義3
+ * @value 13
+ * @option ユーザー定義4
+ * @value 14
+ * @option ユーザー定義5
+ * @value 15
+ *
+ * @param SE_PlayerDetected
+ * @text プレイヤー発見時SE
+ * @desc プレイヤーを発見した時に再生される効果音, 無指定で再生しない (デフォルト:Shot2)
+ * @default Shot2
+ * @dir audio/se/
+ * @type file
+ *
+ * @param BalloonID_PlayerFled
+ * @text プレイヤーを見失った時のバルーンID
+ * @desc プレイヤーを見失った時にシンボル頭上に表示するふきだしアイコン, -1で無効 (デフォルト:6)
+ * @default 6
+ * @type select
+ * @option 表示しない
+ * @value -1
+ * @option びっくり
+ * @value 1
+ * @option はてな
+ * @value 2
+ * @option 音符
+ * @value 3
+ * @option ハート
+ * @value 4
+ * @option 怒り
+ * @value 5
+ * @option 汗
+ * @value 6
+ * @option くしゃくしゃ
+ * @value 7
+ * @option 沈黙
+ * @value 8
+ * @option 電球
+ * @value 9
+ * @option Zzz
+ * @value 10
+ * @option ユーザー定義1
+ * @value 11
+ * @option ユーザー定義2
+ * @value 12
+ * @option ユーザー定義3
+ * @value 13
+ * @option ユーザー定義4
+ * @value 14
+ * @option ユーザー定義5
+ * @value 15
+ *
+ * @param SE_PlayerFled
+ * @text プレイヤー逃走時SE
+ * @desc プレイヤーを見失った時に再生される効果音, 無指定で再生しない (デフォルト:Down1)
+ * @default Down1
+ * @dir audio/se/
+ * @type file
+ *
+ * @param BattleBGM_surprised
+ * @text 不意打ち状態の戦闘BGM
+ * @desc 不意打ち状態で戦闘突入時の戦闘BGM, 無指定で変更なし (デフォルト:なし)
+ * @default
+ * @dir audio/bgm/
+ * @type file
+ *
+ * @param Use_MenuSubCommandMap
+ * @text メニューサブコマンドマップを使用
+ * @desc トリアコンタン氏のMenuSubCommand.jsでマップを用いたメニューを作成する場合、trueにしてください。 (デフォルト:false)
+ * @type boolean
+ * @on 使用する
+ * @off 使用しない
+ * @default false
+ *
+ * @param InvincibleStyle_Flash
+ * @text プレイヤー無敵時間の点滅
+ * @desc シンボルエンカウント発生後のプレイヤー無敵時間における表示方法(点滅)(デフォルト:true)
+ * @type boolean
+ * @on 点滅する
+ * @off 点滅しない
+ * @default true
+ *
+ * @param InvincibleStyle_Opaque
+ * @text プレイヤー無敵時間の透明
+ * @desc シンボルエンカウント発生後のプレイヤー無敵時間における表示方法(透明)(デフォルト:false)
+ * @type boolean
+ * @on 透明にする
+ * @off 透明にしない
+ * @default false
+ *
+ * @param InvincibleStyle_Blend
+ * @text プレイヤー無敵時間の合成
+ * @desc シンボルエンカウント発生後のプレイヤー無敵時間における表示方法(合成方法変更)(デフォルト:0)
+ * @type select
+ * @option 通常
+ * @value 0
+ * @option 加算
+ * @value 1
+ * @option 乗算
+ * @value 2
+ * @option スクリーン
+ * @value 3
+ * @default 0
+ *
+ * @target MZ
+ * @url http://dragonflare.dip.jp/dcave/
+ */
 
 /*:
 * @plugindesc <Symbol Encoutner System>
