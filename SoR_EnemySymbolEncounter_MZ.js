@@ -6,7 +6,7 @@
 // Latest version v1.07 (2020/09/11)
 //=============================================================================
 /*:ja
- * @plugindesc ＜シンボルエンカウント総合＞
+ * @plugindesc v1.07m ＜シンボルエンカウント総合＞
  * @author 蒼竜  @soryu_rpmaker
  * @help  シンボルエンカウント方式のゲームデザインを実現するために
  *   必要な一通りの仕組みを実装します。主に、
@@ -76,7 +76,7 @@
  * @min -1
  *
  * @param BalloonID_PlayerDetected
- * @text プレイヤー発見時バルーンID
+ * @text プレイヤー発見時フキダシ
  * @desc プレイヤーを発見した時にシンボル頭上に表示するふきだしアイコン, -1で無効 (デフォルト:1)
  * @default 1
  * @type select
@@ -121,7 +121,7 @@
  * @type file
  *
  * @param BalloonID_PlayerFled
- * @text プレイヤーを見失った時のバルーンID
+ * @text プレイヤーを見失った時のフキダシ
  * @desc プレイヤーを見失った時にシンボル頭上に表示するふきだしアイコン, -1で無効 (デフォルト:6)
  * @default 6
  * @type select
