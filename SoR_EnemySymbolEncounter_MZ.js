@@ -48,32 +48,32 @@
  * @param IsFollowerAttacked
  * @text フォロワー判定
  * @desc 隊列歩行使用時、'true'にすると先頭キャラクター以外にもエンカウント(と向き)判定が付きます。 (デフォルト:false)
+ * @default false
  * @type boolean
  * @on 判定あり
  * @off 判定なし
- * @default false
  *
  * @param InvincibleTime_AfterBattle
  * @text 戦闘後の無敵時間
  * @desc 戦闘後の無敵(発見されない、接触しない)時間 (デフォルト:300)
+ * @default 300
  * @type number
  * @decimals 0
- * @default 300
  *
  * @param EnemySearchRange_scale
  * @text 敵の探索量倍率
  * @desc 敵シンボル移動経路探索量倍率 (デフォルト:2.0)
+ * @default 2.0
  * @type number
  * @decimals 1
- * @default 2.0
  *
  * @param SymbolKeepOut_RegionID
  * @text 敵シンボル通行不可リージョンID
  * @desc 敵シンボル通行不可リージョンID, -1で無効 (デフォルト:-1)
+ * @default -1
  * @type number
  * @decimals 0
  * @min -1
- * @default -1
  *
  * @param BalloonID_PlayerDetected
  * @text プレイヤー発見時バルーンID
@@ -175,30 +175,31 @@
  * @param Use_MenuSubCommandMap
  * @text メニューサブコマンドマップを使用
  * @desc トリアコンタン氏のMenuSubCommand.jsでマップを用いたメニューを作成する場合、trueにしてください。 (デフォルト:false)
+ * @default false
  * @type boolean
  * @on 使用する
  * @off 使用しない
- * @default false
  *
  * @param InvincibleStyle_Flash
  * @text プレイヤー無敵時間の点滅
  * @desc シンボルエンカウント発生後のプレイヤー無敵時間における表示方法(点滅)(デフォルト:true)
+ * @default true
  * @type boolean
  * @on 点滅する
  * @off 点滅しない
- * @default true
  *
  * @param InvincibleStyle_Opaque
  * @text プレイヤー無敵時間の透明
  * @desc シンボルエンカウント発生後のプレイヤー無敵時間における表示方法(透明)(デフォルト:false)
+ * @default false
  * @type boolean
  * @on 透明にする
  * @off 透明にしない
- * @default false
  *
  * @param InvincibleStyle_Blend
  * @text プレイヤー無敵時間の合成
  * @desc シンボルエンカウント発生後のプレイヤー無敵時間における表示方法(合成方法変更)(デフォルト:0)
+ * @default 0
  * @type select
  * @option 通常
  * @value 0
@@ -208,7 +209,6 @@
  * @value 2
  * @option スクリーン
  * @value 3
- * @default 0
  *
  * @target MZ
  * @url http://dragonflare.dip.jp/dcave/
