@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_PartyCommandSkipMZ Ver.1.0.0
+ * MNKR_PartyCommandSkipMZ Ver.1.1.0
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -14,10 +14,9 @@
  * @author munokura
  *
  * @help
- * ターン制戦闘専用です。
- * 
  * 戦闘開始時にパーティコマンドを飛ばします。
- * 先頭のアクターでキャンセルすると、パーティコマンドに戻ります。
+ * 
+ * ターン制では、先頭のアクターでキャンセルすると、パーティコマンドに戻ります。
  * 
  * パーティコマンドウィンドウでキャンセルすると、戦うを選んだ状態になります。
  */
@@ -31,9 +30,14 @@
             this._partyCommandWindow.setHandler('cancel', this.commandFight.bind(this));
       };
 
-      const _Scene_Battle_prototype_startPartyCommandSelection = Scene_Battle.prototype.startPartyCommandSelection
+      const _Scene_Battle_prototype_startPartyCommandSelection = Scene_Battle.prototype.startPartyCommandSelection;
       Scene_Battle.prototype.startPartyCommandSelection = function () {
-            this.selectNextCommand();
+            if (this._partyCommandSkipped && !($dataSystem.battleSystem === 0)) {
+                  _Scene_Battle_prototype_startPartyCommandSelection.call(this);
+            } else {
+                  this._partyCommandSkipped = true;
+                  this.selectNextCommand();
+            }
       };
 
       Scene_Battle.prototype.selectPreviousCommand = function () {
