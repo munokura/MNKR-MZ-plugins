@@ -56,7 +56,7 @@
     const pluginName = 'MNKR_ActorCommandChoice';
 
     const parameters = PluginManager.parameters(pluginName);
-    const addAttack = eval(parameters['Add Attack'] || 'true');
+    const addAttack = eval(parameters['Add Attack'] || 'false');
     const addSkill = eval(parameters['Add Skill'] || 'true');
     const addGuard = eval(parameters['Add Guard'] || 'true');
     const addItem = eval(parameters['Add Item'] || 'true');
