@@ -8,7 +8,7 @@
  */
 
 /*:
- * @target MZ
+ * @target MZ MV
  * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_ActorCommandChoice.js
  * @plugindesc v1.0.0 アクター共通の戦闘コマンドの表示を変更
  * @author munokura
