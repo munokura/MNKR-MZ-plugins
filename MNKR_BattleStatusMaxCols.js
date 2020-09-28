@@ -10,7 +10,7 @@
 /*:
  * @target MZ MV
  * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_BattleStatusMaxCols.js
- * @plugindesc 戦闘ステータスウィンドウ内のアクター数を指定できます。
+ * @plugindesc (試作中) 戦闘ステータスウィンドウ内のアクター数を指定できます。
  * @author munokura
  *
  * @param Max Cols
@@ -22,6 +22,15 @@
  *
  * @help
  * 戦闘ステータスウィンドウ内の最大アクター数を指定できます。
+ *
+ * プラグインコマンドはありません。
+ *
+ *
+ * 利用規約:
+ *   MITライセンスです。
+ *   https://ja.osdn.net/projects/opensource/wiki/licenses%2FMIT_license
+ *   作者に無断で改変、再配布が可能で、
+ *   利用形態（商用、18禁利用等）についても制限はありません。
  */
 
 (function() {

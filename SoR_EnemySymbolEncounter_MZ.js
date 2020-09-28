@@ -26,6 +26,13 @@
  * 各製作者のゲームデザインにより沿った挙動をさせるには
  * 様々なカスタマイズ(設定)が必要となります。
  * 
+ *
+ * 利用規約:
+ *   MITライセンスです。
+ *   https://ja.osdn.net/projects/opensource/wiki/licenses%2FMIT_license
+ *   作者に無断で改変、再配布が可能で、
+ *   利用形態（商用、18禁利用等）についても制限はありません。
+ *
  * @param General
  * @text -----一般設定-----
  * 
