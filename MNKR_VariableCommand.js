@@ -72,9 +72,9 @@
     const pluginName = "MNKR_VariableCommand";
 
     PluginManager.registerCommand(pluginName, "addActor", args => {
-        let variableID = Number(args.variableID);
-        let variable = $gameVariables.value(args.variableID);
-        let setup = eval(args.setup);
+        const variableID = Number(args.variableID);
+        const variable = $gameVariables.value(args.variableID);
+        const setup = eval(args.setup);
         if (variable) {
             if (setup) {
                 $gameActors.actor(variable).setup(variable)
@@ -84,9 +84,9 @@
     });
 
     PluginManager.registerCommand(pluginName, "removeActor", args => {
-        let variableID = Number(args.variableID);
-        let variable = $gameVariables.value(args.variableID);
-        let setup = eval(args.setup);
+        const variableID = Number(args.variableID);
+        const variable = $gameVariables.value(args.variableID);
+        const setup = eval(args.setup);
         if (variable) {
             if (setup) {
                 $gameActors.actor(variable).setup(variable)
