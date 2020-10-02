@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * TimerEX Ver.1.0.0
+ * MNKR_TimerEX Ver.1.0.0
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -9,7 +9,7 @@
 
 /*:
  * @target MZ
- * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/TimerEX.js
+ * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TimerEX.js
  * @plugindesc タイマー拡張プラグイン
  * @author munokura
  * 
@@ -45,7 +45,7 @@
 (() => {
 
     "use strict";
-    const parameters = PluginManager.parameters('TimerEX');
+    const parameters = PluginManager.parameters('MNKR_TimerEX');
     const countUpSwitch = Number(parameters['Count Up Switch'] || 11);
     const countStopValue = Number(parameters['Count Stop Value'] || 11);
 
