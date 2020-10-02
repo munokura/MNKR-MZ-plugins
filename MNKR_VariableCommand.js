@@ -64,32 +64,36 @@
  *   利用形態（商用、18禁利用等）についても制限はありません。
  * 
  * 
-*/
+ */
 
 (() => {
 
     "use strict";
     const pluginName = "MNKR_VariableCommand";
 
+    let variableID;
+    let variable;
+    let setup;
+
     PluginManager.registerCommand(pluginName, "addActor", args => {
-        const variableID = Number(args.variableID);
-        const variable = $gameVariables.value(args.variableID);
-        const setup = eval(args.setup);
+        variableID = Number(args.variableID);
+        variable = $gameVariables.value(args.variableID);
+        setup = eval(args.setup);
         if (variable) {
             if (setup) {
-                $gameActors.actor(variable).setup(variable)
+                $gameActors.actor(variable).setup(variable);
             }
             $gameParty.addActor(variable);
         }
     });
 
     PluginManager.registerCommand(pluginName, "removeActor", args => {
-        const variableID = Number(args.variableID);
-        const variable = $gameVariables.value(args.variableID);
-        const setup = eval(args.setup);
+        variableID = Number(args.variableID);
+        variable = $gameVariables.value(args.variableID);
+        setup = eval(args.setup);
         if (variable) {
             if (setup) {
-                $gameActors.actor(variable).setup(variable)
+                $gameActors.actor(variable).setup(variable);
             }
             $gameParty.removeActor(variable);
         }
