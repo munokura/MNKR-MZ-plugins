@@ -61,7 +61,7 @@
     const _Game_Timer_prototype_stop = Game_Timer.prototype.stop;
     Game_Timer.prototype.stop = function () {
         _Game_Timer_prototype_stop.call(this);
-        $gameVariables.setValue(countStopValue, this._frames)
+        $gameVariables.setValue(countStopValue, this._frames);
     };
 
 })();
