@@ -8,7 +8,7 @@
  */
 
 /*:
- * @target MZ
+ * @target MZ MV
  * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TimerEX.js
  * @plugindesc タイマー拡張プラグイン
  * @author munokura
