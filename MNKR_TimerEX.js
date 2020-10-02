@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_TimerEX Ver.1.0.0
+ * MNKR_TimerEX Ver.1.0.1
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -33,6 +33,8 @@
  * カウントアップ・ダウンに関わらず、タイマー停止時の値を変数に保存します。
  * 保存される値はフレーム値(1フレーム:1/60秒)です。
  * 分や秒に換算する場合、計算して使用してください。
+ * 
+ * プラグインコマンドはありません。
  *
  * 
  * 利用規約:
@@ -51,7 +53,7 @@
 
     const _Game_Timer_prototype_update = Game_Timer.prototype.update;
     Game_Timer.prototype.update = function (sceneActive) {
-        if ($gameSwitches.value(countUpSwitch)) {
+        if ($gameSwitches.value(countUpSwitch) && sceneActive && this._working) {
             this._frames++;
         } else {
             _Game_Timer_prototype_update.apply(this, arguments);
