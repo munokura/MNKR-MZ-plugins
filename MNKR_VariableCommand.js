@@ -75,10 +75,15 @@
     let variable;
     let setup;
 
-    PluginManager.registerCommand(pluginName, "addActor", args => {
+    function variableCommandSetup(args) {
         variableID = Number(args.variableID);
         variable = $gameVariables.value(args.variableID);
         setup = eval(args.setup);
+        return args;
+    };
+
+    PluginManager.registerCommand(pluginName, "addActor", args => {
+        variableCommandSetup(args);
         if (variable) {
             if (setup) {
                 $gameActors.actor(variable).setup(variable);
@@ -88,9 +93,7 @@
     });
 
     PluginManager.registerCommand(pluginName, "removeActor", args => {
-        variableID = Number(args.variableID);
-        variable = $gameVariables.value(args.variableID);
-        setup = eval(args.setup);
+        variableCommandSetup(args);
         if (variable) {
             if (setup) {
                 $gameActors.actor(variable).setup(variable);
