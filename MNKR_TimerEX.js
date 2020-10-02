@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_TimerEX Ver.1.0.1
+ * MNKR_TimerEX Ver.1.0.2
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -63,7 +63,9 @@
     const _Game_Timer_prototype_stop = Game_Timer.prototype.stop;
     Game_Timer.prototype.stop = function () {
         _Game_Timer_prototype_stop.call(this);
-        $gameVariables.setValue(countStopValue, this._frames);
+        if (countStopValue) {
+            $gameVariables.setValue(countStopValue, this._frames);
+        }
     };
 
 })();
