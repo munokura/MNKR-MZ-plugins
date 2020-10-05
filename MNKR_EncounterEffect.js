@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_EncounterEffect Ver.1.0.0
+ * MNKR_EncounterEffect Ver.1.1.0
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -31,6 +31,15 @@
  * ツクールデフォルト：する
  * @default false
  * 
+ * @param Fade Out
+ * @text フェードアウト？
+ * @type boolean
+ * @on フェードアウトする
+ * @off フェードアウトしない
+ * @desc エンカウント時に戦闘前のフラッシュ演出
+ * ツクールデフォルト：する
+ * @default false
+ * 
  * @help
  * エンカウント時の演出を調整できます。
  * プラグインパラメーターで設定してください。
@@ -45,14 +54,15 @@
  *   利用形態（商用、18禁利用等）についても制限はありません。
  */
 
-const parameters = PluginManager.parameters('MNKR_EncounterEffect');
-const zoomProcess = eval(parameters['Zoom Process'] || 'false');
-const flashProcess = eval(parameters['Flash Process'] || 'false');
-
-(function () {
+(() => {
     'use strict'
 
-    Scene_Map.prototype.updateEncounterEffect = function () {
+    const parameters = PluginManager.parameters('MNKR_EncounterEffect');
+    const zoomProcess = eval(parameters['Zoom Process'] || 'false');
+    const flashProcess = eval(parameters['Flash Process'] || 'false');
+    const fadeOut = eval(parameters['Fade Out'] || 'false');
+
+    Scene_Map.prototype.updateEncounterEffect = function() {
         if (this._encounterEffectDuration > 0) {
             this._encounterEffectDuration--;
             const speed = this.encounterEffectSpeed();
@@ -78,7 +88,9 @@ const flashProcess = eval(parameters['Flash Process'] || 'false');
             }
             if (n === Math.floor(speed / 2)) {
                 BattleManager.playBattleBgm();
-                this.startFadeOut(this.fadeSpeed());
+                if (fadeOut) {
+                    this.startFadeOut(this.fadeSpeed());
+                }
             }
         }
     };
