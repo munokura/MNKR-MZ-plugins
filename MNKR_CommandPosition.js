@@ -1,6 +1,6 @@
 ﻿/*
  * --------------------------------------------------
- * MNKR_CommandPosition Ver.0.0.2
+ * MNKR_CommandPosition Ver.1.0.0
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -10,7 +10,7 @@
 /*:
  * @target MZ
  * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_CommandPosition.js
- * @plugindesc (試作中)メインメニューの表示位置を変更します。
+ * @plugindesc メインメニューの表示位置を変更します。
  * @author munokura
  *
  * @param Command Position
@@ -44,9 +44,6 @@
  * @default true
  *
  * @help
- * 試作中です。
- * メニューの行数関連が未実装です。
- * 
  * メインメニューの表示位置を指定します。
  * 
  * ステータスウィンドウ無効化をすると、
@@ -57,6 +54,10 @@
  * スキル・装備・ステータス・並び替え
  * のコマンドを使用したい場合、このプラグインでは無効化せずに、
  * 他のプラグインで無効化してください。
+ * 
+ * メニュー行数は0を指定すると自動的に反映しますが、
+ * 他のプラグインでコマンドを追加していると、そのままでは反映されません。
+ * 基本的に行数を指定して使ってください。
  * 
  *
  * プラグインコマンドはありません。
@@ -98,7 +99,7 @@
 
     Scene_Menu.prototype.commandWindowRectangles = function (width, height) {
         const leftX = 0;
-        const midX = Graphics.boxWidth /2 - width / 2;
+        const midX = Graphics.boxWidth / 2 - width / 2;
         const rightX = Graphics.boxWidth - width;
         const topY = this.mainAreaTop();
         const midY = this.mainAreaHeight() / 2 - height / 2;
