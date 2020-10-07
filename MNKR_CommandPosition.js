@@ -1,6 +1,6 @@
 ﻿/*
  * --------------------------------------------------
- * MNKR_CommandPosition Ver.0.0.1
+ * MNKR_CommandPosition Ver.0.0.2
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -78,7 +78,7 @@
     const goldWindowHide = eval(parameters['Gold Window Hide'] || "true");
 
     const _Scene_Menu_prototype_createStatusWindow = Scene_Menu.prototype.createStatusWindow;
-    Scene_Menu.prototype.createStatusWindow = function() {
+    Scene_Menu.prototype.createStatusWindow = function () {
         if (statusWindowHide) {
             _Scene_Menu_prototype_createStatusWindow.call(this);
             this._statusWindow.hide();
@@ -87,7 +87,7 @@
         }
     };
 
-    Scene_Menu.prototype.create = function() {
+    Scene_Menu.prototype.create = function () {
         Scene_MenuBase.prototype.create.call(this);
         this.createCommandWindow();
         if (!goldWindowHide) {
@@ -97,7 +97,7 @@
     };
 
     // const _Scene_Menu_prototype_commandWindowRect = Scene_Menu.prototype.commandWindowRect;
-    Scene_Menu.prototype.commandWindowRect = function() {
+    Scene_Menu.prototype.commandWindowRect = function () {
         const padding = $gameSystem.windowPadding();
         const lineHeight = $gameSystem.mainFontSize() + padding * 2;
         // const lineHeight = 36;
@@ -111,27 +111,27 @@
         switch (commandPosition) {
             case 1:
                 wx = 0;
-                wy = Graphics.boxWidth - wh2;
+                wy = wh2 - wh;
                 break;
             case 2:
                 wx = Graphics.boxWidth / 2 - ww / 2;
-                wy = Graphics.boxWidth - wh2;
+                wy = wh2 - wh;
                 break;
             case 3:
                 wx = Graphics.boxWidth - ww;
-                wy = Graphics.boxWidth - wh2;
+                wy = wh2 - wh;
                 break;
             case 4:
                 wx = 0;
-                wy = Graphics.boxWidth / 2 - wh2 / 2;
+                wy = wh2 / 2 - wh / 2;
                 break;
             case 5:
                 wx = Graphics.boxWidth / 2 - ww / 2;
-                wy = Graphics.boxWidth / 2 - wh2 / 2;
+                wy = wh2 / 2 - wh / 2;
                 break;
             case 6:
                 wx = Graphics.boxWidth - ww;
-                wy = Graphics.boxWidth / 2 - wh2 / 2;
+                wy = wh2 / 2 - wh / 2;
                 break;
             case 7:
                 wx = 0;
