@@ -96,60 +96,37 @@
         this.createStatusWindow();
     };
 
-    // const _Scene_Menu_prototype_commandWindowRect = Scene_Menu.prototype.commandWindowRect;
-    Scene_Menu.prototype.commandWindowRect = function () {
-        const padding = $gameSystem.windowPadding();
-        const lineHeight = $gameSystem.mainFontSize() + padding * 2;
-        // const lineHeight = 36;
-        // const lineHeight = $gameSystem.mainFontSize();
-        const ww = this.mainCommandWidth();
-        const wh = commandRows * lineHeight - padding * 2;
-        const wh2 = this.mainAreaHeight();
-        let wx = 0;
-        let wy = 0;
+    Scene_Menu.prototype.commandWindowRectangles = function (width, height) {
+        const leftX = 0;
+        const midX = Graphics.boxWidth /2 - width / 2;
+        const rightX = Graphics.boxWidth - width;
+        const topY = this.mainAreaTop();
+        const midY = this.mainAreaHeight() / 2 - height / 2;
+        const bottomY = this.mainAreaHeight() - height;
+        return [
+            null,
 
-        switch (commandPosition) {
-            case 1:
-                wx = 0;
-                wy = wh2 - wh;
-                break;
-            case 2:
-                wx = Graphics.boxWidth / 2 - ww / 2;
-                wy = wh2 - wh;
-                break;
-            case 3:
-                wx = Graphics.boxWidth - ww;
-                wy = wh2 - wh;
-                break;
-            case 4:
-                wx = 0;
-                wy = wh2 / 2 - wh / 2;
-                break;
-            case 5:
-                wx = Graphics.boxWidth / 2 - ww / 2;
-                wy = wh2 / 2 - wh / 2;
-                break;
-            case 6:
-                wx = Graphics.boxWidth - ww;
-                wy = wh2 / 2 - wh / 2;
-                break;
-            case 7:
-                wx = 0;
-                wy = this.mainAreaTop();
-                break;
-            case 8:
-                wx = Graphics.boxWidth / 2 - ww / 2;
-                wy = this.mainAreaTop();
-                break;
-            case 9:
-                wx = Graphics.boxWidth - ww;
-                wy = this.mainAreaTop();
-                break;
-            default:
-                wx = this.isRightInputMode() ? Graphics.boxWidth - ww : 0;
-                wy = this.mainAreaTop();
-        }
-        return new Rectangle(wx, wy, ww, wh);
+            new Rectangle(leftX, bottomY, width, height),
+            new Rectangle(midX, bottomY, width, height),
+            new Rectangle(rightX, bottomY, width, height),
+
+            new Rectangle(leftX, midY, width, height),
+            new Rectangle(midX, midY, width, height),
+            new Rectangle(rightX, midY, width, height),
+
+            new Rectangle(leftX, topY, width, height),
+            new Rectangle(midX, topY, width, height),
+            new Rectangle(rightX, topY, width, height)
+        ];
     };
 
+    Scene_Menu.prototype.commandWindowRect = function () {
+        const ww = this.mainCommandWidth();
+        const wh = this.calcWindowHeight(commandRows === 0 ? this.countCommand() : commandRows, true);
+        return this.commandWindowRectangles(ww, wh)[commandPosition];
+    };
+
+    Scene_Menu.prototype.countCommand = function () {
+        return $dataSystem.menuCommands.filter(commandEnabled => commandEnabled).length + 2;
+    };
 })();
