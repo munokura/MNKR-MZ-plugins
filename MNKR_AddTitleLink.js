@@ -1,6 +1,6 @@
 ﻿/*
  * --------------------------------------------------
- * MNKR_AddTitleLink Ver.0.0.2
+ * MNKR_AddTitleLink Ver.0.0.3
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -47,17 +47,17 @@
     Window_TitleCommand.prototype.makeCommandList = function() {
         _Window_TitleCommand_prototype_makeCommandList.call(this);
         if (commandText) {
-            this.addCommand(commandText, "addUrl");
+            this.addCommand(commandText, "MNKR_urlCommandName");
         }
     };
 
     const _Scene_Title_prototype_createCommandWindow = Scene_Title.prototype.createCommandWindow;
     Scene_Title.prototype.createCommandWindow = function() {
         _Scene_Title_prototype_createCommandWindow.call(this);
-        this._commandWindow.setHandler("addUrl", this.commandaddUrl.bind(this));
+        this._commandWindow.setHandler("MNKR_urlCommandName", this.MNKR_urlCommand.bind(this));
     };
 
-    Scene_Title.prototype.commandaddUrl = function() {
+    Scene_Title.prototype.MNKR_urlCommand = function() {
         window.open(url, '_blank');
         this._commandWindow.activate();
     };
