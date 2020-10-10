@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_BalloonCommand Ver.0.0.0
+ * MNKR_BalloonCommand Ver.0.0.1
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -10,13 +10,16 @@
 /*:
  * @target MZ
  * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_BalloonCommand.js
- * @plugindesc (作成中) 変数が使用できないイベントコマンドをプラグインコマンドで使用可能にします。
+ * @plugindesc フキダシアイコンの表示をプラグインコマンドで使用可能にします。
  * @author munokura
  * 
  * @help
- * 変数が使用できないイベントコマンドをプラグインコマンドで変数使用可能にします。
+ * フキダシアイコンの表示をプラグインコマンドで使用可能にします。
  * 
- * 以下を実装しようとしています。
+ * MNKR_VariableCommand に統合します。
+ * 学習の記録として残しておきます。
+ * 
+ * 以下を実装しました。
  *   - フキダシアイコンの表示
  *
  * 
@@ -34,6 +37,7 @@
  * @text イベントID
  * @desc 値が-1でプレイヤー、0で実行しているイベント、1以上はイベントIDになります。
  * @type number
+ * @min -1
  * @default 0
  * 
  * @arg BalloonId
@@ -58,10 +62,19 @@
     "use strict";
     const pluginName = "MNKR_BalloonCommand";
 
-    PluginManager.registerCommand(pluginName, "requestBalloonFF", args => {
-        const EventId = Number(args.EventId);
+    // PluginManager.registerCommand(pluginName, "requestBalloonFF", args => {
+    PluginManager.registerCommand(pluginName, "requestBalloonFF", function (args) {
+        const eventId = Number(args.EventId);
         const balloonId = Number(args.BalloonId);
         const wait = args.wait === "true";
+
+        $gameTemp.requestBalloon(this.character(eventId), balloonId);
+        if (wait) {
+            this.setWaitMode("balloon");
+        }
+
+        // TypeError Game_Interpreter.character is not a function
+        // $gameTemp.requestBalloon(Game_Interpreter.character(eventId), balloonId);
 
         // 無反応
         // Game_Temp.prototype.requestBalloon = function (target, balloonId) {
@@ -74,7 +87,7 @@
 
         // 無反応
         // Game_Interpreter.prototype.command213 = function () {
-        //     this._characterId = EventId;
+        //     this._characterId = eventId;
         //     const character = this.character(this._characterId);
         //     if (character) {
         //         $gameTemp.requestBalloon(character, balloonId);
