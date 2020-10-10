@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_VariableCommand Ver.1.0.0
+ * MNKR_VariableCommand Ver.1.1.0
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -14,13 +14,14 @@
  * @author munokura
  * 
  * @help
- * 変数が使用できないイベントコマンドをプラグインコマンドで変数使用可能にします。
+ * 変数が使用できないイベントコマンドをプラグインコマンドで使用可能にします。
  * 
  * 以下が実装されています。
  *   - メンバーを加える
  *   - メンバーを外す
  *   - 職業を変更する
  *   - 名前入力の処理
+ *   - フキダシアイコンの表示
  *
  * 
  * 利用規約:
@@ -110,6 +111,57 @@
  * @default 8
  * 
  * 
+ * @command requestBalloonFF
+ * @text フキダシアイコンの表示(固定値x固定値)
+ * @desc フキダシアイコンを表示します。イベントコマンドで指定できない16番以降のフキダシ表示に使用します。
+ *
+ * @arg EventId
+ * @text イベントID
+ * @desc 値が-1でプレイヤー、0で実行しているイベント、1以上はイベントIDになります。
+ * @type number
+ * @min -1
+ * @default 0
+ * 
+ * @arg BalloonId
+ * @text フキダシアイコンID
+ * @desc フキダシアイコンIDとして実行します。
+ * @type number
+ * @default 1
+ * 
+ * @arg wait
+ * @text 完了までウェイト
+ * @desc 完了までウェイトします。
+ * @type boolean
+ * @on ウェイトする
+ * @off ウェイトしない
+ * @default false
+ * 
+ * 
+ * @command requestBalloonVV
+ * @text フキダシアイコンの表示(変数値x変数値)
+ * @desc フキダシアイコンを表示します。
+ *
+ * @arg variableIdEvent
+ * @text 変数IDイベント
+ * @desc 変数の値をイベントIDとします。値が-1でプレイヤー、0で実行しているイベント、1以上はイベントID
+ * @type variable
+ * @default 1
+ * 
+ * @arg variableIdBalloon
+ * @text 変数IDフキダシアイコン
+ * @desc 変数の値をフキダシアイコンIDとします。
+ * @type variable
+ * @default 1
+ * 
+ * @arg wait
+ * @text 完了までウェイト
+ * @desc 完了までウェイトします。
+ * @type boolean
+ * @on ウェイトする
+ * @off ウェイトしない
+ * @default false
+ * 
+ * 
  */
 
 (() => {
@@ -154,6 +206,28 @@
         if (actorID && max) {
             SceneManager.push(Scene_Name);
             SceneManager.prepareNextScene(actorID, max);
+        }
+    });
+
+    PluginManager.registerCommand(pluginName, "requestBalloonFF", function (args) {
+        const eventId = Number(args.EventId);
+        const balloonId = Number(args.BalloonId);
+        const wait = args.wait === "true";
+
+        $gameTemp.requestBalloon(this.character(eventId), balloonId);
+        if (wait) {
+            this.setWaitMode("balloon");
+        }
+    });
+
+    PluginManager.registerCommand(pluginName, "requestBalloonVV", function (args) {
+        const eventId = $gameVariables.value(Number(args.variableIdEvent));
+        const balloonId = $gameVariables.value(Number(args.variableIdBalloon));
+        const wait = args.wait === "true";
+
+        $gameTemp.requestBalloon(this.character(eventId), balloonId);
+        if (wait) {
+            this.setWaitMode("balloon");
         }
     });
 
