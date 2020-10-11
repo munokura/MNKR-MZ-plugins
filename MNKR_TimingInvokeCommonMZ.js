@@ -19,9 +19,6 @@
 // author Yana
 //
 
-// var Imported = Imported || {};
-// Imported['TimingInvokeCommon'] = 1.00;
-
 /*:
  * @target MZ
  * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TimingInvokeCommonMZ.js
