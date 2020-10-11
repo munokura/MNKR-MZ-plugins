@@ -21,7 +21,7 @@
 /*:
  * @target MZ
  * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMTurnMoveMZ.js
- * @plugindesc プレイヤーとタイミングを合わせて移動するイベントを作成できます。
+ * @plugindesc プレイヤーの移動に合わせてローグライクな移動をするイベントを作成できます。
  * @author tomoaky (改変 munokura)
  *
  * @command stopTurnMove
