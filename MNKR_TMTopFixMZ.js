@@ -21,7 +21,6 @@
 /*:
  * @target MZ
  * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMTopFixMZ.js
- * @plugindesc 戦闘シーンにそれっぽい霧を表示します。
  * @plugindesc パーティの先頭にいるアクターの並び替えを禁止します。
  * @author tomoaky (改変 munokura)
  *
