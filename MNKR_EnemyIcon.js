@@ -15,7 +15,7 @@
  *
  * @param Default Icon
  * @text デフォルトアイコン
- * @type string
+ * @type number
  * @desc メモタグを入れない場合に表示するアイコン。デフォルト16
  * 0にすると、非表示で左に詰まります。
  * @default 16
@@ -41,8 +41,9 @@
 
 (function() {
     'use strict';
-    const parameters = PluginManager.parameters('MNKR_EnemyIcon');
-    const defaultIcon = parseInt(parameters['Default Icon'] || 16);
+    const pluginName = 'MNKR_EnemyIcon';
+    const parameters = PluginManager.parameters(pluginName);
+    const defaultIcon = Number(parameters['Default Icon'] || 16);
 
     const _Window_BattleEnemy_drawItem = Window_BattleEnemy.prototype.drawItem
     Window_BattleEnemy.prototype.drawItem = function(index) {

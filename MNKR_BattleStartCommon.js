@@ -69,15 +69,16 @@
  *   利用形態（商用、18禁利用等）についても制限はありません。
  */
 
-(function () {
+(function() {
     'use strict';
 
-    const parameters = PluginManager.parameters('MNKR_BattleStartCommon');
+    const pluginName = 'MNKR_BattleStartCommon';
+    const parameters = PluginManager.parameters(pluginName);
     const variableId = Number(parameters['Variable Id'] || 0);
     const valueZero = eval(parameters['Value Zero'] || 0);
 
     const _BattleManager_displayStartMessages = BattleManager.displayStartMessages;
-    BattleManager.displayStartMessages = function () {
+    BattleManager.displayStartMessages = function() {
         if (valueZero && $gameVariables.value(variableId) === 0) {
             _BattleManager_displayStartMessages.call(this);
         } else {

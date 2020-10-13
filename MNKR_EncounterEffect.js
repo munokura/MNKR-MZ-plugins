@@ -57,7 +57,8 @@
 (() => {
     'use strict'
 
-    const parameters = PluginManager.parameters('MNKR_EncounterEffect');
+    const pluginName = 'MNKR_EncounterEffect';
+    const parameters = PluginManager.parameters(pluginName);
     const zoomProcess = eval(parameters['Zoom Process'] || 'false');
     const flashProcess = eval(parameters['Flash Process'] || 'false');
     const fadeOut = eval(parameters['Fade Out'] || 'false');

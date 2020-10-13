@@ -15,7 +15,7 @@
  *
  * @param Gold Icon
  * @text 通貨アイコンID
- * @type string
+ * @type number
  * @desc 通貨の単位に使用するアイコンID
  * @default 313
  *
@@ -32,15 +32,16 @@
  */
 
 (function() {
-	'use strict';
+    'use strict';
 
-    const parameters = PluginManager.parameters('MNKR_GoldIcon');
-	const goldIcon = parseInt(parameters['Gold Icon'] || 313);
+    const pluginName = 'MNKR_GoldIcon';
+    const parameters = PluginManager.parameters(pluginName);
+    const goldIcon = Number(parameters['Gold Icon'] || 313);
 
-	Window_Base.prototype.drawCurrencyValue = function(value, unit, x, y, width) {
-		this.resetTextColor();
-		this.drawText(value, x, y, width - 36 - 6, 'right');
-		this.drawIcon(goldIcon, x + width - 36, y);
-	};
+    Window_Base.prototype.drawCurrencyValue = function(value, unit, x, y, width) {
+        this.resetTextColor();
+        this.drawText(value, x, y, width - 36 - 6, 'right');
+        this.drawIcon(goldIcon, x + width - 36, y);
+    };
 
 })();

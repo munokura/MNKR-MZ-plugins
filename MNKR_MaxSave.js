@@ -18,9 +18,9 @@
  * @type number
  * @min 1
  * @max 99
- * @desc セーブスロットの数
- * ツクールデフォルト:20
- * @default 20
+ * @desc セーブスロットの数。オートセーブのスロット分1を加えてください。
+ * ツクールデフォルト:21
+ * @default 6
  *
  * @help
  * セーブスロットの数を指定できます。
@@ -35,14 +35,15 @@
  *   利用形態（商用、18禁利用等）についても制限はありません。
  */
 
-(function () {
-	'use strict';
+(function() {
+    'use strict';
 
-	const parameters = PluginManager.parameters('MNKR_MaxSave');
-	const maxFiles = Number(parameters['Max Files'] || 20);
+    const pluginName = 'MNKR_MaxSave';
+    const parameters = PluginManager.parameters(pluginName);
+    const maxFiles = Number(parameters['Max Files'] || 20);
 
-	DataManager.maxSavefiles = function () {
-		return maxFiles;
-	};
+    DataManager.maxSavefiles = function() {
+        return maxFiles;
+    };
 
 })();

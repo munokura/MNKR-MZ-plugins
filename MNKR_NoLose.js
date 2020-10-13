@@ -23,6 +23,7 @@
  * @type common_event
  * @text コモンイベントID
  * @desc 全滅時に実行するコモンイベント
+ * 戦闘終了後にマップで実行されます。
  * @default 0
  * 
  * @help
@@ -43,23 +44,24 @@
 (function() {
     'use strict'
 
-    const parameters = PluginManager.parameters('MNKR_NoLose')
-    const switchId = Number(parameters['Switch Id'] || 11)
-    const commonId = Number(parameters['Common Id'] || 0)
+    const pluginName = 'MNKR_NoLose';
+    const parameters = PluginManager.parameters(pluginName);
+    const switchId = Number(parameters['Switch Id'] || 11);
+    const commonId = Number(parameters['Common Id'] || 0);
 
     const _BattleManager_setup = BattleManager.setup
     BattleManager.setup = function(troopId, canEscape, canLose) {
-        _BattleManager_setup.apply(this, arguments)
+        _BattleManager_setup.apply(this, arguments);
         if ($gameSwitches.value(switchId)) {
-            this._canLose = true
+            this._canLose = true;
         }
     }
 
     const _BattleManager_updateBattleEnd = BattleManager.updateBattleEnd
     BattleManager.updateBattleEnd = function() {
-        _BattleManager_updateBattleEnd.call(this)
+        _BattleManager_updateBattleEnd.call(this);
         if ($gameSwitches.value(switchId) && commonId > 0) {
-            $gameTemp.reserveCommonEvent(commonId)
+            $gameTemp.reserveCommonEvent(commonId);
         }
     }
 

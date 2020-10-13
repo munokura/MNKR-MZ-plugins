@@ -39,7 +39,8 @@
 
 (() => {
     'use strict';
-    const parameters = PluginManager.parameters('MNKR_AddTitleLink');
+    const pluginName = 'MNKR_AddTitleLink';
+    const parameters = PluginManager.parameters(pluginName);
     const commandText = String(parameters['Command Text'] || "");
     const url = String(parameters['url'] || "");
 

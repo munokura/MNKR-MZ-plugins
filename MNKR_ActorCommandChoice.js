@@ -63,14 +63,13 @@
     'use strict';
 
     const pluginName = 'MNKR_ActorCommandChoice';
-
     const parameters = PluginManager.parameters(pluginName);
     const addAttack = eval(parameters['Add Attack'] || 'false');
     const addSkill = eval(parameters['Add Skill'] || 'true');
     const addGuard = eval(parameters['Add Guard'] || 'true');
     const addItem = eval(parameters['Add Item'] || 'true');
 
-    Window_ActorCommand.prototype.makeCommandList = function () {
+    Window_ActorCommand.prototype.makeCommandList = function() {
         if (this._actor) {
             if (addAttack) {
                 this.addAttackCommand();

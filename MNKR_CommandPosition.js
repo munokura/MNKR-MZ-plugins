@@ -72,14 +72,15 @@
 
 (() => {
     'use strict';
-    const parameters = PluginManager.parameters('MNKR_CommandPosition');
+    const pluginName = 'MNKR_CommandPosition';
+    const parameters = PluginManager.parameters(pluginName);
     const commandPosition = Number(parameters['Command Position'] || 7);
     const commandRows = Number(parameters['Command Rows'] || 8);
     const statusWindowHide = eval(parameters['Status Window Hide'] || "true");
     const goldWindowHide = eval(parameters['Gold Window Hide'] || "true");
 
     const _Scene_Menu_prototype_createStatusWindow = Scene_Menu.prototype.createStatusWindow;
-    Scene_Menu.prototype.createStatusWindow = function () {
+    Scene_Menu.prototype.createStatusWindow = function() {
         if (statusWindowHide) {
             _Scene_Menu_prototype_createStatusWindow.call(this);
             this._statusWindow.hide();
@@ -88,7 +89,7 @@
         }
     };
 
-    Scene_Menu.prototype.create = function () {
+    Scene_Menu.prototype.create = function() {
         Scene_MenuBase.prototype.create.call(this);
         this.createCommandWindow();
         if (!goldWindowHide) {
@@ -97,7 +98,7 @@
         this.createStatusWindow();
     };
 
-    Scene_Menu.prototype.commandWindowRectangles = function (width, height) {
+    Scene_Menu.prototype.commandWindowRectangles = function(width, height) {
         const leftX = 0;
         const midX = Graphics.boxWidth / 2 - width / 2;
         const rightX = Graphics.boxWidth - width;
@@ -121,13 +122,13 @@
         ];
     };
 
-    Scene_Menu.prototype.commandWindowRect = function () {
+    Scene_Menu.prototype.commandWindowRect = function() {
         const ww = this.mainCommandWidth();
         const wh = this.calcWindowHeight(commandRows === 0 ? this.countCommand() : commandRows, true);
         return this.commandWindowRectangles(ww, wh)[commandPosition];
     };
 
-    Scene_Menu.prototype.countCommand = function () {
+    Scene_Menu.prototype.countCommand = function() {
         return $dataSystem.menuCommands.filter(commandEnabled => commandEnabled).length + 2;
     };
 })();

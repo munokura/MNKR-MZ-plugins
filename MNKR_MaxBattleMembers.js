@@ -37,7 +37,8 @@
 (function() {
     'use strict';
 
-    const parameters = PluginManager.parameters('MNKR_MaxBattleMembers');
+    const pluginName = 'MNKR_MaxBattleMembers';
+    const parameters = PluginManager.parameters(pluginName);
     const maxMembers = Number(parameters['Max Members'] || 4);
 
     Game_Party.prototype.maxBattleMembers = function() {

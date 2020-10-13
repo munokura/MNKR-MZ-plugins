@@ -36,26 +36,27 @@
 (function() {
     'use strict'
 
-    const parameters = PluginManager.parameters('MNKR_BattleStatusMaxCols')
-    const maxCols = Number(parameters['Max Cols'] || 4)
+    const pluginName = 'MNKR_ActorCommandChoice';
+    const parameters = PluginManager.parameters(pluginName);
+    const maxCols = Number(parameters['Max Cols'] || 4);
 
     Window_BattleStatus.prototype.maxCols = function() {
-        return maxCols
+        return maxCols;
     }
 
     Window_BattleStatus.prototype.drawItemStatus = function(index) {
-        const actor = this.actor(index)
-        const rect = this.itemRectWithPadding(index)
-        const nameX = this.nameX(rect)
-        const nameY = this.nameY(rect)
-        const stateIconX = this.stateIconX(rect)
-        const stateIconY = this.stateIconY(rect)
-        const basicGaugesX = this.basicGaugesX(rect)
-        const basicGaugesY = this.basicGaugesY(rect)
-        this.placeTimeGauge(actor, nameX, nameY)
-        this.placeActorName(actor, nameX, nameY)
-        this.placeStateIcon(actor, stateIconX, stateIconY)
-        this.placeBasicGauges(actor, basicGaugesX, basicGaugesY)
+        const actor = this.actor(index);
+        const rect = this.itemRectWithPadding(index);
+        const nameX = this.nameX(rect);
+        const nameY = this.nameY(rect);
+        const stateIconX = this.stateIconX(rect);
+        const stateIconY = this.stateIconY(rect);
+        const basicGaugesX = this.basicGaugesX(rect);
+        const basicGaugesY = this.basicGaugesY(rect);
+        this.placeTimeGauge(actor, nameX, nameY);
+        this.placeActorName(actor, nameX, nameY);
+        this.placeStateIcon(actor, stateIconX, stateIconY);
+        this.placeBasicGauges(actor, basicGaugesX, basicGaugesY);
     }
 
 })()
