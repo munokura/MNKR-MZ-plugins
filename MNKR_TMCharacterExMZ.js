@@ -25,8 +25,9 @@
  * @author tomoaky (改変 munokura)
  *
  * @param landingAnimation
+ * @text ジャンプ後拡大補正
  * @desc ジャンプ後の着地時に拡大補正率を自動的に適用する。
- * 初期値: true (true:有効 / false:無効)
+ * 初期値: true (有効:true / 無効:false)
  * @type boolean
  * @on 有効
  * @off 無効
