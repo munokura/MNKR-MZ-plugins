@@ -158,7 +158,7 @@
  * 整数で『場所移動』で利用する座標になります。
  * @type number
  * @decimals 2
- * @default 0
+ * @default 0.00
  *
  * @arg setY
  * @text Y座標
@@ -166,7 +166,7 @@
  * 整数で『場所移動』で利用する座標になります。
  * @type number
  * @decimals 2
- * @default 0
+ * @default 0.00
  * 
  * @arg dusts
  * @text スプライト数
@@ -187,7 +187,7 @@
  * 数値は右を0として、時計回りに6.28で1周となります。
  * @type number
  * @decimals 2
- * @default 0
+ * @default 0.00
  * 
  * 
  * @command setDustEvent
@@ -221,7 +221,7 @@
  * 数値は右を0として、時計回りに6.28で1周となります。
  * @type number
  * @decimals 2
- * @default 0
+ * @default 0.00
  * 
  * 
  * @command setJumpDusts
@@ -260,16 +260,16 @@
 (() => {
     'use strict';
 
+    function Game_CloudDust() {
+        this.initialize.apply(this, arguments);
+    }
+
     const pluginName = 'MNKR_TMCloudDustMZ';
     const parameters = PluginManager.parameters(pluginName);
     const DustImage = String(parameters['dustImage'] || 'Dust1');
     const MaxDusts = Number(parameters['maxDusts'] || 64);
     const JumpDusts = Number(parameters['jumpDusts'] || 5);
     const DashDusts = Number(parameters['dashDusts'] || 3);
-
-    function Game_CloudDust() {
-        this.initialize.apply(this, arguments);
-    }
 
     //-----------------------------------------------------------------------------
     // Game_System
@@ -379,12 +379,12 @@
     };
 
     Game_CloudDust.prototype.screenX = function() {
-        const tw = $gameMap.tileWidth();
+        let tw = $gameMap.tileWidth();
         return Math.round($gameMap.adjustX(this._x) * tw);
     };
 
     Game_CloudDust.prototype.screenY = function() {
-        const th = $gameMap.tileHeight();
+        let th = $gameMap.tileHeight();
         return Math.round($gameMap.adjustY(this._y) * th);
     };
 
@@ -441,16 +441,17 @@
     const _Game_Player_moveStraight = Game_Player.prototype.moveStraight;
     Game_Player.prototype.moveStraight = function(d) {
         const n = $gameSystem.dashDusts();
+        let radian;
         if (n > 0) {
             if (this.isDashing() && this.canPass(this.x, this.y, d)) {
                 if (d === 2) {
-                    let radian = Math.PI * 1.5;
+                    radian = Math.PI * 1.5;
                 } else if (d === 4) {
-                    let radian = 0;
+                    radian = 0;
                 } else if (d === 6) {
-                    let radian = Math.PI;
+                    radian = Math.PI;
                 } else {
-                    let radian = Math.PI / 2;
+                    radian = Math.PI / 2;
                 }
                 for (let i = 0; i < n; i++) {
                     this.addCloudDust(0.03, radian);
