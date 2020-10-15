@@ -20,7 +20,7 @@
 
 /*:
  * @target MZ
- * @url https://raw.githubusercontent.com/munokura/tomoaky-MV-plugins/master/MNKR_TMByeCommandMZ.js
+ * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMByeCommandMZ.js
  * @author tomoaky (改変 munokura)
  * @plugindesc メニューコマンドに仲間と別れる機能を追加します。
  *
