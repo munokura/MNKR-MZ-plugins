@@ -24,119 +24,15 @@
  * @author tomoaky (改変 munokura)
  * @plugindesc 壁衝突音やリージョンによる通行設定などの機能を追加します。
  * 
- * @param passableRegionId
- * @type number
- * @desc タイルに関係なく通行を可能にするリージョン番号
- * 初期値: 251
- * @default 251
- *
- * @param dontPassRegionId
- * @type number
- * @desc タイルに関係なく通行を不可にするリージョン番号
- * 初期値: 252
- * @default 252
- *
- * @param knockWallSe
- * @desc 壁衝突時に鳴らす効果音のファイル名
- * 初期値: Blow1
- * @default Blow1
- * @require 1
- * @dir audio/se/
- * @type file
- * 
- * @param knockWallSeParam
- * @type string
- * @desc 壁衝突時に鳴らす効果音のパラメータ
- * 初期値: {"volume":90, "pitch":100}
- * @default {"volume":90, "pitch":100}
- * 
- * @param knockWallPan
- * @type number
- * @desc 壁衝突効果音の左右バランス
- * 初期値: 75
- * @default 75
- *
- * @param knockWallInterval
- * @type number
- * @desc 壁衝突効果音の再生間隔（フレーム数）
- * 初期値: 30
- * @default 30
- *
- * @param turnKeyCode
- * @type string
- * @desc その場で向き変更に使うキー
- * 初期値: S
- * @default S
- *
- * @param movableRegion1
- * @type string
- * @desc イベントの移動可能リージョングループ設定１番
- * 設定例: 1,2,3
- * @default 
- *
- * @param movableRegion2
- * @type string
- * @desc イベントの移動可能リージョングループ設定２番
- * 設定例: 1,2,3
- * @default 
- *
- * @param movableRegion3
- * @type string
- * @desc イベントの移動可能リージョングループ設定３番
- * 設定例: 1,2,3
- * @default 
- *
- * @param movableRegion4
- * @type string
- * @desc イベントの移動可能リージョングループ設定４番
- * 設定例: 1,2,3
- * @default 
- *
- * @param movableRegion5
- * @type string
- * @desc イベントの移動可能リージョングループ設定５番
- * 設定例: 1,2,3
- * @default 
- *
- * @param movableRegion6
- * @type string
- * @desc イベントの移動可能リージョングループ設定６番
- * 設定例: 1,2,3
- * @default 
- *
- * @param movableRegion7
- * @type string
- * @desc イベントの移動可能リージョングループ設定７番
- * 設定例: 1,2,3
- * @default 
- *
- * @param movableRegion8
- * @type string
- * @desc イベントの移動可能リージョングループ設定８番
- * 設定例: 1,2,3
- * @default 
- *
- * @param movableRegion9
- * @type string
- * @desc イベントの移動可能リージョングループ設定９番
- * 設定例: 1,2,3
- * @default 
- *
- * @param movableRegion10
- * @type string
- * @desc イベントの移動可能リージョングループ設定１０番
- * 設定例: 1,2,3
- * @default 
- *
  * @help
  * 使い方:
  *
- *   Ｓキーを押しながら方向キーを押すと、移動せずにプレイヤーの向きだけを
- *   変えることができます。マウス（タップ）操作の場合はプレイヤーがいる場所
- *   をクリックすることで、時計回りに９０度回転します。
+ *   Sキーを押しながら方向キーを押すと、移動せずにプレイヤーの向きだけを
+ *   変えることができます。マウス(タップ)操作の場合はプレイヤーがいる場所
+ *   をクリックすることで、時計回りに90度回転します。
  *
  *   その場で移動せずに向きを変更する機能で使用するキーは turnKeyCode の値を
- *   変更することで設定できます。ＸやＺなど標準機能で既に使用しているキーは
+ *   変更することで設定できます。XやZなど標準機能で既に使用しているキーは
  *   設定しないでください。
  *
  *   メモ欄タグを使って、イベントごとに移動可能なリージョンを変更できます。
@@ -144,21 +40,21 @@
  *   利用してください。
  *   たとえば movableRegion1 の値を 1,2,3 にして、イベントのメモ欄に
  *   <movableRegion:1> というタグを書いた場合、そのイベントはリージョンが
- *   １～３番の場所のみ移動できるようになります。
+ *   1～3番の場所のみ移動できるようになります。
  *
  *
- * メモ欄タグ（イベント）:
+ * メモ欄タグ(イベント):
  * 
  *   <movableRegion:1>
- *     移動可能リージョングループを１番に設定する
+ *     移動可能リージョングループを1番に設定する
  *
  *   <stepSwitchOnA:64>
- *     イベントが移動してリージョン６４番を踏むとセルフスイッチＡをオン
- *     Ａ以外のセルフスイッチを使用する場合は stepSwitchOnB のようにして
+ *     イベントが移動してリージョン64番を踏むとセルフスイッチAをオン
+ *     A以外のセルフスイッチを使用する場合は stepSwitchOnB のようにして
  *     ください。
  *
  *   <stepSwitchOffB:65>
- *     イベントが移動してリージョン６５番を踏むとセルフスイッチＢをオフ
+ *     イベントが移動してリージョン65番を踏むとセルフスイッチBをオフ
  * 
  *   上記タグはイベントコマンド『注釈』に書き込むことでも機能します。
  *   メモ欄と注釈の両方にタグがあった場合、注釈の方が優先されます。
@@ -167,7 +63,7 @@
  * プラグインコマンド:
  * 
  *   regionLocate 3 20
- *     ３番のイベントをリージョン２０番が設定されている座標のどこかへ場所移動
+ *     3番のイベントをリージョン20番が設定されている座標のどこかへ場所移動
  *     させます。
  *     イベント番号が 0 ならコマンドを実行したイベント自体、-1 ならプレイヤー
  *     を対象とします。
@@ -177,8 +73,130 @@
  *   MITライセンスです。
  *   https://ja.osdn.net/projects/opensource/wiki/licenses%2FMIT_license
  *   作者に無断で改変、再配布が可能で、
- *   利用形態（商用、18禁利用等）についても制限はありません。
+ *   利用形態(商用、18禁利用等)についても制限はありません。
  * 
+ * 
+ * @param passableRegionId
+ * @text 通行可能リージョン
+ * @desc タイルに関係なく通行を可能にするリージョン番号
+ * 初期値: 251
+ * @default 251
+ * @type number
+ *
+ * @param dontPassRegionId
+ * @text 通行不可リージョン
+ * @desc タイルに関係なく通行を不可にするリージョン番号
+ * 初期値: 252
+ * @default 252
+ * @type number
+ *
+ * @param knockWallSe
+ * @text 壁衝突時SE
+ * @desc 壁衝突時に鳴らす効果音のファイル名
+ * 初期値: Blow1
+ * @default Blow1
+ * @require 1
+ * @dir audio/se/
+ * @type file
+ * 
+ * @param knockWallSeParam
+ * @text 壁衝突時SEパラメータ
+ * @desc 壁衝突時に鳴らす効果音のパラメータ
+ * 初期値: {"volume":90, "pitch":100}
+ * @default {"volume":90, "pitch":100}
+ * @type string
+ * 
+ * @param knockWallPan
+ * @text 壁衝突SE位相
+ * @desc 壁衝突効果音の左右バランス
+ * 初期値: 75
+ * @default 75
+ * @type number
+ *
+ * @param knockWallInterval
+ * @text 壁衝突SE再生間隔
+ * @desc 壁衝突効果音の再生間隔（フレーム数）
+ * 初期値: 30
+ * @default 30
+ * @type number
+ *
+ * @param turnKeyCode
+ * @text 向き変更キー
+ * @desc その場で向き変更に使うキー
+ * 初期値: S
+ * @default S
+ * @type string
+ *
+ * @param movableRegion1
+ * @text 移動可リージョングループ1
+ * @desc イベントの移動可能リージョングループ設定１番
+ * 設定例: 1,2,3
+ * @default 
+ * @type string
+ *
+ * @param movableRegion2
+ * @text 移動可リージョングループ2
+ * @desc イベントの移動可能リージョングループ設定２番
+ * 設定例: 1,2,3
+ * @default 
+ * @type string
+ *
+ * @param movableRegion3
+ * @text 移動可リージョングループ3
+ * @desc イベントの移動可能リージョングループ設定３番
+ * 設定例: 1,2,3
+ * @default 
+ * @type string
+ *
+ * @param movableRegion4
+ * @text 移動可リージョングループ4
+ * @desc イベントの移動可能リージョングループ設定４番
+ * 設定例: 1,2,3
+ * @default 
+ * @type string
+ *
+ * @param movableRegion5
+ * @text 移動可リージョングループ5
+ * @desc イベントの移動可能リージョングループ設定５番
+ * 設定例: 1,2,3
+ * @default 
+ * @type string
+ *
+ * @param movableRegion6
+ * @text 移動可リージョングループ6
+ * @desc イベントの移動可能リージョングループ設定６番
+ * 設定例: 1,2,3
+ * @default 
+ * @type string
+ *
+ * @param movableRegion7
+ * @text 移動可リージョングループ7
+ * @desc イベントの移動可能リージョングループ設定７番
+ * 設定例: 1,2,3
+ * @default 
+ * @type string
+ *
+ * @param movableRegion8
+ * @text 移動可リージョングループ8
+ * @desc イベントの移動可能リージョングループ設定８番
+ * 設定例: 1,2,3
+ * @default 
+ * @type string
+ *
+ * @param movableRegion9
+ * @text 移動可リージョングループ9
+ * @desc イベントの移動可能リージョングループ設定９番
+ * 設定例: 1,2,3
+ * @default 
+ * @type string
+ *
+ * @param movableRegion10
+ * @text 移動可リージョングループ10
+ * @desc イベントの移動可能リージョングループ設定１０番
+ * 設定例: 1,2,3
+ * @default 
+ * @type string
+ *
  * 
  * @command regionLocate
  * @text イベントを移動
@@ -207,19 +225,19 @@ if (!TMPlugin.EventBase) {
         'use strict';
 
         const _Game_Event_setupPage = Game_Event.prototype.setupPage;
-        Game_Event.prototype.setupPage = function() {
+        Game_Event.prototype.setupPage = function () {
             _Game_Event_setupPage.call(this);
             if (this._pageIndex >= 0) this.loadCommentParams();
         };
 
-        Game_Event.prototype.loadCommentParams = function() {
+        Game_Event.prototype.loadCommentParams = function () {
             this._commentParams = {};
             const re = /<([^<>:]+)(:?)([^>]*)>/g;
             const list = this.list();
             for (let i = 0; i < list.length; i++) {
                 const command = list[i];
                 if (command && command.code == 108 || command.code == 408) {
-                    for (;;) {
+                    for (; ;) {
                         const match = re.exec(command.parameters[0]);
                         if (match) {
                             this._commentParams[match[1]] = match[2] === ':' ? match[3] : true;
@@ -233,7 +251,7 @@ if (!TMPlugin.EventBase) {
             }
         };
 
-        Game_Event.prototype.loadTagParam = function(paramName) {
+        Game_Event.prototype.loadTagParam = function (paramName) {
             return this._commentParams[paramName] || this.event().meta[paramName];
         };
 
@@ -243,7 +261,7 @@ if (!TMPlugin.EventBase) {
 (() => {
     'use strict';
 
-    const pluginName = 'MNKR_TMMoveExMZ';
+    const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
     const parameters = PluginManager.parameters(pluginName);
     const passableRegionId = Number(parameters['passableRegionId'] || 251);
     const dontPassRegionId = Number(parameters['dontPassRegionId'] || 252);
@@ -267,14 +285,14 @@ if (!TMPlugin.EventBase) {
     //
 
     const _Game_Map_checkPassage = Game_Map.prototype.checkPassage;
-    Game_Map.prototype.checkPassage = function(x, y, bit) {
+    Game_Map.prototype.checkPassage = function (x, y, bit) {
         const regionId = this.regionId(x, y);
         if (regionId === passableRegionId) return true;
         if (regionId === dontPassRegionId) return false;
         return _Game_Map_checkPassage.call(this, x, y, bit);
     };
 
-    Game_Map.prototype.regionPoints = function(regionId) {
+    Game_Map.prototype.regionPoints = function (regionId) {
         const result = [];
         for (let x = 0; x < this.width(); x++) {
             for (let y = 0; y < this.height(); y++) {
@@ -286,7 +304,7 @@ if (!TMPlugin.EventBase) {
         return result;
     };
 
-    Game_Map.prototype.regionPointRandom = function(regionId) {
+    Game_Map.prototype.regionPointRandom = function (regionId) {
         const regionPoints = this.regionPoints(regionId);
         if (regionPoints.length === 0) return null;
         return regionPoints[Math.randomInt(regionPoints.length)];
@@ -297,7 +315,7 @@ if (!TMPlugin.EventBase) {
     //
 
     const _Game_Player_moveStraight = Game_Player.prototype.moveStraight;
-    Game_Player.prototype.moveStraight = function(d) {
+    Game_Player.prototype.moveStraight = function (d) {
         _Game_Player_moveStraight.call(this, d);
         if (!this.isMovementSucceeded()) {
             const x2 = $gameMap.roundXWithDirection(this.x, d);
@@ -325,7 +343,7 @@ if (!TMPlugin.EventBase) {
     };
 
     const _Game_Player_moveByInput = Game_Player.prototype.moveByInput;
-    Game_Player.prototype.moveByInput = function() {
+    Game_Player.prototype.moveByInput = function () {
         if (!this.isMoving() && this.canMove()) {
             const direction = this.getInputDirection();
             if (Input.isPressed('turn') && direction > 0) {
@@ -349,7 +367,7 @@ if (!TMPlugin.EventBase) {
     //
 
     const _Game_Event_isMapPassable = Game_Event.prototype.isMapPassable;
-    Game_Event.prototype.isMapPassable = function(x, y, d) {
+    Game_Event.prototype.isMapPassable = function (x, y, d) {
         const movableRegion = this.loadTagParam('movableRegion');
         if (movableRegion) {
             const x2 = $gameMap.roundXWithDirection(x, d);
@@ -362,9 +380,9 @@ if (!TMPlugin.EventBase) {
     };
 
     const _Game_Event_moveStraight = Game_Event.prototype.moveStraight;
-    Game_Event.prototype.moveStraight = function(d) {
+    Game_Event.prototype.moveStraight = function (d) {
         _Game_Event_moveStraight.call(this, d);
-        ['A', 'B', 'C', 'D'].forEach(function(code) {
+        ['A', 'B', 'C', 'D'].forEach(function (code) {
             let regionId = this.loadTagParam('stepSwitchOn' + code);
             const key = [$gameMap.mapId(), this.eventId(), code];
             if (regionId && this.regionId() === +regionId) {
@@ -382,7 +400,7 @@ if (!TMPlugin.EventBase) {
     // PluginManager
     //
 
-    PluginManager.registerCommand(pluginName, "regionLocate", function(args) {
+    PluginManager.registerCommand(pluginName, "regionLocate", function (args) {
         const character = this.character(Number(args.EventId));
         if (character) {
             const point = $gameMap.regionPointRandom(Number(args.RegionId));
