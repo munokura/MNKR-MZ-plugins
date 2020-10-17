@@ -206,9 +206,6 @@ if (!TMPlugin.EventBase) {
 
     const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
     const parameters = PluginManager.parameters(pluginName);
-    // const passableRegionId = Number(parameters['passableRegionId'] || 251);
-    // const dontPassRegionId = Number(parameters['dontPassRegionId'] || 252);
-    // const knockWallSe = JSON.parse(parameters['knockWallSeParam'] || '{}');
     const movableRegionType = [];
     for (let i = 1; i <= 10; i++) {
         movableRegionType[i] = parameters['movableRegion' + i].split(',');
@@ -217,14 +214,6 @@ if (!TMPlugin.EventBase) {
     //-----------------------------------------------------------------------------
     // Game_Map
     //
-
-    // const _Game_Map_checkPassage = Game_Map.prototype.checkPassage;
-    // Game_Map.prototype.checkPassage = function (x, y, bit) {
-    //     const regionId = this.regionId(x, y);
-    //     if (regionId === passableRegionId) return true;
-    //     if (regionId === dontPassRegionId) return false;
-    //     return _Game_Map_checkPassage.call(this, x, y, bit);
-    // };
 
     Game_Map.prototype.regionPoints = function (regionId) {
         const result = [];
