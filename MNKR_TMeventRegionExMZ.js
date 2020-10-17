@@ -22,7 +22,7 @@
  * @target MZ
  * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMeventRegionExMZ.js
  * @author tomoaky (改変 munokura)
- * @plugindesc リージョンでイベント通行可/不可の指定、イベント通行時にスイッチ制御ができます。
+ * @plugindesc リージョンでイベント通行可/不可の指定、イベント通行時にセルフスイッチ制御ができます。
  * 
  * @help
  * 使い方:
