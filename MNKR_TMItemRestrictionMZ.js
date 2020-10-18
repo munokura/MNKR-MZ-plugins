@@ -1,6 +1,6 @@
 ﻿/*
  * --------------------------------------------------
- * MNKR_TMItemRestrictionMZ Ver.1.0.0
+ * MNKR_TMItemRestrictionMZ Ver.1.0.2
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -9,7 +9,7 @@
 
 //=============================================================================
 // TMPlugin - アイテム制約拡張
-// バージョン: 1.0.1
+// バージョン: 1.0.2
 // 最終更新日: 2017/02/14
 // 配布元    : http://hikimoki.sakura.ne.jp/
 //-----------------------------------------------------------------------------
@@ -165,7 +165,7 @@
     const _Scene_Battle_onActorOk = Scene_Battle.prototype.onActorOk;
     Scene_Battle.prototype.onActorOk = function() {
         const action = BattleManager.inputtingAction();
-        const actor = this._actorWindow.actor();
+        const actor = this._actorWindow.actor(this._actorWindow.index());
         if (action.isAlreadyUsed(actor) || !action.isTargetActorValid(actor)) {
             SoundManager.playBuzzer();
             this._actorWindow.activate();
