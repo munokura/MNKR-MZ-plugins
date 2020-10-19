@@ -167,7 +167,8 @@
 (() => {
 
     "use strict";
-    const pluginName = "MNKR_VariableCommand";
+
+    const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
 
     PluginManager.registerCommand(pluginName, "addActor", args => {
         const actorID = $gameVariables.value(Number(args.variableIdActor));
