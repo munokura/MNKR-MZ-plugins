@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_PointScrollMZ Ver.1.0.0
+ * MNKR_PointScrollMZ Ver.1.0.1
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -116,7 +116,8 @@
     });
 
     PluginManager.registerCommand(pluginName, "EventScroll", args => {
-        const pos = args.event;
+        const pos = [args.event];
+        console.log(pos);
         const duration = Number(args.duration);
         $gameMap.setPointScroll(pos, duration);
     });
