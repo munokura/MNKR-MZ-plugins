@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_CommonPopupCoreMZ Ver.0.0.1
+ * MNKR_CommonPopupCoreMZ Ver.0.0.2
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -141,7 +141,7 @@ function CommonPopupManager() {
     var commonPopupTextBackFileName = String(parameters['Text Back FileName'] || 'popup_back%d');
 
     var _cPU_GInterpreter_pluginCommand = Game_Interpreter.prototype.pluginCommand;
-    Game_Interpreter.prototype.pluginCommand = function(command, args) {
+    Game_Interpreter.prototype.pluginCommand = function (command, args) {
         _cPU_GInterpreter_pluginCommand.call(this, command, args);
         if (command === 'CommonPopup' || command === 'ポップアップ') {
             switch (args[0]) {
@@ -157,7 +157,7 @@ function CommonPopupManager() {
         }
     };
 
-    Array.prototype.setNullPos = function(object) {
+    Array.prototype.setNullPos = function (object) {
         for (var i = 0; i < this.length; i++) {
             if (this[i] === null || this[i] === undefined) {
                 this[i] = object;
@@ -167,7 +167,7 @@ function CommonPopupManager() {
         this.push(object);
     };
 
-    Array.prototype.compact = function() {
+    Array.prototype.compact = function () {
         var result = [];
         for (var i = 0; i < this.length; i++) {
             if (this[i] !== null && this[i] !== undefined) {
@@ -177,19 +177,19 @@ function CommonPopupManager() {
         return result;
     };
 
-    CommonPopupManager.initTempSprites = function() {
+    CommonPopupManager.initTempSprites = function () {
         this._tempCommonSprites = new Array(50);
         this._setedPopups = [];
         this._readyPopup = [];
     };
 
-    CommonPopupManager.window = function() {
+    CommonPopupManager.window = function () {
         if (this._window) { return this._window }
         this._window = new Window_Base(0, 0, Graphics.boxWidth, Graphics.boxHeight);
         return this._window;
     };
 
-    CommonPopupManager.testBitmap = function() {
+    CommonPopupManager.testBitmap = function () {
         if (this._testBitmap) { return this._testBitmap }
         this._testBitmap = new Bitmap(1, 1);
         return this._testBitmap;
@@ -198,7 +198,7 @@ function CommonPopupManager() {
     Sprite_Popup.prototype = Object.create(Sprite.prototype);
     Sprite_Popup.prototype.varructor = Sprite_Popup;
 
-    Sprite_Popup.prototype.initialize = function(index) {
+    Sprite_Popup.prototype.initialize = function (index) {
         Sprite.prototype.initialize.call(this);
         this._index = index;
         this._count = 0;
@@ -206,7 +206,7 @@ function CommonPopupManager() {
         this.update();
     };
 
-    Sprite_Popup.prototype.setMembers = function(arg) {
+    Sprite_Popup.prototype.setMembers = function (arg) {
         this._count = arg.count;
         this._arg = arg;
         this.anchor.x = arg.anchorX;
@@ -222,16 +222,17 @@ function CommonPopupManager() {
         }
     };
 
-    Sprite_Popup.prototype.createBitmap = function() {
+    Sprite_Popup.prototype.createBitmap = function () {
         if (this._arg.bitmap) {
             this.bitmap = this._arg.bitmap;
         } else {
             CommonPopupManager.window().resetFontSettings();
             var text = this._arg.text;
-            var width = CommonPopupManager.window().textWidth(text);
-            //height がシステム2＞フォントサイズを取得してしまっているらしい。 Window_Base.prototype.calcTextHeight を使うべき？使い方がわからない…
-            var height = CommonPopupManager.window().contents.fontSize + 8;
-            console.log(height); //削除予定
+            // var width = CommonPopupManager.window().textWidth(text);
+            var width = CommonPopupManager.window().textSizeEx(text).width;
+            // var height = CommonPopupManager.window().contents.fontSize + 8;
+            var height = CommonPopupManager.window().textSizeEx(text).height;
+            console.log(height);
             var sh = 8;
             if (this._arg.back === 0) { sh = 2 }
             CommonPopupManager.window().createContents();
@@ -242,7 +243,7 @@ function CommonPopupManager() {
         }
     };
 
-    Sprite_Popup.prototype.drawBackRect = function(width, height) {
+    Sprite_Popup.prototype.drawBackRect = function (width, height) {
         switch (this._arg.back) {
             case 0:
                 var color1 = commonPopupTextBackColor;
@@ -271,7 +272,7 @@ function CommonPopupManager() {
         }
     };
 
-    Sprite_Popup.prototype.update = function() {
+    Sprite_Popup.prototype.update = function () {
         Sprite.prototype.update.call(this);
         if (CommonPopupManager._tempCommonSprites[this._index] && !this._enable) {
             if (CommonPopupManager._tempCommonSprites[this._index].delay === 0) {
@@ -311,7 +312,7 @@ function CommonPopupManager() {
         if (this._arg && this._arg.slideCount) this.updateMoveSlide();
     };
 
-    Sprite_Popup.prototype.updateMoveSlide = function() {
+    Sprite_Popup.prototype.updateMoveSlide = function () {
         if (CommonPopupManager._setedPopups) {
             var array = CommonPopupManager._setedPopups.clone().reverse();
             var n = 0;
@@ -340,7 +341,7 @@ function CommonPopupManager() {
         }
     };
 
-    Sprite_Popup.prototype.updateSlide = function() {
+    Sprite_Popup.prototype.updateSlide = function () {
         var originalWait = this._arg.count;
         var cnt = originalWait - this._count;
         this.opacity = 255;
@@ -382,7 +383,7 @@ function CommonPopupManager() {
         this.setPosition(moveX, moveY);
     };
 
-    Sprite_Popup.prototype.updateTurn = function() {
+    Sprite_Popup.prototype.updateTurn = function () {
         var originalWait = this._arg.count;
         var cnt = originalWait - this._count;
         var act = [originalWait * 0.25, originalWait * 0.75];
@@ -421,7 +422,7 @@ function CommonPopupManager() {
         this.setPosition(moveX, moveY);
     };
 
-    Sprite_Popup.prototype.updateGrowUp = function() {
+    Sprite_Popup.prototype.updateGrowUp = function () {
         var originalWait = this._arg.count;
         var cnt = originalWait - this._count;
         var act = [originalWait * 0.25, originalWait * 0.75];
@@ -462,7 +463,7 @@ function CommonPopupManager() {
         this.setPosition(moveX, moveY);
     };
 
-    Sprite_Popup.prototype.setPosition = function(x, y) {
+    Sprite_Popup.prototype.setPosition = function (x, y) {
         this.x = this._arg.x + x + this._arg.sx;
         this.y = this._arg.y + y + this._arg.sy;
         if (this._arg.battler) {
@@ -492,7 +493,7 @@ function CommonPopupManager() {
         this.y = yy;
     };
 
-    Sprite_Popup.prototype.updateAnime = function() {
+    Sprite_Popup.prototype.updateAnime = function () {
         var anime = $dataAnimations[Number(this._arg.pattern)];
         var frameId = Math.floor((anime.frames.length * (this._arg.count - this._count)) / this._arg.count);
         if (frameId !== anime.frames.length) {
@@ -508,7 +509,7 @@ function CommonPopupManager() {
         }
     };
 
-    Sprite_Popup.prototype.terminate = function() {
+    Sprite_Popup.prototype.terminate = function () {
         this.bitmap = null;
         this.visible = false;
         this._enable = false;
@@ -528,7 +529,7 @@ function CommonPopupManager() {
         }
     };
 
-    Game_Interpreter.prototype.addPopup = function(argParam) {
+    Game_Interpreter.prototype.addPopup = function (argParam) {
         var eventId = 0;
         for (var i = 0; i < argParam.length; i++) {
             if (argParam[i].match(/^eventId:(.+)/g)) {
@@ -546,7 +547,7 @@ function CommonPopupManager() {
         }
     };
 
-    CommonPopupManager.setPopup = function(argParam, character) {
+    CommonPopupManager.setPopup = function (argParam, character) {
         var arg = {
             x: null,
             y: null,
@@ -620,7 +621,7 @@ function CommonPopupManager() {
         return arg;
     };
 
-    CommonPopupManager.setPopUpdate = function() {
+    CommonPopupManager.setPopUpdate = function () {
         if (this._readyPopup) {
             for (var i = 0; i < this._readyPopup.length; i++) {
                 if (this._readyPopup[i]) {
@@ -638,7 +639,7 @@ function CommonPopupManager() {
         }
     };
 
-    CommonPopupManager.makeBitmap = function(arg) {
+    CommonPopupManager.makeBitmap = function (arg) {
         if (typeof arg.back === 'number') {
             var fileName = commonPopupTextBackFileName;
             fileName = fileName.replace(/%d/g, arg.back);
@@ -649,18 +650,18 @@ function CommonPopupManager() {
         }
     };
 
-    CommonPopupManager.bltCheck = function(bitmap) {
+    CommonPopupManager.bltCheck = function (bitmap) {
         this.testBitmap().blt(bitmap, 0, 0, bitmap.width, bitmap.height, 0, 0);
         //this.testBitmap().clear();
         //bitmap.clear();
         bitmap = null;
     };
 
-    CommonPopupManager.startPopup = function(arg) {
+    CommonPopupManager.startPopup = function (arg) {
         CommonPopupManager._tempCommonSprites.setNullPos(arg);
     };
 
-    CommonPopupManager.clearPopup = function(tag) {
+    CommonPopupManager.clearPopup = function (tag) {
         if (!CommonPopupManager._tempCommonSprites) {
             CommonPopupManager.initTempSprites();
         }
@@ -678,13 +679,13 @@ function CommonPopupManager() {
     };
 
     var _cPU_SsBase_initialize = Spriteset_Base.prototype.initialize;
-    Spriteset_Base.prototype.initialize = function() {
+    Spriteset_Base.prototype.initialize = function () {
         _cPU_SsBase_initialize.call(this);
         this.createSpritePopup();
     };
 
     var _cPU_SsBase_update = Spriteset_Base.prototype.update;
-    Spriteset_Base.prototype.update = function() {
+    Spriteset_Base.prototype.update = function () {
         _cPU_SsBase_update.call(this);
         if (this._popupContainer === undefined) { return }
         if (CommonPopupManager._tempCommonSprites) {
@@ -705,12 +706,12 @@ function CommonPopupManager() {
     };
 
     var _cPU_SBase_update = Scene_Base.prototype.update;
-    Scene_Base.prototype.update = function() {
+    Scene_Base.prototype.update = function () {
         _cPU_SBase_update.call(this);
         if (CommonPopupManager) { CommonPopupManager.setPopUpdate() };
     };
 
-    Spriteset_Base.prototype.createSpritePopup = function() {
+    Spriteset_Base.prototype.createSpritePopup = function () {
         var width = Graphics.boxWidth;
         var height = Graphics.boxHeight;
         var x = (Graphics.width - width) / 2;
@@ -721,12 +722,12 @@ function CommonPopupManager() {
     };
 
     var _cPU_SBase_terminate = Scene_Base.prototype.terminate;
-    Scene_Base.prototype.terminate = function() {
+    Scene_Base.prototype.terminate = function () {
         _cPU_SBase_terminate.call(this);
         this.terminatePopup();
     };
 
-    Scene_Base.prototype.terminatePopup = function() {
+    Scene_Base.prototype.terminatePopup = function () {
         if (!CommonPopupManager._tempCommonSprites) {
             CommonPopupManager.initTempSprites();
         }
@@ -742,7 +743,7 @@ function CommonPopupManager() {
     };
 
     var _cPU_SMap_launchBattle = Scene_Map.prototype.launchBattle;
-    Scene_Map.prototype.launchBattle = function() {
+    Scene_Map.prototype.launchBattle = function () {
         _cPU_SMap_launchBattle.call(this);
         this.terminatePopup();
     };
@@ -750,7 +751,7 @@ function CommonPopupManager() {
 
     //ここから MV Joint
 
-    PluginManager.registerCommand(pluginName, "callCommand", function(arg) {
+    PluginManager.registerCommand(pluginName, "callCommand", function (arg) {
         this.command356([arg.commandArg]);
     });
 
@@ -767,7 +768,7 @@ function CommonPopupManager() {
     };
 
     var Window_Base_initialize = Window_Base.prototype.initialize;
-    Window_Base.prototype.initialize = function(x, y, w, h) {
+    Window_Base.prototype.initialize = function (x, y, w, h) {
         var rect = rectlize(x, y, w, h);
         Window_Base_initialize.call(this, rect);
     };
@@ -776,23 +777,25 @@ function CommonPopupManager() {
 
 
     // 再定義　文字サイズに合わせてアイコンのサイズを調整する
-    Window_Base.prototype.drawIcon = function(iconIndex, x, y) {
+    Window_Base.prototype.drawIcon = function (iconIndex, x, y) {
         var bitmap = ImageManager.loadSystem("IconSet");
         var pw = ImageManager.iconWidth;
         var ph = ImageManager.iconHeight;
         var sx = (iconIndex % 16) * pw;
         var sy = Math.floor(iconIndex / 16) * ph;
         // var n = Math.floor((this.contents.fontSize / this.standardFontSize()) * Window_Base._iconWidth); //移植で下記に変更
-        var n = Math.floor((this.contents.fontSize / $gameSystem.mainFontSize()) * Window_Base._iconWidth);
-        var nn = (32 - n) / 2;
+        var n = Math.floor((this.contents.fontSize / $gameSystem.mainFontSize()) * ImageManager.iconWidth);
+        // var nn = (32 - n) / 2;   //不要な処理？
         this.contents.blt(bitmap, sx, sy, pw, ph, x, y, n, n);
     };
 
     // 再定義 processDrawIconをストレッチされた文字サイズに合わせたズレに調整する
-    Window_Base.prototype.processDrawIcon = function(iconIndex, textState) {
-        this.drawIcon(iconIndex, textState.x + 2, textState.y + 2);
+    Window_Base.prototype.processDrawIcon = function (iconIndex, textState) {
+        if (textState.drawing) {
+            this.drawIcon(iconIndex, textState.x + 2, textState.y + 2);
+        }
         // var n = Math.floor((this.contents.fontSize / this.standardFontSize()) * Window_Base._iconWidth); //移植で下記に変更
-        var n = Math.floor((this.contents.fontSize / $gameSystem.mainFontSize()) * Window_Base._iconWidth);
+        var n = Math.floor(this.contents.fontSize / $gameSystem.mainFontSize() * ImageManager.iconWidth);
         textState.x += n + 4;
     };
 
@@ -809,7 +812,7 @@ function CommonPopupManager() {
     //         _cPU_Window_Base_processEscapeCharacter.call(this, code, textState);
     //     }
     // };
-    // // }
+    // }
 
     // Window_Base.prototype.makeFontSize = function(fontSize) {
     //     this.contents.fontSize = fontSize;
