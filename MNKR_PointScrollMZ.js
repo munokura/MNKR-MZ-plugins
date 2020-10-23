@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_PointScrollMZ Ver.1.0.2
+ * MNKR_PointScrollMZ Ver.1.0.3
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -140,8 +140,8 @@
         this._targetScrollPointY = y;
         this._pointScrollDuration = duration;
         this._maxPointScrollDuration = duration;
-        const ox = this._displayX + this.screenTileX() / 2 - 0.5;
-        const oy = this._displayY + this.screenTileY() / 2 - 0.5;
+        let ox = this._displayX + this.screenTileX() / 2 - 0.5;
+        let oy = this._displayY + this.screenTileY() / 2 - 0.5;
         if (ox > this.width()) ox = ox - this.width();
         if (oy > this.height()) oy = oy - this.height();
         this._pointScrollOriginX = ox;
