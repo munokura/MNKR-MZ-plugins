@@ -211,8 +211,7 @@
     const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
     const parameters = PluginManager.parameters(pluginName);
     const number = Number(parameters['Number'] || 0);
-    const variableId = Number(parameters['Variable Id'] || 0);
     const String = String(parameters['String'] || "");
-    const boolean = eval(parameters['boolean'] || 0);
+    const boolean = String(parameters['boolean'] || false) === 'true';
 
 })();
