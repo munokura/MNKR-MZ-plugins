@@ -1,6 +1,6 @@
 ﻿/*
  * --------------------------------------------------
- * MNKR_TMBattlerExMZ Ver.0.0.1
+ * MNKR_TMBattlerExMZ Ver.1.0.0
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -110,14 +110,10 @@
   const BaseY = Number(parameters['baseY'] || 400);
   const BreathH = Number(parameters['breathH'] || 5);
   const MirrorRate = Number(parameters['mirrorRate'] || 40);
-  const BreathStop = (parameters['breathStop'] === "true" || "true");
-  const ShakeEffect = (parameters['shakeEffect'] === "true" || "true");
+  const BreathStop = String(parameters['breathStop'] || false) === 'true';
+  const ShakeEffect = String(parameters['shakeEffect'] || false) === 'true';
 
-  let pixiSet = false;
-  if (!pixiSet) {
-    PIXI.settings.ROUND_PIXELS = true;
-    pixiSet = true;
-  };
+  PIXI.settings.ROUND_PIXELS = true;
 
   //-----------------------------------------------------------------------------
   // Sprite_Enemy
