@@ -41,7 +41,6 @@
  * @param mirrorRate
  * @text 左右反転の確率
  * @type number
- * @decimals 2
  * @min 0
  * @max 100
  * @desc 左右反転の確率。
