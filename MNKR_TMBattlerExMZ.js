@@ -1,6 +1,6 @@
 ﻿/*
  * --------------------------------------------------
- * MNKR_TMBattlerExMZ Ver.1.0.0
+ * MNKR_TMBattlerExMZ Ver.1.0.1
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -109,10 +109,10 @@
   const BaseY = Number(parameters['baseY'] || 400);
   const BreathH = Number(parameters['breathH'] || 5);
   const MirrorRate = Number(parameters['mirrorRate'] || 40);
-  const BreathStop = String(parameters['breathStop'] || false) === 'true';
-  const ShakeEffect = String(parameters['shakeEffect'] || false) === 'true';
+  const BreathStop = String(parameters['breathStop']) === 'true';
+  const ShakeEffect = String(parameters['shakeEffect']) === 'true';
 
-  PIXI.settings.ROUND_PIXELS = true;
+  // PIXI.settings.ROUND_PIXELS = true;
 
   //-----------------------------------------------------------------------------
   // Sprite_Enemy
@@ -121,6 +121,7 @@
   const _Sprite_Enemy_initialize = Sprite_Enemy.prototype.initialize;
   Sprite_Enemy.prototype.initialize = function (battler) {
     _Sprite_Enemy_initialize.call(this, battler);
+    this._stateIconSprite.texture.baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST;
     let r = +(battler.enemy().meta.scale || this.y / (BaseY * 2) + 0.5);
     this._baseScale = new Point(r, r);
     if (!$gameSystem.isSideView() && Math.random() < (MirrorRate / 100) &&
