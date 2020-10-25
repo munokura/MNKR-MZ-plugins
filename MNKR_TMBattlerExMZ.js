@@ -1,6 +1,6 @@
 ﻿/*
  * --------------------------------------------------
- * MNKR_TMBattlerExMZ Ver.1.0.1
+ * MNKR_TMBattlerExMZ Ver.1.0.2
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -112,8 +112,6 @@
   const BreathStop = String(parameters['breathStop']) === 'true';
   const ShakeEffect = String(parameters['shakeEffect']) === 'true';
 
-  // PIXI.settings.ROUND_PIXELS = true;
-
   //-----------------------------------------------------------------------------
   // Sprite_Enemy
   //
@@ -121,7 +119,6 @@
   const _Sprite_Enemy_initialize = Sprite_Enemy.prototype.initialize;
   Sprite_Enemy.prototype.initialize = function (battler) {
     _Sprite_Enemy_initialize.call(this, battler);
-    this._stateIconSprite.texture.baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST;
     let r = +(battler.enemy().meta.scale || this.y / (BaseY * 2) + 0.5);
     this._baseScale = new Point(r, r);
     if (!$gameSystem.isSideView() && Math.random() < (MirrorRate / 100) &&
@@ -161,6 +158,12 @@
     } else {
       _Sprite_Enemy_updateBlink.call(this);
     }
+  };
+
+  const _Sprite_StateIcon_prototype_loadBitmap = Sprite_StateIcon.prototype.loadBitmap;
+  Sprite_StateIcon.prototype.loadBitmap = function () {
+    _Sprite_StateIcon_prototype_loadBitmap.call(this);
+    this.bitmap.smooth = false;
   };
 
 })();
