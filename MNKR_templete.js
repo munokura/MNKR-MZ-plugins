@@ -207,11 +207,11 @@
 
 (() => {
 
-    "use strict";
-    const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
-    const parameters = PluginManager.parameters(pluginName);
-    const number = Number(parameters['Number'] || 0);
-    const String = String(parameters['String'] || "");
-    const boolean = String(parameters['boolean'] || false) === 'true';
+  "use strict";
+  const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
+  const parameters = PluginManager.parameters(pluginName);
+  const number = Number(parameters['Number'] || 0);
+  const String = String(parameters['String'] || "");
+  const boolean = String(parameters['boolean']) === 'true';
 
 })();
