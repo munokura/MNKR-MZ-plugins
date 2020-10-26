@@ -10,7 +10,7 @@
 /*:
  * @target MZ
  * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_HideLevel.js
- * @plugindesc 
+ * @plugindesc レベルに関連する項目（レベル・経験値）を非表示にします。
  * @author munokura
  *
  * @help
@@ -23,7 +23,7 @@
  *   https://ja.osdn.net/projects/opensource/wiki/licenses%2FMIT_license
  *   作者に無断で改変、再配布が可能で、
  *   利用形態（商用、18禁利用等）についても制限はありません。
-*/
+ */
 
 (() => {
 
