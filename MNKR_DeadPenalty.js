@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_DeadPenalty Ver.1.0.0
+ * MNKR_DeadPenalty Ver.1.0.1
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -38,7 +38,7 @@
   Game_Battler.prototype.gainSilentTp = function (value) {
     if (this.isAlive()) {
       _Game_Battler_gainSilentTp.apply(this, arguments);
-    } else { }
+    }
   };
 
 })();
