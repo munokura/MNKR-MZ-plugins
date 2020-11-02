@@ -1,6 +1,6 @@
 ﻿/*
  * --------------------------------------------------
- * MNKR_TitleRandomImage Ver.1.0.0
+ * MNKR_TitleRandomImage Ver.1.0.1
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -9,7 +9,7 @@
 
 /*:
  * @target MZ MV
- * @url https://raw.githubusercontent.com/munokura/MNKR-MV-plugins/master/MNKR_TitleRandomImage.js
+ * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TitleRandomImage.js
  * @plugindesc タイトル画像をランダムに変更します。
  * @author munokura
  *
@@ -43,10 +43,6 @@
   const _Scene_Title_initialize = Scene_Title.prototype.initialize;
   Scene_Title.prototype.initialize = function () {
     _Scene_Title_initialize.apply(this, arguments);
-    this.changeTitleRandom();
-  };
-
-  Scene_Title.prototype.changeTitleRandom = function () {
     $dataSystem.title1Name = titleImages[Math.floor(Math.random() * titleImages.length)];
   };
 
