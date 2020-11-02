@@ -1,6 +1,6 @@
 ﻿/*
  * --------------------------------------------------
- * MNKR_TitleRandomImage Ver.0.0.1
+ * MNKR_TitleRandomImage Ver.1.0.0
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -10,11 +10,11 @@
 /*:
  * @target MZ MV
  * @url https://raw.githubusercontent.com/munokura/MNKR-MV-plugins/master/MNKR_TitleRandomImage.js
- * @plugindesc (未完成)タイトル画像をランダムに変更します。
+ * @plugindesc タイトル画像をランダムに変更します。
  * @author munokura
  *
  * @help
- * (未完成)タイトル画像をランダムに変更します。
+ * タイトル画像をランダムに変更します。
  *
  *
  * 利用規約:
@@ -38,10 +38,7 @@
 
   const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
   const parameters = PluginManager.parameters(pluginName);
-  const titleImages = parameters['titleImages'];
-
-  console.log(titleImages);
-  console.log(titleImages.length);
+  const titleImages = JSON.parse(parameters['titleImages']);
 
   const _Scene_Title_initialize = Scene_Title.prototype.initialize;
   Scene_Title.prototype.initialize = function () {
@@ -50,8 +47,7 @@
   };
 
   Scene_Title.prototype.changeTitleRandom = function () {
-    let titleImagesTest = ["Beach", "Bigtree"];
-    $dataSystem.title1Name = titleImagesTest[Math.floor(Math.random() * titleImagesTest.length)];
+    $dataSystem.title1Name = titleImages[Math.floor(Math.random() * titleImages.length)];
   };
 
 })();
