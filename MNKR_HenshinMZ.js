@@ -1,6 +1,6 @@
 ﻿/*
  * --------------------------------------------------
- * MNKR_HenshinMZ Ver.1.0.0
+ * MNKR_HenshinMZ Ver.1.0.1
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -68,7 +68,7 @@
     const actorId2 = Number(args.ActorId2);
     if ($gameParty._actors.contains(actorId1) && !$gameParty._actors.contains(actorId2)) {
       const i = $gameParty._actors.indexOf(actorId1);
-      $gameParty._actors.splice(i, 1, (actorId2));
+      $gameParty._actors.splice(i, 1, actorId2);
       $gamePlayer.refresh();
       $gameMap.requestRefresh();
     }
