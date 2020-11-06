@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_templete Ver.1.0.0
+ * MNKR_templete Ver.1.0.1
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -194,6 +194,34 @@
  * @type common_event
  * @default 0
  * @parent database
+ *
+ * @param input
+ * @text 基本入力
+ * @type select
+ * @option Tab
+ * @value tab
+ * @option Aボタン / Enter / スペース / Z
+ * @value ok
+ * @option Xボタン / Shift
+ * @value shift
+ * @option Control / Alt
+ * @value control
+ * @option Escape / テンキー0 / X / Insert
+ * @value escape
+ * @option RBボタン / Pagedown / W
+ * @value pagedown
+ * @option LBボタン / Pageup / Q
+ * @value pageup
+ * @option 下ボタン / カーソル下 / テンキー2
+ * @value down
+ * @option 左ボタン / カーソル左 / テンキー4
+ * @value left
+ * @option 右ボタン / カーソル右 / テンキー6
+ * @value right
+ * @option 上ボタン / カーソル上 / テンキー8
+ * @value up
+ * @option F9
+ * @value debug
  */
 
 /*~struct~struct1:
