@@ -1,6 +1,6 @@
-﻿/*
+/*
  * --------------------------------------------------
- * MNKR_TMEquipSlotExMZ Ver.1.0.0
+ * MNKR_TMEquipSlotExMZ Ver.1.0.1
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -122,60 +122,62 @@
  * @desc アクターの装備を全て外します。
  * @type actor
  * @default 0
- * 
- * 
  */
 
+var Imported = Imported || {};
+Imported.TMEquipSlotEx = true;
+
+var TMPlugin = TMPlugin || {};
+
 (() => {
+  "use strict";
 
-    "use strict";
-    const pluginName = "MNKR_TMEquipSlotExMZ";
+  const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
 
-    //-----------------------------------------------------------------------------
-    // Game_Actor
-    //
+  //-----------------------------------------------------------------------------
+  // Game_Actor
+  //
 
-    const _Game_Actor_equipSlots = Game_Actor.prototype.equipSlots;
-    Game_Actor.prototype.equipSlots = function() {
-        const equipSlotEx = this.actor().meta.equipSlotEx;
-        if (equipSlotEx) {
-            const slots = equipSlotEx.split(' ').map(Number);
-            if (slots.length >= 2 && this.isDualWield()) slots[1] = 1;
-            return slots;
-        } else {
-            return _Game_Actor_equipSlots.call(this);
-        }
-    };
+  const _Game_Actor_equipSlots = Game_Actor.prototype.equipSlots;
+  Game_Actor.prototype.equipSlots = function () {
+    let equipSlotEx = this.actor().meta.equipSlotEx;
+    if (equipSlotEx) {
+      let slots = equipSlotEx.split(' ').map(Number);
+      if (slots.length >= 2 && this.isDualWield()) slots[1] = 1;
+      return slots;
+    } else {
+      return _Game_Actor_equipSlots.call(this);
+    }
+  };
 
-    //-----------------------------------------------------------------------------
-    // PluginManager
-    //
+  //-----------------------------------------------------------------------------
+  // PluginManager
+  //
 
-    PluginManager.registerCommand(pluginName, "changeEquipSlotEx", args => {
-        const actor = $gameActors.actor(Number(args.actorId));
-        const slotId = Number(args.slotId);
-        const equipId = Number(args.equipId);
-        if (actor) {
-            const item = slotId === 0 || (slotId === 1 && actor.isDualWield()) ?
-                $dataWeapons[equipId] : $dataArmors[equipId];
-            actor.changeEquip(slotId, item);
-        }
-    });
+  PluginManager.registerCommand(pluginName, "changeEquipSlotEx", args => {
+    const arr = [args.actorId, args.slotId, args.equipId];
+    let actor = $gameActors.actor(+arr[0]);
+    if (actor) {
+      let item = +arr[1] === 0 || (+arr[1] === 1 && actor.isDualWield()) ?
+        $dataWeapons[+arr[2]] : $dataArmors[+arr[2]];
+      actor.changeEquip(+arr[1], item);
+    }
+  });
 
-    PluginManager.registerCommand(pluginName, "forceChangeEquipSlotEx", args => {
-        const actor = $gameActors.actor(Number(args.actorId));
-        const slotId = Number(args.slotId);
-        const equipId = Number(args.equipId);
-        if (actor) {
-            const item = slotId === 0 || (slotId === 1 && actor.isDualWield()) ?
-                $dataWeapons[equipId] : $dataArmors[equipId];
-            actor.forceChangeEquip(slotId, item);
-        }
-    });
+  PluginManager.registerCommand(pluginName, "forceChangeEquipSlotEx", args => {
+    const arr = [args.actorId, args.slotId, args.equipId];
+    let actor = $gameActors.actor(+arr[0]);
+    if (actor) {
+      let item = +arr[1] === 0 || (+arr[1] === 1 && actor.isDualWield()) ?
+        $dataWeapons[+arr[2]] : $dataArmors[+arr[2]];
+      actor.forceChangeEquip(+arr[1], item);
+    }
+  });
 
-    PluginManager.registerCommand(pluginName, "clearEquipmentsSlotEx", args => {
-        const actor = $gameActors.actor(Number(args.actorId));
-        if (actor) actor.clearEquipments();
-    });
+  PluginManager.registerCommand(pluginName, "clearEquipmentsSlotEx", args => {
+    const arr = [args.actorId];
+    let actor = $gameActors.actor(+arr[0]);
+    if (actor) actor.clearEquipments();
+  });
 
 })();
