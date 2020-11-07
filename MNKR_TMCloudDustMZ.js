@@ -318,7 +318,7 @@ var TMPlugin = TMPlugin || {};
   // Game_Map
   //
 
-  var _Game_Map_setup = Game_Map.prototype.setup;
+  const _Game_Map_setup = Game_Map.prototype.setup;
   Game_Map.prototype.setup = function (mapId) {
     _Game_Map_setup.call(this, mapId);
     this.setupCloudDusts();
@@ -326,7 +326,7 @@ var TMPlugin = TMPlugin || {};
 
   Game_Map.prototype.setupCloudDusts = function () {
     this._cloudDusts = [];
-    for (var i = 0; i < TMPlugin.CloudDust.MaxDusts; i++) {
+    for (let i = 0; i < TMPlugin.CloudDust.MaxDusts; i++) {
       this._cloudDusts.push(new Game_CloudDust());
     }
   };
@@ -337,7 +337,7 @@ var TMPlugin = TMPlugin || {};
 
   Game_Map.prototype.addCloudDust = function (x, y, speed, radian) {
     if (!$gameSystem.isDustEnabled()) return;
-    for (var i = 0; i < TMPlugin.CloudDust.MaxDusts; i++) {
+    for (let i = 0; i < TMPlugin.CloudDust.MaxDusts; i++) {
       if (!this._cloudDusts[i].exists()) {
         this._cloudDusts[i].setup(x, y, speed, radian);
         break;
@@ -345,7 +345,7 @@ var TMPlugin = TMPlugin || {};
     }
   };
 
-  var _Game_Map_update = Game_Map.prototype.update;
+  const _Game_Map_update = Game_Map.prototype.update;
   Game_Map.prototype.update = function (sceneActive) {
     _Game_Map_update.call(this, sceneActive);
     this.updateCloudDusts();
@@ -387,12 +387,12 @@ var TMPlugin = TMPlugin || {};
   };
 
   Game_CloudDust.prototype.screenX = function () {
-    var tw = $gameMap.tileWidth();
+    let tw = $gameMap.tileWidth();
     return Math.round($gameMap.adjustX(this._x) * tw);
   };
 
   Game_CloudDust.prototype.screenY = function () {
-    var th = $gameMap.tileHeight();
+    let th = $gameMap.tileHeight();
     return Math.round($gameMap.adjustY(this._y) * th);
   };
 
@@ -432,11 +432,11 @@ var TMPlugin = TMPlugin || {};
     $gameMap.addCloudDust(this._realX + 0.5, this._realY + 1.0, speed, radian);
   };
 
-  var _Game_CharacterBase_updateJump = Game_CharacterBase.prototype.updateJump;
+  const _Game_CharacterBase_updateJump = Game_CharacterBase.prototype.updateJump;
   Game_CharacterBase.prototype.updateJump = function () {
     _Game_CharacterBase_updateJump.call(this);
     if (this._jumpCount === 0) {
-      for (var i = 0; i < $gameSystem.jumpDusts(); i++) {
+      for (let i = 0; i < $gameSystem.jumpDusts(); i++) {
         this.addCloudDust(0.02, i % 2 * Math.PI);
       }
     }
@@ -446,21 +446,22 @@ var TMPlugin = TMPlugin || {};
   // Game_Player
   //
 
-  var _Game_Player_moveStraight = Game_Player.prototype.moveStraight;
+  const _Game_Player_moveStraight = Game_Player.prototype.moveStraight;
   Game_Player.prototype.moveStraight = function (d) {
-    var n = $gameSystem.dashDusts();
+    let n = $gameSystem.dashDusts();
+    let radian;
     if (n > 0) {
       if (this.isDashing() && this.canPass(this.x, this.y, d)) {
         if (d === 2) {
-          var radian = Math.PI * 1.5;
+          radian = Math.PI * 1.5;
         } else if (d === 4) {
-          var radian = 0;
+          radian = 0;
         } else if (d === 6) {
-          var radian = Math.PI;
+          radian = Math.PI;
         } else {
-          var radian = Math.PI / 2;
+          radian = Math.PI / 2;
         }
-        for (var i = 0; i < n; i++) {
+        for (let i = 0; i < n; i++) {
           this.addCloudDust(0.03, radian);
         }
       }
@@ -474,18 +475,18 @@ var TMPlugin = TMPlugin || {};
 
   PluginManager.registerCommand(pluginName, "setDustXy", args => {
     const arr = [args.setX, args.setY, args.dusts, args.speed, args.direction];
-    var n = parseInt(arr[2] || 1);
-    for (var i = 0; i < n; i++) {
+    let n = parseInt(arr[2] || 1);
+    for (let i = 0; i < n; i++) {
       $gameMap.addCloudDust(arr[0], arr[1], arr[3], arr[4]);
     }
   });
 
   PluginManager.registerCommand(pluginName, "setDustEvent", function (args) {
     const arr = [args.EventId, args.dusts, args.speed, args.direction];
-    var character = this.character(+arr[0]);
+    let character = this.character(+arr[0]);
     if (character) {
-      var n = parseInt(arr[1] || 1);
-      for (var i = 0; i < n; i++) {
+      let n = parseInt(arr[1] || 1);
+      for (let i = 0; i < n; i++) {
         character.addCloudDust(arr[2], arr[3]);
       }
     }
@@ -552,7 +553,7 @@ var TMPlugin = TMPlugin || {};
   // Spriteset_Map
   //
 
-  var _Spriteset_Map_createLowerLayer = Spriteset_Map.prototype.createLowerLayer;
+  const _Spriteset_Map_createLowerLayer = Spriteset_Map.prototype.createLowerLayer;
   Spriteset_Map.prototype.createLowerLayer = function () {
     _Spriteset_Map_createLowerLayer.call(this);
     this.createCloudDust();
@@ -563,7 +564,7 @@ var TMPlugin = TMPlugin || {};
     $gameMap.cloudDusts().forEach(function (cloudDust) {
       this._cloudDustSprites.push(new Sprite_CloudDust(cloudDust));
     }, this);
-    for (var i = 0; i < this._cloudDustSprites.length; i++) {
+    for (let i = 0; i < this._cloudDustSprites.length; i++) {
       this._tilemap.addChild(this._cloudDustSprites[i]);
     }
   };
