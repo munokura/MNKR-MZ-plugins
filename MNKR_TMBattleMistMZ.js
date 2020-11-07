@@ -1,4 +1,4 @@
-﻿/*
+/*
  * --------------------------------------------------
  * MNKR_TMBattleMistMZ Ver.1.0.1
  * Copyright (c) 2020 Munokura

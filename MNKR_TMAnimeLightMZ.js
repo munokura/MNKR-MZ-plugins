@@ -1,4 +1,4 @@
-﻿/*
+/*
  * --------------------------------------------------
  * MNKR_TMAnimeLightMZ Ver.1.0.1
  * Copyright (c) 2020 Munokura
