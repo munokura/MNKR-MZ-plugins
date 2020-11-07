@@ -1,6 +1,6 @@
 ﻿/*
  * --------------------------------------------------
- * MNKR_TMAnimeLightMZ Ver.1.0.0
+ * MNKR_TMAnimeLightMZ Ver.1.0.1
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -24,30 +24,6 @@
  * @plugindesc イベントにアニメーション付きの明かりを表示します。
  *
  * @author tomoaky (改変 munokura)
- *
- * @param range
- * @text アニメーションの大きさ
- * @type number
- * @decimals 2
- * @desc アニメーションの大きさ
- * 初期値: 0.10 ( 0.10 でプラスマイナス 10% の拡大縮小アニメ)
- * @default 0.10
- *
- * @param defaultZ
- * @text アニメーションのZ座標
- * @type number
- * @decimals
- * @desc アニメーションのZ座標
- * 初期値: 4
- * @default 4
- *
- * @param frames
- * @text アニメーションのフレーム数
- * @type number
- * @decimals
- * @desc アニメーションにかけるフレーム数
- * 初期値: 30
- * @default 30
  *
  * @help
  * 準備:
@@ -90,15 +66,6 @@
  *
  * 
  * プラグインコマンド:
- *   animeLight 1 TMAnimeLight1 255 0 -44 4
- *     イベント 1 番に明かりを適用します。
- *     イベント番号、ファイル名、不透明度、X補正、Y補正、プライオリティ
- *     の順に設定してください。
- *     Z座標を省略した場合はプラグインパラメータ animeLightZ の値を
- *     使用します。
- *
- *   animeLight 1
- *     イベント 1 番の明かりを削除します。
  *
  *   イベント番号(ひとつ目の数値)は以下の規則にしたがって対象を指定します。
  *     -1     … プレイヤーを対象にする
@@ -112,6 +79,31 @@
  *   作者に無断で改変、再配布が可能で、
  *   利用形態（商用、18禁利用等）についても制限はありません。
  * 
+ * 
+ * @param range
+ * @text アニメーションの大きさ
+ * @type number
+ * @decimals 2
+ * @desc アニメーションの大きさ
+ * 初期値: 0.10 ( 0.10 でプラスマイナス 10% の拡大縮小アニメ)
+ * @default 0.10
+ *
+ * @param defaultZ
+ * @text アニメーションのZ座標
+ * @type number
+ * @decimals
+ * @desc アニメーションのZ座標
+ * 初期値: 4
+ * @default 4
+ *
+ * @param frames
+ * @text アニメーションのフレーム数
+ * @type number
+ * @decimals
+ * @desc アニメーションにかけるフレーム数
+ * 初期値: 30
+ * @default 30
+ *
  * 
  * @command animeLight
  * @text 明かりの描画
@@ -144,12 +136,16 @@
  * @text X補正
  * @desc X座標補正。正の値:右方向 / 負の値:左方向
  * @type number
+ * @min -9007
+ * @max 9007
  * @default 0
  * 
  * @arg offsetY
  * @text Y補正
  * @desc Y座標補正。正の値:下方向 / 負の値:上方向
  * @type number
+ * @min -9007
+ * @max 9007
  * @default 0
  * 
  * @arg priority
@@ -179,10 +175,20 @@
  * @type number
  * @min -1
  * @default 0
- * 
  */
 
+var Imported = Imported || {};
+Imported.TMAnimeLight = true;
+
 var TMPlugin = TMPlugin || {};
+TMPlugin.AnimeLight = {};
+
+const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
+
+TMPlugin.AnimeLight.Parameters = PluginManager.parameters(pluginName);
+TMPlugin.AnimeLight.Range = +(TMPlugin.AnimeLight.Parameters['range'] || 0.1);
+TMPlugin.AnimeLight.DefaultZ = +(TMPlugin.AnimeLight.Parameters['defaultZ'] || 4);
+TMPlugin.AnimeLight.Frames = +(TMPlugin.AnimeLight.Parameters['frames'] || 30);
 
 if (!TMPlugin.EventBase) {
   TMPlugin.EventBase = true;
@@ -223,14 +229,45 @@ if (!TMPlugin.EventBase) {
   })();
 } // TMPlugin.EventBase
 
+// if (!TMPlugin.InterpreterBase) {
+//   TMPlugin.InterpreterBase = true;
+//   (() => {
+//     'use strict';
+
+//     Game_Interpreter.prototype.convertEscapeCharactersTM = function (text) {
+//       text = text.replace(/\\/g, '\x1b');
+//       text = text.replace(/\x1b\x1b/g, '\\');
+//       text = text.replace(/\x1bV\[(\d+)\]/gi, function () {
+//         return $gameVariables.value(parseInt(arguments[1]));
+//       }.bind(this));
+//       text = text.replace(/\x1bV\[(\d+)\]/gi, function () {
+//         return $gameVariables.value(parseInt(arguments[1]));
+//       }.bind(this));
+//       text = text.replace(/\x1bN\[(\d+)\]/gi, function () {
+//         return this.actorNameTM(parseInt(arguments[1]));
+//       }.bind(this));
+//       text = text.replace(/\x1bP\[(\d+)\]/gi, function () {
+//         return this.partyMemberNameTM(parseInt(arguments[1]));
+//       }.bind(this));
+//       text = text.replace(/\x1bG/gi, TextManager.currencyUnit);
+//       return text;
+//     };
+
+//     Game_Interpreter.prototype.actorNameTM = function (n) {
+//       let actor = n >= 1 ? $gameActors.actor(n) : null;
+//       return actor ? actor.name() : '';
+//     };
+
+//     Game_Interpreter.prototype.partyMemberNameTM = function (n) {
+//       let actor = n >= 1 ? $gameParty.members()[n - 1] : null;
+//       return actor ? actor.name() : '';
+//     };
+
+//   })();
+// } // TMPlugin.InterpreterBase
+
 (() => {
   'use strict';
-
-  const pluginName = "MNKR_TMAnimeLightMZ";
-  const parameters = PluginManager.parameters(pluginName);
-  const Range = Number(parameters['range'] || 0.1);
-  const DefaultZ = Number(parameters['defaultZ'] || 4);
-  const Frames = Number(parameters['frames'] || 30);
 
   //-----------------------------------------------------------------------------
   // Game_Temp
@@ -244,9 +281,9 @@ if (!TMPlugin.EventBase) {
 
   Game_Temp.prototype.createAnimeLightSinTable = function () {
     this._animeLightSinTable = [];
-    for (let i = 0; i < Frames; i++) {
-      this._animeLightSinTable[i] = Math.sin(Math.PI * i / (Frames / 2)) *
-        Range + 1;
+    for (let i = 0; i < TMPlugin.AnimeLight.Frames; i++) {
+      this._animeLightSinTable[i] = Math.sin(Math.PI * i / (TMPlugin.AnimeLight.Frames / 2)) *
+        TMPlugin.AnimeLight.Range + 1;
     }
   };
 
@@ -278,14 +315,14 @@ if (!TMPlugin.EventBase) {
   Game_Event.prototype.setupPage = function () {
     _Game_Event_setupPage.call(this);
     if (this._pageIndex >= 0) {
-      const animeLight = this.loadTagParam('animeLight');
+      let animeLight = this.loadTagParam('animeLight');
       if (animeLight) {
-        const arr = animeLight.split(' ');
+        let arr = animeLight.split(' ');
         this._animeLight = arr[0];
         this._animeLightOpacity = arr[1] || 255;
         this._animeLightShiftX = arr[2] || 0;
         this._animeLightShiftY = arr[3] || 0;
-        this._animeLightZ = arr[4] || DefaultZ;
+        this._animeLightZ = arr[4] || TMPlugin.AnimeLight.DefaultZ;
         this._animeLightNone = arr[5] === '1';
       }
     } else {
@@ -293,51 +330,61 @@ if (!TMPlugin.EventBase) {
       this._animeLightOpacity = 255;
       this._animeLightShiftX = 0;
       this._animeLightShiftY = 0;
-      this._animeLightZ = DefaultZ;
+      this._animeLightZ = TMPlugin.AnimeLight.DefaultZ;
       this._animeLightNone = false;
     }
     this.requestAnimeLight();
   };
 
   //-----------------------------------------------------------------------------
+  // Game_Interpreter
+  //
+
+  // const _Game_Interpreter_pluginCommand = Game_Interpreter.prototype.pluginCommand;
+  // Game_Interpreter.prototype.pluginCommand = function (command, args) {
+  //   _Game_Interpreter_pluginCommand.call(this, command, args);
+  //   console.log(args);
+  //   if (command === 'animeLight') {
+  //     let arr = args.map(this.convertEscapeCharactersTM, this);
+  //     console.log(arr);
+  //     let character = this.character(+arr[0]);
+  //     if (character) {
+  //       character._animeLight = arr[1];
+  //       character._animeLightOpacity = arr[2] || 255;
+  //       character._animeLightShiftX = arr[3] || 0;
+  //       character._animeLightShiftY = arr[4] || 0;
+  //       character._animeLightZ = arr[5] || TMPlugin.AnimeLight.DefaultZ;
+  //       character._animeLightNone = arr[6] === '1';
+  //       character.requestAnimeLight();
+  //     }
+  //   }
+  // };
+
+  //-----------------------------------------------------------------------------
   // PluginManager
   //
 
   PluginManager.registerCommand(pluginName, "animeLightRemove", function (args) {
-    const character = this.character(Number(args.eventId));
+    const arr = [args.eventId];
+    let character = this.character(+arr[0]);
+    if (character) {
+      character._animeLight = "";
+      character.requestAnimeLight();
+    }
+  });
 
+  PluginManager.registerCommand(pluginName, "animeLight", function (args) {
+    const arr = [args.eventId, args.file, args.opacity, args.offsetX, args.offsetY, args.priority, args.animation];
+    let character = this.character(+arr[0]);
     if (character) {
       character._animeLight = arr[1];
       character._animeLightOpacity = arr[2] || 255;
       character._animeLightShiftX = arr[3] || 0;
       character._animeLightShiftY = arr[4] || 0;
       character._animeLightZ = arr[5] || DefaultZ;
-      character._animeLightNone = arr[6] === '1';
-      character.requestAnimeLight();
-      character.requestAnimeLight();
-    }
-
-  });
-
-  PluginManager.registerCommand(pluginName, "animeLight", function (args) {
-    const character = this.character(Number(args.eventId));
-    const file = String(args.file);
-    const opacity = Number(args.opacity);
-    const offsetX = Number(args.offsetX);
-    const offsetY = Number(args.offsetY);
-    const priority = Number(args.priority);
-    const doSetup = args.animation === "true";
-
-    if (character) {
-      character._animeLight = file;
-      character._animeLightOpacity = opacity;
-      character._animeLightShiftX = offsetX;
-      character._animeLightShiftY = offsetY;
-      character._animeLightZ = priority;
-      character._animeLightNone = doSetup;
+      character._animeLightNone = arr[6] === 'false';
       character.requestAnimeLight();
     }
-
   });
 
   //-----------------------------------------------------------------------------
@@ -394,8 +441,8 @@ if (!TMPlugin.EventBase) {
     this.y = this._characterSprite.y + this._shiftY;
     if (!this._characterSprite._character._animeLightNone) {
       this._animeCount++;
-      if (this._animeCount === Frames) this._animeCount = 0;
-      const n = $gameTemp.animeLightSin(this._animeCount);
+      if (this._animeCount === TMPlugin.AnimeLight.Frames) this._animeCount = 0;
+      let n = $gameTemp.animeLightSin(this._animeCount);
       this.scale.set(n, n);
     }
   };
@@ -409,4 +456,5 @@ if (!TMPlugin.EventBase) {
     this.y = this._characterSprite.y + this._shiftY;
     this.z = +this._characterSprite._character._animeLightZ;
   };
+
 })();
