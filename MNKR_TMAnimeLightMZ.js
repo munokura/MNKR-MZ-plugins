@@ -21,7 +21,7 @@
 /*:
  * @target MZ
  * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMAnimeLightMZ.js
- * @plugindesc イベントにアニメーション付きの明かりを表示します。
+ * @plugindesc v1.0.1 イベントにアニメーション付きの明かりを表示します。
  *
  * @author tomoaky (改変 munokura)
  *
