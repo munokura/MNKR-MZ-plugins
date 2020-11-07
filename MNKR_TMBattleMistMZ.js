@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_TMBattleMistMZ Ver.1.0.1
+ * MNKR_TMBattleMistMZ Ver.1.0.2
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -163,13 +163,13 @@
 
 var Imported = Imported || {};
 Imported.TMBattleMist = true;
+var TMPlugin = TMPlugin || {};
 
 (() => {
 	'use strict';
 
 	const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
 
-	var TMPlugin = TMPlugin || {};
 	TMPlugin.BattleMist = {};
 	TMPlugin.BattleMist.Parameters = PluginManager.parameters(pluginName);
 	TMPlugin.BattleMist.MistImage = TMPlugin.BattleMist.Parameters['mistImage'] || 'mist';
