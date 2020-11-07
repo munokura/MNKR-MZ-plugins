@@ -1,6 +1,6 @@
-﻿/*
+/*
  * --------------------------------------------------
- * MNKR_TMTopFixMZ Ver.1.0.0
+ * MNKR_TMTopFixMZ Ver.1.0.1
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -32,7 +32,7 @@
  *   ゲーム開始時は先頭アクターの並び替えが禁止の状態になります。
  *   必要に応じてプラグインコマンドで解除してください。
  * 
- *
+ * 
  * プラグインコマンド:
  * 
  *   stopTopFix
@@ -49,23 +49,25 @@
  * @command startTopFix
  * @text 先頭並び替え禁止
  * @desc 先頭並び替えを禁止します。
- *
  */
+
+var Imported = Imported || {};
+Imported.TMTopFix = true;
 
 (() => {
     'use strict';
 
-    const pluginName = "MNKR_TMTopFixMZ";
+    const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
 
     //-----------------------------------------------------------------------------
     // Game_System
     //
 
-    Game_System.prototype.setTopFix = function(topFix) {
+    Game_System.prototype.setTopFix = function (topFix) {
         this._topFix = topFix;
     };
 
-    Game_System.prototype.isTopFix = function() {
+    Game_System.prototype.isTopFix = function () {
         if (this._topFix == null) this._topFix = true;
         return this._topFix;
     };
@@ -87,7 +89,7 @@
     //
 
     const _Window_MenuStatus_isCurrentItemEnabled = Window_MenuStatus.prototype.isCurrentItemEnabled;
-    Window_MenuStatus.prototype.isCurrentItemEnabled = function() {
+    Window_MenuStatus.prototype.isCurrentItemEnabled = function () {
         if ($gameSystem.isTopFix() && this._formationMode && this.index() === 0) {
             return false;
         }
