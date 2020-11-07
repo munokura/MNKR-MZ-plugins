@@ -1,6 +1,6 @@
-﻿/*
+/*
  * --------------------------------------------------
- * MNKR_TMMoveExMZ Ver.1.0.0
+ * MNKR_TMMoveExMZ Ver.1.0.1
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -218,194 +218,200 @@
  * @default 1
  */
 
+var Imported = Imported || {};
+Imported.TMMoveEx = true;
+
 var TMPlugin = TMPlugin || {};
+
 if (!TMPlugin.EventBase) {
-    TMPlugin.EventBase = true;
-    (() => {
-        'use strict';
+  TMPlugin.EventBase = true;
+  (() => {
+    'use strict';
 
-        const _Game_Event_setupPage = Game_Event.prototype.setupPage;
-        Game_Event.prototype.setupPage = function () {
-            _Game_Event_setupPage.call(this);
-            if (this._pageIndex >= 0) this.loadCommentParams();
-        };
+    const _Game_Event_setupPage = Game_Event.prototype.setupPage;
+    Game_Event.prototype.setupPage = function () {
+      _Game_Event_setupPage.call(this);
+      if (this._pageIndex >= 0) this.loadCommentParams();
+    };
 
-        Game_Event.prototype.loadCommentParams = function () {
-            this._commentParams = {};
-            const re = /<([^<>:]+)(:?)([^>]*)>/g;
-            const list = this.list();
-            for (let i = 0; i < list.length; i++) {
-                const command = list[i];
-                if (command && command.code == 108 || command.code == 408) {
-                    for (; ;) {
-                        const match = re.exec(command.parameters[0]);
-                        if (match) {
-                            this._commentParams[match[1]] = match[2] === ':' ? match[3] : true;
-                        } else {
-                            break;
-                        }
-                    }
-                } else {
-                    break;
-                }
+    Game_Event.prototype.loadCommentParams = function () {
+      this._commentParams = {};
+      let re = /<([^<>:]+)(:?)([^>]*)>/g;
+      let list = this.list();
+      for (let i = 0; i < list.length; i++) {
+        let command = list[i];
+        if (command && command.code == 108 || command.code == 408) {
+          for (; ;) {
+            let match = re.exec(command.parameters[0]);
+            if (match) {
+              this._commentParams[match[1]] = match[2] === ':' ? match[3] : true;
+            } else {
+              break;
             }
-        };
+          }
+        } else {
+          break;
+        }
+      }
+    };
 
-        Game_Event.prototype.loadTagParam = function (paramName) {
-            return this._commentParams[paramName] || this.event().meta[paramName];
-        };
+    Game_Event.prototype.loadTagParam = function (paramName) {
+      return this._commentParams[paramName] || this.event().meta[paramName];
+    };
 
-    })();
+  })();
 } // TMPlugin.EventBase
 
 (() => {
-    'use strict';
+  'use strict';
 
-    const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
-    const parameters = PluginManager.parameters(pluginName);
-    const passableRegionId = Number(parameters['passableRegionId'] || 251);
-    const dontPassRegionId = Number(parameters['dontPassRegionId'] || 252);
-    const knockWallSe = JSON.parse(parameters['knockWallSeParam'] || '{}');
-    knockWallSe.name = parameters['knockWallSe'] || '';
-    const knockWallPan = +(parameters['knockWallPan'] || 75);
-    const knockWallInterval = +(parameters['knockWallInterval'] || 30);
-    const movableRegionType = [];
-    for (let i = 1; i <= 10; i++) {
-        movableRegionType[i] = parameters['movableRegion' + i].split(',');
+  const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
+  const parameters = PluginManager.parameters(pluginName);
+  const passableRegionId = +(parameters['passableRegionId'] || 251);
+  const dontPassRegionId = +(parameters['dontPassRegionId'] || 252);
+  const knockWallSe = JSON.parse(parameters['knockWallSeParam'] || '{}');
+  knockWallSe.name = parameters['knockWallSe'] || '';
+  const knockWallPan = +(parameters['knockWallPan'] || 75);
+  const knockWallInterval = +(parameters['knockWallInterval'] || 30);
+  const movableRegionType = [];
+  for (let i = 1; i <= 10; i++) {
+    movableRegionType[i] = parameters['movableRegion' + i].split(',');
+  }
+
+  //-----------------------------------------------------------------------------
+  // Input
+  //
+
+  Input.keyMapper[parameters['turnKeyCode'].charCodeAt()] = 'turn';
+
+  //-----------------------------------------------------------------------------
+  // Game_Map
+  //
+
+  const _Game_Map_checkPassage = Game_Map.prototype.checkPassage;
+  Game_Map.prototype.checkPassage = function (x, y, bit) {
+    let regionId = this.regionId(x, y);
+    if (regionId === passableRegionId) return true;
+    if (regionId === dontPassRegionId) return false;
+    return _Game_Map_checkPassage.call(this, x, y, bit);
+  };
+
+  Game_Map.prototype.regionPoints = function (regionId) {
+    let result = [];
+    for (let x = 0; x < this.width(); x++) {
+      for (let y = 0; y < this.height(); y++) {
+        if (this.regionId(x, y) === regionId && this.eventIdXy(x, y) === 0) {
+          result.push(new Point(x, y));
+        }
+      }
     }
+    return result;
+  };
 
-    //-----------------------------------------------------------------------------
-    // Input
-    //
+  Game_Map.prototype.regionPointRandom = function (regionId) {
+    let regionPoints = this.regionPoints(regionId);
+    if (regionPoints.length === 0) return null;
+    return regionPoints[Math.randomInt(regionPoints.length)];
+  };
 
-    Input.keyMapper[parameters['turnKeyCode'].charCodeAt()] = 'turn';
+  //-----------------------------------------------------------------------------
+  // Game_Player
+  //
 
-    //-----------------------------------------------------------------------------
-    // Game_Map
-    //
-
-    const _Game_Map_checkPassage = Game_Map.prototype.checkPassage;
-    Game_Map.prototype.checkPassage = function (x, y, bit) {
-        const regionId = this.regionId(x, y);
-        if (regionId === passableRegionId) return true;
-        if (regionId === dontPassRegionId) return false;
-        return _Game_Map_checkPassage.call(this, x, y, bit);
-    };
-
-    Game_Map.prototype.regionPoints = function (regionId) {
-        const result = [];
-        for (let x = 0; x < this.width(); x++) {
-            for (let y = 0; y < this.height(); y++) {
-                if (this.regionId(x, y) === regionId && this.eventIdXy(x, y) === 0) {
-                    result.push(new Point(x, y));
-                }
-            }
+  const _Game_Player_moveStraight = Game_Player.prototype.moveStraight;
+  Game_Player.prototype.moveStraight = function (d) {
+    _Game_Player_moveStraight.call(this, d);
+    if (!this.isMovementSucceeded()) {
+      let x2 = $gameMap.roundXWithDirection(this.x, d);
+      let y2 = $gameMap.roundYWithDirection(this.y, d);
+      if (this.isNormal() && ($gameMap.boat().pos(x2, y2) || $gameMap.ship().pos(x2, y2))) return;
+      if (this.isInVehicle() && this.vehicle().isLandOk(this.x, this.y, this.direction())) return;
+      let d2 = this.reverseDir(d);
+      if (!$gameMap.isPassable(this.x, this.y, d) || !$gameMap.isPassable(x2, y2, d2)) {
+        this._knockWallCount = this._knockWallCount == null ? 0 : this._knockWallCount;
+        if (this._knockWallCount + knockWallInterval <= Graphics.frameCount ||
+          this._lastKnockWallDir !== d) {
+          if (d === 4) {
+            knockWallSe.pan = -knockWallPan;
+          } else if (d === 6) {
+            knockWallSe.pan = knockWallPan;
+          } else {
+            knockWallSe.pan = 0;
+          }
+          AudioManager.playSe(knockWallSe);
+          this._knockWallCount = Graphics.frameCount;
+          this._lastKnockWallDir = d;
         }
-        return result;
-    };
+      }
+    }
+  };
 
-    Game_Map.prototype.regionPointRandom = function (regionId) {
-        const regionPoints = this.regionPoints(regionId);
-        if (regionPoints.length === 0) return null;
-        return regionPoints[Math.randomInt(regionPoints.length)];
-    };
-
-    //-----------------------------------------------------------------------------
-    // Game_Player
-    //
-
-    const _Game_Player_moveStraight = Game_Player.prototype.moveStraight;
-    Game_Player.prototype.moveStraight = function (d) {
-        _Game_Player_moveStraight.call(this, d);
-        if (!this.isMovementSucceeded()) {
-            const x2 = $gameMap.roundXWithDirection(this.x, d);
-            const y2 = $gameMap.roundYWithDirection(this.y, d);
-            if (this.isNormal() && ($gameMap.boat().pos(x2, y2) || $gameMap.ship().pos(x2, y2))) return;
-            if (this.isInVehicle() && this.vehicle().isLandOk(this.x, this.y, this.direction())) return;
-            const d2 = this.reverseDir(d);
-            if (!$gameMap.isPassable(this.x, this.y, d) || !$gameMap.isPassable(x2, y2, d2)) {
-                this._knockWallCount = this._knockWallCount == null ? 0 : this._knockWallCount;
-                if (this._knockWallCount + knockWallInterval <= Graphics.frameCount ||
-                    this._lastKnockWallDir !== d) {
-                    if (d === 4) {
-                        knockWallSe.pan = -knockWallPan;
-                    } else if (d === 6) {
-                        knockWallSe.pan = knockWallPan;
-                    } else {
-                        knockWallSe.pan = 0;
-                    }
-                    AudioManager.playSe(knockWallSe);
-                    this._knockWallCount = Graphics.frameCount;
-                    this._lastKnockWallDir = d;
-                }
-            }
+  const _Game_Player_moveByInput = Game_Player.prototype.moveByInput;
+  Game_Player.prototype.moveByInput = function () {
+    if (!this.isMoving() && this.canMove()) {
+      let direction = this.getInputDirection();
+      if (Input.isPressed('turn') && direction > 0) {
+        this.setDirection(direction);
+        return;
+      }
+      if (TouchInput.isTriggered() && $gameTemp.isDestinationValid()) {
+        let x = $gameTemp.destinationX();
+        let y = $gameTemp.destinationY();
+        if (this.pos(x, y)) {
+          this.turnRight90();
+          return;
         }
-    };
+      }
+    }
+    _Game_Player_moveByInput.call(this);
+  };
 
-    const _Game_Player_moveByInput = Game_Player.prototype.moveByInput;
-    Game_Player.prototype.moveByInput = function () {
-        if (!this.isMoving() && this.canMove()) {
-            const direction = this.getInputDirection();
-            if (Input.isPressed('turn') && direction > 0) {
-                this.setDirection(direction);
-                return;
-            }
-            if (TouchInput.isTriggered() && $gameTemp.isDestinationValid()) {
-                const x = $gameTemp.destinationX();
-                const y = $gameTemp.destinationY();
-                if (this.pos(x, y)) {
-                    this.turnRight90();
-                    return;
-                }
-            }
+  //-----------------------------------------------------------------------------
+  // Game_Event
+  //
+
+  const _Game_Event_isMapPassable = Game_Event.prototype.isMapPassable;
+  Game_Event.prototype.isMapPassable = function (x, y, d) {
+    let movableRegion = this.loadTagParam('movableRegion');
+    if (movableRegion) {
+      let x2 = $gameMap.roundXWithDirection(x, d);
+      let y2 = $gameMap.roundYWithDirection(y, d);
+      let region = $gameMap.regionId(x2, y2);
+      return movableRegionType[+movableRegion].indexOf('' + region) >= 0;
+    } else {
+      return _Game_Event_isMapPassable.call(this, x, y, d);
+    }
+  };
+
+  const _Game_Event_moveStraight = Game_Event.prototype.moveStraight;
+  Game_Event.prototype.moveStraight = function (d) {
+    _Game_Event_moveStraight.call(this, d);
+    ['A', 'B', 'C', 'D'].forEach(function (code) {
+      let regionId = this.loadTagParam('stepSwitchOn' + code);
+      if (regionId && this.regionId() === +regionId) {
+        let key = [$gameMap.mapId(), this.eventId(), code];
+        $gameSelfSwitches.setValue(key, true);
+      } else {
+        regionId = this.loadTagParam('stepSwitchOff' + code);
+        if (regionId && this.regionId() === +regionId) {
+          let key = [$gameMap.mapId(), this.eventId(), code];
+          $gameSelfSwitches.setValue(key, false);
         }
-        _Game_Player_moveByInput.call(this);
-    };
+      }
+    }, this);
+  };
 
-    //-----------------------------------------------------------------------------
-    // Game_Event
-    //
+  //-----------------------------------------------------------------------------
+  // PluginManager
+  //
 
-    const _Game_Event_isMapPassable = Game_Event.prototype.isMapPassable;
-    Game_Event.prototype.isMapPassable = function (x, y, d) {
-        const movableRegion = this.loadTagParam('movableRegion');
-        if (movableRegion) {
-            const x2 = $gameMap.roundXWithDirection(x, d);
-            const y2 = $gameMap.roundYWithDirection(y, d);
-            const region = $gameMap.regionId(x2, y2);
-            return movableRegionType[+movableRegion].indexOf('' + region) >= 0;
-        } else {
-            return _Game_Event_isMapPassable.call(this, x, y, d);
-        }
-    };
-
-    const _Game_Event_moveStraight = Game_Event.prototype.moveStraight;
-    Game_Event.prototype.moveStraight = function (d) {
-        _Game_Event_moveStraight.call(this, d);
-        ['A', 'B', 'C', 'D'].forEach(function (code) {
-            let regionId = this.loadTagParam('stepSwitchOn' + code);
-            const key = [$gameMap.mapId(), this.eventId(), code];
-            if (regionId && this.regionId() === +regionId) {
-                $gameSelfSwitches.setValue(key, true);
-            } else {
-                regionId = this.loadTagParam('stepSwitchOff' + code);
-                if (regionId && this.regionId() === +regionId) {
-                    $gameSelfSwitches.setValue(key, false);
-                }
-            }
-        }, this);
-    };
-
-    //-----------------------------------------------------------------------------
-    // PluginManager
-    //
-
-    PluginManager.registerCommand(pluginName, "regionLocate", function (args) {
-        const character = this.character(Number(args.EventId));
-        if (character) {
-            const point = $gameMap.regionPointRandom(Number(args.RegionId));
-            if (point) character.locate(point.x, point.y);
-        }
-    });
+  PluginManager.registerCommand(pluginName, "regionLocate", function (args) {
+    const arr = [args.EventId, args.RegionId];
+    let character = this.character(+arr[0]);
+    if (character) {
+      let point = $gameMap.regionPointRandom(+arr[1]);
+      if (point) character.locate(point.x, point.y);
+    }
+  });
 
 })();
