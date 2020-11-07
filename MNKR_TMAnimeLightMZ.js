@@ -337,30 +337,6 @@ if (!TMPlugin.EventBase) {
   };
 
   //-----------------------------------------------------------------------------
-  // Game_Interpreter
-  //
-
-  // const _Game_Interpreter_pluginCommand = Game_Interpreter.prototype.pluginCommand;
-  // Game_Interpreter.prototype.pluginCommand = function (command, args) {
-  //   _Game_Interpreter_pluginCommand.call(this, command, args);
-  //   console.log(args);
-  //   if (command === 'animeLight') {
-  //     let arr = args.map(this.convertEscapeCharactersTM, this);
-  //     console.log(arr);
-  //     let character = this.character(+arr[0]);
-  //     if (character) {
-  //       character._animeLight = arr[1];
-  //       character._animeLightOpacity = arr[2] || 255;
-  //       character._animeLightShiftX = arr[3] || 0;
-  //       character._animeLightShiftY = arr[4] || 0;
-  //       character._animeLightZ = arr[5] || TMPlugin.AnimeLight.DefaultZ;
-  //       character._animeLightNone = arr[6] === '1';
-  //       character.requestAnimeLight();
-  //     }
-  //   }
-  // };
-
-  //-----------------------------------------------------------------------------
   // PluginManager
   //
 
