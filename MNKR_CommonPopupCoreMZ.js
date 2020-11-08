@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_CommonPopupCoreMZ Ver.0.0.4
+ * MNKR_CommonPopupCoreMZ Ver.0.0.5
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -269,8 +269,26 @@ function CommonPopupManager() {
     //     }
     // };
 
+    // Game_Interpreter.prototype.addPopup = function (argParam) {
+    //     var eventId = 0;
+    //     for (var i = 0; i < argParam.length; i++) {
+    //         if (argParam[i].match(/^eventId:(.+)/g)) {
+    //             eventId = Number(RegExp.$1);
+    //             break;
+    //         }
+    //     }
+    //     var character = this.character(eventId);
+    //     var arg = CommonPopupManager.setPopup(argParam, character);
+    //     if (arg.back > 0 || typeof arg.back === 'string') {
+    //         CommonPopupManager.bltCheck(CommonPopupManager.makeBitmap(arg));
+    //         CommonPopupManager._readyPopup.push(arg);
+    //     } else {
+    //         CommonPopupManager._tempCommonSprites.setNullPos(arg);
+    //     }
+    // };
+
     PluginManager.registerCommand(pluginName, "CommonPopupAdd", function (args) {
-        var argParam = Object.keys(args).map(el => el + ":" + args[el]);
+        var argParam = Object.entries(args).map(([key, value]) => `${key}:${value}`);
         argParam.unshift("add");
 
         var eventId = 0;
@@ -654,24 +672,6 @@ function CommonPopupManager() {
             CommonPopupManager._setedPopups = CommonPopupManager._setedPopups.compact();
         }
     };
-
-    // Game_Interpreter.prototype.addPopup = function (argParam) {
-    //     var eventId = 0;
-    //     for (var i = 0; i < argParam.length; i++) {
-    //         if (argParam[i].match(/^eventId:(.+)/g)) {
-    //             eventId = Number(RegExp.$1);
-    //             break;
-    //         }
-    //     }
-    //     var character = this.character(eventId);
-    //     var arg = CommonPopupManager.setPopup(argParam, character);
-    //     if (arg.back > 0 || typeof arg.back === 'string') {
-    //         CommonPopupManager.bltCheck(CommonPopupManager.makeBitmap(arg));
-    //         CommonPopupManager._readyPopup.push(arg);
-    //     } else {
-    //         CommonPopupManager._tempCommonSprites.setNullPos(arg);
-    //     }
-    // };
 
     CommonPopupManager.setPopup = function (argParam, character) {
         var arg = {
