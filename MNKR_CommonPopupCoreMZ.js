@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_CommonPopupCoreMZ Ver.0.0.2
+ * MNKR_CommonPopupCoreMZ Ver.0.0.3
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -24,18 +24,6 @@
  * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_CommonPopupCoreMZ.js
  * @plugindesc 汎用的なポップアップの仕組みを提供するためのベースプラグインです。
  * @author Yana (改変 munokura)
- * 
- * @param Text Back Color
- * @text ポップアップ背景色
- * @desc ポップアップの背景カラーです。
- * rgba(red,green,blue,alpha)で設定してください。
- * @default rgba(0,0,0,0.6)
- * 
- * @param Text Back FileName
- * @text ポップアップ背景画像
- * @desc ポップアップの背景画像名です。
- * %dがインデックスに変換されます。
- * @default popup_back%d
  * 
  * @help
  * このプラグインは、汎用的なポップアップの仕組みを提供するプラグインです。
@@ -94,35 +82,158 @@
  *   利用形態（商用、18禁利用等）についても制限はありません。
  * 
  * 
- * @command callCommand
- * @text プラグインコマンド
- * @desc MVのプラグインコマンドを呼び出します
+ * @command CommonPopupAdd
+ * @text ポップアップ表示
+ * @desc テキストをポップアップ表示します。
  * 
- * @arg commandArg
+ * @arg text
  * @type string
- * @desc プラグインコマンドをMVと同じ方法で記載します。
+ * @text 表示テキスト
+ * @desc 表示テキストを入力します。
  * @default 
+ * 
+ * @arg eventId
+ * @type number
+ * @min -1
+ * @text イベントID
+ * @desc 表示するイベントのID。
+ * -1:プレイヤー / 0:実行イベント / 1以上:イベントID
+ * @default -1
+ * 
+ * @arg count
+ * @type number
+ * @text 表示時間
+ * @desc ポップアップを完了するまでのフレーム数
+ * @default 60
+ * 
+ * @arg delay
+ * @type number
+ * @text 表示遅延
+ * @desc ポップアップを開始するまでのフレーム数
+ * @default 0
+ * 
+ * @arg moveX
+ * @type number
+ * @min -9007
+ * @max 9007
+ * @text 目標地点X(相対座標)
+ * @desc ポップアップ完了時のX位置補正
+ * @default 0
+ * 
+ * @arg moveY
+ * @type number
+ * @min -9007
+ * @max 9007
+ * @text 目標地点Y(相対座標)
+ * @desc ポップアップ完了時のY位置補正
+ * @default -48
+ * 
+ * @arg sx
+ * @type number
+ * @min -9007
+ * @max 9007
+ * @text 表示位置補正X
+ * @desc ポップアップ枠内のX位置補正
+ * @default 0
+ * 
+ * @arg sy
+ * @type number
+ * @min -9007
+ * @max 9007
+ * @text 表示位置補正Y
+ * @desc ポップアップ枠内のY位置補正
+ * @default 0
+ * 
+ * @arg pattern
+ * @type select
+ * @option フェード
+ * @value 0
+ * @option 横ストレッチ
+ * @value -1
+ * @option 縦ストレッチ
+ * @value -2
+ * @text 表示パターン
+ * @desc ポップアップ表示の変形パターン
+ * @default 0
+ * 
+ * @arg bx
+ * @type number
+ * @min -9007
+ * @max 9007
+ * @text 内容の表示位置補正X
+ * @desc 内容の表示位置補正X
+ * @default 0
+ * 
+ * @arg by
+ * @type number
+ * @min -9007
+ * @max 9007
+ * @text 内容の表示位置補正Y
+ * @desc 内容の表示位置補正Y
+ * @default 0
+ * 
+ * @arg extend
+ * @type string
+ * @text 表示タイミングの調整
+ * @desc 表示タイミングの調整用配列で指定。
+ * 例:[20,50] 20フレーム掛けて出現し、50フレーム目から消え始める。
+ * @default
+ * 
+ * @arg fixed
+ * @type boolean
+ * @on 固定する
+ * @off 固定しない
+ * @text 画面に固定
+ * @desc 画面に固定
+ * @default true
+ * 
+ * @arg anchorX
+ * @text 原点X
+ * @desc 原点X
+ * @default 0.5
+ * 
+ * @arg anchorY
+ * @text 原点Y
+ * @desc 原点Y
+ * @default 0.5
+ * 
+ * @arg slideCount
+ * @text スライド速度
+ * @desc 新しいポップアップが発生した際、上にスライドさせる速度。
+ * @default
+ * 
+ * 
+ * @command CommonPopupClear
+ * @text ポップアップ消去
+ * @desc 表示されているポップアップを消去します。
  */
 
 /*
- * 更新履歴:
- * ver1.06:180513
- * 一部の処理が正常に動作していなかったバグを修正。
- * ver1.05:170525
- * ポップアップ発生時にSEを再生する機能を追加。
- * ver1.04
- * YEP_MessageCoreとの競合回避処理を追加。
- * 動作パターンに縦ストレッチと横ストレッチを追加。
- * ポップアップ用のプラグインパラメータが正常に動作していなかったバグを修正。
- * ver1.03:
- * backのパラメータにpicturesフォルダのファイル名を指定できるように変更。
- * ver1.02:
- * スライドに上から下に動作するようにする機能を追加。
- * ver1.01:
- * containerが作成されていない状態で、ポップアップが登録される可能性のあるバグを修正しました。
- * ver1.00:
- * 公開
+ * @param Text Back Color
+ * @text ポップアップ背景色
+ * @desc ポップアップの背景カラーです。
+ * rgba(red,green,blue,alpha)で設定してください。
+ * @default rgba(0,0,0,0.6)
+ * 
+ * @param Text Back FileName
+ * @text ポップアップ背景画像
+ * @desc ポップアップの背景画像名です。
+ * %dがインデックスに変換されます。
+ * @default popup_back%d
+ * 
+ * @arg back
+ * @type select
+ * @option 透明背景
+ * @value -1
+ * @option 背景カラー
+ * @value 0
+ * @text 背景
+ * @desc ポップアップの背景
+ * @default -1
  */
+
+var Imported = Imported || {};
+Imported['CommonPopupCore'] = 1.06;
 
 function Sprite_Popup() {
     this.initialize.apply(this, arguments);
@@ -136,26 +247,69 @@ function CommonPopupManager() {
     'use strict';
 
     var pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
-    var parameters = PluginManager.parameters(pluginName);
-    var commonPopupTextBackColor = String(parameters['Text Back Color'] || 'rgba(0, 0, 0, 0.6)');
-    var commonPopupTextBackFileName = String(parameters['Text Back FileName'] || 'popup_back%d');
+    // var parameters = PluginManager.parameters(pluginName);
+    // var commonPopupTextBackColor = String(parameters['Text Back Color'] || 'rgba(0, 0, 0, 0.6)');
+    // var commonPopupTextBackFileName = String(parameters['Text Back FileName'] || 'popup_back%d');
 
-    var _cPU_GInterpreter_pluginCommand = Game_Interpreter.prototype.pluginCommand;
-    Game_Interpreter.prototype.pluginCommand = function (command, args) {
-        _cPU_GInterpreter_pluginCommand.call(this, command, args);
-        if (command === 'CommonPopup' || command === 'ポップアップ') {
-            switch (args[0]) {
-                case 'add':
-                case '表示':
-                    this.addPopup(args);
-                    break;
-                case 'clear':
-                case '消去':
-                    CommonPopupManager.clearPopup();
-                    break;
+    // var _cPU_GInterpreter_pluginCommand =
+    //     Game_Interpreter.prototype.pluginCommand;
+    // Game_Interpreter.prototype.pluginCommand = function (command, args) {
+    //     _cPU_GInterpreter_pluginCommand.call(this, command, args);
+    //     if (command === 'CommonPopup' || command === 'ポップアップ') {
+    //         switch (args[0]) {
+    //             case 'add':
+    //             case '表示':
+    //                 this.addPopup(args);
+    //                 break;
+    //             case 'clear':
+    //             case '消去':
+    //                 CommonPopupManager.clearPopup();
+    //                 break;
+    //         }
+    //     }
+    // };
+
+    PluginManager.registerCommand(pluginName, "CommonPopupAdd", function (args) {
+        var argParam = new Array(
+            'add',
+            'text:' + String(args.text),
+            'eventId:' + String(args.eventId),
+            'count:' + String(args.count),
+            'delay:' + String(args.delay),
+            'moveX:' + String(args.moveX),
+            'moveY:' + String(args.moveY),
+            'sx:' + String(args.sx),
+            'sy:' + String(args.sy),
+            'pattern:' + String(args.pattern),
+            // 'back:' + String(args.back),
+            'bx:' + String(args.bx),
+            'by:' + String(args.by),
+            'extend:' + String(args.extend),
+            'fixed:' + String(args.fixed),
+            'anchorX:' + String(args.anchorX),
+            'anchorY:' + String(args.anchorY),
+            'slideCount:' + String(args.slideCount)
+        );
+        var eventId = 0;
+        for (var i = 0; i < argParam.length; i++) {
+            if (argParam[i].match(/^eventId:(.+)/g)) {
+                eventId = Number(RegExp.$1);
+                break;
             }
         }
-    };
+        var character = this.character(eventId);
+        var arg = CommonPopupManager.setPopup(argParam, character);
+        // if (arg.back > 0 || typeof arg.back === 'string') {
+        //     CommonPopupManager.bltCheck(CommonPopupManager.makeBitmap(arg));
+        //     CommonPopupManager._readyPopup.push(arg);
+        // } else {
+        CommonPopupManager._tempCommonSprites.setNullPos(arg);
+        // }
+    });
+
+    PluginManager.registerCommand(pluginName, "CommonPopupClear", function (args) {
+        CommonPopupManager.clearPopup();
+    });
 
     Array.prototype.setNullPos = function (object) {
         for (var i = 0; i < this.length; i++) {
@@ -196,7 +350,7 @@ function CommonPopupManager() {
     };
 
     Sprite_Popup.prototype = Object.create(Sprite.prototype);
-    Sprite_Popup.prototype.varructor = Sprite_Popup;
+    Sprite_Popup.prototype.constructor = Sprite_Popup;
 
     Sprite_Popup.prototype.initialize = function (index) {
         Sprite.prototype.initialize.call(this);
@@ -228,11 +382,8 @@ function CommonPopupManager() {
         } else {
             CommonPopupManager.window().resetFontSettings();
             var text = this._arg.text;
-            // var width = CommonPopupManager.window().textWidth(text);
-            var width = CommonPopupManager.window().textSizeEx(text).width;
-            // var height = CommonPopupManager.window().contents.fontSize + 8;
-            var height = CommonPopupManager.window().textSizeEx(text).height;
-            console.log(height);
+            var width = CommonPopupManager.window().textWidth(text);
+            var height = CommonPopupManager.window().contents.fontSize + 8;
             var sh = 8;
             if (this._arg.back === 0) { sh = 2 }
             CommonPopupManager.window().createContents();
@@ -246,12 +397,14 @@ function CommonPopupManager() {
     Sprite_Popup.prototype.drawBackRect = function (width, height) {
         switch (this._arg.back) {
             case 0:
-                var color1 = commonPopupTextBackColor;
+                // var color1 = commonPopupTextBackColor;
                 var color2 = 'rgba(0,0,0,0)';
                 var dSize = width / 4;
-                this.bitmap.gradientFillRect(0, 0, dSize, height, color2, color1);
+                // this.bitmap.gradientFillRect(0, 0, dSize, height, color2, color1);
+                this.bitmap.gradientFillRect(0, 0, dSize, height, color2, color2);
                 this.bitmap.fillRect(dSize, 0, dSize * 2, height, color1);
-                this.bitmap.gradientFillRect(dSize * 3, 0, dSize, height, color1, color2);
+                // this.bitmap.gradientFillRect(dSize * 3, 0, dSize, height, color1, color2);
+                this.bitmap.gradientFillRect(dSize * 3, 0, dSize, height, color2, color2);
                 break;
             case -1:
                 break;
@@ -347,8 +500,6 @@ function CommonPopupManager() {
         this.opacity = 255;
         var act = [originalWait * 0.25, originalWait * 0.75];
         if (this._arg.extend !== '') { act = this._arg.extend }
-        //var oa = Math.max(originalWait - act[1],1);
-        //var n1 = Math.max(originalWait / oa,0.1);
         var opTime1 = act[0];
         var moveX = 0;
         var moveY = 0;
@@ -369,15 +520,15 @@ function CommonPopupManager() {
             var slide = (this._arg.moveX / (originalWait - act[1]));
             this.opacity = Math.floor(255 * (this._count / opTime2));
             if (this._arg.enableOutEffect) {
-                moveX = Math.floor(this._arg.moveX * (this._count / opTime2)); //Math.floor((originalWait / n1) * slide);
-                moveY = Math.floor(this._arg.moveY * (this._count / opTime2)); //Math.floor((originalWait / n1) * up);
+                moveX = Math.floor(this._arg.moveX * (this._count / opTime2));
+                moveY = Math.floor(this._arg.moveY * (this._count / opTime2));
             } else {
-                moveX = this._arg.moveX; //Math.floor((originalWait / n1) * slide);
-                moveY = this._arg.moveY; //Math.floor((originalWait / n1) * up);
+                moveX = this._arg.moveX;
+                moveY = this._arg.moveY;
             }
         } else {
-            moveX = this._arg.moveX; //Math.floor((originalWait / n1) * slide);
-            moveY = this._arg.moveY; //Math.floor((originalWait / n1) * up);
+            moveX = this._arg.moveX;
+            moveY = this._arg.moveY;
         }
         this._times = cnt;
         this.setPosition(moveX, moveY);
@@ -389,10 +540,6 @@ function CommonPopupManager() {
         var act = [originalWait * 0.25, originalWait * 0.75];
         if (this._arg.extend) act = this._arg.extend;
         if (this._count === 0) this.scale.x = 0;
-        //var oa = Math.max(originalWait - act[1],1);
-        //var n1 = Math.max(originalWait / oa,0.1);
-        //var up = (this._arg.moveY / (originalWait / n1));
-        //var slide = (this._arg.moveX / (originalWait / n1));
         var moveX = 0;
         var moveY = 0;
         if (cnt < act[0]) {
@@ -407,16 +554,16 @@ function CommonPopupManager() {
             var rate = this._count / a1;
             this.scale.x = rate;
             if (this._arg.enableOutEffect) {
-                moveX = Math.floor(this._arg.moveX * (this._count / a1)); //Math.floor((originalWait / n1) * slide);
-                moveY = Math.floor(this._arg.moveY * (this._count / a1)); //Math.floor((originalWait / n1) * up);
+                moveX = Math.floor(this._arg.moveX * (this._count / a1));
+                moveY = Math.floor(this._arg.moveY * (this._count / a1));
             } else {
-                moveX = this._arg.moveX; //Math.floor((originalWait / n1) * up);
-                moveY = this._arg.moveY; //Math.floor((originalWait / n1) * slide);
+                moveX = this._arg.moveX;
+                moveY = this._arg.moveY;
             }
         } else {
             this.scale.x = 1.0;
-            moveX = this._arg.moveX; //Math.floor((originalWait / n1) * up);
-            moveY = this._arg.moveY; //Math.floor((originalWait / n1) * slide);
+            moveX = this._arg.moveX;
+            moveY = this._arg.moveY;
         }
         this._times = cnt;
         this.setPosition(moveX, moveY);
@@ -428,10 +575,6 @@ function CommonPopupManager() {
         var act = [originalWait * 0.25, originalWait * 0.75];
         if (this._arg.extend) act = this._arg.extend;
         if (this._count === 0) this.scale.y = 0;
-        //var oa = Math.max(originalWait - act[1],1);
-        //var n1 = Math.max(originalWait / oa,0.1);
-        //var up = (this._arg.moveY / (originalWait / n1));
-        //var slide = (this._arg.moveX / (originalWait / n1));
         var moveX = 0;
         var moveY = 0;
         if (cnt < act[0]) {
@@ -448,16 +591,16 @@ function CommonPopupManager() {
             this.scale.y = rate;
             this._arg.rate = rate;
             if (this._arg.enableOutEffect) {
-                moveX = Math.floor(this._arg.moveX * (this._count / a1)); //Math.floor((originalWait / n1) * slide);
-                moveY = Math.floor(this._arg.moveY * (this._count / a1)); //Math.floor((originalWait / n1) * up);
+                moveX = Math.floor(this._arg.moveX * (this._count / a1));
+                moveY = Math.floor(this._arg.moveY * (this._count / a1));
             } else {
-                moveX = this._arg.moveX; //Math.floor((originalWait / n1) * up);
-                moveY = this._arg.moveY; //Math.floor((originalWait / n1) * slide);
+                moveX = this._arg.moveX;
+                moveY = this._arg.moveY;
             }
         } else {
             this.scale.y = 1.0;
-            moveX = this._arg.moveX; //Math.floor((originalWait / n1) * up);
-            moveY = this._arg.moveY; //Math.floor((originalWait / n1) * slide);
+            moveX = this._arg.moveX;
+            moveY = this._arg.moveY;
         }
         this._times = cnt;
         this.setPosition(moveX, moveY);
@@ -529,42 +672,42 @@ function CommonPopupManager() {
         }
     };
 
-    Game_Interpreter.prototype.addPopup = function (argParam) {
-        var eventId = 0;
-        for (var i = 0; i < argParam.length; i++) {
-            if (argParam[i].match(/^eventId:(.+)/g)) {
-                eventId = Number(RegExp.$1);
-                break;
-            }
-        }
-        var character = this.character(eventId);
-        var arg = CommonPopupManager.setPopup(argParam, character);
-        if (arg.back > 0 || typeof arg.back === 'string') {
-            CommonPopupManager.bltCheck(CommonPopupManager.makeBitmap(arg));
-            CommonPopupManager._readyPopup.push(arg);
-        } else {
-            CommonPopupManager._tempCommonSprites.setNullPos(arg);
-        }
-    };
+    // Game_Interpreter.prototype.addPopup = function (argParam) {
+    //     var eventId = 0;
+    //     for (var i = 0; i < argParam.length; i++) {
+    //         if (argParam[i].match(/^eventId:(.+)/g)) {
+    //             eventId = Number(RegExp.$1);
+    //             break;
+    //         }
+    //     }
+    //     var character = this.character(eventId);
+    //     var arg = CommonPopupManager.setPopup(argParam, character);
+    //     if (arg.back > 0 || typeof arg.back === 'string') {
+    //         CommonPopupManager.bltCheck(CommonPopupManager.makeBitmap(arg));
+    //         CommonPopupManager._readyPopup.push(arg);
+    //     } else {
+    //         CommonPopupManager._tempCommonSprites.setNullPos(arg);
+    //     }
+    // };
 
     CommonPopupManager.setPopup = function (argParam, character) {
         var arg = {
             x: null,
             y: null,
-            text: '', // 表示テキスト
-            eventId: -1, // 表示するイベントのID
-            count: 60, // 表示時間
-            delay: 0, // 表示遅延
-            moveX: 0, // 目標地点X(相対座標)
-            moveY: -48, // 目標地点Y(相対座標)
-            sx: 0, // 表示位置補正X
-            sy: 0, // 表示位置補正Y
-            pattern: 0, // 表示パターン
-            back: -1, // 背景に使う画像インデックス
-            bx: 0, // 内容の表示位置補正X
-            by: 0, // 内容の表示位置補正Y
-            extend: '', // 
-            fixed: true, //
+            text: '',                // 表示テキスト
+            eventId: -1,             // 表示するイベントのID
+            count: 60,               // 表示時間
+            delay: 0,                // 表示遅延
+            moveX: 0,                // 目標地点X(相対座標)
+            moveY: -48,              // 目標地点Y(相対座標)
+            sx: 0,                   // 表示位置補正X
+            sy: 0,                   // 表示位置補正Y
+            pattern: 0,              // 表示パターン
+            back: -1,                // 背景に使う画像インデックス
+            bx: 0,                   // 内容の表示位置補正X
+            by: 0,                   // 内容の表示位置補正Y
+            extend: '',              // 
+            fixed: true,             //
             anchorX: 0.5,
             anchorY: 0.5,
             battler: null,
@@ -573,8 +716,7 @@ function CommonPopupManager() {
         };
         var array = ['x', 'y', 'text', 'eventId', 'count', 'delay', 'moveX', 'moveY',
             'sx', 'sy', 'pattern', 'back', 'bx', 'by', 'extend', 'fixed',
-            'anchorX', 'anchorY', 'slideCount'
-        ];
+            'anchorX', 'anchorY', 'slideCount'];
         for (var i = 0; i < argParam.length; i++) {
             if (i > 0) {
                 for (var j = 0; j < array.length; j++) {
@@ -652,8 +794,6 @@ function CommonPopupManager() {
 
     CommonPopupManager.bltCheck = function (bitmap) {
         this.testBitmap().blt(bitmap, 0, 0, bitmap.width, bitmap.height, 0, 0);
-        //this.testBitmap().clear();
-        //bitmap.clear();
         bitmap = null;
     };
 
@@ -748,6 +888,43 @@ function CommonPopupManager() {
         this.terminatePopup();
     };
 
+    // 再定義　文字サイズに合わせてアイコンのサイズを調整する
+    // Window_Base.prototype.drawIcon = function (iconIndex, x, y) {
+    //     var bitmap = ImageManager.loadSystem('IconSet');
+    //     var pw = Window_Base._iconWidth;
+    //     var ph = Window_Base._iconHeight;
+    //     var sx = iconIndex % 16 * pw;
+    //     var sy = Math.floor(iconIndex / 16) * ph;
+    //     var n = Math.floor((this.contents.fontSize / this.standardFontSize()) * Window_Base._iconWidth);
+    //     var nn = (32 - n) / 2;
+    //     this.contents.blt(bitmap, sx, sy, pw, ph, x, y, n, n);
+    // };
+
+    // 再定義 processDrawIconをストレッチされた文字サイズに合わせたズレに調整する
+    // Window_Base.prototype.processDrawIcon = function (iconIndex, textState) {
+    //     this.drawIcon(iconIndex, textState.x + 2, textState.y + 2);
+    //     var n = Math.floor((this.contents.fontSize / this.standardFontSize()) * Window_Base._iconWidth);
+    //     textState.x += n + 4;
+    // };
+
+    // if (!Imported.YEP_MessageCore) {
+    //     // \FS[FontSize]の制御文字を追加する部分です。
+    //     var _cPU_Window_Base_processEscapeCharacter = Window_Base.prototype.processEscapeCharacter;
+    //     Window_Base.prototype.processEscapeCharacter = function (code, textState) {
+    //         if (code === 'FS') {
+    //             var param = this.obtainEscapeParam(textState);
+    //             if (param != '') {
+    //                 this.makeFontSize(param)
+    //             }
+    //         } else {
+    //             _cPU_Window_Base_processEscapeCharacter.call(this, code, textState);
+    //         }
+    //     };
+    // }
+
+    // Window_Base.prototype.makeFontSize = function (fontSize) {
+    //     this.contents.fontSize = fontSize;
+    // };
 
     //ここから MV Joint
 
@@ -774,48 +951,5 @@ function CommonPopupManager() {
     };
 
     //ここまで MV Joint
-
-
-    // 再定義　文字サイズに合わせてアイコンのサイズを調整する
-    Window_Base.prototype.drawIcon = function (iconIndex, x, y) {
-        var bitmap = ImageManager.loadSystem("IconSet");
-        var pw = ImageManager.iconWidth;
-        var ph = ImageManager.iconHeight;
-        var sx = (iconIndex % 16) * pw;
-        var sy = Math.floor(iconIndex / 16) * ph;
-        // var n = Math.floor((this.contents.fontSize / this.standardFontSize()) * Window_Base._iconWidth); //移植で下記に変更
-        var n = Math.floor((this.contents.fontSize / $gameSystem.mainFontSize()) * ImageManager.iconWidth);
-        // var nn = (32 - n) / 2;   //不要な処理？
-        this.contents.blt(bitmap, sx, sy, pw, ph, x, y, n, n);
-    };
-
-    // 再定義 processDrawIconをストレッチされた文字サイズに合わせたズレに調整する
-    Window_Base.prototype.processDrawIcon = function (iconIndex, textState) {
-        if (textState.drawing) {
-            this.drawIcon(iconIndex, textState.x + 2, textState.y + 2);
-        }
-        // var n = Math.floor((this.contents.fontSize / this.standardFontSize()) * Window_Base._iconWidth); //移植で下記に変更
-        var n = Math.floor(this.contents.fontSize / $gameSystem.mainFontSize() * ImageManager.iconWidth);
-        textState.x += n + 4;
-    };
-
-    // if (!Imported.YEP_MessageCore) {
-    // \FS[FontSize]の制御文字を追加する部分です。
-    // var _cPU_Window_Base_processEscapeCharacter = Window_Base.prototype.processEscapeCharacter;
-    // Window_Base.prototype.processEscapeCharacter = function(code, textState) {
-    //     if (code === 'FS') {
-    //         var param = this.obtainEscapeParam(textState);
-    //         if (param != '') {
-    //             this.makeFontSize(param)
-    //         }
-    //     } else {
-    //         _cPU_Window_Base_processEscapeCharacter.call(this, code, textState);
-    //     }
-    // };
-    // }
-
-    // Window_Base.prototype.makeFontSize = function(fontSize) {
-    //     this.contents.fontSize = fontSize;
-    // };
 
 })();
