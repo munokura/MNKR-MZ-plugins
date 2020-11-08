@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_CommonPopupCoreMZ Ver.0.0.3
+ * MNKR_CommonPopupCoreMZ Ver.0.0.4
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -270,26 +270,9 @@ function CommonPopupManager() {
     // };
 
     PluginManager.registerCommand(pluginName, "CommonPopupAdd", function (args) {
-        var argParam = new Array(
-            'add',
-            'text:' + String(args.text),
-            'eventId:' + String(args.eventId),
-            'count:' + String(args.count),
-            'delay:' + String(args.delay),
-            'moveX:' + String(args.moveX),
-            'moveY:' + String(args.moveY),
-            'sx:' + String(args.sx),
-            'sy:' + String(args.sy),
-            'pattern:' + String(args.pattern),
-            // 'back:' + String(args.back),
-            'bx:' + String(args.bx),
-            'by:' + String(args.by),
-            'extend:' + String(args.extend),
-            'fixed:' + String(args.fixed),
-            'anchorX:' + String(args.anchorX),
-            'anchorY:' + String(args.anchorY),
-            'slideCount:' + String(args.slideCount)
-        );
+        var argParam = Object.keys(args).map(el => el + ":" + args[el]);
+        argParam.unshift("add");
+
         var eventId = 0;
         for (var i = 0; i < argParam.length; i++) {
             if (argParam[i].match(/^eventId:(.+)/g)) {
