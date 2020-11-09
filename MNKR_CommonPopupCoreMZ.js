@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_CommonPopupCoreMZ Ver.0.0.10
+ * MNKR_CommonPopupCoreMZ Ver.0.0.11
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -43,26 +43,28 @@
  * eventId:表示するイベントのID
  * count:表示時間
  * delay:表示遅延
- * moveX:目標地点X(相対座標)
- * moveY:目標地点Y(相対座標)
- * sx:表示位置補正X
- * sy:表示位置補正Y
+ * moveX:移動先地点X(相対座標)
+ * moveY:移動先地点Y(相対座標)
+ * sx:ポップ位置補正X
+ * sy:ポップ位置補正Y
  * pattern:表示パターン　0がフェード、-1が横ストレッチ、-2が縦ストレッチ
  * back:-1:透明背景,0:背景カラーのグラデーション
- * bx:内容の表示位置補正X
- * by:内容の表示位置補正Y
+ * bx:テキスト表示位置補正X
+ * by:テキスト表示位置補正Y
  * extend:
  *   表示タイミングの調整用配列で指定。
  *   例:extend:[20,50] 20フレーム掛けて出現し、50フレーム目から消え始める。
- * anchorX:ポップアップ原点X。0イベントの右端。タイル単位。
- * anchorY:ポップアップ原点Y。0イベントの下端。タイル単位。
  * 
  * 本家で未実装のものを追加
- * backImage:ファイル名（img/pictures内）
+ *   backImage:ファイル名（img/pictures内）
  * 
- * 以下、本家で未実装と思われる機能
- *   - fixed:画面に固定するか？ true/falseで指定。
- *   - slideCount:新しいポップアップが発生した際、上にスライドさせる速度。
+ * 必要性が低いと考え、プラグインコマンドから削除
+ *   anchorX:ポップアップ原点X。0イベントの右端。タイル単位。
+ *   anchorY:ポップアップ原点Y。0イベントの下端。タイル単位。
+ * 
+ * 本家で未実装と思われる機能
+ *   fixed:画面に固定するか？ true/falseで指定。
+ *   slideCount:新しいポップアップが発生した際、上にスライドさせる速度。
  *
  * イベントコマンドのスクリプトを使う場合、
  *
@@ -118,7 +120,7 @@
  * @type number
  * @min -9007
  * @max 9007
- * @text 目標地点X(相対座標)
+ * @text 移動先地点X(相対座標)
  * @desc ポップアップ完了時のX位置補正
  * @default 0
  * 
@@ -126,7 +128,7 @@
  * @type number
  * @min -9007
  * @max 9007
- * @text 目標地点Y(相対座標)
+ * @text 移動先地点Y(相対座標)
  * @desc ポップアップ完了時のY位置補正
  * @default -48
  * 
@@ -134,16 +136,16 @@
  * @type number
  * @min -9007
  * @max 9007
- * @text 表示位置補正X
- * @desc ポップアップ枠内のX位置補正
+ * @text ポップ位置補正X
+ * @desc ポップアップのX位置補正
  * @default 0
  * 
  * @arg sy
  * @type number
  * @min -9007
  * @max 9007
- * @text 表示位置補正Y
- * @desc ポップアップ枠内のY位置補正
+ * @text ポップ位置補正Y
+ * @desc ポップアップのY位置補正
  * @default 0
  * 
  * @arg pattern
@@ -177,16 +179,16 @@
  * @type number
  * @min -9007
  * @max 9007
- * @text 内容の表示位置補正X
- * @desc 内容の表示位置補正X
+ * @text テキスト位置補正X
+ * @desc テキストの表示位置補正X
  * @default 0
  * 
  * @arg by
  * @type number
  * @min -9007
  * @max 9007
- * @text 内容の表示位置補正Y
- * @desc 内容の表示位置補正Y
+ * @text テキスト位置補正Y
+ * @desc テキストの表示位置補正Y
  * @default 0
  * 
  * @arg extend
@@ -195,18 +197,6 @@
  * @desc 表示タイミングの調整用配列で指定。
  * 例:[20,50] 20フレーム掛けて出現し、50フレーム目から消え始める。
  * @default
- * 
- * @arg anchorX
- * @type string
- * @text 原点X
- * @desc ポップアップ原点X
- * @default -0.5
- * 
- * @arg anchorY
- * @type string
- * @text 原点Y
- * @desc ポップアップ原点Y
- * @default -0.5
  * 
  * 
  * @command CommonPopupClear
@@ -226,6 +216,18 @@
  * @desc ポップアップの背景画像名です。
  * %dがインデックスに変換されます。
  * @default popup_back%d
+ * 
+ * @arg anchorX
+ * @type string
+ * @text 原点X
+ * @desc ポップアップ原点X
+ * @default -0.5
+ * 
+ * @arg anchorY
+ * @type string
+ * @text 原点Y
+ * @desc ポップアップ原点Y
+ * @default -0.5
  * 
  * @arg fixed
  * @type boolean
@@ -335,10 +337,10 @@ function CommonPopupManager() {
     Sprite_Popup.prototype.setMembers = function (arg) {
         this._count = arg.count;
         this._arg = arg;
-        // this.anchor.x = arg.anchorX;
-        // this.anchor.y = arg.anchorY;
-        this.anchor.x = arg.anchorX * -1;
-        this.anchor.y = arg.anchorY * -1;
+        this.anchor.x = arg.anchorX;
+        this.anchor.y = arg.anchorY;
+        // this.anchor.x = arg.anchorX * -1;
+        // this.anchor.y = arg.anchorY * -1;
         this.x = arg.x;
         this.y = arg.y;
         this.z = 6;
