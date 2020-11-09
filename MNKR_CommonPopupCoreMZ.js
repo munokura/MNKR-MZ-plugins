@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_CommonPopupCoreMZ Ver.0.0.6
+ * MNKR_CommonPopupCoreMZ Ver.0.0.8
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -146,21 +146,21 @@
  * @arg pattern
  * @type select
  * @option フェード
- * @value 0
+ * @value Normal
  * @option 横ストレッチ
- * @value -1
+ * @value Stretch
  * @option 縦ストレッチ
- * @value -2
+ * @value GrowUp
  * @text 表示パターン
  * @desc ポップアップ表示の変形パターン
- * @default 0
+ * @default Normal
  * 
  * @arg back
  * @text 背景色
  * @type string
- * @desc 背景色:rgba(red,green,blue,alpha) / 透明:-1
- * 例:rgba(0, 0, 0, 0.6)
- * @default rgba(0, 0, 0, 0.6)
+ * @desc 背景色:Red,Green,Blue,Alpha / 透明:-1
+ * 例:0, 0, 0, 0.6
+ * @default 0,0,0,0.6
  * 
  * @arg bx
  * @type number
@@ -184,24 +184,6 @@
  * @desc 表示タイミングの調整用配列で指定。
  * 例:[20,50] 20フレーム掛けて出現し、50フレーム目から消え始める。
  * @default
- * 
- * @arg fixed
- * @type boolean
- * @on 固定する
- * @off 固定しない
- * @text 画面に固定
- * @desc 画面に固定
- * @default true
- * 
- * @arg anchorX
- * @text 原点X
- * @desc 原点X
- * @default 0.5
- * 
- * @arg anchorY
- * @text 原点Y
- * @desc 原点Y
- * @default 0.5
  * 
  * @arg slideCount
  * @text スライド速度
@@ -234,6 +216,24 @@
  * @dir img/pictures
  * @desc 背景画像を指定します。背景画像を使用すると背景色は無視されます。
  * @default
+ * 
+ * @arg fixed
+ * @type boolean
+ * @on 固定する
+ * @off 固定しない
+ * @text 画面に固定（false時が未実装）
+ * @desc 画面に固定
+ * @default true
+ * 
+ * @arg anchorX
+ * @text 原点X
+ * @desc 原点X
+ * @default 0.5
+ * 
+ * @arg anchorY
+ * @text 原点Y
+ * @desc 原点Y
+ * @default 0.5
  */
 
 var Imported = Imported || {};
@@ -418,9 +418,9 @@ function CommonPopupManager() {
         //     bitmap.clear();
         //     bitmap = null;
         // } else {
-        if (this._arg.back === -1) {
+        if (this._arg.back === '-1') {
         } else {
-            var color1 = this._arg.back;
+            var color1 = 'rgba(' + this._arg.back + ')';
             var color2 = 'rgba(0,0,0,0)';
             var dSize = width / 4;
             this.bitmap.gradientFillRect(0, 0, dSize, height, color2, color1);
@@ -717,7 +717,9 @@ function CommonPopupManager() {
                         } else if (code === 'fixed') {
                             arg[code] = value === 'true';
                         } else if (code === 'back') {
-                            arg[code] = (Number(value) !== NaN) ? value : Number(value);
+                            arg[code] = value;
+                        } else if (code === 'pattern') {
+                            arg[code] = value;
                         } else if (code === 'backImage') {
                             arg[code] = value;
                         } else {
