@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_CommonPopupCoreMZ Ver.0.0.8
+ * MNKR_CommonPopupCoreMZ Ver.0.0.9
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -29,8 +29,6 @@
  * このプラグインは、汎用的なポップアップの仕組みを提供するプラグインです。
  * このプラグイン単体ではプラグインコマンドを追加する以外の機能はありません。
  * 
- * 背景画像は /img/pictures/ 内に保存してください。
- * 
  * ------------------------------------------------------
  *  プラグインコマンド
  * ------------------------------------------------------
@@ -50,16 +48,21 @@
  * sx:表示位置補正X
  * sy:表示位置補正Y
  * pattern:表示パターン　0がフェード、-1が横ストレッチ、-2が縦ストレッチ
- * back:-1:透明背景,0:背景カラーで塗りつぶし,1以上:画像インデックス
+ * back:-1:透明背景,0:背景カラーのグラデーション
  * bx:内容の表示位置補正X
  * by:内容の表示位置補正Y
  * extend:
  *   表示タイミングの調整用配列で指定。
  *   例:extend:[20,50] 20フレーム掛けて出現し、50フレーム目から消え始める。
- * fixed:画面に固定するか？ true/falseで指定。
- * anchorX:
- * anchorY:
- * slideCount:新しいポップアップが発生した際、上にスライドさせる速度。
+ * 
+ * 以下、本家で未実装と思われる機能
+ *   - fixed:画面に固定するか？ true/falseで指定。
+ *   - anchorX:
+ *   - anchorY:
+ *   - slideCount:新しいポップアップが発生した際、上にスライドさせる速度。
+ * 
+ * 未実装だが追加したい
+ * backImage:ファイル名（img/pictures内）
  *
  * イベントコマンドのスクリプトを使う場合、
  *
@@ -185,11 +188,6 @@
  * 例:[20,50] 20フレーム掛けて出現し、50フレーム目から消え始める。
  * @default
  * 
- * @arg slideCount
- * @text スライド速度
- * @desc 新しいポップアップが発生した際、上にスライドさせる速度。
- * @default
- * 
  * 
  * @command CommonPopupClear
  * @text ポップアップ消去
@@ -234,6 +232,11 @@
  * @text 原点Y
  * @desc 原点Y
  * @default 0.5
+ * 
+ * @arg slideCount
+ * @text スライド速度
+ * @desc 新しいポップアップが発生した際、上にスライドさせる速度。
+ * @default
  */
 
 var Imported = Imported || {};
@@ -305,12 +308,12 @@ function CommonPopupManager() {
         var character = this.character(eventId);
         var arg = CommonPopupManager.setPopup(argParam, character);
 
-        // if (arg.backImage !== '') {
-        //     CommonPopupManager.bltCheck(CommonPopupManager.makeBitmap(arg));
-        //     CommonPopupManager._readyPopup.push(arg);
-        // } else {
-        CommonPopupManager._readyPopup.push(arg);
-        // }
+        if (arg.backImage !== '') {
+            CommonPopupManager.bltCheck(CommonPopupManager.makeBitmap(arg));
+            CommonPopupManager._readyPopup.push(arg);
+        } else {
+            CommonPopupManager._readyPopup.push(arg);
+        }
     });
 
     PluginManager.registerCommand(pluginName, "CommonPopupClear", function (args) {
@@ -781,8 +784,9 @@ function CommonPopupManager() {
         //     return ImageManager.loadSystem(fileName);
         // } else {
         // // var fileName = arg.back;
-        // var fileName = arg.backImage;
-        // return ImageManager.loadPicture(fileName);
+        var fileName = arg.backImage;
+        ImageManager.loadPicture(fileName);
+        return ImageManager.loadPicture(fileName);
         // }
     };
 
