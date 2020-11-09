@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_CommonPopupCoreMZ Ver.0.0.5
+ * MNKR_CommonPopupCoreMZ Ver.0.0.6
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -28,9 +28,8 @@
  * @help
  * このプラグインは、汎用的なポップアップの仕組みを提供するプラグインです。
  * このプラグイン単体ではプラグインコマンドを追加する以外の機能はありません。
- * 追加機能として、
- * ・\I[x]で描画されるアイコンのサイズが文字サイズに追従する。
- * が追加されます。
+ * 
+ * 背景画像は /img/pictures/ 内に保存してください。
  * 
  * ------------------------------------------------------
  *  プラグインコマンド
@@ -156,6 +155,13 @@
  * @desc ポップアップ表示の変形パターン
  * @default 0
  * 
+ * @arg back
+ * @text 背景色
+ * @type string
+ * @desc 背景色:rgba(red,green,blue,alpha) / 透明:-1
+ * 例:rgba(0, 0, 0, 0.6)
+ * @default rgba(0, 0, 0, 0.6)
+ * 
  * @arg bx
  * @type number
  * @min -9007
@@ -221,15 +227,13 @@
  * %dがインデックスに変換されます。
  * @default popup_back%d
  * 
- * @arg back
- * @type select
- * @option 透明背景
- * @value -1
- * @option 背景カラー
- * @value 0
- * @text 背景
- * @desc ポップアップの背景
- * @default -1
+ * @arg backImage
+ * @text 背景画像
+ * @type file
+ * @require 1
+ * @dir img/pictures
+ * @desc 背景画像を指定します。背景画像を使用すると背景色は無視されます。
+ * @default
  */
 
 var Imported = Imported || {};
@@ -300,11 +304,12 @@ function CommonPopupManager() {
         }
         var character = this.character(eventId);
         var arg = CommonPopupManager.setPopup(argParam, character);
-        // if (arg.back > 0 || typeof arg.back === 'string') {
+
+        // if (arg.backImage !== '') {
         //     CommonPopupManager.bltCheck(CommonPopupManager.makeBitmap(arg));
         //     CommonPopupManager._readyPopup.push(arg);
         // } else {
-        CommonPopupManager._tempCommonSprites.setNullPos(arg);
+        CommonPopupManager._readyPopup.push(arg);
         // }
     });
 
@@ -314,7 +319,7 @@ function CommonPopupManager() {
 
     Array.prototype.setNullPos = function (object) {
         for (var i = 0; i < this.length; i++) {
-            if (this[i] === null || this[i] === undefined) {
+            if (this[i] === null || this[i] === '') {
                 this[i] = object;
                 return i;
             }
@@ -325,7 +330,7 @@ function CommonPopupManager() {
     Array.prototype.compact = function () {
         var result = [];
         for (var i = 0; i < this.length; i++) {
-            if (this[i] !== null && this[i] !== undefined) {
+            if (this[i] !== null && this[i] !== '') {
                 result.push(this[i]);
             }
         }
@@ -391,39 +396,38 @@ function CommonPopupManager() {
             this.bitmap = new Bitmap(width + 24, height + sh);
             this.drawBackRect(width + 24, height + sh);
             CommonPopupManager.window().drawTextEx(this._arg.text, 12, 4);
-            this.bitmap.blt(CommonPopupManager.window().contents, 0, 0, width + 24, height + sh, this._arg.bx, this._arg.by + 2);
+            // this.bitmap.blt(CommonPopupManager.window().contents, 0, 0, width + 24, height + sh, this._arg.bx, this._arg.by + 2);
+            this.bitmap.blt(CommonPopupManager.window().contents, 0, 0, width + 24, height + sh, this._arg.bx, this._arg.by);
         }
     };
 
     Sprite_Popup.prototype.drawBackRect = function (width, height) {
-        switch (this._arg.back) {
-            case 0:
-                // var color1 = commonPopupTextBackColor;
-                var color2 = 'rgba(0,0,0,0)';
-                var dSize = width / 4;
-                // this.bitmap.gradientFillRect(0, 0, dSize, height, color2, color1);
-                this.bitmap.gradientFillRect(0, 0, dSize, height, color2, color2);
-                this.bitmap.fillRect(dSize, 0, dSize * 2, height, color1);
-                // this.bitmap.gradientFillRect(dSize * 3, 0, dSize, height, color1, color2);
-                this.bitmap.gradientFillRect(dSize * 3, 0, dSize, height, color2, color2);
-                break;
-            case -1:
-                break;
-            default:
-                var bitmap = CommonPopupManager.makeBitmap(this._arg);
-                var w = this._bitmap.width;
-                var h = this._bitmap.height;
-                if (typeof this._arg.back === 'string') {
-                    w = bitmap.width > this._bitmap.width ? bitmap.width : w;
-                    h = bitmap.height > this._bitmap.height ? bitmap.height : h;
-                    if (w > this._bitmap.width || h > this._bitmap.height) {
-                        this.bitmap = new Bitmap(w, h);
-                    }
-                }
-                this.bitmap.blt(bitmap, 0, 0, bitmap.width, bitmap.height, 0, 0, w, h);
-                bitmap.clear();
-                bitmap = null;
+
+        // if (this._arg.backImage !== '') {
+        //     var bitmap = CommonPopupManager.makeBitmap(this._arg);
+        //     var w = this._bitmap.width;
+        //     var h = this._bitmap.height;
+        //     if (typeof this._arg.back === 'string') {
+        //         w = bitmap.width > this._bitmap.width ? bitmap.width : w;
+        //         h = bitmap.height > this._bitmap.height ? bitmap.height : h;
+        //         if (w > this._bitmap.width || h > this._bitmap.height) {
+        //             this.bitmap = new Bitmap(w, h);
+        //         }
+        //     }
+        //     this.bitmap.blt(bitmap, 0, 0, bitmap.width, bitmap.height, 0, 0, w, h);
+        //     bitmap.clear();
+        //     bitmap = null;
+        // } else {
+        if (this._arg.back === -1) {
+        } else {
+            var color1 = this._arg.back;
+            var color2 = 'rgba(0,0,0,0)';
+            var dSize = width / 4;
+            this.bitmap.gradientFillRect(0, 0, dSize, height, color2, color1);
+            this.bitmap.fillRect(dSize, 0, dSize * 2, height, color1);
+            this.bitmap.gradientFillRect(dSize * 3, 0, dSize, height, color1, color2);
         }
+        // }
     };
 
     Sprite_Popup.prototype.update = function () {
@@ -687,6 +691,7 @@ function CommonPopupManager() {
             sy: 0,                   // 表示位置補正Y
             pattern: 0,              // 表示パターン
             back: -1,                // 背景に使う画像インデックス
+            backImage: '',           // 背景に使う画像ファイル名
             bx: 0,                   // 内容の表示位置補正X
             by: 0,                   // 内容の表示位置補正Y
             extend: '',              // 
@@ -698,7 +703,7 @@ function CommonPopupManager() {
             enableOutEffect: true
         };
         var array = ['x', 'y', 'text', 'eventId', 'count', 'delay', 'moveX', 'moveY',
-            'sx', 'sy', 'pattern', 'back', 'bx', 'by', 'extend', 'fixed',
+            'sx', 'sy', 'pattern', 'back', 'backImage', 'bx', 'by', 'extend', 'fixed',
             'anchorX', 'anchorY', 'slideCount'];
         for (var i = 0; i < argParam.length; i++) {
             if (i > 0) {
@@ -713,6 +718,8 @@ function CommonPopupManager() {
                             arg[code] = value === 'true';
                         } else if (code === 'back') {
                             arg[code] = (Number(value) !== NaN) ? value : Number(value);
+                        } else if (code === 'backImage') {
+                            arg[code] = value;
                         } else {
                             arg[code] = Number(value);
                         }
@@ -765,14 +772,16 @@ function CommonPopupManager() {
     };
 
     CommonPopupManager.makeBitmap = function (arg) {
-        if (typeof arg.back === 'number') {
-            var fileName = commonPopupTextBackFileName;
-            fileName = fileName.replace(/%d/g, arg.back);
-            return ImageManager.loadSystem(fileName);
-        } else {
-            var fileName = arg.back;
-            return ImageManager.loadPicture(fileName);
-        }
+        // if (typeof arg.back === 'number') {
+        //     var fileName = commonPopupTextBackFileName;
+        //     // fileName = fileName.replace(/%d/g, arg.back);
+        //     fileName = fileName.replace(/%d/g, arg.backImage);
+        //     return ImageManager.loadSystem(fileName);
+        // } else {
+        // // var fileName = arg.back;
+        // var fileName = arg.backImage;
+        // return ImageManager.loadPicture(fileName);
+        // }
     };
 
     CommonPopupManager.bltCheck = function (bitmap) {
@@ -810,7 +819,7 @@ function CommonPopupManager() {
     var _cPU_SsBase_update = Spriteset_Base.prototype.update;
     Spriteset_Base.prototype.update = function () {
         _cPU_SsBase_update.call(this);
-        if (this._popupContainer === undefined) { return }
+        if (this._popupContainer === '') { return }
         if (CommonPopupManager._tempCommonSprites) {
             for (var i = 0; i < CommonPopupManager._tempCommonSprites.length; i++) {
                 if (CommonPopupManager._tempCommonSprites[i]) {
