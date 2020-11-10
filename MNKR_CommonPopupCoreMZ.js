@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_CommonPopupCoreMZ Ver.0.0.12
+ * MNKR_CommonPopupCoreMZ Ver.0.1.0
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -62,7 +62,7 @@
  *   anchorX:ポップアップ原点X。0イベントの右端。タイル単位。
  *   anchorY:ポップアップ原点Y。0イベントの下端。タイル単位。
  * 
- * 本家で未実装と思われる機能
+ * 未実装と思われる機能
  *   fixed:画面に固定するか？ true/falseで指定。
  *   slideCount:新しいポップアップが発生した際、上にスライドさせる速度。
  *
@@ -204,45 +204,6 @@
  * @desc 表示されているポップアップを消去します。
  */
 
-/*
- * @param Text Back Color
- * @text ポップアップ背景色
- * @desc ポップアップの背景カラーです。
- * rgba(red,green,blue,alpha)で設定してください。
- * @default rgba(0,0,0,0.6)
- * 
- * @param Text Back FileName
- * @text ポップアップ背景画像
- * @desc ポップアップの背景画像名です。
- * %dがインデックスに変換されます。
- * @default popup_back%d
- * 
- * @arg anchorX
- * @type string
- * @text 原点X
- * @desc ポップアップ原点X
- * @default -0.5
- * 
- * @arg anchorY
- * @type string
- * @text 原点Y
- * @desc ポップアップ原点Y
- * @default -0.5
- * 
- * @arg fixed
- * @type boolean
- * @on 固定する
- * @off 固定しない
- * @text 画面に固定（false時が未実装）
- * @desc 画面に固定
- * @default true
- * 
- * @arg slideCount
- * @text スライド速度
- * @desc 新しいポップアップが発生した際、上にスライドさせる速度。
- * @default
- */
-
 var Imported = Imported || {};
 Imported['CommonPopupCore'] = 1.06;
 
@@ -356,19 +317,14 @@ function CommonPopupManager() {
         } else {
             CommonPopupManager.window().resetFontSettings();
             var text = this._arg.text;
-            var width = CommonPopupManager.window().textWidth(text);
-            var height = CommonPopupManager.window().contents.fontSize + 8;
-
-            console.log(width);
-            console.log(height);
-
+            var size = CommonPopupManager.window().textSizeEx(text);
+            var width = size.width;
+            var height = size.height;
             var sh = 8;
-            // if (this._arg.back !== '-1') { sh = 2 }  //動かしたほうが不自然な挙動になるので削除
             CommonPopupManager.window().createContents();
             this.bitmap = new Bitmap(width + 24, height + sh);
             this.drawBackRect(width + 24, height + sh);
-            CommonPopupManager.window().drawTextEx(this._arg.text, 12, 4);  //MZではwidthを入れるべき？
-            // this.bitmap.blt(CommonPopupManager.window().contents, 0, 0, width + 24, height + sh, this._arg.bx, this._arg.by + 2);
+            CommonPopupManager.window().drawTextEx(this._arg.text, 12, 4);
             this.bitmap.blt(CommonPopupManager.window().contents, 0, 0, width + 24, height + sh, this._arg.bx, this._arg.by);
         }
     };
@@ -745,13 +701,6 @@ function CommonPopupManager() {
     };
 
     CommonPopupManager.makeBitmap = function (arg) {
-        // if (typeof arg.back === 'number') {
-        //     var fileName = commonPopupTextBackFileName;
-        //     // fileName = fileName.replace(/%d/g, arg.back);
-        //     fileName = fileName.replace(/%d/g, arg.backImage);
-        //     return ImageManager.loadSystem(fileName);
-        // } else {
-        // // var fileName = arg.back;
         var fileName = arg.backImage;
         ImageManager.loadPicture(fileName);
         return ImageManager.loadPicture(fileName);
