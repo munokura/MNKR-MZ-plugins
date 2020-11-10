@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_CommonPopupCoreMZ Ver.0.0.11
+ * MNKR_CommonPopupCoreMZ Ver.0.0.12
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -339,8 +339,6 @@ function CommonPopupManager() {
         this._arg = arg;
         this.anchor.x = arg.anchorX;
         this.anchor.y = arg.anchorY;
-        // this.anchor.x = arg.anchorX * -1;
-        // this.anchor.y = arg.anchorY * -1;
         this.x = arg.x;
         this.y = arg.y;
         this.z = 6;
@@ -360,12 +358,16 @@ function CommonPopupManager() {
             var text = this._arg.text;
             var width = CommonPopupManager.window().textWidth(text);
             var height = CommonPopupManager.window().contents.fontSize + 8;
+
+            console.log(width);
+            console.log(height);
+
             var sh = 8;
-            if (this._arg.back === 0) { sh = 2 }
+            // if (this._arg.back !== '-1') { sh = 2 }  //動かしたほうが不自然な挙動になるので削除
             CommonPopupManager.window().createContents();
             this.bitmap = new Bitmap(width + 24, height + sh);
             this.drawBackRect(width + 24, height + sh);
-            CommonPopupManager.window().drawTextEx(this._arg.text, 12, 4);
+            CommonPopupManager.window().drawTextEx(this._arg.text, 12, 4);  //MZではwidthを入れるべき？
             // this.bitmap.blt(CommonPopupManager.window().contents, 0, 0, width + 24, height + sh, this._arg.bx, this._arg.by + 2);
             this.bitmap.blt(CommonPopupManager.window().contents, 0, 0, width + 24, height + sh, this._arg.bx, this._arg.by);
         }
@@ -853,10 +855,6 @@ function CommonPopupManager() {
     };
 
     //ここから MV Joint
-
-    PluginManager.registerCommand(pluginName, "callCommand", function (arg) {
-        this.command356([arg.commandArg]);
-    });
 
     function isRect(value) {
         return (typeof value) === "object";
