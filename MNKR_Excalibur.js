@@ -30,6 +30,7 @@
  * @default 0
  * 
  * @param Excalibur Key
+ * @text 起動キー
  * @desc 起動するキーを指定します。選択肢以外のキーも設定できます。
  * @type select
  * @option Tab
