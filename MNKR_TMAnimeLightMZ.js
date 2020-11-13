@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_TMAnimeLightMZ Ver.1.0.1
+ * MNKR_TMAnimeLightMZ Ver.1.0.2
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -21,7 +21,7 @@
 /*:
  * @target MZ
  * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMAnimeLightMZ.js
- * @plugindesc v1.0.1 イベントにアニメーション付きの明かりを表示します。
+ * @plugindesc v1.0.2 イベントにアニメーション付きの明かりを表示します。
  *
  * @author tomoaky (改変 munokura)
  *
@@ -105,6 +105,13 @@
  * @default 30
  *
  * 
+ * @noteParam animeLight
+ * @noteRequire 1
+ * @noteDir img/system/
+ * @noteType file
+ * @noteData events
+ * 
+ * 
  * @command animeLight
  * @text 明かりの描画
  * @desc 明かりの描画を実行します。
@@ -183,13 +190,6 @@ Imported.TMAnimeLight = true;
 var TMPlugin = TMPlugin || {};
 TMPlugin.AnimeLight = {};
 
-const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
-
-TMPlugin.AnimeLight.Parameters = PluginManager.parameters(pluginName);
-TMPlugin.AnimeLight.Range = +(TMPlugin.AnimeLight.Parameters['range'] || 0.1);
-TMPlugin.AnimeLight.DefaultZ = +(TMPlugin.AnimeLight.Parameters['defaultZ'] || 4);
-TMPlugin.AnimeLight.Frames = +(TMPlugin.AnimeLight.Parameters['frames'] || 30);
-
 if (!TMPlugin.EventBase) {
   TMPlugin.EventBase = true;
   (() => {
@@ -229,45 +229,14 @@ if (!TMPlugin.EventBase) {
   })();
 } // TMPlugin.EventBase
 
-// if (!TMPlugin.InterpreterBase) {
-//   TMPlugin.InterpreterBase = true;
-//   (() => {
-//     'use strict';
-
-//     Game_Interpreter.prototype.convertEscapeCharactersTM = function (text) {
-//       text = text.replace(/\\/g, '\x1b');
-//       text = text.replace(/\x1b\x1b/g, '\\');
-//       text = text.replace(/\x1bV\[(\d+)\]/gi, function () {
-//         return $gameVariables.value(parseInt(arguments[1]));
-//       }.bind(this));
-//       text = text.replace(/\x1bV\[(\d+)\]/gi, function () {
-//         return $gameVariables.value(parseInt(arguments[1]));
-//       }.bind(this));
-//       text = text.replace(/\x1bN\[(\d+)\]/gi, function () {
-//         return this.actorNameTM(parseInt(arguments[1]));
-//       }.bind(this));
-//       text = text.replace(/\x1bP\[(\d+)\]/gi, function () {
-//         return this.partyMemberNameTM(parseInt(arguments[1]));
-//       }.bind(this));
-//       text = text.replace(/\x1bG/gi, TextManager.currencyUnit);
-//       return text;
-//     };
-
-//     Game_Interpreter.prototype.actorNameTM = function (n) {
-//       let actor = n >= 1 ? $gameActors.actor(n) : null;
-//       return actor ? actor.name() : '';
-//     };
-
-//     Game_Interpreter.prototype.partyMemberNameTM = function (n) {
-//       let actor = n >= 1 ? $gameParty.members()[n - 1] : null;
-//       return actor ? actor.name() : '';
-//     };
-
-//   })();
-// } // TMPlugin.InterpreterBase
-
 (() => {
   'use strict';
+
+  const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
+  TMPlugin.AnimeLight.Parameters = PluginManager.parameters(pluginName);
+  TMPlugin.AnimeLight.Range = +(TMPlugin.AnimeLight.Parameters['range'] || 0.1);
+  TMPlugin.AnimeLight.DefaultZ = +(TMPlugin.AnimeLight.Parameters['defaultZ'] || 4);
+  TMPlugin.AnimeLight.Frames = +(TMPlugin.AnimeLight.Parameters['frames'] || 30);
 
   //-----------------------------------------------------------------------------
   // Game_Temp
