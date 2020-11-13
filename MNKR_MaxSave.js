@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_MaxSave Ver.1.0.0
+ * MNKR_MaxSave Ver.1.0.1
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -18,12 +18,13 @@
  * @type number
  * @min 1
  * @max 99
- * @desc セーブスロットの数。オートセーブのスロット分1を加えてください。
- * ツクールデフォルト:21
+ * @desc セーブスロットの数。MZではオートセーブのスロット分1を加えてください。
+ * ツクールデフォルト MV:20 / MZ:21
  * @default 6
  *
  * @help
  * セーブスロットの数を指定できます。
+ * RPGツクールMZでは、オートセーブのスロット分1を加えてください。
  *
  * プラグインコマンドはありません。
  *
@@ -35,14 +36,14 @@
  *   利用形態（商用、18禁利用等）についても制限はありません。
  */
 
-(function() {
+(() => {
     'use strict';
 
-    const pluginName = 'MNKR_MaxSave';
+    const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
     const parameters = PluginManager.parameters(pluginName);
-    const maxFiles = Number(parameters['Max Files'] || 20);
+    const maxFiles = Number(parameters['Max Files'] || 6);
 
-    DataManager.maxSavefiles = function() {
+    DataManager.maxSavefiles = function () {
         return maxFiles;
     };
 
