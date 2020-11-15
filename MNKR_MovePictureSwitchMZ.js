@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_MovePictureSwitchMZ Ver.0.0.1
+ * MNKR_MovePictureSwitchMZ Ver.0.0.2
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -43,10 +43,6 @@
       x += this.x();
       y += this.y();
     }
-    console.log(x);
-    console.log(y);
-    console.log(arguments);
-    // _Game_Picture_move.apply(this, arguments);
     _Game_Picture_move.call(this, origin, x, y, scaleX, scaleY, opacity, blendMode, duration, easingType);
   }
 
