@@ -1,4 +1,4 @@
-﻿/*
+/*
  * --------------------------------------------------
  * MNKR_TitleRandomImage Ver.1.0.1
  * Copyright (c) 2020 Munokura
@@ -26,6 +26,7 @@
  *   作者に無断で改変、再配布が可能で、
  *   利用形態（商用、18禁利用等）についても制限はありません。
  * 
+ * 
  * @param titleImages
  * @desc タイトル画像リストを設定します
  * @text タイトル画像リスト
@@ -36,7 +37,6 @@
  */
 
 (() => {
-
   "use strict";
 
   const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");

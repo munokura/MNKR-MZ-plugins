@@ -1,4 +1,4 @@
-﻿/*
+/*
  * --------------------------------------------------
  * MNKR_TMEquipStatusExMZ Ver.1.0.1
  * Copyright (c) 2020 Munokura
@@ -22,9 +22,11 @@
  * @target MZ
  * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMEquipStatusExMZ.js
  * @author tomoaky (改変 munokura)
- * @plugindesc 装備ステータスの項目を自由に編集します。
+ * @plugindesc 装備ステータスの表示項目を編集します。
  * 
  * @help
+ * 装備ステータスの表示項目を編集します。
+ * 
  * 使い方:
  * 
  * プラグインパラメータ補足:

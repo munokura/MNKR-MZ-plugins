@@ -93,7 +93,6 @@ var Imported = Imported || {};
 Imported.TMTimerEx = true;
 
 (() => {
-
     "use strict";
 
     const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");

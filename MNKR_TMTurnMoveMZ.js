@@ -78,7 +78,6 @@
 
 var Imported = Imported || {};
 Imported.TMTurnMove = true;
-
 var TMPlugin = TMPlugin || {};
 
 if (!TMPlugin.EventBase) {

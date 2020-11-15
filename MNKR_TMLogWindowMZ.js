@@ -1,4 +1,4 @@
-﻿/*
+/*
  * --------------------------------------------------
  * MNKR_TMLogWindowMZ Ver.0.0.1
  * Copyright (c) 2020 Munokura

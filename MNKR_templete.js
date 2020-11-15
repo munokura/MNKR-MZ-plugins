@@ -234,8 +234,8 @@
 
 
 (() => {
-
   "use strict";
+
   const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
   const parameters = PluginManager.parameters(pluginName);
   const number = Number(parameters['Number'] || 0);

@@ -220,7 +220,6 @@
 
 var Imported = Imported || {};
 Imported.TMMoveEx = true;
-
 var TMPlugin = TMPlugin || {};
 
 if (!TMPlugin.EventBase) {

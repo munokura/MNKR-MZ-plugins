@@ -69,11 +69,9 @@
 
 var Imported = Imported || {};
 Imported.TMItemRestriction = true;
-
 var TMPlugin = TMPlugin || {};
 
 (() => {
-
   "use strict";
 
   const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");

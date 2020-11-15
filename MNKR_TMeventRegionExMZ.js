@@ -1,4 +1,4 @@
-﻿/*
+/*
  * --------------------------------------------------
  * MNKR_TMeventRegionExMZ Ver.1.0.0
  * Copyright (c) 2020 Munokura
@@ -162,6 +162,7 @@
  */
 
 var TMPlugin = TMPlugin || {};
+
 if (!TMPlugin.EventBase) {
     TMPlugin.EventBase = true;
     (() => {

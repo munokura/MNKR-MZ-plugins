@@ -1,4 +1,4 @@
-﻿/*
+/*
  * --------------------------------------------------
  * MNKR_TMholdDirectionMZ Ver.1.0.0
  * Copyright (c) 2020 Munokura
