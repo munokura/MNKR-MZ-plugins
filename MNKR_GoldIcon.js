@@ -32,7 +32,6 @@
  */
 
 (() => {
-
     'use strict';
 
     const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
