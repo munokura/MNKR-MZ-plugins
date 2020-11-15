@@ -14,6 +14,9 @@
  * @author munokura
  *
  * @help
+ * スイッチでピクチャの移動座標を絶対値と相対値とを切り替えられます。
+ * 
+ * 
  * 利用規約:
  *   MITライセンスです。
  *   https://ja.osdn.net/projects/opensource/wiki/licenses%2FMIT_license
@@ -22,7 +25,7 @@
  * 
  * 
  * @param switchPciture
- * @text スイッチ
+ * @text 相対指定スイッチ
  * @type switch
  * @default 0
  * @desc 指定スイッチON時はピクチャの移動座標が相対指定になります。スイッチが無指定の場合、常に相対指定になります。
