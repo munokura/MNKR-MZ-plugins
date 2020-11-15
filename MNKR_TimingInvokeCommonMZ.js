@@ -72,14 +72,12 @@
 (() => {
 
 	"use strict";
-	////////////////////////////////////////////////////////////////////////////////////
 
-	const parameters = PluginManager.parameters('MNKR_TimingInvokeCommonMZ');
+	const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
+	const parameters = PluginManager.parameters(pluginName);
 	const transferCommonId = Number(parameters['TransferCommonID'] || 0);
 	const battleStartCommonId = Number(parameters['BattleStartCommonID'] || 0);
 	const battleEndCommonId = Number(parameters['BattleEndCommonID'] || 0);
-
-	////////////////////////////////////////////////////////////////////////////////////
 
 	const __BManager_startBattle = BattleManager.startBattle;
 	BattleManager.startBattle = function () {
@@ -97,8 +95,6 @@
 		}
 	};
 
-	////////////////////////////////////////////////////////////////////////////////////
-
 	const __GInterpreter_command201 = Game_Interpreter.prototype.command201;
 	Game_Interpreter.prototype.command201 = function () {
 		__GInterpreter_command201.apply(this, arguments);
@@ -107,7 +103,5 @@
 			$gameTemp.reserveCommonEvent(transferCommonId);
 		}
 	};
-
-	////////////////////////////////////////////////////////////////////////////////////
 
 })();

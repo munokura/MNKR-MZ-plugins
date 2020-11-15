@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_RandomEnemies Ver.1.0.2
+ * MNKR_RandomEnemies Ver.1.0.3
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -36,23 +36,24 @@
  *   利用形態（商用、18禁利用等）についても制限はありません。
  */
 
-(function() {
+(() => {
+
     'use strict';
-    
-    Game_Troop.prototype.setup = function(troopId) {
+
+    Game_Troop.prototype.setup = function (troopId) {
         var condition = true;
         while (condition) {
             this.clear();
             this._troopId = troopId;
             this._enemies = [];
 
-            this.troop().members.forEach(function(member) {
+            this.troop().members.forEach(function (member) {
                 var randomEnemyId = selectEnemyId($dataEnemies[member.enemyId]);
                 var enemy = new Game_Enemy(randomEnemyId || member.enemyId, member.x, member.y);
                 if (randomEnemyId === 0 || member.hidden) {
-                  enemy.hide();
+                    enemy.hide();
                 } else {
-                  condition = false;
+                    condition = false;
                 };
                 this._enemies.push(enemy);
             }, this);
@@ -64,7 +65,7 @@
         if (!arrayData.meta.RandomEnemy) {
             return null;
         };
-        var pool = JsonEx.parse( `[${arrayData.meta.RandomEnemy}]` );
+        var pool = JsonEx.parse(`[${arrayData.meta.RandomEnemy}]`);
         return Number(pool[Math.randomInt(pool.length)]);
     };
 

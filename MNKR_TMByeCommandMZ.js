@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_TMByeCommandMZ Ver.1.0.1
+ * MNKR_TMByeCommandMZ Ver.1.0.2
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -64,9 +64,10 @@
  * @param byeSeParam
  * @text 効果音パラメータ
  * @desc さよならコマンド効果音のパラメータ
- * 初期値: {"volume":90, "pitch":100, "pan":0}
- * @default {"volume":90, "pitch":100, "pan":0}
- *
+ * 初期値: {"volume":"90","pitch":"100","pan":"0"}
+ * @default {"volume":"90","pitch":"100","pan":"0"}
+ * @type struct<seParam>
+ * 
  *
  * @command disableBye
  * @text さよならコマンド無効化
@@ -78,15 +79,39 @@
  * @desc 使用不可にしたさよならコマンドを元に戻します。
  */
 
+/*~struct~seParam:
+ * @param volume
+ * @text 音量
+ * @default 90
+ * @type number
+ * @max 100
+ * @desc さよならコマンド効果音の音量
+ *
+ * @param pitch
+ * @text ピッチ
+ * @default 100
+ * @type number
+ * @min 50
+ * @max 150
+ * @desc さよならコマンド効果音のピッチ
+ *
+ * @param pan
+ * @text 位相
+ * @default 0
+ * @type number
+ * @min -100
+ * @max 100
+ * @desc さよならコマンド効果音の位相
+ */
+
 var Imported = Imported || {};
 Imported.TMByeCommand = true;
+var TMPlugin = TMPlugin || {};
 
 (() => {
   'use strict';
 
   const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
-
-  var TMPlugin = TMPlugin || {};
   TMPlugin.ByeCommand = {};
   TMPlugin.ByeCommand.Parameters = PluginManager.parameters(pluginName);
   TMPlugin.ByeCommand.ByeCommand = TMPlugin.ByeCommand.Parameters['byeCommand'] || '別れる';

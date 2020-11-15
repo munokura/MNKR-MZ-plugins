@@ -1,4 +1,4 @@
-﻿/*
+/*
  * --------------------------------------------------
  * MNKR_HideFace Ver.1.0.0
  * Copyright (c) 2020 Munokura
@@ -34,6 +34,7 @@
 (() => {
 
   "use strict";
+
   const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
   const parameters = PluginManager.parameters(pluginName);
   const gaugeWidth = Number(parameters['Gauge Width'] || 0);

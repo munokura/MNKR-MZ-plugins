@@ -63,6 +63,7 @@
 (() => {
 
   "use strict";
+
   const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
   const parameters = PluginManager.parameters(pluginName);
   const activation = Number(parameters['activation'] || 0);

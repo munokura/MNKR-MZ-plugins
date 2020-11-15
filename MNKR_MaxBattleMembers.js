@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_MaxBattleMembers Ver.1.0.0
+ * MNKR_MaxBattleMembers Ver.1.0.1
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -13,14 +13,6 @@
  * @plugindesc 戦闘に参加する最大人数を指定できます。
  * @author munokura
  *
- * @param Max Members
- * @text 戦闘参加最大人数
- * @type number
- * @min 1
- * @desc 戦闘に参加する最大人数
- * ツクールデフォルト:4
- * @default 4
- *
  * @help
  * 戦闘に参加する最大人数を指定できます。
  *
@@ -32,16 +24,26 @@
  *   https://ja.osdn.net/projects/opensource/wiki/licenses%2FMIT_license
  *   作者に無断で改変、再配布が可能で、
  *   利用形態（商用、18禁利用等）についても制限はありません。
+ *
+ *
+ * @param Max Members
+ * @text 戦闘参加最大人数
+ * @type number
+ * @min 1
+ * @desc 戦闘に参加する最大人数
+ * ツクールデフォルト:4
+ * @default 4
  */
 
-(function() {
+(() => {
+
     'use strict';
 
-    const pluginName = 'MNKR_MaxBattleMembers';
+    const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
     const parameters = PluginManager.parameters(pluginName);
     const maxMembers = Number(parameters['Max Members'] || 4);
 
-    Game_Party.prototype.maxBattleMembers = function() {
+    Game_Party.prototype.maxBattleMembers = function () {
         return maxMembers;
     };
 

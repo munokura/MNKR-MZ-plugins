@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_TMAnimeLightMZ Ver.1.0.2
+ * MNKR_TMAnimeLightMZ Ver.1.0.3
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -82,8 +82,6 @@
  * 
  * @param range
  * @text アニメーションの大きさ
- * @type number
- * @decimals 2
  * @desc アニメーションの大きさ
  * 初期値: 0.10 ( 0.10 でプラスマイナス 10% の拡大縮小アニメ)
  * @default 0.10
@@ -91,7 +89,6 @@
  * @param defaultZ
  * @text アニメーションのZ座標
  * @type number
- * @decimals
  * @desc アニメーションのZ座標
  * 初期値: 4
  * @default 4
@@ -99,7 +96,6 @@
  * @param frames
  * @text アニメーションのフレーム数
  * @type number
- * @decimals
  * @desc アニメーションにかけるフレーム数
  * 初期値: 30
  * @default 30
@@ -192,6 +188,7 @@ TMPlugin.AnimeLight = {};
 
 if (!TMPlugin.EventBase) {
   TMPlugin.EventBase = true;
+
   (() => {
     'use strict';
 

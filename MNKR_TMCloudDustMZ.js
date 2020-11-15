@@ -157,16 +157,12 @@
  * @text X座標
  * @desc 表示するX座標です。
  * 整数で『場所移動』で利用する座標になります。
- * @type number
- * @decimals 2
  * @default 0.00
  *
  * @arg setY
  * @text Y座標
  * @desc 表示するY座標です。
  * 整数で『場所移動』で利用する座標になります。
- * @type number
- * @decimals 2
  * @default 0.00
  * 
  * @arg dusts
@@ -178,16 +174,12 @@
  * @arg speed
  * @text 移動速度
  * @desc 土煙の移動速度を設定します。
- * @type number
- * @decimals 2
  * @default 0.02
  * 
  * @arg direction
  * @text 移動方向
  * @desc 土煙の移動方向を設定します。
  * 数値は右を0として、時計回りに6.28で1周となります。
- * @type number
- * @decimals 2
  * @default 0.00
  * 
  * 
@@ -212,16 +204,12 @@
  * @arg speed
  * @text 移動速度
  * @desc 土煙の移動速度を設定します。
- * @type number
- * @decimals 2
  * @default 0.02
  * 
  * @arg direction
  * @text 移動方向
  * @desc 土煙の移動方向を設定します。
  * 数値は右を0として、時計回りに6.28で1周となります。
- * @type number
- * @decimals 2
  * @default 0.00
  * 
  * 
@@ -260,11 +248,9 @@
 
 var Imported = Imported || {};
 Imported.TMCloudDust = true;
-
 var TMPlugin = TMPlugin || {};
 
 (() => {
-
   "use strict";
 
   const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
@@ -277,7 +263,7 @@ var TMPlugin = TMPlugin || {};
 
   function Game_CloudDust() {
     this.initialize.apply(this, arguments);
-  }
+  };
 
   //-----------------------------------------------------------------------------
   // Game_System
@@ -516,7 +502,7 @@ var TMPlugin = TMPlugin || {};
 
   function Sprite_CloudDust() {
     this.initialize.apply(this, arguments);
-  }
+  };
 
   Sprite_CloudDust.prototype = Object.create(Sprite.prototype);
   Sprite_CloudDust.prototype.constructor = Sprite_CloudDust;

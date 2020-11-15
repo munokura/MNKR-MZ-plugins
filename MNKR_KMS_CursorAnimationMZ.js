@@ -42,6 +42,21 @@
  * @plugindesc カーソルの位置にアニメーションを表示します。
  * @author TOMY (改変 munokura)
  *
+ * @help
+ * カーソルの位置にアニメーションを表示します。
+ * 
+ * このプラグインには、プラグインコマンドはありません。
+ *
+ *
+ * ------------------------------------------------------
+ * 利用規約
+ * ------------------------------------------------------
+ *   MITライセンスです。
+ *   https://ja.osdn.net/projects/opensource/wiki/licenses%2FMIT_license
+ *   作者に無断で改変、再配布が可能で、
+ *   利用形態（商用、18禁利用等）についても制限はありません。
+ * 
+ *
  * @param Radius X
  * @text アニメX半径
  * @type number
@@ -63,20 +78,6 @@
  * @default 1.50
  * @desc アニメーションの速度です。
  * 大きいほど速くなります。
- *
- * @help
- * カーソルの位置にアニメーションを表示します。
- * 
- * このプラグインには、プラグインコマンドはありません。
- *
- *
- * ------------------------------------------------------
- * 利用規約
- * ------------------------------------------------------
- *   MITライセンスです。
- *   https://ja.osdn.net/projects/opensource/wiki/licenses%2FMIT_license
- *   作者に無断で改変、再配布が可能で、
- *   利用形態（商用、18禁利用等）についても制限はありません。
  */
 
 (() => {
@@ -91,7 +92,7 @@
     //-----------------------------------------------------------------------------
     // Window
 
-    Window.prototype.isCursorActive = function() {
+    Window.prototype.isCursorActive = function () {
         return this.visible &&
             this.active &&
             this.isOpen() &&
@@ -99,7 +100,7 @@
             this._cursorRect.height > 0;
     };
 
-    Window.prototype.getRelativeCursorPosition = function() {
+    Window.prototype.getRelativeCursorPosition = function () {
         const pad = this._padding;
         const x = this.x + this._cursorRect.x + pad - this.origin.x;
         const y = this.y + this._cursorRect.y + pad - this.origin.y + this._cursorRect.height / 2;
@@ -123,7 +124,7 @@
 
     Sprite_AnimationCursorParticle.prototype.MIN_SPEED = 2;
 
-    Sprite_AnimationCursorParticle.prototype.initialize = function() {
+    Sprite_AnimationCursorParticle.prototype.initialize = function () {
         // Sprite_Base.prototype.initialize.call(this);
         Sprite.prototype.initialize.call(this);
 
@@ -138,7 +139,7 @@
         this.opacity = 0;
     };
 
-    Sprite_AnimationCursorParticle.prototype.setupBitmap = function() {
+    Sprite_AnimationCursorParticle.prototype.setupBitmap = function () {
         this.bitmap = new Bitmap(1, 1); // dummy
 
         this._lineBitmap = new Bitmap(64, 3);
@@ -159,23 +160,23 @@
         this.addChild(this._rope);
     };
 
-    Sprite_AnimationCursorParticle.prototype.redrawLine = function() {
+    Sprite_AnimationCursorParticle.prototype.redrawLine = function () {
         this._lineBitmap.gradientFillRect(0, 0, this._lineBitmap.width, this._lineBitmap.height, 'black', this._color);
     };
 
-    Sprite_AnimationCursorParticle.prototype.setDestination = function(point, opacity) {
+    Sprite_AnimationCursorParticle.prototype.setDestination = function (point, opacity) {
         this._destinationPoint = point;
         this._destinationOpacity = opacity;
     };
 
-    Sprite_AnimationCursorParticle.prototype.update = function() {
+    Sprite_AnimationCursorParticle.prototype.update = function () {
         // Sprite_Base.prototype.update.call(this);
         Sprite.prototype.update.call(this);
 
         this.updatePosition();
     };
 
-    Sprite_AnimationCursorParticle.prototype.updatePosition = function() {
+    Sprite_AnimationCursorParticle.prototype.updatePosition = function () {
         this.updateRope();
 
         if (this.x == this._destinationPoint.x &&
@@ -189,7 +190,7 @@
         this.opacity = this.forwardValue(this.opacity, this._destinationOpacity, 1.5);
     };
 
-    Sprite_AnimationCursorParticle.prototype.forwardValue = function(fromVal, toVal, coef) {
+    Sprite_AnimationCursorParticle.prototype.forwardValue = function (fromVal, toVal, coef) {
         coef = coef || 1;
 
         let diff = (toVal - fromVal) * coef;
@@ -207,7 +208,7 @@
         return fromVal + diff;
     };
 
-    Sprite_AnimationCursorParticle.prototype.updateRope = function() {
+    Sprite_AnimationCursorParticle.prototype.updateRope = function () {
         const dx = this._destinationPoint.x - this.x;
         const dy = this._destinationPoint.y - this.y;
         const radDelta = this._delta * Math.PI;
@@ -228,10 +229,10 @@
      * @type     Number
      */
     Object.defineProperty(Sprite_AnimationCursorParticle.prototype, 'delta', {
-        get: function() {
+        get: function () {
             return this._delta;
         },
-        set: function(value) {
+        set: function (value) {
             this._delta = value;
         },
         configurable: true
@@ -244,10 +245,10 @@
      * @type     CSS color code
      */
     Object.defineProperty(Sprite_AnimationCursorParticle.prototype, 'color', {
-        get: function() {
+        get: function () {
             return this._color;
         },
-        set: function(value) {
+        set: function (value) {
             this._color = value;
             this.redrawLine();
         },
@@ -269,7 +270,7 @@
 
     Sprite_AnimationCursor.prototype.constructor = Sprite_AnimationCursor;
 
-    Sprite_AnimationCursor.prototype.initialize = function() {
+    Sprite_AnimationCursor.prototype.initialize = function () {
         // Sprite_Base.prototype.initialize.call(this);
         Sprite.prototype.initialize.call(this);
 
@@ -284,7 +285,7 @@
         this.createParticles();
     };
 
-    Sprite_AnimationCursor.prototype.createParticles = function() {
+    Sprite_AnimationCursor.prototype.createParticles = function () {
         const colors = ['red', 'orange', 'green', 'cyan', 'violet'];
         for (let i = 0; i < colors.length; ++i) {
             const particle = new Sprite_AnimationCursorParticle();
@@ -294,33 +295,33 @@
         }
     };
 
-    Sprite_AnimationCursor.prototype.resetPosition = function() {
+    Sprite_AnimationCursor.prototype.resetPosition = function () {
         this._focus = new Point(Graphics.width / 2, Graphics.height / 2);
         this._targetOpacity = 0;
         this.notifyParticle();
     };
 
-    Sprite_AnimationCursor.prototype.notifyParticle = function() {
-        this.children.forEach(function(child) {
+    Sprite_AnimationCursor.prototype.notifyParticle = function () {
+        this.children.forEach(function (child) {
             child.setDestination(this._focus, this._targetOpacity);
         }, this);
     };
 
-    Sprite_AnimationCursor.prototype.update = function() {
+    Sprite_AnimationCursor.prototype.update = function () {
         // Sprite_Base.prototype.update.call(this);
         Sprite.prototype.update.call(this);
 
         this.updatePosition();
-        this.children.forEach(function(child) {
+        this.children.forEach(function (child) {
             child.update();
         }, this);
     };
 
-    Sprite_AnimationCursor.prototype.updatePosition = function() {
+    Sprite_AnimationCursor.prototype.updatePosition = function () {
         this.updateActiveWindow();
     };
 
-    Sprite_AnimationCursor.prototype.updateActiveWindow = function() {
+    Sprite_AnimationCursor.prototype.updateActiveWindow = function () {
         if (!this.isActiveWindow(this._activeWindow)) {
             this._activeWindow = this.findActiveWindow();
         }
@@ -341,11 +342,11 @@
         this.notifyParticle();
     };
 
-    Sprite_AnimationCursor.prototype.isActiveWindow = function(window) {
+    Sprite_AnimationCursor.prototype.isActiveWindow = function (window) {
         return window && window.isCursorActive();
     };
 
-    Sprite_AnimationCursor.prototype.getParentWindowLayer = function(window) {
+    Sprite_AnimationCursor.prototype.getParentWindowLayer = function (window) {
         if (!window) {
             return null;
         }
@@ -360,10 +361,10 @@
         return null;
     };
 
-    Sprite_AnimationCursor.prototype.findActiveWindow = function() {
+    Sprite_AnimationCursor.prototype.findActiveWindow = function () {
         let window = null;
         for (let i = 0; i < this._windowLayers.length && window == null; i++) {
-            this._windowLayers[i].children.some(function(child) {
+            this._windowLayers[i].children.some(function (child) {
                 if (child instanceof Window && child.isCursorActive()) {
                     window = child;
                     return true;
@@ -376,7 +377,7 @@
         return window;
     };
 
-    Sprite_AnimationCursor.prototype.addWindowLayer = function(layer) {
+    Sprite_AnimationCursor.prototype.addWindowLayer = function (layer) {
         if (layer && !this._windowLayers.contains(layer)) {
             this._windowLayers.push(layer);
         }
@@ -386,33 +387,33 @@
     //-----------------------------------------------------------------------------
     // Scene_Base
 
-    Scene_Base.prototype.createAnimationCursor = function() {
+    Scene_Base.prototype.createAnimationCursor = function () {
         this._animationCursor = new Sprite_AnimationCursor();
     };
 
-    Scene_Base.prototype.startAnimationCursor = function() {
+    Scene_Base.prototype.startAnimationCursor = function () {
         this._animationCursor.addWindowLayer(this._windowLayer);
         this.addChild(this._animationCursor);
     };
 
-    Scene_Base.prototype.updateAnimationCursor = function() {
+    Scene_Base.prototype.updateAnimationCursor = function () {
         this._animationCursor.update();
     };
 
     const _KMS_CursorAnimation_Scene_Base_create = Scene_Base.prototype.create;
-    Scene_Base.prototype.create = function() {
+    Scene_Base.prototype.create = function () {
         _KMS_CursorAnimation_Scene_Base_create.call(this);
         this.createAnimationCursor();
     };
 
     const _KMS_CursorAnimation_Scene_Base_start = Scene_Base.prototype.start;
-    Scene_Base.prototype.start = function() {
+    Scene_Base.prototype.start = function () {
         _KMS_CursorAnimation_Scene_Base_start.call(this);
         this.startAnimationCursor();
     };
 
     const _KMS_CursorAnimation_Scene_Base_update = Scene_Base.prototype.update;
-    Scene_Base.prototype.update = function() {
+    Scene_Base.prototype.update = function () {
         _KMS_CursorAnimation_Scene_Base_update.call(this);
         this.updateAnimationCursor();
     };

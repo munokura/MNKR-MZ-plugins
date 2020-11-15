@@ -13,12 +13,6 @@
  * @plugindesc 指定変数の値により、戦闘勝利時のSVアクター動作を指定できます。
  * @author munokura
  *
- * @param Variable Id
- * @text 指定変数
- * @type variable
- * @desc 指定する変数ID
- * @default 11
- *
  * @help
  * 指定変数の値により、戦闘勝利時のSVアクター動作を指定できます。
  *
@@ -50,19 +44,27 @@
  *   https://ja.osdn.net/projects/opensource/wiki/licenses%2FMIT_license
  *   作者に無断で改変、再配布が可能で、
  *   利用形態（商用、18禁利用等）についても制限はありません。
+ * 
+ *
+ * @param Variable Id
+ * @text 指定変数
+ * @type variable
+ * @desc 指定する変数ID
+ * @default 0
  */
 
-(function(){
+(() => {
 	'use strict';
 
-	const parameters = PluginManager.parameters('MNKR_SelectWinAction');
-	const variableId = Number(parameters['Variable Id'] || 1);
+	const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
+	const parameters = PluginManager.parameters(pluginName);
+	const variableId = Number(parameters['Variable Id'] || 0);
 	const motionObject = {
 		1: 'walk',
 		2: 'wait',
 		3: 'chant',
 		4: 'guard',
-		5: 'damage', 
+		5: 'damage',
 		6: 'evade',
 		7: 'thrust',
 		8: 'swing',
@@ -77,9 +79,9 @@
 	};
 
 	const _Game_Actor_performVictory = Game_Actor.prototype.performVictory;
-	Game_Actor.prototype.performVictory = function() {
+	Game_Actor.prototype.performVictory = function () {
 		var motionId = $gameVariables.value(variableId);
-		if(motionId !== 0 && this.canMove()) {
+		if (motionId !== 0 && this.canMove()) {
 			var motionKey = (motionObject[motionId] || 'dead');
 			this.requestMotion(motionKey);
 		} else {

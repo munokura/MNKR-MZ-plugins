@@ -69,7 +69,7 @@
  * 
  * @command changeEquipSlotEx
  * @text 装備の変更
- * @desc 指定の装備を付けます。
+ * @desc 指定の装備を付けます。装備品を所持している必要があります。
  * 
  * @arg actorId
  * @text アクター
@@ -126,7 +126,6 @@
 
 var Imported = Imported || {};
 Imported.TMEquipSlotEx = true;
-
 var TMPlugin = TMPlugin || {};
 
 (() => {
@@ -155,7 +154,7 @@ var TMPlugin = TMPlugin || {};
   //
 
   PluginManager.registerCommand(pluginName, "changeEquipSlotEx", args => {
-    const arr = [args.actorId, args.slotId, args.equipId];
+    let arr = [args.actorId, args.slotId, args.equipId];
     let actor = $gameActors.actor(+arr[0]);
     if (actor) {
       let item = +arr[1] === 0 || (+arr[1] === 1 && actor.isDualWield()) ?
@@ -165,7 +164,7 @@ var TMPlugin = TMPlugin || {};
   });
 
   PluginManager.registerCommand(pluginName, "forceChangeEquipSlotEx", args => {
-    const arr = [args.actorId, args.slotId, args.equipId];
+    let arr = [args.actorId, args.slotId, args.equipId];
     let actor = $gameActors.actor(+arr[0]);
     if (actor) {
       let item = +arr[1] === 0 || (+arr[1] === 1 && actor.isDualWield()) ?
@@ -175,7 +174,7 @@ var TMPlugin = TMPlugin || {};
   });
 
   PluginManager.registerCommand(pluginName, "clearEquipmentsSlotEx", args => {
-    const arr = [args.actorId];
+    let arr = [args.actorId];
     let actor = $gameActors.actor(+arr[0]);
     if (actor) actor.clearEquipments();
   });

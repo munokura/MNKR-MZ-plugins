@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_TMBattleMistMZ Ver.1.0.2
+ * MNKR_TMBattleMistMZ Ver.1.0.3
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -67,6 +67,7 @@
  *   https://ja.osdn.net/projects/opensource/wiki/licenses%2FMIT_license
  *   作者に無断で改変、再配布が可能で、
  *   利用形態（商用、18禁利用等）についても制限はありません。
+ * 
  *
  * @param mistImage
  * @text 霧画像
@@ -80,7 +81,6 @@
  * @param mistNumber
  * @text 霧スプライト数
  * @type number
- * @decimals 
  * @desc 表示する霧スプライトの数です。
  * 初期値: 32
  * @default 32
@@ -88,7 +88,6 @@
  * @param mistTopSide
  * @text SV霧上端座標
  * @type number
- * @decimals 
  * @desc サイドビューで霧を表示する範囲の上端の座標。
  * 初期値: 200
  * @default 200
@@ -96,7 +95,6 @@
  * @param mistRangeSide
  * @text SV霧Y範囲
  * @type number
- * @decimals 
  * @desc サイドビューで霧を表示するY方向の範囲。
  * 初期値: 300
  * @default 300
@@ -104,7 +102,6 @@
  * @param mistTopFront
  * @text FV霧上端座標
  * @type number
- * @decimals 
  * @desc フロントビューで霧を表示する範囲の上端の座標。
  * 初期値: 240
  * @default 240
@@ -112,15 +109,12 @@
  * @param mistRangeFront
  * @text FV霧Y範囲
  * @type number
- * @decimals 
  * @desc フロントビューで霧を表示するY方向の範囲。
  * 初期値: 340
  * @default 340
  *
  * @param mistScale
  * @text 霧の拡大率
- * @type number
- * @decimals 2
  * @desc 霧スプライトの拡大率。
  * 初期値: 1.00
  * @default 1.00
@@ -128,7 +122,6 @@
  * @param mistOpacityMax
  * @text 霧の最大不透明度
  * @type number
- * @decimals 
  * @min 0
  * @max 255
  * @desc 霧スプライトの最大不透明度。

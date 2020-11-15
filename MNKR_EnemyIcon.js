@@ -1,6 +1,6 @@
-﻿/*
+/*
  * --------------------------------------------------
- * MNKR_EnemyIcon Ver.1.0.0
+ * MNKR_EnemyIcon Ver.1.0.1
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -12,13 +12,6 @@
  * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_EnemyIcon.js
  * @plugindesc 戦闘画面で敵キャラの名前の前にアイコンを表示します。
  * @author munokura
- *
- * @param Default Icon
- * @text デフォルトアイコン
- * @type number
- * @desc メモタグを入れない場合に表示するアイコン。デフォルト16
- * 0にすると、非表示で左に詰まります。
- * @default 16
  *
  * @help
  * 戦闘画面で敵キャラの名前の前にアイコンを表示します。
@@ -37,16 +30,25 @@
  *   https://ja.osdn.net/projects/opensource/wiki/licenses%2FMIT_license
  *   作者に無断で改変、再配布が可能で、
  *   利用形態（商用、18禁利用等）についても制限はありません。
+ * 
+ *
+ * @param Default Icon
+ * @text デフォルトアイコン
+ * @type number
+ * @desc メモタグを入れない場合に表示するアイコン。デフォルト16
+ * 0にすると、非表示で左に詰まります。
+ * @default 16
  */
 
-(function() {
+(() => {
     'use strict';
-    const pluginName = 'MNKR_EnemyIcon';
+
+    const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
     const parameters = PluginManager.parameters(pluginName);
     const defaultIcon = Number(parameters['Default Icon'] || 16);
 
     const _Window_BattleEnemy_drawItem = Window_BattleEnemy.prototype.drawItem
-    Window_BattleEnemy.prototype.drawItem = function(index) {
+    Window_BattleEnemy.prototype.drawItem = function (index) {
         const enemy = this._enemies[index];
         const icon = parseInt(enemy.enemy().meta.EnemyIcon) || defaultIcon;
         if (icon) {

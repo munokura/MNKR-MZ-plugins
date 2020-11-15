@@ -1,4 +1,4 @@
-﻿/*
+/*
  * --------------------------------------------------
  * MNKR_ShowEventsTransition Ver.1.0.0
  * Copyright (c) 2020 Munokura
@@ -26,10 +26,10 @@
  *   利用形態（商用、18禁利用等）についても制限はありません。
  */
 
-(function(){
+(() => {
 	'use strict';
 
-	Scene_Map.prototype.startEncounterEffect = function() {
+	Scene_Map.prototype.startEncounterEffect = function () {
 		this._encounterEffectDuration = this.encounterEffectSpeed();
 	};
 

@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_BattleStatusMaxCols Ver.0.1.0
+ * MNKR_BattleStatusMaxCols Ver.0.1.2
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -8,17 +8,10 @@
  */
 
 /*:
- * @target MZ MV
+ * @target MZ
  * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_BattleStatusMaxCols.js
  * @plugindesc (試作中) 戦闘ステータスウィンドウ内のアクター数を指定できます。
  * @author munokura
- *
- * @param Max Cols
- * @text ウィンドウ内の最大表示アクター数
- * @type number
- * @desc ウィンドウ内の最大表示アクター数
- * ツクールデフォルト:4
- * @default 4
  *
  * @help
  * 戦闘ステータスウィンドウ内の最大アクター数を指定できます。
@@ -31,20 +24,28 @@
  *   https://ja.osdn.net/projects/opensource/wiki/licenses%2FMIT_license
  *   作者に無断で改変、再配布が可能で、
  *   利用形態（商用、18禁利用等）についても制限はありません。
+ * 
+ *
+ * @param Max Cols
+ * @text ウィンドウ内の最大表示アクター数
+ * @type number
+ * @desc ウィンドウ内の最大表示アクター数
+ * ツクールデフォルト:4
+ * @default 4
  */
 
-(function() {
-    'use strict'
+(() => {
+    'use strict';
 
-    const pluginName = 'MNKR_ActorCommandChoice';
+    const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
     const parameters = PluginManager.parameters(pluginName);
     const maxCols = Number(parameters['Max Cols'] || 4);
 
-    Window_BattleStatus.prototype.maxCols = function() {
+    Window_BattleStatus.prototype.maxCols = function () {
         return maxCols;
-    }
+    };
 
-    Window_BattleStatus.prototype.drawItemStatus = function(index) {
+    Window_BattleStatus.prototype.drawItemStatus = function (index) {
         const actor = this.actor(index);
         const rect = this.itemRectWithPadding(index);
         const nameX = this.nameX(rect);
@@ -57,6 +58,6 @@
         this.placeActorName(actor, nameX, nameY);
         this.placeStateIcon(actor, stateIconX, stateIconY);
         this.placeBasicGauges(actor, basicGaugesX, basicGaugesY);
-    }
+    };
 
-})()
+})();

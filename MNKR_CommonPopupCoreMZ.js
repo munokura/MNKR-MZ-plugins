@@ -704,7 +704,6 @@ function CommonPopupManager() {
         var fileName = arg.backImage;
         ImageManager.loadPicture(fileName);
         return ImageManager.loadPicture(fileName);
-        // }
     };
 
     CommonPopupManager.bltCheck = function (bitmap) {

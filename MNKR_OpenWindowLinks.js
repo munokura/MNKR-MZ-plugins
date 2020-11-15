@@ -1,4 +1,4 @@
-﻿/*
+/*
  * --------------------------------------------------
  * MNKR_OpenWindowLinks Ver.1.0.0
  * Copyright (c) 2020 Munokura
@@ -10,20 +10,11 @@
 /*:
  * @target MZ
  * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_OpenWindowLinks.js
- * @plugindesc 新しいウィンドウに指定されたURLを開きます。
+ * @plugindesc 新しいウィンドウに指定されたURLを開くプラグインコマンドを追加します。
  * @author munokura
- *
- * @command newWindow
- * @text New Window Open URL
- * @desc 指定のURLをブラウザで開きます。
- *
- * @arg text
- * @type string
- * @text URL
- * @desc 開くURLを設定します。
  * 
  * @help
- * このプラグインは、新しいウィンドウに指定されたURLを開くコマンドを提供します。
+ * 新しいウィンドウに指定されたURLを開くプラグインコマンドを提供します。
  *
  * 謝辞
  *   コードの主要部分はトリアコンタン氏が公開しているコードです。
@@ -35,12 +26,22 @@
  *   https://ja.osdn.net/projects/opensource/wiki/licenses%2FMIT_license
  *   作者に無断で改変、再配布が可能で、
  *   利用形態（商用、18禁利用等）についても制限はありません。
+ * 
+ *
+ * @command newWindow
+ * @text New Window Open URL
+ * @desc 指定のURLをブラウザで開きます。
+ *
+ * @arg text
+ * @type string
+ * @text URL
+ * @desc 開くURLを設定します。
  */
 
-(function() {
+(() => {
     'use strict';
 
-    const pluginName = "MNKR_OpenWindowLinks";
+    const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
     let url = "";
 
     PluginManager.registerCommand(pluginName, "newWindow", args => {

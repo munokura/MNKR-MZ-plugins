@@ -1,6 +1,6 @@
-﻿/*
+/*
  * --------------------------------------------------
- * MNKR_CommandPosition Ver.1.0.0
+ * MNKR_CommandPosition Ver.1.0.1
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -12,6 +12,32 @@
  * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_CommandPosition.js
  * @plugindesc メインメニューの表示位置を変更します。
  * @author munokura
+ * @help
+ * メインメニューの表示位置を指定します。
+ * 
+ * ステータスウィンドウ無効化をすると、
+ * スキル・装備・ステータス・並び替え
+ * のコマンドが使えなく（選択するとフリーズするように）なります。
+ * 
+ * ステータスウィンドウを非表示にし、
+ * スキル・装備・ステータス・並び替え
+ * のコマンドを使用したい場合、このプラグインでは非表示せずに、
+ * 他のプラグインで非表示にしてください。
+ * 
+ * メニュー行数は0を指定すると自動的に反映しますが、
+ * 他のプラグインでコマンドを追加していると、そのままでは反映されません。
+ * 基本的に行数を指定してください。
+ * 
+ *
+ * プラグインコマンドはありません。
+ *
+ * 
+ * 利用規約:
+ *   MITライセンスです。
+ *   https://ja.osdn.net/projects/opensource/wiki/licenses%2FMIT_license
+ *   作者に無断で改変、再配布が可能で、
+ *   利用形態（商用、18禁利用等）についても制限はありません。
+ * 
  *
  * @param Command Position
  * @text メニュー位置
@@ -43,53 +69,29 @@
  * @desc 所持金ウィンドウを非表示にします。
  * @default true
  *
- * @help
- * メインメニューの表示位置を指定します。
- * 
- * ステータスウィンドウ無効化をすると、
- * スキル・装備・ステータス・並び替え
- * のコマンドが使えなく（選択するとフリーズするように）なります。
- * 
- * ステータスウィンドウを非表示にし、
- * スキル・装備・ステータス・並び替え
- * のコマンドを使用したい場合、このプラグインでは無効化せずに、
- * 他のプラグインで無効化してください。
- * 
- * メニュー行数は0を指定すると自動的に反映しますが、
- * 他のプラグインでコマンドを追加していると、そのままでは反映されません。
- * 基本的に行数を指定して使ってください。
- * 
- *
- * プラグインコマンドはありません。
- *
- * 
- * 利用規約:
- *   MITライセンスです。
- *   https://ja.osdn.net/projects/opensource/wiki/licenses%2FMIT_license
- *   作者に無断で改変、再配布が可能で、
- *   利用形態（商用、18禁利用等）についても制限はありません。
  */
 
 (() => {
     'use strict';
-    const pluginName = 'MNKR_CommandPosition';
+
+    const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
     const parameters = PluginManager.parameters(pluginName);
     const commandPosition = Number(parameters['Command Position'] || 7);
     const commandRows = Number(parameters['Command Rows'] || 8);
-    const statusWindowHide = eval(parameters['Status Window Hide'] || "true");
-    const goldWindowHide = eval(parameters['Gold Window Hide'] || "true");
+    const statusWindowHide = String(parameters['Status Window Hide']) === 'true';
+    const goldWindowHide = String(parameters['Gold Window Hide']) === 'true';
 
-    const _Scene_Menu_prototype_createStatusWindow = Scene_Menu.prototype.createStatusWindow;
-    Scene_Menu.prototype.createStatusWindow = function() {
+    const _Scene_Menu_createStatusWindow = Scene_Menu.prototype.createStatusWindow;
+    Scene_Menu.prototype.createStatusWindow = function () {
         if (statusWindowHide) {
-            _Scene_Menu_prototype_createStatusWindow.call(this);
+            _Scene_Menu_createStatusWindow.call(this);
             this._statusWindow.hide();
         } else {
-            _Scene_Menu_prototype_createStatusWindow.call(this);
+            _Scene_Menu_createStatusWindow.call(this);
         }
     };
 
-    Scene_Menu.prototype.create = function() {
+    Scene_Menu.prototype.create = function () {
         Scene_MenuBase.prototype.create.call(this);
         this.createCommandWindow();
         if (!goldWindowHide) {
@@ -98,7 +100,7 @@
         this.createStatusWindow();
     };
 
-    Scene_Menu.prototype.commandWindowRectangles = function(width, height) {
+    Scene_Menu.prototype.commandWindowRectangles = function (width, height) {
         const leftX = 0;
         const midX = Graphics.boxWidth / 2 - width / 2;
         const rightX = Graphics.boxWidth - width;
@@ -122,13 +124,14 @@
         ];
     };
 
-    Scene_Menu.prototype.commandWindowRect = function() {
+    Scene_Menu.prototype.commandWindowRect = function () {
         const ww = this.mainCommandWidth();
         const wh = this.calcWindowHeight(commandRows === 0 ? this.countCommand() : commandRows, true);
         return this.commandWindowRectangles(ww, wh)[commandPosition];
     };
 
-    Scene_Menu.prototype.countCommand = function() {
+    Scene_Menu.prototype.countCommand = function () {
         return $dataSystem.menuCommands.filter(commandEnabled => commandEnabled).length + 2;
     };
+
 })();

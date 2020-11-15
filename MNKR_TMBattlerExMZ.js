@@ -98,14 +98,12 @@
 
 var Imported = Imported || {};
 Imported.TMBattlerEx = true;
+var TMPlugin = TMPlugin || {};
 
 (() => {
-
   "use strict";
 
   const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
-
-  var TMPlugin = TMPlugin || {};
   TMPlugin.BattlerEx = {};
   TMPlugin.BattlerEx.Parameters = PluginManager.parameters(pluginName);
   TMPlugin.BattlerEx.BaseY = +(TMPlugin.BattlerEx.Parameters['baseY'] || 400);

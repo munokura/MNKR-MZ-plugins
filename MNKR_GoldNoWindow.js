@@ -1,6 +1,6 @@
-﻿/*
+/*
  * --------------------------------------------------
- * MNKR_GoldNoWindow Ver.1.0.0
+ * MNKR_GoldNoWindow Ver.1.0.1
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -25,10 +25,11 @@
  *   利用形態（商用、18禁利用等）についても制限はありません。
  */
 
-(function(){
+(() => {
+
 	'use strict';
 
-	Scene_Menu.prototype.createGoldWindow = function() {
+	Scene_Menu.prototype.createGoldWindow = function () {
 	};
 
 })();

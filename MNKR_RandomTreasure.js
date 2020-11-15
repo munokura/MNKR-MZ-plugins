@@ -1,19 +1,20 @@
-/*---------------------------------------------------------------------------*
- * 2018/09/05 kido
- * https://kido0617.github.io/
- * Ver.1.3
- * This software is released under the MIT license.
- * http://opensource.org/licenses/mit-license.php
- *---------------------------------------------------------------------------*/
 
 /*
  * --------------------------------------------------
- * MNKR_RandomTreasure Ver.1.0.1
+ * MNKR_RandomTreasure Ver.1.0.2
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
  * --------------------------------------------------
  */
+
+/*---------------------------------------------------------------------------*
+* 2018/09/05 kido
+* https://kido0617.github.io/
+* Ver.1.3
+* This software is released under the MIT license.
+* http://opensource.org/licenses/mit-license.php
+*---------------------------------------------------------------------------*/
 
 // v1.0.1 DarkPlasma氏にリファクタをいただき、修正。
 // v1.0.0 MZ用に移植。MVとの互換性なし。
@@ -23,6 +24,28 @@
  * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_RandomTreasure.js
  * @plugindesc v1.0.1 ランダム宝箱プラグイン
  * @author munokura (原作:kido)
+ * 
+ * @help
+ * ランダム宝箱プラグイン
+ * ランダムにアイテムを入手できる宝箱を楽に実装するプラグインです。
+ * 
+ * ランダムにアイテムを取得するイベントを簡略化します。
+ * 
+ * プラグインコマンド：ガチャ処理準備
+ * ショップの処理
+ * プラグインコマンド：アイテム取得
+ * 
+ * と設定して使います。
+ * ショップの処理内容がガチャの内容（アイテムと当選数）に置き換わります。
+ *
+ * 最後に入手したアイテムの情報を
+ *   $gameLastRandomTreasure
+ * から取得することもできます。
+ * 
+ * 利用規約
+ *   MITライセンスです。
+ *   http://opensource.org/licenses/mit-license.php
+ * 
  * 
  * @param itemName
  * @text アイテム名代入変数
@@ -55,38 +78,17 @@
  * @value get
  * @default start
  * @desc ガチャ処理準備:以降の「ショップの処理」をガチャの選択肢と数に置換 / アイテム取得:ガチャで引いたアイテムを取得
- * 
- * @help
- * ランダム宝箱プラグイン
- * ランダムにアイテムを入手できる宝箱を楽に実装するプラグインです。
- * 
- * ランダムにアイテムを取得するイベントを簡略化します。
- * 
- * プラグインコマンド：ガチャ処理準備
- * ショップの処理
- * プラグインコマンド：アイテム取得
- * 
- * と設定して使います。
- * ショップの処理内容がガチャの内容（アイテムと当選数）に置き換わります。
- *
- * 最後に入手したアイテムの情報を
- *   $gameLastRandomTreasure
- * から取得することもできます。
- * 
- * 利用規約
- *   MITライセンスです。
- *   http://opensource.org/licenses/mit-license.php
  */
 
-(function () {
+(() => {
+
     'use strict';
 
-    const parameters = PluginManager.parameters('MNKR_RandomTreasure');
+    const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
+    const parameters = PluginManager.parameters(pluginName);
     const NAME_VAR = Number(parameters['itemName'] || 0);
     const ICON_VAR = Number(parameters['itemIcon'] || 0);
     const RATE_VAR = Number(parameters['itemLot'] || 0);
-
-    const pluginName = "MNKR_RandomTreasure";
 
     PluginManager.registerCommand(pluginName, "randomTreasure", args => {
         const lottery = String(args.action);

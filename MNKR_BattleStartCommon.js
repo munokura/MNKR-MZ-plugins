@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_BattleStartCommon Ver.2.0.2
+ * MNKR_BattleStartCommon Ver.2.0.3
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -12,20 +12,6 @@
  * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_BattleStartCommon.js
  * @plugindesc v2.0.2 戦闘開始時のメッセージをコモンイベントに置き換えます。
  * @author munokura
- *
- * @param Variable Id
- * @text 指定変数
- * @type variable
- * @desc コモンイベントを指定する変数ID。この変数の値のIDのコモンイベントを実行します。
- * @default 0
- * 
- * @param Value Zero
- * @text 変数値が0の処理
- * @type boolean
- * @on 表示
- * @off 非表示
- * @desc 指定変数の値が0の場合に、デフォルトの戦闘開始メッセージを表示するかどうか
- * @default false
  * 
  * @help
  * 戦闘開始時のメッセージをコモンイベントに置き換えます。
@@ -67,18 +53,33 @@
  *   https://ja.osdn.net/projects/opensource/wiki/licenses%2FMIT_license
  *   作者に無断で改変、再配布が可能で、
  *   利用形態（商用、18禁利用等）についても制限はありません。
+ * 
+ *
+ * @param Variable Id
+ * @text 指定変数
+ * @type variable
+ * @desc コモンイベントを指定する変数ID。この変数の値のIDのコモンイベントを実行します。
+ * @default 0
+ * 
+ * @param Value Zero
+ * @text 変数値が0の処理
+ * @type boolean
+ * @on 表示
+ * @off 非表示
+ * @desc 指定変数の値が0の場合に、デフォルトの戦闘開始メッセージを表示するかどうか
+ * @default false
  */
 
-(function() {
+(() => {
     'use strict';
 
-    const pluginName = 'MNKR_BattleStartCommon';
+    const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
     const parameters = PluginManager.parameters(pluginName);
     const variableId = Number(parameters['Variable Id'] || 0);
-    const valueZero = eval(parameters['Value Zero'] || 0);
+    const valueZero = String(parameters['Value Zero']) === 'true';
 
     const _BattleManager_displayStartMessages = BattleManager.displayStartMessages;
-    BattleManager.displayStartMessages = function() {
+    BattleManager.displayStartMessages = function () {
         if (valueZero && $gameVariables.value(variableId) === 0) {
             _BattleManager_displayStartMessages.call(this);
         } else {

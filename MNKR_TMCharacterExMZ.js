@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_TMCharacterExMZ Ver.1.0.1
+ * MNKR_TMCharacterExMZ Ver.1.0.2
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -23,15 +23,6 @@
  * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMCharacterExMZ.js
  * @plugindesc イベントに表示位置補正、回転、拡大の機能を追加します。
  * @author tomoaky (改変 munokura)
- *
- * @param landingAnimation
- * @text ジャンプ後拡大補正
- * @desc ジャンプ後の着地時に拡大補正率を自動的に適用する。
- * 初期値: true (有効:true / 無効:false)
- * @type boolean
- * @on 有効
- * @off 無効
- * @default true
  *
  * @help
  * 使い方:
@@ -64,20 +55,21 @@
  *
  *
  * スクリプトコマンド:
+ * 
  *   イベントコマンド『移動ルートの設定』で
  *   下記のスクリプトを使用してください。
  *   通常のイベントで使用するとエラーになるのでご注意ください。
  *
- *   this.setChrShift(-10, 5)
+ *   this.setChrShift(-10, 5);
  *     このイベントの元画像から表示位置を左に10、下に5ずらす。
  *
- *   this.setChrAngle(180)
+ *   this.setChrAngle(180);
  *     このイベントを元画像から180度回転して表示。
  *
- *   this.setChrScale(2, 1)
+ *   this.setChrScale(2, 1);
  *     このイベントの元画像から幅だけを2倍に拡大表示。
  *
- *   this.setChrScaleRate(1, 1.5)
+ *   this.setChrScaleRate(1, 1.5);
  *     このイベントの元画像から拡大補正率を幅はそのまま、高さ1.5倍で表示。
  *
  *
@@ -113,6 +105,16 @@
  *   作者に無断で改変、再配布が可能で、
  *   利用形態（商用、18禁利用等）についても制限はありません。
  * 
+ *
+ * @param landingAnimation
+ * @text ジャンプ後拡大補正
+ * @desc ジャンプ後の着地時に拡大補正率を自動的に適用する。
+ * 初期値: true (有効:true / 無効:false)
+ * @type boolean
+ * @on 有効
+ * @off 無効
+ * @default true
+ * 
  * 
  * @command chrShift
  * @text イベント位置調整
@@ -123,7 +125,6 @@
  * @desc 表示位置を変更するイベントID。
  * -1:プレイヤー / 0:実行イベント / 1以上:番号のイベント
  * @type number
- * @decimals
  * @min -1
  * @default 0
  * 
@@ -132,7 +133,6 @@
  * @desc イベントを横方向にずらすドット量。
  * 基本位置から正の値で右、負の値で左にずれます。
  * @type number
- * @decimals
  * @min -9007
  * @max 9007
  * @default 0
@@ -142,7 +142,6 @@
  * @desc イベントを縦方向にずらすドット量。
  * 基本位置から正の値で下、負の値で上にずれます。
  * @type number
- * @decimals
  * @min -9007
  * @max 9007
  * @default 0
@@ -157,7 +156,6 @@
  * @desc 表示位置を変更するイベントID。
  * -1:プレイヤー / 0:実行イベント / 1以上:番号のイベント
  * @type number
- * @decimals
  * @min -1
  * @default 0
  * 
@@ -166,7 +164,6 @@
  * @desc イベントを右方向に回転させる度数。
  * 基本位置から右方向に回転します。
  * @type number
- * @decimals
  * @min 0
  * @max 359
  * @default 0
@@ -181,7 +178,6 @@
  * @desc 表示位置を変更するイベントID。
  * -1:プレイヤー / 0:実行イベント / 1以上:番号のイベント
  * @type number
- * @decimals
  * @min -1
  * @default 0
  * 
@@ -189,20 +185,12 @@
  * @text 横方向拡大率
  * @desc イベントを横方向に拡大する百分率。
  * 基本位置から絶対値が大きいと大きく、負の値で左右反転します。
- * @type number
- * @decimals 2
- * @min -9007
- * @max 9007
  * @default 1.00
  * 
  * @arg scaleY
  * @text 縦方向拡大率
  * @desc イベントを縦方向に拡大する百分率。
  * 基本位置から絶対値が大きいと大きく、負の値で上下反転します。
- * @type number
- * @decimals 2
- * @min -9007
- * @max 9007
  * @default 1.00
  * 
  * 
@@ -215,22 +203,17 @@
  * @desc 表示位置を変更するイベントID。
  * -1:プレイヤー / 0:実行イベント / 1以上:番号のイベント
  * @type number
- * @decimals
  * @min -1
  * @default 0
  * 
  * @arg scaleX
  * @text 横方向拡大補正率
  * @desc イベント横方向の拡大補正率。
- * @type number
- * @decimals 2
  * @default 1.00
  * 
  * @arg scaleY
  * @text 縦方向拡大補正率
  * @desc イベント縦方向の拡大補正率。
- * @type number
- * @decimals 2
  * @default 1.00
  * 
  * 
@@ -243,7 +226,6 @@
  * @desc 表示位置を変更するイベントID。
  * -1:プレイヤー / 0:実行イベント / 1以上:番号のイベント
  * @type number
- * @decimals
  * @min -1
  * @default 0
  */
@@ -254,6 +236,7 @@ var TMPlugin = TMPlugin || {};
 
 if (!TMPlugin.EventBase) {
   TMPlugin.EventBase = true;
+
   (() => {
     "use strict";
 
@@ -308,7 +291,7 @@ if (!TMPlugin.EventBase) {
   Game_CharacterBase.prototype.initMembers = function () {
     _Game_CharacterBase_initMembers.call(this);
     this.initChrParams();
-  }
+  };
 
   Game_CharacterBase.prototype.initChrParams = function () {
     this._chrShiftX = 0;

@@ -1,5 +1,14 @@
+/*
+ * --------------------------------------------------
+ * MNKR_SAN_MapGenerator Ver.2.0.1
+ * Copyright (c) 2020 Munokura
+ * This software is released under the MIT license.
+ * http://opensource.org/licenses/mit-license.php
+ * --------------------------------------------------
+ */
+
 //=============================================================================
-// SAN_MapGenerator.js
+// SAN_MapGeneratorMZ.js
 //=============================================================================
 // Copyright (c) 2015-2018 Sanshiro
 // Released under the MIT license
@@ -12,54 +21,8 @@
 /*:
  * @target MZ
  * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_SAN_MapGenerator.js
- * @plugindesc v1.2.0 自動的にランダムマップを生成します。
- * @author ムノクラ 原作:サンシロ
- * 
- * @param WallHight
- * @text 壁の高さ
- * @type number
- * @min 1
- * @max 3
- * @desc 壁の高さを指定します。（1～3）
- * @default 1
- * 
- * @param MinRoomSize
- * @text 部屋サイズ最小
- * @type number
- * @min 3
- * @max 9007
- * @desc 部屋の大きさの最小値を指定します。（3～）
- * @default 5
- * 
- * @param MaxRoomSize
- * @text 部屋サイズ最大
- * @type number
- * @min 3
- * @max 9007
- * @desc 部屋の大きさの最大値を指定します。（3～）
- * MaxRoomSizeがMinRoomSizeより小さい場合、MinRoomSizeと同じ値に補正されます。
- * @default 10
- * 
- * @param ShowOuterWall
- * @text 部屋外側の壁の表示
- * @type boolean
- * @on 表示
- * @off 非表示
- * @desc 部屋の外側の壁を表示します。
- * @default true
- * 
- * @command MapGenerator
- * @text マップ生成
- * @desc ランダムなマップを生成します。
- *
- * @arg mapType
- * @type select
- * @option 部屋と通路から構成されるマップ
- * @value RoomAndPass
- * @option マップ全体に及ぶ一つの部屋
- * @value FillRoom
- * @default RoomAndPass
- * @desc 生成するマップのタイプ
+ * @plugindesc v2.0.1 自動的にランダムマップを生成します。
+ * @author サンシロ (改変:munokura)
  * 
  * @help
  * ■概要
@@ -153,6 +116,52 @@
  * これを利用したことによるいかなる損害にも作者は責任を負いません。
  * サポートは期待しないでください＞＜。
  * 
+ * 
+ * @param WallHight
+ * @text 壁の高さ
+ * @type number
+ * @min 1
+ * @max 3
+ * @desc 壁の高さを指定します。（1～3）
+ * @default 1
+ * 
+ * @param MinRoomSize
+ * @text 部屋サイズ最小
+ * @type number
+ * @min 3
+ * @max 9007
+ * @desc 部屋の大きさの最小値を指定します。（3～）
+ * @default 5
+ * 
+ * @param MaxRoomSize
+ * @text 部屋サイズ最大
+ * @type number
+ * @min 3
+ * @max 9007
+ * @desc 部屋の大きさの最大値を指定します。（3～）
+ * MaxRoomSizeがMinRoomSizeより小さい場合、MinRoomSizeと同じ値に補正されます。
+ * @default 10
+ * 
+ * @param ShowOuterWall
+ * @text 部屋外側の壁の表示
+ * @type boolean
+ * @on 表示
+ * @off 非表示
+ * @desc 部屋の外側の壁を表示します。
+ * @default true
+ * 
+ * @command MapGenerator
+ * @text マップ生成
+ * @desc ランダムなマップを生成します。
+ *
+ * @arg mapType
+ * @type select
+ * @option 部屋と通路から構成されるマップ
+ * @value RoomAndPass
+ * @option マップ全体に及ぶ一つの部屋
+ * @value FillRoom
+ * @default RoomAndPass
+ * @desc 生成するマップのタイプ
  */
 
 var Imported = Imported || {};
@@ -253,8 +262,8 @@ Game_MapGenerator.tileIdsWall.noConnect = {
 
 // 初期化
 Game_MapGenerator.prototype.initialize = function () {
-    this._wallHeight = Number(PluginManager.parameters('MNKR_SAN_MapGenerator')['WallHight']);
-    this._showOuterWall = eval(PluginManager.parameters('MNKR_SAN_MapGenerator')['ShowOuterWall'] || true);
+    this._wallHeight = Number(PluginManager.parameters(pluginName)['WallHight']);
+    this._showOuterWall = eval(PluginManager.parameters(pluginName)['ShowOuterWall'] || true);
     this._startXY = { x: 0, y: 0 };
     this._goalXY = { x: 0, y: 0 };
     this._blocks = [];
@@ -811,8 +820,8 @@ Game_MapGeneratorRoomAndPass.prototype.initialize = function () {
 
 // マップ（ダンジョン）自動生成
 Game_MapGeneratorRoomAndPass.prototype.generateMap = function () {
-    this._minRoomSize = Number(PluginManager.parameters('MNKR_SAN_MapGenerator')['MinRoomSize']);
-    this._maxRoomSize = Number(PluginManager.parameters('MNKR_SAN_MapGenerator')['MaxRoomSize']);
+    this._minRoomSize = Number(PluginManager.parameters(pluginName)['MinRoomSize']);
+    this._maxRoomSize = Number(PluginManager.parameters(pluginName)['MaxRoomSize']);
     if (this._maxRoomSize < this._minRoomSize) {
         this._maxRoomSize = this._minRoomSize;
     }
@@ -1259,10 +1268,10 @@ Game_Event.prototype.event = function () {
 
 // RPGツクールMZ用プラグインコマンド
 
-const pluginName = "MNKR_SAN_MapGenerator";
+const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
 
 PluginManager.registerCommand(pluginName, "MapGenerator", args => {
-    let generateMap = String(args.mapType);
+    const generateMap = String(args.mapType);
 
     switch (generateMap) {
         case 'FillRoom':

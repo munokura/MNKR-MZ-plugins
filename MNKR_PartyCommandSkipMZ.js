@@ -7,7 +7,7 @@
  * --------------------------------------------------
  */
 
-/*:ja
+/*:
  * @target MZ
  * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_PartyCommandSkipMZ.js
  * @plugindesc 戦闘開始時にパーティコマンドを飛ばし、アクターコマンドから開始します。
@@ -31,18 +31,19 @@
  */
 
 (() => {
+
       'use strict';
 
-      const _Scene_Battle_prototype_createPartyCommandWindow = Scene_Battle.prototype.createPartyCommandWindow
+      const _Scene_Battle_createPartyCommandWindow = Scene_Battle.prototype.createPartyCommandWindow
       Scene_Battle.prototype.createPartyCommandWindow = function () {
-            _Scene_Battle_prototype_createPartyCommandWindow.call(this);
+            _Scene_Battle_createPartyCommandWindow.call(this);
             this._partyCommandWindow.setHandler('cancel', this.commandFight.bind(this));
       };
 
-      const _Scene_Battle_prototype_startPartyCommandSelection = Scene_Battle.prototype.startPartyCommandSelection;
+      const _Scene_Battle_startPartyCommandSelection = Scene_Battle.prototype.startPartyCommandSelection;
       Scene_Battle.prototype.startPartyCommandSelection = function () {
             if (this._partyCommandSkipped && !($dataSystem.battleSystem === 0)) {
-                  _Scene_Battle_prototype_startPartyCommandSelection.call(this);
+                  _Scene_Battle_startPartyCommandSelection.call(this);
             } else {
                   this._partyCommandSkipped = true;
                   this.selectNextCommand();
@@ -54,7 +55,7 @@
             if (BattleManager.isInputting() && BattleManager.actor()) {
                   this.startActorCommandSelection();
             } else {
-                  _Scene_Battle_prototype_startPartyCommandSelection.call(this);
+                  _Scene_Battle_startPartyCommandSelection.call(this);
             }
       };
 

@@ -1,4 +1,4 @@
-﻿/*
+/*
  * --------------------------------------------------
  * MNKR_HenshinMZ Ver.1.0.1
  * Copyright (c) 2020 Munokura
@@ -61,6 +61,7 @@
 (() => {
 
   "use strict";
+
   const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
 
   PluginManager.registerCommand(pluginName, "henshin", args => {
