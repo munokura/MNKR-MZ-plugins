@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_ProhibitSkill Ver.0.0.1
+ * MNKR_ProhibitSkill Ver.0.0.2
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -23,10 +23,11 @@
  * <ProhibitSkill:99>
  * ID99のスキルを覚えているアクターには使えません。
  * 
+ * <ProhibitSkill:99,100,101>
+ * ID99か100か101のいずれかスキルを覚えているアクターには使えません。
  * 
  * 注意
  * 現バージョンでは下記に対応していません。
- * - １アイテムに複数のスキルの指定
  * - 戦闘中での使用対応
  * 
  * 
@@ -38,15 +39,24 @@
  */
 
 (() => {
-
   "use strict";
 
   const _Game_Action_testApply = Game_Action.prototype.testApply;
   Game_Action.prototype.testApply = function (target) {
-    const ProhibitSkill = Number(this.item().meta['ProhibitSkill']);
-    if (target.isLearnedSkill(ProhibitSkill))
-      return false;
+    if (this.prohibitSkill(target)) return false;
     return _Game_Action_testApply.call(this, target);
+  };
+
+  Game_Action.prototype.prohibitSkill = function (target) {
+    if (target.isActor() && this.isItem()) {
+      const item = this.item();
+      if (item.meta.ProhibitSkill) {
+        const prohibitSkills = JsonEx.parse(`[${item.meta.ProhibitSkill}]`);
+        const even = (element) => target.isLearnedSkill(element);
+        return prohibitSkills.some(even);
+      }
+    }
+    return false;
   };
 
 })();
