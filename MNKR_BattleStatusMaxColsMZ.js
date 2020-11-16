@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_BattleStatusMaxColsMZ Ver.0.0.1
+ * MNKR_BattleStatusMaxColsMZ Ver.0.0.2
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -52,21 +52,6 @@
 
     Window_BattleStatus.prototype.maxCols = function () {
         return maxCols;
-    };
-
-    Window_BattleStatus.prototype.drawItemStatus = function (index) {
-        const actor = this.actor(index);
-        const rect = this.itemRectWithPadding(index);
-        const nameX = this.nameX(rect);
-        const nameY = this.nameY(rect);
-        const stateIconX = this.stateIconX(rect);
-        const stateIconY = this.stateIconY(rect);
-        const basicGaugesX = this.basicGaugesX(rect);
-        const basicGaugesY = this.basicGaugesY(rect);
-        this.placeTimeGauge(actor, nameX, nameY);
-        this.placeActorName(actor, nameX, nameY);
-        this.placeStateIcon(actor, stateIconX, stateIconY);
-        this.placeBasicGauges(actor, basicGaugesX, basicGaugesY);
     };
 
     //戦闘シーンのゲージ幅のみ変更
