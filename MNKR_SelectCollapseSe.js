@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_SelectCollapseSe Ver.0.0.1
+ * MNKR_SelectCollapseSe Ver.0.0.2
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -46,14 +46,9 @@
   const _Game_Enemy_performCollapse = Game_Enemy.prototype.performCollapse;
   Game_Enemy.prototype.performCollapse = function () {
     Game_Battler.prototype.performCollapse.call(this);
-    const file = String(this.enemy().meta.CollapseSeFile);
-    if (this.collapseType() === 0 && (file !== 'undefined')) {
-      let Param = [];
-      if (this.enemy().meta.CollapseVPP) {
-        Param = JsonEx.parse(`[${this.enemy().meta.CollapseVPP}]`);
-      } else {
-        Param = [90, 100, 0];
-      }
+    const file = this.enemy().meta.CollapseSeFile ? String(this.enemy().meta.CollapseSeFile) : null;
+    if (this.collapseType() === 0 && (file !== null)) {
+      const Param = this.enemy().meta.CollapseVPP ? JsonEx.parse(`[${this.enemy().meta.CollapseVPP}]`) : [90, 100, 0];
       const CollapseSe = { "name": file, "volume": Param[0], "pitch": Param[1], "pan": Param[2] };
       this.requestEffect('collapse');
       AudioManager.playSe(CollapseSe);
