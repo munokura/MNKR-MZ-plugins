@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_Excalibur Ver.0.0.1
+ * MNKR_Excalibur Ver.0.0.2
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -14,7 +14,8 @@
  * @author munokura
  *
  * @help
- * 戦闘中に指定キーを押すと、敵全体に「戦闘不能」ステートを付与し、勝利画面へ移行します。
+ * 戦闘中に勝利キーを押すと、
+ * 敵全体に「戦闘不能」ステートを付与し、ターン終了へ移行します。
  * 
  * 
  * 利用規約:
@@ -30,8 +31,8 @@
  * @default 0
  * 
  * @param Excalibur Key
- * @text 起動キー
- * @desc 起動するキーを指定します。選択肢以外のキーも設定できます。
+ * @text 勝利キー
+ * @desc 勝利するキーを指定します。選択肢以外のキーも設定できます。
  * @type select
  * @option Tab
  * @value tab
@@ -76,7 +77,7 @@
       $gameTroop.members().forEach(function (enemy) {
         enemy.addState(1);
       });
-      BattleManager.processVictory();
+      BattleManager.endTurn();
     }
   };
 
