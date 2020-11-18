@@ -68,7 +68,7 @@
   const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
   const parameters = PluginManager.parameters(pluginName);
   const activation = Number(parameters['activation'] || 0);
-  const excaliburKey = String(parameters['Excalibur Key'] || 'pageup');
+  const excaliburKey = String(parameters['Excalibur Key'] || 'pagedown');
 
   const _Scene_Battle_update = Scene_Battle.prototype.update;
   Scene_Battle.prototype.update = function () {
