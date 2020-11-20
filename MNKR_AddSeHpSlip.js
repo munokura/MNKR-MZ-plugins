@@ -10,11 +10,11 @@
 /*:
  * @target MZ MV
  * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_AddSeHpSlip.js
- * @plugindesc スリップダメージ・HPリジェネにSEを追加できます。
+ * @plugindesc 戦闘中のスリップダメージ・HPリジェネにSEを追加できます。
  * @author munokura
  *
  * @help
- * スリップダメージ・HPリジェネにSEを追加できます。
+ * 戦闘中のスリップダメージ・HPリジェネにSEを追加できます。
  * SEのファイルが無指定のパラメーターは再生されません。
  * 
  * 
