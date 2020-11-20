@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_AddSeHpSlipMZ Ver.0.0.1
+ * MNKR_AddSeBattleRegenerateMZ Ver.0.0.1
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -9,7 +9,7 @@
 
 /*:
  * @target MZ
- * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_AddSeHpSlipMZ.js
+ * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_AddSeBattleRegenerateMZ.js
  * @plugindesc 戦闘中のスリップダメージ・HPリジェネにSEを追加できます。
  * @author munokura
  *
@@ -84,7 +84,15 @@
   const setUpSlipDamageSe = (slipDamageSe.name !== '');
   const setUpRegenerateHpSe = (regenerateHpSe.name !== '');
 
-  Game_Battler.prototype.regenerateHp = function () {
+  const _Game_Battler_regenerateAll = Game_Battler.prototype.regenerateAll;
+  Game_Battler.prototype.regenerateAll = function () {
+    if (this.isAlive()) {
+      this.regenerateHpSe();
+    }
+    _Game_Battler_regenerateAll.call(this);
+  };
+
+  Game_Battler.prototype.regenerateHpSe = function () {
     const minRecover = -this.maxSlipDamage();
     const value = Math.max(Math.floor(this.mhp * this.hrg), minRecover);
     if (value !== 0) {
@@ -94,7 +102,6 @@
       if (value < 0 && setUpSlipDamageSe) {
         AudioManager.playSe(slipDamageSe);
       }
-      this.gainHp(value);
     }
   };
 
