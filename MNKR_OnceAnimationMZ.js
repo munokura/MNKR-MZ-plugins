@@ -9,7 +9,7 @@
 
 /*:
  * @target MZ
- * @url https://raw.githubusercontent.com/munokura/MNKR-MV-plugins/master/MNKR_OnceAnimationMZ.js
+ * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_OnceAnimationMZ.js
  * @plugindesc 戦闘中のスキルのアニメーション再生を連続回数に関わらず1回にします。
  * @author munokura
  *
