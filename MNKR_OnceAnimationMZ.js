@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_OnceAnimationMZ Ver.1.0.0
+ * MNKR_OnceAnimationMZ Ver.1.0.1
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -36,7 +36,7 @@
     _Window_BattleLog_showAnimation.call(
       this,
       subject,
-      targets.filter((target, index, self) => self.indexOf(target) === index),
+      Array.from(new Set(targets)),
       animationId
     );
   };
