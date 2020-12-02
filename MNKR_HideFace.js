@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_HideFace Ver.1.0.1
+ * MNKR_HideFace Ver.1.0.2
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -47,6 +47,7 @@
   };
 
   //メニュー画面の位置調整
+  const _Window_MenuStatus_drawItemStatus = Window_MenuStatus.prototype.drawItemStatus;
   Window_MenuStatus.prototype.drawItemStatus = function (index) {
     const actor = this.actor(index);
     const rect = this.itemRect(index);
@@ -56,6 +57,7 @@
   };
 
   //メニュー画面内の各アクター表示
+  const _Window_MenuStatus_drawItemImage = Window_MenuStatus.prototype.drawItemImage;
   Window_MenuStatus.prototype.drawItemImage = function (index) {
     const actor = this.actor(index);
     const rect = this.itemRect(index);
@@ -66,6 +68,7 @@
   };
 
   //ステータス画面
+  const _Window_Status_drawBlock2 = Window_Status.prototype.drawBlock2;
   Window_Status.prototype.drawBlock2 = function () {
     const y = this.block2Y();
     this.drawBasicInfo(32, y);
@@ -73,6 +76,7 @@
   };
 
   //スキル画面
+  const _Window_SkillStatus_refresh = Window_SkillStatus.prototype.refresh;
   Window_SkillStatus.prototype.refresh = function () {
     Window_StatusBase.prototype.refresh.call(this);
     if (this._actor) {
@@ -84,6 +88,7 @@
   };
 
   //ゲージ位置
+  const _Window_StatusBase_drawActorSimpleStatus = Window_StatusBase.prototype.drawActorSimpleStatus;
   Window_StatusBase.prototype.drawActorSimpleStatus = function (actor, x, y) {
     const lineHeight = this.lineHeight();
     const x2 = x + 160;
