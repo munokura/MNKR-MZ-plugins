@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_HideFace Ver.1.0.0
+ * MNKR_HideFace Ver.1.0.1
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -39,9 +39,6 @@
   const parameters = PluginManager.parameters(pluginName);
   const gaugeWidth = Number(parameters['Gauge Width'] || 0);
 
-  //顔画像無効化
-  Window_StatusBase.prototype.drawActorFace = function () { };
-
   //メニュー・スキル・ステータスシーンのゲージ幅
   const _Sprite_Gauge_bitmapWidth = Sprite_Gauge.prototype.bitmapWidth;
   Sprite_Gauge.prototype.bitmapWidth = function () {
@@ -58,6 +55,16 @@
     this.drawActorSimpleStatus(actor, x, y);
   };
 
+  //メニュー画面内の各アクター表示
+  Window_MenuStatus.prototype.drawItemImage = function (index) {
+    const actor = this.actor(index);
+    const rect = this.itemRect(index);
+    const width = ImageManager.faceWidth;
+    const height = rect.height - 2;
+    this.changePaintOpacity(actor.isBattleMember());
+    this.changePaintOpacity(true);
+  };
+
   //ステータス画面
   Window_Status.prototype.drawBlock2 = function () {
     const y = this.block2Y();
@@ -69,7 +76,6 @@
   Window_SkillStatus.prototype.refresh = function () {
     Window_StatusBase.prototype.refresh.call(this);
     if (this._actor) {
-      // const x = this.colSpacing() / 2;
       const x = this.colSpacing() / 2;
       const h = this.innerHeight;
       const y = h / 2 - this.lineHeight() * 1.5;
