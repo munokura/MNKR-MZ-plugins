@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_HideFace Ver.1.0.2
+ * MNKR_HideFace Ver.1.1.0
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -23,13 +23,27 @@
  *   作者に無断で改変、再配布が可能で、
  *   利用形態（商用、18禁利用等）についても制限はありません。
  * 
- * @param Gauge Width
- * @text ゲージ幅
- * @type number
- * @desc メニューで表示されるゲージの幅を指定
- * ツクールデフォルト:128
- * @default 320
- */
+  * @param gaugeInMenu
+  * @text メニューのゲージ幅
+  * @desc メニューシーンで表示されるゲージを指定
+  * ツクールデフォルト:128
+  * @default 320
+  * @type number
+  *
+  * @param gaugeInSkill
+  * @text スキルのゲージ幅
+  * @desc スキルシーンで表示されるゲージを指定
+  * ツクールデフォルト:128
+  * @default 320
+  * @type number
+  *
+  * @param gaugeInStatus
+  * @text ステータスのゲージ幅
+  * @desc メニューで表示されるゲージを指定
+  * ツクールデフォルト:128
+  * @default 320
+  * @type number
+  */
 
 (() => {
 
@@ -37,17 +51,26 @@
 
   const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
   const parameters = PluginManager.parameters(pluginName);
-  const gaugeWidth = Number(parameters['Gauge Width'] || 0);
+  const gaugeInMenu = Number(parameters['gaugeInMenu'] || 128);
+  const gaugeInSkill = Number(parameters['gaugeInSkill'] || 128);
+  const gaugeInStatus = Number(parameters['gaugeInStatus'] || 128);
 
   //メニュー・スキル・ステータスシーンのゲージ幅
-  const _Sprite_Gauge_bitmapWidth = Sprite_Gauge.prototype.bitmapWidth;
   Sprite_Gauge.prototype.bitmapWidth = function () {
     const isSceneMenu = SceneManager._scene.constructor.name;
-    return (['Scene_Menu', 'Scene_Skill', 'Scene_Status'].includes(isSceneMenu)) ? gaugeWidth : _Sprite_Gauge_bitmapWidth.call(this);
+    switch (isSceneMenu) {
+      case 'Scene_Menu':
+        return gaugeInMenu;
+      case 'Scene_Skill':
+        return gaugeInSkill;
+      case 'Scene_Status':
+        return gaugeInStatus;
+      default:
+        return 128;
+    }
   };
 
   //メニュー画面の位置調整
-  const _Window_MenuStatus_drawItemStatus = Window_MenuStatus.prototype.drawItemStatus;
   Window_MenuStatus.prototype.drawItemStatus = function (index) {
     const actor = this.actor(index);
     const rect = this.itemRect(index);
@@ -57,7 +80,6 @@
   };
 
   //メニュー画面内の各アクター表示
-  const _Window_MenuStatus_drawItemImage = Window_MenuStatus.prototype.drawItemImage;
   Window_MenuStatus.prototype.drawItemImage = function (index) {
     const actor = this.actor(index);
     const rect = this.itemRect(index);
@@ -68,7 +90,6 @@
   };
 
   //ステータス画面
-  const _Window_Status_drawBlock2 = Window_Status.prototype.drawBlock2;
   Window_Status.prototype.drawBlock2 = function () {
     const y = this.block2Y();
     this.drawBasicInfo(32, y);
@@ -76,7 +97,6 @@
   };
 
   //スキル画面
-  const _Window_SkillStatus_refresh = Window_SkillStatus.prototype.refresh;
   Window_SkillStatus.prototype.refresh = function () {
     Window_StatusBase.prototype.refresh.call(this);
     if (this._actor) {
@@ -88,7 +108,6 @@
   };
 
   //ゲージ位置
-  const _Window_StatusBase_drawActorSimpleStatus = Window_StatusBase.prototype.drawActorSimpleStatus;
   Window_StatusBase.prototype.drawActorSimpleStatus = function (actor, x, y) {
     const lineHeight = this.lineHeight();
     const x2 = x + 160;
