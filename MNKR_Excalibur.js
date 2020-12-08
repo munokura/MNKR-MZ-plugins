@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_Excalibur Ver.0.0.2
+ * MNKR_Excalibur Ver.1.0.1
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -77,7 +77,18 @@
       $gameTroop.members().forEach(function (enemy) {
         enemy.addState(1);
       });
+      this._skillWindow.hide();
+      this._skillWindow.deactivate();
+      this._itemWindow.hide();
+      this._itemWindow.deactivate();
+      this._actorWindow.hide();
+      this._actorWindow.deactivate();
+      this._enemyWindow.hide();
+      this._enemyWindow.deactivate();
+      this._actorCommandWindow.deactivate();
+      this._partyCommandWindow.deactivate();
       BattleManager.endTurn();
+      // }
     }
   };
 
