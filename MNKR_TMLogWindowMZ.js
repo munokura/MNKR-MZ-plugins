@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_TMLogWindowMZ Ver.0.0.1
+ * MNKR_TMLogWindowMZ Ver.0.0.2
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -599,7 +599,7 @@ Imported.TMLogWindow = true;
 	Window_MenuLog.prototype.drawItem = function (index) {
 		let item = this._data[index];
 		if (item) {
-			let rect = this.itemRectForText(index);
+			let rect = this.itemRectWithPadding(index);
 			this.drawTextEx(item, 0, rect.y);
 		}
 	};
@@ -683,6 +683,12 @@ Imported.TMLogWindow = true;
 	Window_Base.prototype.initialize = function (x, y, w, h) {
 		const rect = rectlize(x, y, w, h);
 		Window_Base_initialize.call(this, rect);
+	};
+
+	const Window_Selectable_initialize = Window_Selectable.prototype.initialize;
+	Window_Selectable.prototype.initialize = function (x, y, w, h) {
+		const rect = rectlize(x, y, w, h);
+		Window_Selectable_initialize.call(this, rect);
 	};
 
 })();
