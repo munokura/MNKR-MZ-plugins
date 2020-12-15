@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_TimingInvokeCommonMZ Ver.1.0.0
+ * MNKR_TimingInvokeCommonMZ Ver.1.0.1
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -52,21 +52,11 @@
  * 
  * 
  * ------------------------------------------------------
- * 利用規約
- * ------------------------------------------------------
- * 当プラグインはMITライセンスで公開されています。
- * 使用に制限はありません。商用、アダルト、いずれにも使用できます。
- * 二次配布も制限はしませんが、サポートは行いません。
- * 著作表示は任意です。行わなくても利用できます。
- * 要するに、特に規約はありません。
- * バグ報告や使用方法等のお問合せはネ実ツクールスレ、
- * または、Twitterにお願いします。
- * https://twitter.com/yanatsuki_
- * 素材利用は自己責任でお願いします。
- * ------------------------------------------------------
- * 更新履歴:
- * ver1.00:
- * 公開
+ * 利用規約:
+ *   MITライセンスです。
+ *   https://licenses.opensource.jp/MIT/MIT.html
+ *   作者に無断で改変、再配布が可能で、
+ *   利用形態（商用、18禁利用等）についても制限はありません。
  */
 
 (() => {
@@ -98,8 +88,8 @@
 	const __GInterpreter_command201 = Game_Interpreter.prototype.command201;
 	Game_Interpreter.prototype.command201 = function () {
 		__GInterpreter_command201.apply(this, arguments);
+		this._index++;
 		if (transferCommonId > 0) {
-			this._index++;
 			$gameTemp.reserveCommonEvent(transferCommonId);
 		}
 	};
