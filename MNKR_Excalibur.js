@@ -88,7 +88,6 @@
       this._actorCommandWindow.deactivate();
       this._partyCommandWindow.deactivate();
       BattleManager.endTurn();
-      // }
     }
   };
 
