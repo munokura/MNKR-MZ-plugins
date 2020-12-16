@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_TMTopFixMZ_DarkPlasma_FormationPatch Ver.0.0.2
+ * MNKR_TMTopFixMZ_DarkPlasma_FormationPatch Ver.0.0.3
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -15,7 +15,6 @@
  * @base DarkPlasma_Formation
  * @base MNKR_TMTopFixMZ
  * @orderAfter DarkPlasma_Formation
- * @orderAfter MNKR_TMTopFixMZ
  *
  * @help
  * DarkPlasma_Formation のシーンにおいて、
@@ -24,7 +23,7 @@
  * 使い方:
  * DarkPlasma_Formation と MNKR_TMTopFixMZ をプラグイン管理でONにします。
  * MNKR_TMTopFixMZ_DarkPlasma_FormationPatch をプラグイン管理でONにし、
- * DarkPlasma_Formation と MNKR_TMTopFixMZ の下側に配置してください。
+ * DarkPlasma_Formation の下側に配置してください。
  * 
  * 例
  *   DarkPlasma_Formation
