@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_DeleteBackSpriteMZ Ver.0.0.1
+ * MNKR_DeleteBackSpriteMZ Ver.0.0.2
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -28,8 +28,10 @@
 (() => {
   "use strict";
 
+  const _Window_createContentsBackSprite = Window.prototype._createContentsBackSprite;
   Window.prototype._createContentsBackSprite = function () {
-    this._contentsBackSprite = new Sprite();
+    _Window_createContentsBackSprite.call(this);
+    this._contentsBackSprite.alpha = 0;
   };
 
 })();
