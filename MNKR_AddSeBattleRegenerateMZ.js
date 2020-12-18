@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_AddSeBattleRegenerateMZ Ver.0.0.1
+ * MNKR_AddSeBattleRegenerateMZ Ver.0.0.2
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -87,14 +87,13 @@
   const _Game_Battler_regenerateAll = Game_Battler.prototype.regenerateAll;
   Game_Battler.prototype.regenerateAll = function () {
     if (this.isAlive()) {
-      this.regenerateHpSe();
+      const hp = this.hp;
+      _Game_Battler_regenerateAll.call(this);
+      this.regenerateHpSe(this.hp - hp);
     }
-    _Game_Battler_regenerateAll.call(this);
   };
 
-  Game_Battler.prototype.regenerateHpSe = function () {
-    const minRecover = -this.maxSlipDamage();
-    const value = Math.max(Math.floor(this.mhp * this.hrg), minRecover);
+  Game_Battler.prototype.regenerateHpSe = function (value) {
     if (value !== 0) {
       if (value > 0 && setUpRegenerateHpSe) {
         AudioManager.playSe(regenerateHpSe);
