@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_AddTitleLink Ver.0.0.4
+ * MNKR_AddTitleLink Ver.0.0.5
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -61,7 +61,7 @@
     };
 
     Scene_Title.prototype.MNKR_urlCommand = function () {
-        window.open(url, '_blank');
+        window.open(url);
         this._commandWindow.activate();
     };
 
