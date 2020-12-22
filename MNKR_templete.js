@@ -14,6 +14,12 @@
  * @author munokura
  *
  * @help
+ * このプラグインについて
+ *   RPGツクールMV用に作成されたものを
+ *   ムノクラがRPGツクールMZ用に移植したものです。
+ *   原作者はRPGツクールMZを所持していないため、
+ *   原作者への連絡はお控えください。
+ *
  * 利用規約:
  *   MITライセンスです。
  *   https://licenses.opensource.jp/MIT/MIT.html
