@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_templete Ver.1.0.1
+ * MNKR_templete Ver.0.0.1
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -17,7 +17,6 @@
  * このプラグインについて
  *   RPGツクールMV用に作成されたものを
  *   ムノクラがRPGツクールMZ用に移植したものです。
- *   原作者はRPGツクールMZを所持していないため、
  *   原作者への連絡はお控えください。
  *
  * 利用規約:
