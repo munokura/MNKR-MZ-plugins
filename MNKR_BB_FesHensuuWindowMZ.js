@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_BB_FesHensuuWindowMZ Ver.0.0.1
+ * MNKR_BB_FesHensuuWindowMZ Ver.0.0.2
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -126,7 +126,6 @@
  * 
  * @param FontSize
  * @text フォントサイズ
- * @type string
  * @desc フォントサイズを指定。
  * 初期値: 26
  * @default 26
@@ -159,14 +158,12 @@
  * 
  * @param FesWindowX
  * @text ウィンドウX座標
- * @type string
  * @desc 変数表示ウィンドウの表示位置のX座標
  * 初期値: 0
  * @default 0
  * 
  * @param FesWindowY
  * @text ウィンドウY座標
- * @type string
  * @desc 変数表示ウィンドウの表示位置のY座標。タッチUIと重ならないように配置してください。初期値: 64
  * @default 64
  * 
@@ -247,19 +244,18 @@
     // ウィンドウに載せる内容
     Window_Fes.prototype.refresh = function () {
         this.contents.clear();
+        this.contents.fontSize = BBFFS;//追記
         let width1 = 26 * 9;
         let width2 = 26 * 4;
         let x = Graphics.width / 2 - width2 - 36;
         let BY = 0;
         let CY = 0;
         let DY = 0;
-        if ($gameVariables.value(BBFAV) != 0) {
+        if (BBFAV) {
             this.changeTextColor(this.textColor(BBFFC));
-            // this.drawText($dataSystem.variables[$gameVariables.value(BBFAV)], 0, 0, width1);
             this.drawText($dataSystem.variables[BBFAV], 0, 0, width1);
             this.resetTextColor();
             this.drawText(BBFBNAV, width1 + 11, 0, 13);
-            this.drawText($gameVariables.value($gameVariables.value(BBFAV)), x, 0, width2, 'right');
             this.drawText($gameVariables.value(BBFAV), x, 0, width2, 'right');
             this.contents.paintOpacity = BBFULO;
             this.contents.fillRect(0, this.lineHeight() - 2, Graphics.width / 2, 2, this.normalColor());
@@ -268,13 +264,11 @@
             CY += this.lineHeight();
             DY += this.lineHeight();
         }
-        if ($gameVariables.value(BBFBV) != 0) {
+        if (BBFBV) {
             this.changeTextColor(this.textColor(BBFFC));
-            // this.drawText($dataSystem.variables[$gameVariables.value(BBFBV)], 0, BY, width1);
             this.drawText($dataSystem.variables[BBFBV], 0, BY, width1);
             this.resetTextColor();
             this.drawText(BBFBNAV, width1 + 11, BY, 13);
-            // this.drawText($gameVariables.value($gameVariables.value(BBFBV)), x, BY, width2, 'right');
             this.drawText($gameVariables.value(BBFBV), x, BY, width2, 'right');
             this.contents.paintOpacity = BBFULO;
             this.contents.fillRect(0, this.lineHeight() + BY - 2, Graphics.width / 2, 2, this.normalColor());
@@ -282,36 +276,27 @@
             CY += this.lineHeight();
             DY += this.lineHeight();
         }
-        if ($gameVariables.value(BBFCV) != 0) {
+        if (BBFCV) {
             this.changeTextColor(this.textColor(BBFFC));
-            // this.drawText($dataSystem.variables[$gameVariables.value(BBFCV)], 0, CY, width1);
             this.drawText($dataSystem.variables[BBFCV], 0, CY, width1);
             this.resetTextColor();
             this.drawText(BBFBNAV, width1 + 11, CY, 13);
-            // this.drawText($gameVariables.value($gameVariables.value(BBFCV)), x, CY, width2, 'right');
             this.drawText($gameVariables.value(BBFCV), x, CY, width2, 'right');
             this.contents.paintOpacity = BBFULO;
             this.contents.fillRect(0, this.lineHeight() + CY - 2, Graphics.width / 2, 2, this.normalColor());
             this.contents.paintOpacity = 255;
             DY += this.lineHeight();
         }
-        if ($gameVariables.value(BBFDV) != 0) {
+        if (BBFDV) {
             this.changeTextColor(this.textColor(BBFFC));
-            // this.drawText($dataSystem.variables[$gameVariables.value(BBFDV)], 0, DY, width1);
             this.drawText($dataSystem.variables[BBFDV], 0, DY, width1);
             this.resetTextColor();
             this.drawText(BBFBNAV, width1 + 11, DY, 13);
-            // this.drawText($gameVariables.value($gameVariables.value(BBFDV)), x, DY, width2, 'right');
             this.drawText($gameVariables.value(BBFDV), x, DY, width2, 'right');
             this.contents.paintOpacity = BBFULO;
             this.contents.fillRect(0, this.lineHeight() + DY - 2, Graphics.width / 2, 2, this.normalColor());
             this.contents.paintOpacity = 255;
         }
-    };
-
-    // フォントサイズ
-    Window_Fes.prototype.standardFontSize = function () {
-        return BBFFS;
     };
 
     // ウィンドウの余白
