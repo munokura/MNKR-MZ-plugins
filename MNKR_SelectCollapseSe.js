@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_SelectCollapseSe Ver.0.0.3
+ * MNKR_SelectCollapseSe Ver.0.0.4
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -43,7 +43,7 @@
 (() => {
   "use strict";
 
-  let CollapseSe;
+  let CollapseSe = '';
 
   const _Game_Enemy_performCollapse = Game_Enemy.prototype.performCollapse;
   Game_Enemy.prototype.performCollapse = function () {
@@ -60,9 +60,9 @@
     Game_Battler.prototype.performCollapse.call(this);
     if (this.collapseType() === 0 && (CollapseSe !== null)) {
       const Param = this.enemy().meta.CollapseVPP ? JsonEx.parse(`[${this.enemy().meta.CollapseVPP}]`) : [90, 100, 0];
-      const CollapseSe = { "name": CollapseSe, "volume": Param[0], "pitch": Param[1], "pan": Param[2] };
+      const CollapseSeAudio = { "name": CollapseSe, "volume": Param[0], "pitch": Param[1], "pan": Param[2] };
       this.requestEffect('collapse');
-      AudioManager.playSe(CollapseSe);
+      AudioManager.playSe(CollapseSeAudio);
     }
   };
 
