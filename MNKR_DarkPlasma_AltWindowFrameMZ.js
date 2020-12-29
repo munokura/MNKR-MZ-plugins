@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_DarkPlasma_AltWindowFrameMZ Ver.0.0.1
+ * MNKR_DarkPlasma_AltWindowFrameMZ Ver.0.0.2
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -55,6 +55,60 @@
  * MADO付属のAltWindowFrame.jsのRPGツクールMZ版です。
  * DarkPlasma_AltWindowFramePatch.js を改変したものです。
  * 
+ * RPGツクールMZデフォルトにあるシーン名は
+ * プラグインパラメーターのコンボボックスで選択できます。
+ * ウィンドウ名は大量なので、下記からコピーして利用してください。
+ * 
+ * Window_ActorCommand
+ * Window_BattleActor
+ * Window_BattleEnemy
+ * Window_BattleItem
+ * Window_BattleLog
+ * Window_BattleSkill
+ * Window_BattleStatus
+ * Window_ChoiceList
+ * Window_Command
+ * Window_EquipCommand
+ * Window_EquipItem
+ * Window_EquipSlot
+ * Window_EquipStatus
+ * Window_EventItem
+ * Window_GameEnd
+ * Window_Gold
+ * Window_Help
+ * Window_HorzCommand
+ * Window_ItemCategory
+ * Window_ItemList
+ * Window_MapName
+ * Window_MenuActor
+ * Window_MenuCommand
+ * Window_MenuStatus
+ * Window_Message
+ * Window_NameBox
+ * Window_NameEdit
+ * Window_NameInput
+ * Window_NumberInput
+ * Window_Options
+ * Window_PartyCommand
+ * Window_SavefileList
+ * Window_Scrollable
+ * Window_ScrollText
+ * Window_Selectable
+ * Window_ShopBuy
+ * Window_ShopCommand
+ * Window_ShopNumber
+ * Window_ShopSell
+ * Window_ShopStatus
+ * Window_SkillList
+ * Window_SkillStatus
+ * Window_SkillType
+ * Window_Status
+ * Window_StatusBase
+ * Window_StatusEquip
+ * Window_StatusParams
+ * Window_TitleCommand
+ * 
+ * 
  * @requiredAssets img/system/Window_Talk
  * @requiredAssets img/system/Window_Battle
  * @requiredAssets img/system/Window_Status
@@ -65,7 +119,20 @@
  * @param Class Name
  * @desc ウィンドウまたはシーンのクラス名（例: Window_TitleCommand, Scene_Shop）
  * @text クラス名
- * @type string
+ * @type combo
+ * @option Scene_Battle
+ * @option Scene_GameEnd
+ * @option Scene_Gameover
+ * @option Scene_Item
+ * @option Scene_Load
+ * @option Scene_Map
+ * @option Scene_Menu
+ * @option Scene_Name
+ * @option Scene_Options
+ * @option Scene_Save
+ * @option Scene_Shop
+ * @option Scene_Title
+ * @option Window_Message
  * @default
  *
  * @param Windowskin
@@ -199,7 +266,6 @@
     this.windowskin = ImageManager.loadSystem(this.getWindowskinName());
   };
 
-  // AltWindowFrame.jsによって奇妙な処理をされている連中をなんとかする
   const _Scene_Title_Create = Scene_Title.prototype.create;
   Scene_Title.prototype.create = function () {
     _Scene_Title_Create.call(this);
@@ -292,72 +358,70 @@
   };
 
   Window.prototype._refreshFrame = function () {
-    var w = this._width;
-    var h = this._height;
-    var m = 24;
-    var bitmap = new Bitmap(w, h);
+    let w = this._width;
+    let h = this._height;
+    let m = 24;
+    let bitmap = new Bitmap(w, h);
     this._frameSprite.bitmap = bitmap;
     this._frameSprite.setFrame(0, 0, w, h);
     if (w > 0 && h > 0 && this._windowskin) {
-      var skin = this._windowskin;
+      let skin = this._windowskin;
 
-      // frame
-      var p = 96;
-      var q = 96;
-      bitmap.blt(skin, p + 0, 0 + 0, m, m, 0, 0, m, m);       // left top corner
-      bitmap.blt(skin, p + 0, 0 + q - m, m, m, 0, h - m, m, m);       // left bottom corner
-      bitmap.blt(skin, p + q - m, 0 + 0, m, m, w - m, 0, m, m);       // right top corner
-      bitmap.blt(skin, p + q - m, 0 + q - m, m, m, w - m, h - m, m, m);       // right bottom corner
+      let p = 96;
+      let q = 96;
+      bitmap.blt(skin, p + 0, 0 + 0, m, m, 0, 0, m, m);
+      bitmap.blt(skin, p + 0, 0 + q - m, m, m, 0, h - m, m, m);
+      bitmap.blt(skin, p + q - m, 0 + 0, m, m, w - m, 0, m, m);
+      bitmap.blt(skin, p + q - m, 0 + q - m, m, m, w - m, h - m, m, m);
 
-      var frameHeight = 48;
-      var heightCount = Math.floor((h - frameHeight) / frameHeight);
-      var remainder = (h - frameHeight) % frameHeight;
-      for (var i = 0; i < heightCount; i++) {
-        bitmap.blt(skin, p + 0, 0 + m, m, p - m * 2, 0, m + frameHeight * i, m, frameHeight);   // left frame
-        bitmap.blt(skin, p + q - m, 0 + m, m, p - m * 2, w - m, m + frameHeight * i, m, frameHeight);   // right frame
+      let frameHeight = 48;
+      let heightCount = Math.floor((h - frameHeight) / frameHeight);
+      let remainder = (h - frameHeight) % frameHeight;
+      for (let i = 0; i < heightCount; i++) {
+        bitmap.blt(skin, p + 0, 0 + m, m, p - m * 2, 0, m + frameHeight * i, m, frameHeight);
+        bitmap.blt(skin, p + q - m, 0 + m, m, p - m * 2, w - m, m + frameHeight * i, m, frameHeight);
       }
       if (remainder != 0) {
-        bitmap.blt(skin, p + 0, 0 + m, m, remainder, 0, m + frameHeight * heightCount, m, remainder);   // left frame
-        bitmap.blt(skin, p + q - m, 0 + m, m, remainder, w - m, m + frameHeight * heightCount, m, remainder);   // right frame
+        bitmap.blt(skin, p + 0, 0 + m, m, remainder, 0, m + frameHeight * heightCount, m, remainder);
+        bitmap.blt(skin, p + q - m, 0 + m, m, remainder, w - m, m + frameHeight * heightCount, m, remainder);
       }
 
-      var frameWidth = 48;
-      var widthCount = Math.floor((w - frameWidth) / frameWidth);
+      let frameWidth = 48;
+      let widthCount = Math.floor((w - frameWidth) / frameWidth);
       remainder = (w - frameWidth) % frameWidth;
-      for (var j = 0; j < widthCount; j++) {
-        bitmap.blt(skin, p + m, 0 + 0, p - m * 2, m, m + frameWidth * j, 0, frameWidth, m); // top frame
-        bitmap.blt(skin, p + m, 0 + q - m, p - m * 2, m, m + frameWidth * j, h - m, frameWidth, m); // bottom frame
+      for (let j = 0; j < widthCount; j++) {
+        bitmap.blt(skin, p + m, 0 + 0, p - m * 2, m, m + frameWidth * j, 0, frameWidth, m);
+        bitmap.blt(skin, p + m, 0 + q - m, p - m * 2, m, m + frameWidth * j, h - m, frameWidth, m);
       }
       if (remainder != 0) {
-        bitmap.blt(skin, p + m, 0 + 0, remainder, m, m + frameWidth * widthCount, 0, remainder, m); // top frame                
-        bitmap.blt(skin, p + m, 0 + q - m, remainder, m, m + frameWidth * widthCount, h - m, remainder, m); // bottom frame
+        bitmap.blt(skin, p + m, 0 + 0, remainder, m, m + frameWidth * widthCount, 0, remainder, m);
+        bitmap.blt(skin, p + m, 0 + q - m, remainder, m, m + frameWidth * widthCount, h - m, remainder, m);
       }
 
-      // corner
-      var r = 48;
-      var s = 48;
-      bitmap.blt(skin, 0, 0 + q * 4, r, s, 0, 0, r, s); // left top
-      bitmap.blt(skin, r, 0 + q * 4, r, s, w - r, 0, r, s); // right top
-      bitmap.blt(skin, r * 2, 0 + q * 4, r, s, 0, h - r, r, s); // left bottom
-      bitmap.blt(skin, r * 3, 0 + q * 4, r, s, w - r, h - r, r, s); // right bottom
+      let r = 48;
+      let s = 48;
+      bitmap.blt(skin, 0, 0 + q * 4, r, s, 0, 0, r, s);
+      bitmap.blt(skin, r, 0 + q * 4, r, s, w - r, 0, r, s);
+      bitmap.blt(skin, r * 2, 0 + q * 4, r, s, 0, h - r, r, s);
+      bitmap.blt(skin, r * 3, 0 + q * 4, r, s, w - r, h - r, r, s);
 
     }
   };
 
   Window.prototype._refreshBack = function () {
-    var m = this._margin + 6;
-    var w = this._width - m * 2;
-    var h = this._height - m * 2;
-    var bitmap = new Bitmap(w, h);
+    let m = this._margin + 6;
+    let w = this._width - m * 2;
+    let h = this._height - m * 2;
+    let bitmap = new Bitmap(w, h);
 
     this._backSprite.bitmap = bitmap;
     this._backSprite.setFrame(0, 0, w, h);
     this._backSprite.move(m, m);
 
     if (w > 0 && h > 0 && this._windowskin) {
-      var p = 192;
-      for (var y = 0; y < h; y += p) {
-        for (var x = 0; x < w; x += p) {
+      let p = 192;
+      for (let y = 0; y < h; y += p) {
+        for (let x = 0; x < w; x += p) {
           bitmap.blt(this._windowskin, 0, p, p, p, x, y, p, p);
         }
       }
