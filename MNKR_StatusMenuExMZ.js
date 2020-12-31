@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_StatusMenuExMZ Ver.0.0.2
+ * MNKR_StatusMenuExMZ Ver.0.0.3
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -159,9 +159,9 @@
   const statusParamsWindowWidth = +parameters['statusParamsWindowWidth'];
   const paramFontSize = +parameters['paramFontSize'];
   const paramLineHeight = +parameters['paramLineHeight'];
-  const paramList = parameters['paramList'].split(',').filter(Boolean);
-  const xparamText = parameters['xparamText'].split(',').filter(Boolean);
-  const sparamText = parameters['sparamText'].split(',').filter(Boolean);
+  const paramList = parameters['paramList'].split(',');
+  const xparamText = parameters['xparamText'].split(',');
+  const sparamText = parameters['sparamText'].split(',');
   const paramNameX = +parameters['paramNameX'];
   const paramNameWidth = +parameters['paramNameWidth'];
   const paramX = +parameters['paramX'];
