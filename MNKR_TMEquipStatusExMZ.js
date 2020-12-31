@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_TMEquipStatusExMZ Ver.1.0.1
+ * MNKR_TMEquipStatusExMZ Ver.1.0.2
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -97,7 +97,7 @@ Imported.TMEquipStatusEx = true;
         for (let i = 0; i < paramList.length; i++) {
           const x = this.itemPadding();
           const y = this.paramY(i);
-          this.drawItem(x, y, i);
+          this.drawItem(x, y, paramList[i]);
         }
       } else {
         for (let i = 0; i < paramList.length; i++) {
