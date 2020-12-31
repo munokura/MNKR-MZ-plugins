@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_StatusMenuExMZ Ver.0.0.1
+ * MNKR_StatusMenuExMZ Ver.0.0.2
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -193,7 +193,7 @@
     const name = TextManager.param(paramList[paramId]);
 
     if (name) {
-      const value = this._actor.param(paramId);
+      const value = this._actor.param(paramList[paramId]);
 
       this.changeTextColor(ColorManager.systemColor());
       this.drawText(name, paramNameX, rect.y, paramNameWidth);
