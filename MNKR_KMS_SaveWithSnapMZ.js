@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_KMS_SaveWithSnapMZ Ver.0.0.1
+ * MNKR_KMS_SaveWithSnapMZ Ver.0.0.2
  * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -42,6 +42,21 @@ THE SOFTWARE.
  * @plugindesc セーブ/ロード画面にスクリーンショットを追加します。
  * 
  * @author TOMY (改変 munokura)
+
+ *
+ * @help
+ * セーブ/ロード画面にスクリーンショットを追加します。
+ * 保存したマップ名を表示することもできます。
+ * 
+ * このプラグインには、プラグインコマンドはありません。
+ * 
+ * 
+ * 利用規約:
+ *   MITライセンスです。
+ *   https://ja.osdn.net/projects/opensource/wiki/licenses%2FMIT_license
+ *   作者に無断で改変、再配布が可能で、
+ *   利用形態（商用、18禁利用等）についても制限はありません。
+ *
  *
  * @param Image scale
  * @text 画像サイズ倍率
@@ -56,17 +71,13 @@ THE SOFTWARE.
  * @default true
  * @desc JPEG 形式が使用可能で、かつ PNG よりサイズが小さくなる場合は JPEG を使用します。
  *
- * @help
- * セーブ/ロード画面にスクリーンショットを追加します。
- * 
- * このプラグインには、プラグインコマンドはありません。
- * 
- * 
- * 利用規約:
- *   MITライセンスです。
- *   https://ja.osdn.net/projects/opensource/wiki/licenses%2FMIT_license
- *   作者に無断で改変、再配布が可能で、
- *   利用形態（商用、18禁利用等）についても制限はありません。
+ * @param Enable MapName
+ * @text マップ名表示
+ * @type boolean
+ * @on 表示
+ * @off 非表示
+ * @default true
+ * @desc セーブデータに保存時のマップ名を表示するか指定します。
  */
 
 var KMS = KMS || {};
@@ -81,6 +92,7 @@ var KMS = KMS || {};
     var Params = {};
     Params.savefileBitmapScale = Number(pluginParams['Image scale'] || 0.15);
     Params.enableJpeg = String(pluginParams['Enable JPEG']) === 'true';
+    Params.enableMapName = String(pluginParams['Enable MapName']) === 'true';
 
     //-----------------------------------------------------------------------------
     // Bitmap
@@ -120,6 +132,9 @@ var KMS = KMS || {};
         var bitmap = this.makeSavefileBitmap();
         if (bitmap) {
             info.snapUrl = bitmap.toDataURL();
+        }
+        if (Params.enableMapName) {
+            info.mapname = $gameMap.displayName();
         }
         return info;
     };
@@ -167,6 +182,9 @@ var KMS = KMS || {};
         _Window_SavefileList_drawContents.apply(this, arguments);
         if (info) {
             this.drawSnappedImage(info, rect);
+            if (info.mapname && Params.enableMapName) {
+                this.drawText(info.mapname, rect.x + 192, rect.y + 4, rect.width - 192);
+            }
         }
     };
 
