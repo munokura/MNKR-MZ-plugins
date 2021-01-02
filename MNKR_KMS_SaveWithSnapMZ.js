@@ -51,6 +51,10 @@ THE SOFTWARE.
  * このプラグインには、プラグインコマンドはありません。
  * 
  * 
+ * このプラグインについて
+ *   RPGツクールMV用に作成されたプラグインをMZ用に移植したものです。
+ *   お問い合わせは改変者へお願いいたします。
+ * 
  * 利用規約:
  *   MITライセンスです。
  *   https://ja.osdn.net/projects/opensource/wiki/licenses%2FMIT_license
