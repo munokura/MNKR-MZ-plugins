@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_KMS_SaveWithSnapMZ Ver.0.0.2
+ * MNKR_KMS_SaveWithSnapMZ Ver.0.1.0
  * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -42,7 +42,6 @@ THE SOFTWARE.
  * @plugindesc セーブ/ロード画面にスクリーンショットを追加します。
  * 
  * @author TOMY (改変 munokura)
-
  *
  * @help
  * セーブ/ロード画面にスクリーンショットを追加します。
@@ -62,29 +61,174 @@ THE SOFTWARE.
  *   利用形態（商用、18禁利用等）についても制限はありません。
  *
  *
- * @param Image scale
+ * @param fontSize
+ * @text フォントサイズ
+ * @default 26
+ * @desc セーブ画面全体のフォントサイズ。既定値:26
+ *
+ * @param mapImages
+ * @text マップ画像
+ * 
+ * @param imageScale
  * @text 画像サイズ倍率
  * @default 0.15
- * @desc セーブ時の画像データのサイズ倍率です。
+ * @desc セーブ画面に表示される画像の解像度（のようなもの）。大きいほどセーブサイズが大きくなります。既定値:0.15
+ * @parent mapImages
  *
- * @param Enable JPEG
+ * @param enableJpeg
  * @text JPEG許可
  * @type boolean
  * @on JPEGを許可
  * @off PNGのみ許可
  * @default true
  * @desc JPEG 形式が使用可能で、かつ PNG よりサイズが小さくなる場合は JPEG を使用します。
+ * @parent mapImages
  *
- * @param Enable MapName
+ * @param imageX
+ * @text マップ画像X軸
+ * @default 0
+ * @desc マップ画像の表示位置をX軸オフセットするピクセル量
+ * 正の値で右、負の値で左にオフセットします。
+ * @parent mapImages
+ *
+ * @param imageY
+ * @text マップ画像Y軸
+ * @default 0
+ * @desc マップ画像の表示位置をY軸オフセットするピクセル量
+ * 正の値で下、負の値で上にオフセットします。
+ * @parent mapImages
+ *
+ * @param imageHight
+ * @text マップ画像高さ
+ * @default 84
+ * @desc マップ画像の表示高さのピクセル量。枠高を超える値は無効になります。幅は高さから縦横比を保って算出されます。既定値:84
+ * @parent mapImages
+ *
+ * @param drawTitles
+ * @text セーブタイトル
+ * 
+ * @param drawTitle
+ * @text セーブタイトル表示
+ * @type boolean
+ * @on 表示
+ * @off 非表示
+ * @default false
+ * @desc デフォルトでセーブ一覧に表示される「ファイル x」の表示切り替え
+ * @parent drawTitles
+ *
+ * @param titleX
+ * @text セーブタイトルX軸
+ * @default 0
+ * @desc セーブタイトルの表示位置をX軸オフセットするピクセル量
+ * 正の値で右、負の値で左にオフセットします。既定値:0
+ * @parent drawTitles
+ *
+ * @param titleY
+ * @text セーブタイトルY軸
+ * @default 4
+ * @desc セーブタイトルの表示位置をY軸オフセットするピクセル量
+ * 正の値で下、負の値で上にオフセットします。既定値:4
+ * @parent drawTitles
+ *
+ * @param titleWidth
+ * @text セーブタイトル幅
+ * @default 180
+ * @desc セーブタイトルの表示幅のピクセル量
+ * 既定値:180
+ * @parent drawTitles
+ *
+ * @param drawMapNames
+ * @text マップ名
+ * 
+ * @param drawMapName
  * @text マップ名表示
  * @type boolean
  * @on 表示
  * @off 非表示
  * @default true
  * @desc セーブデータに保存時のマップ名を表示するか指定します。
+ * @parent drawMapNames
+ *
+ * @param mapNameX
+ * @text マップ名X軸
+ * @default 0
+ * @desc マップ名の表示位置をX軸オフセットするピクセル量
+ * 正の値で右、負の値で左にオフセットします。既定値:0
+ * @parent drawMapNames
+ *
+ * @param mapNameY
+ * @text マップ名Y軸
+ * @default 4
+ * @desc マップ名の表示位置をY軸オフセットするピクセル量
+ * 正の値で下、負の値で上にオフセットします。既定値:4
+ * @parent drawMapNames
+ *
+ * @param mapNameWidth
+ * @text マップ名幅
+ * @default 568
+ * @desc マップ名の表示幅のピクセル量
+ * 既定値:568
+ * @parent drawMapNames
+ *
+ * @param drawPartys
+ * @text パーティキャラ
+ * 
+ * @param drawParty
+ * @text パーティキャラ表示
+ * @type boolean
+ * @on 表示
+ * @off 非表示
+ * @default true
+ * @desc セーブデータに保存時のパーティキャラを表示するか指定します。
+ * @parent drawPartys
+ *
+ * @param partyX
+ * @text パーティキャラX軸
+ * @default 220
+ * @desc パーティキャラの表示位置をX軸オフセットするピクセル量
+ * 正の値で右、負の値で左にオフセットします。既定値:220
+ * @parent drawPartys
+ *
+ * @param partyY
+ * @text パーティキャラY軸
+ * @default -8
+ * @desc パーティキャラの表示位置をY軸オフセットするピクセル量
+ * 正の値で下、負の値で上にオフセットします。既定値:-8
+ * @parent drawPartys
+ * 
+ * @param playtimes
+ * @text プレイ時間
+ * 
+ * @param playtime
+ * @text プレイ時間表示
+ * @type boolean
+ * @on 表示
+ * @off 非表示
+ * @default true
+ * @desc セーブデータに保存時のプレイ時間を表示するか指定します。
+ * @parent playtimes
+ *
+ * @param playtimeX
+ * @text プレイ時間X軸
+ * @default 0
+ * @desc プレイ時間の表示位置をX軸オフセットするピクセル量
+ * 正の値で右、負の値で左にオフセットします。既定値:0
+ * @parent playtimes
+ *
+ * @param playtimeY
+ * @text プレイ時間Y軸
+ * @default 0
+ * @desc プレイ時間の表示位置をY軸オフセットするピクセル量
+ * 正の値で下、負の値で上にオフセットします。既定値:0
+ * @parent playtimes
+ *
+ * @param playtimeWidth
+ * @text プレイ時間幅
+ * @default 760
+ * @desc プレイ時間の表示幅のピクセル量
+ * 既定値:760
+ * @parent playtimes
  */
-
-var KMS = KMS || {};
 
 (function () {
 
@@ -94,9 +238,32 @@ var KMS = KMS || {};
     var pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
     var pluginParams = PluginManager.parameters(pluginName);
     var Params = {};
-    Params.savefileBitmapScale = Number(pluginParams['Image scale'] || 0.15);
-    Params.enableJpeg = String(pluginParams['Enable JPEG']) === 'true';
-    Params.enableMapName = String(pluginParams['Enable MapName']) === 'true';
+    Params.fontSize = Number(pluginParams['fontSize'] || 26);
+
+    Params.savefileBitmapScale = Number(pluginParams['imageScale'] || 0.15);
+    Params.enableJpeg = String(pluginParams['enableJpeg']) === 'true';
+    Params.imageX = Number(pluginParams['imageX'] || 0);
+    Params.imageY = Number(pluginParams['imageY'] || 0);
+    Params.imageHight = Number(pluginParams['imageHight'] || 84);
+
+    Params.drawTitle = String(pluginParams['drawTitle']) === 'true';
+    Params.titleX = Number(pluginParams['titleX'] || 0);
+    Params.titleY = Number(pluginParams['titleY'] || 0);
+    Params.titleWidth = Number(pluginParams['titleWidth'] || 180);
+
+    Params.drawMapName = String(pluginParams['drawMapName']) === 'true';
+    Params.mapNameX = Number(pluginParams['mapNameX'] || 0);
+    Params.mapNameY = Number(pluginParams['mapNameY'] || 4);
+    Params.mapNameWidth = Number(pluginParams['mapNameWidth'] || 568);
+
+    Params.drawparty = String(pluginParams['drawParty']) === 'true';
+    Params.partyX = Number(pluginParams['partyX'] || 220);
+    Params.partyY = Number(pluginParams['partyY'] || 4);
+
+    Params.playtime = String(pluginParams['playtime']) === 'true';
+    Params.playtimeX = Number(pluginParams['playtimeX'] || 0);
+    Params.playtimeY = Number(pluginParams['playtimeY'] || 0);
+    Params.playtimeWidth = Number(pluginParams['playtimeWidth'] || 760);
 
     //-----------------------------------------------------------------------------
     // Bitmap
@@ -137,7 +304,7 @@ var KMS = KMS || {};
         if (bitmap) {
             info.snapUrl = bitmap.toDataURL();
         }
-        if (Params.enableMapName) {
+        if (Params.drawMapName) {
             info.mapname = $gameMap.displayName();
         }
         return info;
@@ -181,13 +348,34 @@ var KMS = KMS || {};
     //-----------------------------------------------------------------------------
     // Window_SavefileList
 
-    const _Window_SavefileList_drawContents = Window_SavefileList.prototype.drawContents;
+    Window_SavefileList.prototype.drawTitle = function (savefileId, x, y) {
+        if (Params.drawTitle) {
+            if (savefileId === 0) {
+                this.drawText(TextManager.autosave, x + Params.titleX, y + Params.titleX, Params.titleWidth);
+            } else {
+                this.drawText(TextManager.file + " " + savefileId, x + Params.titleY, y + Params.titleY, Params.titleWidth);
+            }
+        }
+    };
+
     Window_SavefileList.prototype.drawContents = function (info, rect) {
-        _Window_SavefileList_drawContents.apply(this, arguments);
+        this.contents.fontSize = Params.fontSize;
         if (info) {
             this.drawSnappedImage(info, rect);
-            if (info.mapname && Params.enableMapName) {
-                this.drawText(info.mapname, rect.x + 192, rect.y + 4, rect.width - 192);
+            if (info.mapname && Params.drawMapName) {
+                this.drawText(info.mapname, rect.x + Params.mapNameX, rect.y + Params.mapNameY, Params.mapNameWidth);
+            }
+        }
+        const bottom = rect.y + rect.height;
+        if (Params.drawparty) {
+            this.drawPartyCharacters(info, rect.x + Params.partyX, bottom + Params.partyY);
+        }
+
+        if (Params.playtime) {
+            const lineHeight = this.lineHeight();
+            const y2 = bottom - lineHeight - 4;
+            if (y2 >= lineHeight) {
+                this.drawPlaytime(info, rect.x + Params.playtimeX, y2 + Params.playtimeY, Params.playtimeWidth);
             }
         }
     };
@@ -200,10 +388,10 @@ var KMS = KMS || {};
             return;
         }
         var bitmap = ImageManager.loadBitmapFromUrl(info.snapUrl);
-        var dh = this.itemHeight() - 12;
+        var dh = Params.imageHight < this.itemHeight() - 12 ? Params.imageHight : this.itemHeight() - 12;
         var dw = parseInt(bitmap.width * dh / bitmap.height);
-        var dx = rect.x + Math.max(rect.width - dw - 120, 0);
-        var dy = rect.y + 4;
+        var dx = rect.x + Math.max(rect.width - dw - 120, 0) + Params.imageX;
+        var dy = rect.y + 4 + Params.imageY;
         this.changePaintOpacity(true);
         this.contents.blt(bitmap, 0, 0, bitmap.width, bitmap.height, dx, dy, dw, dh);
     };
