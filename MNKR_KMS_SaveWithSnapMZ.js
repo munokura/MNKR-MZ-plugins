@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_KMS_SaveWithSnapMZ Ver.0.1.1
+ * MNKR_KMS_SaveWithSnapMZ Ver.0.1.2
  * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -350,6 +350,19 @@ var KMS = KMS || {};
     //-----------------------------------------------------------------------------
     // Window_SavefileList
 
+    Window_SavefileList.prototype.drawItem = function (index) {
+        const savefileId = this.indexToSavefileId(index);
+        const info = DataManager.savefileInfo(savefileId);
+        const rect = this.itemRectWithPadding(index);
+        this.resetTextColor();
+        this.changePaintOpacity(this.isEnabled(savefileId));
+        if (info) {
+            this.drawSnappedImage(info, rect);
+            this.drawContents(info, rect);
+        }
+        this.drawTitle(savefileId, rect.x, rect.y + 4);
+    };
+
     Window_SavefileList.prototype.drawTitle = function (savefileId, x, y) {
         if (Params.drawTitle) {
             if (savefileId === 0) {
@@ -363,7 +376,6 @@ var KMS = KMS || {};
     Window_SavefileList.prototype.drawContents = function (info, rect) {
         this.contents.fontSize = Params.fontSize;
         if (info) {
-            this.drawSnappedImage(info, rect);
             if (info.mapname && Params.drawMapName) {
                 this.drawText(info.mapname, rect.x + Params.mapNameX, rect.y + Params.mapNameY, Params.mapNameWidth);
             }
