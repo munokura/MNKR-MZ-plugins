@@ -230,16 +230,12 @@ THE SOFTWARE.
  * @parent playtimes
  */
 
-var KMS = KMS || {};
 
 (function () {
 
-    KMS.imported = KMS.imported || {};
-    KMS.imported['SaveWithSnap'] = true;
-
-    var pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
-    var pluginParams = PluginManager.parameters(pluginName);
-    var Params = {};
+    const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
+    const pluginParams = PluginManager.parameters(pluginName);
+    const Params = {};
     Params.fontSize = Number(pluginParams['fontSize'] || 26);
 
     Params.savefileBitmapScale = Number(pluginParams['imageScale'] || 0.15);
@@ -278,8 +274,8 @@ var KMS = KMS || {};
             // サイズが小さくなる方を返す
             // ※ サポート外の形式が指定されたら PNG になる仕様なので、
             //    変換結果が null 等になることはない
-            var png = this._canvas.toDataURL('image/png');
-            var jpeg = this._canvas.toDataURL('image/jpeg');
+            const png = this._canvas.toDataURL('image/png');
+            const jpeg = this._canvas.toDataURL('image/jpeg');
             return (png.length < jpeg.length) ? png : jpeg;
         } else {
             return this._canvas.toDataURL('image/png');
@@ -289,7 +285,7 @@ var KMS = KMS || {};
     //-----------------------------------------------------------------------------
     // DataManager
 
-    var _KMS_SaveWithSnap_DataManager_loadSavefileImages = DataManager.loadSavefileImages;
+    const _KMS_SaveWithSnap_DataManager_loadSavefileImages = DataManager.loadSavefileImages;
     DataManager.loadSavefileImages = function (info) {
         _KMS_SaveWithSnap_DataManager_loadSavefileImages.call(this, info);
         if (info.snapUrl) {
@@ -297,10 +293,10 @@ var KMS = KMS || {};
         }
     };
 
-    var _KMS_SaveWithSnap_DataManager_makeSavefileInfo = DataManager.makeSavefileInfo;
+    const _KMS_SaveWithSnap_DataManager_makeSavefileInfo = DataManager.makeSavefileInfo;
     DataManager.makeSavefileInfo = function () {
-        var info = _KMS_SaveWithSnap_DataManager_makeSavefileInfo.call(this);
-        var bitmap = this.makeSavefileBitmap();
+        const info = _KMS_SaveWithSnap_DataManager_makeSavefileInfo.call(this);
+        const bitmap = this.makeSavefileBitmap();
         if (bitmap) {
             info.snapUrl = bitmap.toDataURL();
         }
@@ -314,12 +310,12 @@ var KMS = KMS || {};
      * セーブファイル用のビットマップを作成
      */
     DataManager.makeSavefileBitmap = function () {
-        var bitmap = $gameTemp.getSavefileBitmap();
+        const bitmap = $gameTemp.getSavefileBitmap();
         if (!bitmap) {
             return null;
         }
-        var scale = Params.savefileBitmapScale;
-        var newBitmap = new Bitmap(bitmap.width * scale, bitmap.height * scale);
+        const scale = Params.savefileBitmapScale;
+        const newBitmap = new Bitmap(bitmap.width * scale, bitmap.height * scale);
         newBitmap.blt(bitmap, 0, 0, bitmap.width, bitmap.height, 0, 0, newBitmap.width, newBitmap.height);
         return newBitmap;
     };
@@ -327,7 +323,7 @@ var KMS = KMS || {};
     //-----------------------------------------------------------------------------
     // Game_Temp
 
-    var _KMS_SaveWithSnap_Game_Temp_initialize = Game_Temp.prototype.initialize;
+    const _KMS_SaveWithSnap_Game_Temp_initialize = Game_Temp.prototype.initialize;
     Game_Temp.prototype.initialize = function () {
         _KMS_SaveWithSnap_Game_Temp_initialize.call(this);
         this._savefileBitmap = null;
@@ -399,11 +395,11 @@ var KMS = KMS || {};
         if (!info.snapUrl) {
             return;
         }
-        var bitmap = ImageManager.loadBitmapFromUrl(info.snapUrl);
-        var dh = Params.imageHight < this.itemHeight() - 12 ? Params.imageHight : this.itemHeight() - 12;
-        var dw = parseInt(bitmap.width * dh / bitmap.height);
-        var dx = rect.x + Math.max(rect.width - dw - 120, 0) + Params.imageX;
-        var dy = rect.y + 4 + Params.imageY;
+        const bitmap = ImageManager.loadBitmapFromUrl(info.snapUrl);
+        const dh = Params.imageHight < this.itemHeight() - 12 ? Params.imageHight : this.itemHeight() - 12;
+        const dw = parseInt(bitmap.width * dh / bitmap.height);
+        const dx = rect.x + Math.max(rect.width - dw - 120, 0) + Params.imageX;
+        const dy = rect.y + 4 + Params.imageY;
         this.changePaintOpacity(true);
         this.contents.blt(bitmap, 0, 0, bitmap.width, bitmap.height, dx, dy, dw, dh);
     };
