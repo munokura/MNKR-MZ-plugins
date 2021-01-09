@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_KMS_SaveWithSnapMZ Ver.0.1.2
+ * MNKR_KMS_SaveWithSnapMZ Ver.0.1.3
  * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -270,23 +270,21 @@ var KMS = KMS || {};
     //-----------------------------------------------------------------------------
     // Bitmap
 
-    if (!Bitmap.prototype.save) {
-        /*
-         * ビットマップを URL 表現に変換
-         */
-        Bitmap.prototype.toDataURL = function () {
-            if (Params.enableJpeg) {
-                // サイズが小さくなる方を返す
-                // ※ サポート外の形式が指定されたら PNG になる仕様なので、
-                //    変換結果が null 等になることはない
-                var png = this._canvas.toDataURL('image/png');
-                var jpeg = this._canvas.toDataURL('image/jpeg');
-                return (png.length < jpeg.length) ? png : jpeg;
-            } else {
-                return this._canvas.toDataURL('image/png');
-            }
-        };
-    }
+    /*
+     * ビットマップを URL 表現に変換
+     */
+    Bitmap.prototype.toDataURL = function () {
+        if (Params.enableJpeg) {
+            // サイズが小さくなる方を返す
+            // ※ サポート外の形式が指定されたら PNG になる仕様なので、
+            //    変換結果が null 等になることはない
+            var png = this._canvas.toDataURL('image/png');
+            var jpeg = this._canvas.toDataURL('image/jpeg');
+            return (png.length < jpeg.length) ? png : jpeg;
+        } else {
+            return this._canvas.toDataURL('image/png');
+        }
+    };
 
     //-----------------------------------------------------------------------------
     // DataManager
