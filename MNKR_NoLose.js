@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_NoLose Ver.1.2.1
+ * MNKR_NoLose Ver.1.2.3
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -28,13 +28,14 @@
  *   利用形態（商用、18禁利用等）についても制限はありません。
  * 
  *
- * @param Switch Id
+ * @param switchId
  * @text スイッチID
  * @type switch
  * @desc 発動させるスイッチID
- * @default 11
+ * 指定しない場合、全滅しませんがコモンイベントを実行しなくなります。
+ * @default 0
  *
- * @param Common Id
+ * @param commonId
  * @type common_event
  * @text コモンイベントID
  * @desc 全滅時に実行するコモンイベント
@@ -48,8 +49,8 @@
 
     const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
     const parameters = PluginManager.parameters(pluginName);
-    const switchId = Number(parameters['Switch Id'] || 11);
-    const commonId = Number(parameters['Common Id'] || 0);
+    const switchId = Number(parameters['switchId'] || 0);
+    const commonId = Number(parameters['commonId'] || 0);
 
     const _BattleManager_setup = BattleManager.setup
     BattleManager.setup = function (troopId, canEscape, canLose) {
@@ -61,8 +62,9 @@
 
     const _BattleManager_updateBattleEnd = BattleManager.updateBattleEnd
     BattleManager.updateBattleEnd = function () {
+        const isAllDead = $gameParty.isAllDead();
         _BattleManager_updateBattleEnd.call(this);
-        if ($gameSwitches.value(switchId) && commonId > 0) {
+        if ($gameSwitches.value(switchId) && commonId > 0 && isAllDead) {
             $gameTemp.reserveCommonEvent(commonId);
         }
     };
