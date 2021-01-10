@@ -31,8 +31,7 @@
  * @param switchId
  * @text スイッチID
  * @type switch
- * @desc 発動させるスイッチID
- * 指定しない場合、全滅しませんがコモンイベントを実行しなくなります。
+ * @desc 発動させるスイッチID。指定しない場合、全滅しませんがコモンイベントを実行しなくなります。
  * @default 0
  *
  * @param commonId
