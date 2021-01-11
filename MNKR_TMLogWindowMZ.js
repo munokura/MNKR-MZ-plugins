@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_TMLogWindowMZ Ver.0.0.2
+ * MNKR_TMLogWindowMZ Ver.0.0.3
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -83,6 +83,10 @@
  *   stopAutoLogWindow
  *     startAutoLogWindow で有効化した機能を無効化します。
  * 
+ * 
+ * このプラグインについて
+ *   RPGツクールMV用に作成されたプラグインをMZ用に移植したものです。
+ *   お問い合わせは改変者へお願いいたします。
  * 
  * 利用規約:
  *   MITライセンスです。
@@ -568,7 +572,8 @@ Imported.TMLogWindow = true;
 	Window_MenuLog.prototype.constructor = Window_MenuLog;
 
 	Window_MenuLog.prototype.initialize = function () {
-		Window_Selectable.prototype.initialize.call(this, 0, 0, Graphics.boxWidth, Graphics.boxHeight);
+		Window_Selectable.prototype.initialize.call(this, 0, 64, Graphics.boxWidth, Graphics.boxHeight - 64);
+		// Window_Selectable.prototype.initialize.call(this, 0, 0, Graphics.boxWidth, Graphics.boxHeight);
 		this._data = $gameSystem.actionLog();
 		this.refresh();
 		this.select(Math.max(this._data.length - 1, 0));
