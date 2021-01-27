@@ -9,7 +9,7 @@
 
 /*:
  * @target MZ
- * @url https://raw.githubusercontent.com/munokura/MNKR-MV-plugins/master/MNKR_MoveEventPointMZ.js
+ * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_MoveEventPointMZ.js
  * @plugindesc 指定イベントをマップの指定座標へ移動させるプラグインコマンドを追加します。
  * @author munokura
  *
