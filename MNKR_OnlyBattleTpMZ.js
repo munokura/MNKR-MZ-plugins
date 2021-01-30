@@ -9,11 +9,11 @@
 /*:
  * @target MZ
  * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_OnlyBattleTpMZ.js
- * @plugindesc 戦闘画面の以外のTP表示を消します。
+ * @plugindesc 戦闘画面以外のTP表示を消します。
  * @author munokura
  *
  * @help
- * 戦闘画面の以外のTP表示を消します。
+ * 戦闘画面以外のTP表示を消します。
  * 
  * 
  * 利用規約:
