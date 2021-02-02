@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_SupponShopStockMZ Ver.0.0.1
+ * MNKR_SupponShopStockMZ Ver.0.0.2
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -17,29 +17,6 @@
  * 
  * @plugindesc 在庫システムを有するお店を設定します。
  * @author Suppon (改変 munokura)
- *
- * @param Label of stock Number
- * @text 在庫数の表記
- * @desc 在庫数の表記を設定します
- * @default 在庫数
- *
- * @param Label of sold out
- * @text 売り切れの表記
- * @desc 売り切れの表記を設定します
- * @default 売り切れ
- *
- * @param Display option
- * @text 表示オプション
- * @type boolean
- * @on 在庫数を表示
- * @off 在庫数を非表示
- * @desc true にすると在庫数が、持っている数の横に表示されます。
- * @default false
- *
- * @param Display option space
- * @text オプション表示スペース
- * @desc 持っている数と在庫数の表示スペースです。
- * @default 12
  *
  * @help
  * 以下の機能をプラグインコマンドで使用してください。
@@ -65,6 +42,30 @@
  *   https://licenses.opensource.jp/MIT/MIT.html
  *   作者に無断で改変、再配布が可能で、
  *   利用形態（商用、18禁利用等）についても制限はありません。
+ * 
+ *
+ * @param Label of stock Number
+ * @text 在庫数の表記
+ * @desc 在庫数の表記を設定します
+ * @default 在庫数
+ *
+ * @param Label of sold out
+ * @text 売り切れの表記
+ * @desc 売り切れの表記を設定します
+ * @default 売り切れ
+ *
+ * @param Display option
+ * @text 在庫数を表示
+ * @type boolean
+ * @on 在庫数を表示
+ * @off 在庫数を非表示
+ * @desc true にすると在庫数が、持っている数の横に表示されます。
+ * @default false
+ *
+ * @param Display option space
+ * @text オプション表示スペース
+ * @desc 持っている数と在庫数の表示スペースです。
+ * @default 12
  * 
  * 
  * @command makeShop
@@ -112,7 +113,7 @@
  *
  * @arg stock
  * @text 在庫数
- * @desc 在庫数の設定値です。
+ * @desc 在庫数の設定値です。変数IDを-1にした場合のみ有効です。
  * @type variable
  * @default 1
  *
@@ -126,7 +127,7 @@
  * @desc ショップの名前です。数値でも構いません。
  * @default shop1
  *
- * @arg itemId
+ * @arg weaponId
  * @text 追加武器
  * @desc 追加する武器のIDです。
  * @type weapon
@@ -140,7 +141,7 @@
  *
  * @arg stock
  * @text 在庫数
- * @desc 在庫数の設定値です。
+ * @desc 在庫数の設定値です。変数IDを-1にした場合のみ有効です。
  * @type variable
  * @default 1
  *
@@ -154,7 +155,7 @@
  * @desc ショップの名前です。数値でも構いません。
  * @default shop1
  *
- * @arg itemId
+ * @arg armorId
  * @text 追加防具
  * @desc 追加する防具のIDです。
  * @type armor
@@ -168,7 +169,7 @@
  *
  * @arg stock
  * @text 在庫数
- * @desc 在庫数の設定値です。
+ * @desc 在庫数の設定値です。変数IDを-1にした場合のみ有効です。
  * @type variable
  * @default 1
  *
