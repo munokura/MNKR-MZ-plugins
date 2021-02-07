@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_ChoiceColsMZ Ver.0.0.1
+ * MNKR_ChoiceColsMZ Ver.0.0.2
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -57,7 +57,7 @@
   Window_ChoiceList.prototype.windowWidth = function () {
     choiceCols = $gameVariables.value(choiceColsVariableId);
     if (choiceCols > 1) {
-      const width = (this.maxChoiceWidth() + this.colSpacing() + this.padding * 2) * choiceCols;
+      const width = (this.maxChoiceWidth() + this.colSpacing()) * choiceCols + this.padding * 2;
       return Math.min(width, Graphics.boxWidth);
     } else {
       return _Window_ChoiceList_windowWidth.call(this);
