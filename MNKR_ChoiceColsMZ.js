@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_ChoiceColsMZ Ver.0.0.3
+ * MNKR_ChoiceColsMZ Ver.0.0.4
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -46,7 +46,7 @@
   Window_ChoiceList.prototype.updatePlacement = function () {
     _Window_ChoiceList_updatePlacement.call(this);
     choiceCols = $gameVariables.value(choiceColsVariableId);
-    if (choiceCols > 1) {
+    if (choiceCols >= 2) {
       Window_ChoiceList.prototype.maxCols = function () {
         return choiceCols;
       }
@@ -56,7 +56,7 @@
   const _Window_ChoiceList_windowWidth = Window_ChoiceList.prototype.windowWidth;
   Window_ChoiceList.prototype.windowWidth = function () {
     choiceCols = $gameVariables.value(choiceColsVariableId);
-    if (choiceCols > 1) {
+    if (choiceCols >= 2) {
       const width = (this.maxChoiceWidth() + this.colSpacing()) * choiceCols + this.padding * 2;
       return Math.min(width, Graphics.boxWidth);
     }
@@ -66,7 +66,7 @@
   const _Window_ChoiceList_windowHeight = Window_ChoiceList.prototype.windowHeight;
   Window_ChoiceList.prototype.windowHeight = function () {
     choiceCols = $gameVariables.value(choiceColsVariableId);
-    if (choiceCols > 1) {
+    if (choiceCols >= 2) {
       const height = this.fittingHeight(Math.ceil(this.numVisibleRows() / choiceCols));
       return height;
     }
