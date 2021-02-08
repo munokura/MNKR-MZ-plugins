@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_ChoiceColsMZ Ver.0.0.2
+ * MNKR_ChoiceColsMZ Ver.0.0.3
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -16,15 +16,15 @@
  * @help
  * 選択肢の列数を変更する機能を追加します。
  * プラグインパラメーターで変数IDを指定し、その変数の値が選択肢の列数になります。
- * 
- * 
+ *
+ *
  * 利用規約:
  *   MITライセンスです。
  *   https://licenses.opensource.jp/MIT/MIT.html
  *   作者に無断で改変、再配布が可能で、
  *   利用形態（商用、18禁利用等）についても制限はありません。
- * 
- * 
+ *
+ *
  * @param choiceColsVariableId
  * @text 列数変数ID
  * @type variable
@@ -40,7 +40,7 @@
   const parameters = PluginManager.parameters(pluginName);
   const choiceColsVariableId = Number(parameters['choiceColsVariableId'] || 0);
 
-  let choiceCols = 0;
+  let choiceCols = 1;
 
   const _Window_ChoiceList_updatePlacement = Window_ChoiceList.prototype.updatePlacement;
   Window_ChoiceList.prototype.updatePlacement = function () {
@@ -49,7 +49,7 @@
     if (choiceCols > 1) {
       Window_ChoiceList.prototype.maxCols = function () {
         return choiceCols;
-      };
+      }
     }
   };
 
@@ -59,9 +59,8 @@
     if (choiceCols > 1) {
       const width = (this.maxChoiceWidth() + this.colSpacing()) * choiceCols + this.padding * 2;
       return Math.min(width, Graphics.boxWidth);
-    } else {
-      return _Window_ChoiceList_windowWidth.call(this);
     }
+    return _Window_ChoiceList_windowWidth.call(this);
   };
 
   const _Window_ChoiceList_windowHeight = Window_ChoiceList.prototype.windowHeight;
@@ -70,9 +69,8 @@
     if (choiceCols > 1) {
       const height = this.fittingHeight(Math.ceil(this.numVisibleRows() / choiceCols));
       return height;
-    } else {
-      return _Window_ChoiceList_windowHeight.call(this);
     }
+    return _Window_ChoiceList_windowHeight.call(this);
   };
 
 })();
