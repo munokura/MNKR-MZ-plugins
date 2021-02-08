@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_ChoiceColsMZ Ver.0.0.4
+ * MNKR_ChoiceColsMZ Ver.0.0.5
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -40,23 +40,40 @@
   const parameters = PluginManager.parameters(pluginName);
   const choiceColsVariableId = Number(parameters['choiceColsVariableId'] || 0);
 
-  let choiceCols = 1;
+  // const _Window_ChoiceList_updatePlacement = Window_ChoiceList.prototype.updatePlacement;
+  // Window_ChoiceList.prototype.updatePlacement = function () {
+  //   const choiceCols = $gameVariables.value(choiceColsVariableId);
+  //   if (choiceCols > 1) {
+  //     this.width = this.windowWidth();
+  //     this.height = this.windowHeight();
+  //     const messageWindow = this._messageWindow;
+  //     if ($gameMessage.isRTL()) {
+  //       this.x = messageWindow.x + messageWindow.width - this.width;
+  //     } else {
+  //       this.x = messageWindow.x;
+  //     }
+  //     if (messageWindow.y > 0) {
+  //       this.y = messageWindow.y - this.height;
+  //     } else {
+  //       this.y = messageWindow.y + messageWindow.height;
+  //     }
+  //     Window_ChoiceList.prototype.maxCols = function () {
+  //       return choiceCols;
+  //     }
+  //   } else {
+  //     _Window_ChoiceList_updatePlacement.call(this);
+  //   }
+  // };
 
-  const _Window_ChoiceList_updatePlacement = Window_ChoiceList.prototype.updatePlacement;
-  Window_ChoiceList.prototype.updatePlacement = function () {
-    _Window_ChoiceList_updatePlacement.call(this);
-    choiceCols = $gameVariables.value(choiceColsVariableId);
-    if (choiceCols >= 2) {
-      Window_ChoiceList.prototype.maxCols = function () {
-        return choiceCols;
-      }
-    }
+  Window_ChoiceList.prototype.maxCols = function () {
+    const choiceCols = $gameVariables.value(choiceColsVariableId);
+    return Math.max(choiceCols, 1);
   };
 
   const _Window_ChoiceList_windowWidth = Window_ChoiceList.prototype.windowWidth;
   Window_ChoiceList.prototype.windowWidth = function () {
-    choiceCols = $gameVariables.value(choiceColsVariableId);
-    if (choiceCols >= 2) {
+    const choiceCols = $gameVariables.value(choiceColsVariableId);
+    if (choiceCols > 1) {
       const width = (this.maxChoiceWidth() + this.colSpacing()) * choiceCols + this.padding * 2;
       return Math.min(width, Graphics.boxWidth);
     }
@@ -65,8 +82,8 @@
 
   const _Window_ChoiceList_windowHeight = Window_ChoiceList.prototype.windowHeight;
   Window_ChoiceList.prototype.windowHeight = function () {
-    choiceCols = $gameVariables.value(choiceColsVariableId);
-    if (choiceCols >= 2) {
+    const choiceCols = $gameVariables.value(choiceColsVariableId);
+    if (choiceCols > 1) {
       const height = this.fittingHeight(Math.ceil(this.numVisibleRows() / choiceCols));
       return height;
     }
