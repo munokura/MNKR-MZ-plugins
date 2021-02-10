@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
- * MNKR_ChoiceColsMZ Ver.0.0.5
- * Copyright (c) 2020 Munokura
+ * MNKR_ChoiceColsMZ Ver.0.0.6
+ * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
  * --------------------------------------------------
@@ -39,32 +39,6 @@
   const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
   const parameters = PluginManager.parameters(pluginName);
   const choiceColsVariableId = Number(parameters['choiceColsVariableId'] || 0);
-
-  // const _Window_ChoiceList_updatePlacement = Window_ChoiceList.prototype.updatePlacement;
-  // Window_ChoiceList.prototype.updatePlacement = function () {
-  //   const choiceCols = $gameVariables.value(choiceColsVariableId);
-  //   if (choiceCols > 1) {
-  //     this.width = this.windowWidth();
-  //     this.height = this.windowHeight();
-  //     const messageWindow = this._messageWindow;
-  //     if ($gameMessage.isRTL()) {
-  //       this.x = messageWindow.x + messageWindow.width - this.width;
-  //     } else {
-  //       this.x = messageWindow.x;
-  //     }
-  //     if (messageWindow.y > 0) {
-  //       this.y = messageWindow.y - this.height;
-  //     } else {
-  //       this.y = messageWindow.y + messageWindow.height;
-  //     }
-  //     Window_ChoiceList.prototype.maxCols = function () {
-  //       return choiceCols;
-  //     }
-  //   } else {
-  //     _Window_ChoiceList_updatePlacement.call(this);
-  //   }
-  // };
-
   Window_ChoiceList.prototype.maxCols = function () {
     const choiceCols = $gameVariables.value(choiceColsVariableId);
     return Math.max(choiceCols, 1);
