@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_RandomEnemies Ver.1.0.3
+ * MNKR_RandomEnemies Ver.1.0.4
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -40,7 +40,9 @@
 
     'use strict';
 
+    const _Game_Troop_setup = Game_Troop.prototype.setup;
     Game_Troop.prototype.setup = function (troopId) {
+        _Game_Troop_setup.call(this, troopId);
         var condition = true;
         while (condition) {
             this.clear();
