@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_SimpleMsgSideViewMZ Ver.0.0.2
+ * MNKR_SimpleMsgSideViewMZ Ver.0.0.3
  * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -95,24 +95,13 @@
 
   // !!!overwrite!!!
 
-  // なぜか動かない
-  // Window_BattleLog.prototype.displayAction = function (subject, item) {
-  //   if (displayAttack ||
-  //     !(DataManager.isSkill(item) && item.id === subject.attackSkillId()) ||
-  //     !(DataManager.isSkill(item) && undisplaySkill.includes(String($dataSkills[item.id].id)))
-  //   ) {
-  //     this.push('addItemNameText', item);
-  //   } else {
-  //     this.push('wait');
-  //   };
-
   Window_BattleLog.prototype.displayAction = function (subject, item) {
     if (displayAttack ||
-      !(DataManager.isSkill(item) && item.id === subject.attackSkillId())
+      !((DataManager.isSkill(item) && item.id === subject.attackSkillId()) || (DataManager.isSkill(item) && undisplaySkill.includes(String($dataSkills[item.id].id))))
     ) {
-      if (!(DataManager.isSkill(item) && undisplaySkill.includes(String($dataSkills[item.id].id)))) {
-        this.push('addItemNameText', item);
-      }
+      this.push('addItemNameText', item);
+    } else {
+      this.push('wait');
     }
   };
 
