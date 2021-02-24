@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_DP_MapZoomMZ Ver.0.0.1
+ * MNKR_DP_MapZoomMZ Ver.0.0.2
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -622,9 +622,18 @@ var drowsepost = drowsepost || {};
 
         if (_a.length < 1) _a.push('player');
 
-        if ((_a[0] === 'this') || (_a[0] === 'このイベント')) _target = _s;
-        else if ((_a[0] === 'player') || (_a[0] === 'プレイヤー')) _target = $gamePlayer;
-        else _target = parseInt(_a[0]);
+        // if ((_a[0] === 'this') || (_a[0] === 'このイベント')) _target = _s;
+        // else if ((_a[0] === 'player') || (_a[0] === 'プレイヤー')) _target = $gamePlayer;
+        // else _target = parseInt(_a[0]);
+
+        // munokura
+        if ((_a[0] === 'this') || (_a[0] === 'このイベント')) {
+            _target = _s;
+        } else if ((_a[0] === 'player') || (_a[0] === 'プレイヤー')) {
+            _target = $gamePlayer;
+        } else {
+            _target = parseInt(_a[0]);
+        }
 
         camera.zoom(dp_renderSize.scale, parseInt(_a[1]), _target);
     });
