@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_DP_MapZoomMZ Ver.0.0.2
+ * MNKR_DP_MapZoomMZ Ver.0.0.3
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -138,13 +138,13 @@ var drowsepost = drowsepost || {};
  * 
  * 
  * @param Base Scale
- * @text  基本拡大率
+ * @text 基本拡大率
  * @desc 基本の拡大率を設定します。(0以上)
  * Default: 1
  * @default 1
  * 
  * @param Encount Effect
- * @textエンカウントエフェクト反映
+ * @text エンカウントエフェクト反映
  * @desc エンカウントエフェクトに拡大率を反映
  * Default: true (ON: true / OFF: false)
  * @default true
@@ -219,7 +219,7 @@ var drowsepost = drowsepost || {};
  * @arg focusTarget
  * @text 対象
  * @desc ズーム対象
- * (イベントID:数字 / this:実行イベント / player:プレイヤー)
+ * (数字:イベントID / this:実行イベント / player:プレイヤー)
  * @type combo
  * @option this
  * @option player
@@ -233,7 +233,7 @@ var drowsepost = drowsepost || {};
  * @arg focusTarget
  * @text 対象
  * @desc フォーカス対象
- * (イベントID:数字 / this:実行イベント / player:プレイヤー)
+ * (数字:イベントID / this:実行イベント / player:プレイヤー)
  * @type combo
  * @option this
  * @option player
@@ -243,7 +243,6 @@ var drowsepost = drowsepost || {};
  * @text フレーム数
  * @desc 変更にかけるフレーム数
  * @default 1
- * 
  */
 
 (function () {
@@ -650,10 +649,21 @@ var drowsepost = drowsepost || {};
         var _s = this;
         var _target;
 
+        // if (_a.length > 2) {
+        //     if ((_a[2] === 'this') || (_a[2] === 'このイベント')) _target = _s;
+        //     else if ((_a[2] === 'player') || (_a[2] === 'プレイヤー')) _target = $gamePlayer;
+        //     else _target = parseInt(_a[2]);
+        // }
+        // munokura
+
         if (_a.length > 2) {
-            if ((_a[2] === 'this') || (_a[2] === 'このイベント')) _target = _s;
-            else if ((_a[2] === 'player') || (_a[2] === 'プレイヤー')) _target = $gamePlayer;
-            else _target = parseInt(_a[2]);
+            if ((_a[2] === 'this') || (_a[2] === 'このイベント')) {
+                _target = _s;
+            } else if ((_a[2] === 'player') || (_a[2] === 'プレイヤー')) {
+                _target = $gamePlayer;
+            } else {
+                _target = parseInt(_a[2]);
+            }
         }
 
         camera.zoom(parseFloat(_a[0]), parseInt(_a[1]), _target);
