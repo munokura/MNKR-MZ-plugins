@@ -1,6 +1,7 @@
 /*
  * --------------------------------------------------
- * MNKR_SwitchMessageSpeed Ver.0.0.1
+ * MNKR_SwitchMessageSpeed.js
+ *   Ver.0.0.1
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php

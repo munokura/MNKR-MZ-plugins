@@ -1,6 +1,7 @@
 /*
  * --------------------------------------------------
- * MNKR_TMEquipStatusExMZ Ver.1.0.2
+ * MNKR_TMEquipStatusExMZ.js
+ *   Ver.1.0.2
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php

@@ -1,6 +1,7 @@
 /*
  * --------------------------------------------------
- * MNKR_NoLose Ver.1.2.3
+ * MNKR_NoLose.js
+ *   Ver.1.2.3
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php

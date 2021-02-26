@@ -1,6 +1,7 @@
 /*
  * --------------------------------------------------
- * MNKR_SAN_MapGenerator Ver.2.0.1
+ * MNKR_SAN_MapGenerator.js
+ *   Ver.2.0.1
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php

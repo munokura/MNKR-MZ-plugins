@@ -1,6 +1,7 @@
 /*
  * --------------------------------------------------
- * MNKR_TMAnimeLightMZ Ver.1.0.3
+ * MNKR_TMAnimeLightMZ.js
+ *   Ver.1.0.3
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php

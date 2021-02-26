@@ -1,6 +1,7 @@
 /*
  * --------------------------------------------------
- * MNKR_SwitchGameoverMusic Ver.0.0.2
+ * MNKR_SwitchGameoverMusic.js
+ *   Ver.0.0.2
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php

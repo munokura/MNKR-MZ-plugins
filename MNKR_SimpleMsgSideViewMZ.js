@@ -1,6 +1,7 @@
 /*
  * --------------------------------------------------
- * MNKR_SimpleMsgSideViewMZ Ver.0.0.3
+ * MNKR_SimpleMsgSideViewMZ.js
+ *   Ver.0.0.3
  * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php

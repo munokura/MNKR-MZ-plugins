@@ -1,6 +1,7 @@
 /*
  * --------------------------------------------------
- * MNKR_SelectMaxRows Ver.1.0.0
+ * MNKR_SelectMaxRows.js
+ *   Ver.1.0.0
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php

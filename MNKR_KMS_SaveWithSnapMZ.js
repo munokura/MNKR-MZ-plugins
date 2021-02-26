@@ -1,6 +1,7 @@
 /*
  * --------------------------------------------------
- * MNKR_KMS_SaveWithSnapMZ Ver.0.1.3
+ * MNKR_KMS_SaveWithSnapMZ.js
+ *   Ver.0.1.3
  * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -56,7 +57,7 @@ THE SOFTWARE.
  * 
  * 利用規約:
  *   MITライセンスです。
- *   https://ja.osdn.net/projects/opensource/wiki/licenses%2FMIT_license
+ *   https://licenses.opensource.jp/MIT/MIT.html
  *   作者に無断で改変、再配布が可能で、
  *   利用形態（商用、18禁利用等）についても制限はありません。
  *

@@ -1,6 +1,7 @@
 /*
  * --------------------------------------------------
- * MNKR_ChoiceColsMZ Ver.0.0.6
+ * MNKR_ChoiceColsMZ.js
+ *   Ver.0.0.6
  * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php

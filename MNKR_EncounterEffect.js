@@ -1,6 +1,7 @@
 /*
  * --------------------------------------------------
- * MNKR_EncounterEffect Ver.1.1.1
+ * MNKR_EncounterEffect.js
+ *   Ver.1.1.1
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php

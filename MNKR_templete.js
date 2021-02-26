@@ -1,6 +1,7 @@
 /*
  * --------------------------------------------------
- * MNKR_templete Ver.0.0.1
+ * MNKR_templete.js
+ *   Ver.0.0.1
  * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -23,6 +24,8 @@
  *   https://licenses.opensource.jp/MIT/MIT.html
  *   作者に無断で改変、再配布が可能で、
  *   利用形態（商用、18禁利用等）についても制限はありません。
+ *
+ *
  * @param dataType
  * @text データ型
  *

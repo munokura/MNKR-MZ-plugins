@@ -1,6 +1,7 @@
 /*
  * --------------------------------------------------
- * MNKR_SetMessageDefaultBack Ver.0.0.1
+ * MNKR_SetMessageDefaultBack.js
+ *   Ver.0.0.1
  * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php

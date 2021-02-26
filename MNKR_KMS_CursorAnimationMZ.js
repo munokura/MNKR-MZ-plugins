@@ -1,6 +1,7 @@
 /*
  * --------------------------------------------------
- * MNKR_KMS_CursorAnimationMZ Ver.1.0.0
+ * MNKR_KMS_CursorAnimationMZ.js
+ *   Ver.1.0.0
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php

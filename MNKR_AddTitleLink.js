@@ -1,6 +1,7 @@
 /*
  * --------------------------------------------------
- * MNKR_AddTitleLink Ver.0.0.5
+ * MNKR_AddTitleLink.js
+ *   Ver.0.0.5
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
