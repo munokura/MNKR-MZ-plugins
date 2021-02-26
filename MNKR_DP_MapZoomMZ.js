@@ -1,6 +1,7 @@
 /*
  * --------------------------------------------------
- * MNKR_DP_MapZoomMZ Ver.0.0.3
+ * MNKR_DP_MapZoomMZ.js
+ * Ver.0.0.4
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -25,7 +26,7 @@ var drowsepost = drowsepost || {};
 //=============================================================================
 
 /*:ja
- * @target MZ MV
+ * @target MZ
  * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_DP_MapZoomMZ.js
  * @plugindesc マップの拡大率を制御します。
  * @author drowsepost (改変 munokura)
@@ -674,18 +675,18 @@ var drowsepost = drowsepost || {};
     ===================================================================================
     コマンドパーサーの追加
     */
-    (function () {
-        //@override
-        var _parent_pluginCommand = Game_Interpreter.prototype.pluginCommand;
-        Game_Interpreter.prototype.pluginCommand = function (command, args) {
-            _parent_pluginCommand.call(this, command, args);
-            if ('DP_Basics' in Imported) return;
-            if (!(command in drowsepost.fn)) return;
-            if (typeof drowsepost.fn[command] === 'function') {
-                drowsepost.fn[command].call(this, args);
-            }
-        };
-    }());
+    // (function () {
+    //     //@override
+    //     var _parent_pluginCommand = Game_Interpreter.prototype.pluginCommand;
+    //     Game_Interpreter.prototype.pluginCommand = function (command, args) {
+    //         _parent_pluginCommand.call(this, command, args);
+    //         if ('DP_Basics' in Imported) return;
+    //         if (!(command in drowsepost.fn)) return;
+    //         if (typeof drowsepost.fn[command] === 'function') {
+    //             drowsepost.fn[command].call(this, args);
+    //         }
+    //     };
+    // }());
 
     /*
     RPGツクールMZ用のプラグインコマンドを追加
@@ -1080,11 +1081,15 @@ var drowsepost = drowsepost || {};
         };
 
         //@override
-        var _parent_initialize = Game_Screen.prototype.initialize;
-        Game_Screen.prototype.initialize = function () {
-            _parent_initialize.call(this);
-            dp_renderSize.reset();
-        };
+        // MZ対策 munokura
+        // var _parent_initialize = Game_Screen.prototype.initialize;
+        // Game_Screen.prototype.initialize = function () {
+        //     _parent_initialize.call(this);
+        //     dp_renderSize.reset();
+        //     console.log('reset-initialize');
+        //     console.log(Graphics.boxWidth);
+        // };
+
     }());
 
 }());
