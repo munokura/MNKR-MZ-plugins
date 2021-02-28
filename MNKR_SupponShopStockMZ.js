@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_SupponShopStockMZ.js
- *   Ver.0.0.2
+ *   Ver.0.0.3
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -864,10 +864,6 @@
             this.drawPossession2(x, y);
         } else {
             _Window_ShopStatus_drawPossession.call(this, x, y);
-            if (this.isNeedDrawStock()) {
-                var width = this.contents.width - this.textPadding() - x;
-                this.drawStockNumber(x, y + this.lineHeight(), width);
-            }
         }
     };
 
