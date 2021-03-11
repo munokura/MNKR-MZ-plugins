@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_SwitchSave.js
- *   Ver.0.0.1
+ *   Ver.0.0.2
  * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -42,7 +42,7 @@
   Scene_File.prototype.createListWindow = function () {
     _Scene_File_createListWindow.call(this);
     const isSceneSave = SceneManager._scene.constructor.name === 'Scene_Save';
-    const cancelNg = cancelSwitch == 0 ? true : $gameSwitches.value(cancelSwitch);
+    const cancelNg = cancelSwitch === 0 ? true : $gameSwitches.value(cancelSwitch);
 
     if (cancelNg && isSceneSave) {
       this._listWindow.setHandler('cancel', this.onSaveFailure.bind(this));
