@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_BattleActorNameMZ.js
- *   Ver.0.0.1
+ *   Ver.0.0.2
  * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -55,8 +55,8 @@
 
   const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
   const parameters = PluginManager.parameters(pluginName);
-  const fontSize = Number(parameters['fontSize'] || '#ffffff');
-  const textColor = parameters['textColor'] || 26;
+  const fontSize = Number(parameters['fontSize'] || 26);
+  const textColor = parameters['textColor'] || '#ffffff';
   const outlineColor = 'rgba(' + (parameters['outlineColor'] || '0, 0, 0, 0.6') + ')';
   const outlineWidth = Number(parameters['outlineWidth'] || 3);
 
