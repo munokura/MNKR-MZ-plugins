@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_LeaderSpeed.js
- *   Ver.0.0.1
+ *   Ver.0.0.2
  * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -19,13 +19,13 @@
  * 
  * アクターのメモ欄に下記のタグを入れてください。
  * <MNKR_LeaderSpeed:x>
- * x には移動スピードを指定する値を入れてください。（推奨値：1から8）
+ * x には移動スピードを指定する値を入れてください。（推奨値：1から6）
  * ツクールのデフォルトは4です。
  * 大きいほど移動速度が速くなります。
- * タグが入っていないアクターが先頭の場合、ツクールのデフォルトの4になります。
+ * タグが入っていないアクターが先頭の場合、4になります。
  * 
  * 例
- * <MNKR_LeaderSpeed:8>
+ * <MNKR_LeaderSpeed:6>
  * 
  *
  * 利用規約:
@@ -41,8 +41,8 @@
   const _Game_Player_refresh = Game_Player.prototype.refresh;
   Game_Player.prototype.refresh = function () {
     _Game_Player_refresh.call(this);
-    const leaderMeta = Number($gameParty.leader().actor().meta.MNKR_LeaderSpeed);
-    const speed = leaderMeta ? leaderMeta : 4;
+    const leader = $gameParty.leader();
+    const speed = Number(leader ? (leader.actor().meta.MNKR_LeaderSpeed || 4) : 4);
     $gamePlayer.setMoveSpeed(speed);
   };
 
