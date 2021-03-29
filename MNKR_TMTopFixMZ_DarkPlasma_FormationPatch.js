@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_TMTopFixMZ_DarkPlasma_FormationPatch.js
- *   Ver.0.0.3
+ *   Ver.0.0.4
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -30,6 +30,13 @@
  *   DarkPlasma_Formation
  *   MNKR_TMTopFixMZ
  *   MNKR_TMTopFixMZ_DarkPlasma_FormationPatch
+ *
+ *
+ * 利用規約:
+ *   MITライセンスです。
+ *   https://licenses.opensource.jp/MIT/MIT.html
+ *   作者に無断で改変、再配布が可能で、
+ *   利用形態（商用、18禁利用等）についても制限はありません。
  */
 
 (() => {
@@ -37,7 +44,6 @@
 
     const _Window_FormationSelect_isCurrentItemEnabled = Window_FormationSelect.prototype.isCurrentItemEnabled;
     Window_FormationSelect.prototype.isCurrentItemEnabled = function () {
-        console.log('isCurrentItemEnabled');
         if ($gameSystem.isTopFix() && this.index() === 0) {
             return false;
         }
