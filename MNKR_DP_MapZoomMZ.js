@@ -2,7 +2,7 @@
  * --------------------------------------------------
  * MNKR_DP_MapZoomMZ.js
  *   Ver.0.0.5
- * Copyright (c) 2020 Munokura
+ * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
  * --------------------------------------------------
