@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_OnlyBattleTpMZ.js
- *   Ver.0.0.1
+ *   Ver.0.0.2
  * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -23,13 +23,14 @@
  *   作者に無断で改変、再配布が可能で、
  *   利用形態（商用、18禁利用等）についても制限はありません。
  */
+
 (() => {
     'use strict';
 
     const _Window_StatusBase_placeBasicGauges = Window_StatusBase.prototype.placeBasicGauges;
     Window_StatusBase.prototype.placeBasicGauges = function (actor, x, y) {
-        const isSceneMenu = SceneManager._scene.constructor.name;
-        if (['Scene_Battle'].includes(isSceneMenu)) {
+        const isScene = SceneManager._scene.constructor.name === 'Scene_Battle';
+        if (isScene) {
             _Window_StatusBase_placeBasicGauges.call(this, actor, x, y);
         } else {
             this.placeGauge(actor, "hp", x, y);
