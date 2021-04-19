@@ -10,7 +10,7 @@
 
 /*:
  * @target MZ MV
- * @url https://raw.githubusercontent.com/munokura/MNKR-MV-plugins/master/MNKR_ShowMapName.js
+ * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_ShowMapName.js
  * @plugindesc マップ名を表示したままにします。
  * @author munokura
  *
