@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_ShowMapName.js
- *   Ver.0.0.1
+ *   Ver.0.1.1
  * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -10,7 +10,7 @@
 
 /*:
  * @target MZ MV
- * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_ShowMapName.js
+ * @url https://raw.githubusercontent.com/munokura/MNKR-MV-plugins/master/MNKR_ShowMapName.js
  * @plugindesc マップ名を表示したままにします。
  * @author munokura
  *
@@ -20,6 +20,13 @@
  * マップのメモ欄に
  * <MNKR_ShowMapName>
  * と入れたマップに反映されます。
+ * 
+ * マップ名表示マップで一時的に非表示にしたい（フェードアウト等）場合、
+ * 下記スクリプトを実行してください。
+ * $gameMap.disableNameDisplay();
+ * 
+ * 再表示する場合、下記スクリプトを実行してください。
+ * $gameMap.enableNameDisplay();
  * 
  * 
  * 利用規約:
@@ -45,22 +52,18 @@
   const parameters = PluginManager.parameters(pluginName);
   const globalSetting = parameters['globalSetting'] === 'true';
 
-  const _Scene_Map_start = Scene_Map.prototype.start;
-  Scene_Map.prototype.start = function () {
-    _Scene_Map_start.call(this);
+  const _Window_MapName_update = Window_MapName.prototype.update;
+  Window_MapName.prototype.update = function () {
     const showMapName = $dataMap.meta.MNKR_ShowMapName || globalSetting;
     if (showMapName) {
-      this._mapNameWindow.open();
+      if ($gameMap.isNameDisplayEnabled()) {
+        this.updateFadeIn();
+      } else {
+        this.updateFadeOut();
+      }
+    } else {
+      _Window_MapName_update.call(this);
     }
-  };
-
-  const _Window_MapName_updateFadeOut = Window_MapName.prototype.updateFadeOut;
-  Window_MapName.prototype.updateFadeOut = function () {
-    const showMapName = $dataMap.meta.MNKR_ShowMapName || globalSetting;
-    if (!showMapName) {
-      _Window_MapName_updateFadeOut.call(this);
-    }
-    this._showCount = 0;
   };
 
 })();
