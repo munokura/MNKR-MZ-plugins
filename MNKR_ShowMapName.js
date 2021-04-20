@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_ShowMapName.js
- *   Ver.0.1.1
+ *   Ver.0.2.0
  * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -21,12 +21,9 @@
  * <MNKR_ShowMapName>
  * と入れたマップに反映されます。
  * 
- * マップ名表示マップで一時的に非表示にしたい（フェードアウト等）場合、
- * 下記スクリプトを実行してください。
- * $gameMap.disableNameDisplay();
- * 
- * 再表示する場合、下記スクリプトを実行してください。
- * $gameMap.enableNameDisplay();
+ * マップ名表示マップで一時的に表示・非表示を切り替えたい場合、
+ * イベントコマンド「マップ名表示の変更」を使用してください。
+ * 例：フェードアウト時
  * 
  * 
  * 利用規約:
@@ -43,6 +40,14 @@
  * @on 全マップ
  * @off タグがあるマップ
  * @default false
+ * 
+ * @param fadeOutSetting
+ * @text フェードアウト時のマップ名非表示化
+ * @desc フェードアウト時にマップ名を非表示にし、フェードイン時にマップ名を表示するようにします。
+ * @type boolean
+ * @on 有効
+ * @off 無効
+ * @default true
  */
 
 (() => {
@@ -51,6 +56,7 @@
   const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
   const parameters = PluginManager.parameters(pluginName);
   const globalSetting = parameters['globalSetting'] === 'true';
+  const fadeOutSetting = parameters['fadeOutSetting'] === 'true';
 
   const _Window_MapName_update = Window_MapName.prototype.update;
   Window_MapName.prototype.update = function () {
@@ -64,6 +70,22 @@
     } else {
       _Window_MapName_update.call(this);
     }
+  };
+
+  const _Game_Screen_startFadeOut = Game_Screen.prototype.startFadeOut;
+  Game_Screen.prototype.startFadeOut = function (duration) {
+    if (fadeOutSetting) {
+      $gameMap.disableNameDisplay();
+    }
+    _Game_Screen_startFadeOut.call(this, duration);
+  };
+
+  const _Game_Screen_startFadeIn = Game_Screen.prototype.startFadeIn;
+  Game_Screen.prototype.startFadeIn = function (duration) {
+    if (fadeOutSetting) {
+      $gameMap.enableNameDisplay();
+    }
+    _Game_Screen_startFadeIn.call(this, duration);
   };
 
 })();
