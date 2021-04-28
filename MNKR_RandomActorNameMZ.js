@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_RandomActorNameMZ.js
- *   Ver.0.0.0
+ *   Ver.0.0.0a
  * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -34,11 +34,11 @@
  * @type variable
  * @default 0
  * 
- * @param nameList
+ * @param nameLists
  * @text 名前リスト
  * @desc 名前リストを設定します。
- * @type struct<listParam>[]
- * @default ["{\"listNumber\":\"1\",\"actorNames\":\"[\\\"アーサー\\\",\\\"マイケル\\\"]\"}","{\"listNumber\":\"2\",\"actorNames\":\"[\\\"マリア\\\",\\\"スージー\\\"]\"}"]
+ * @type struct<nameList>[]
+ * @default ["{\"listName\":\"list1\",\"actorNames\":\"[\\\"アーサー\\\",\\\"ランド\\\"]\"}","{\"listName\":\"list2\",\"actorNames\":\"[\\\"マリア\\\",\\\"リンダ\\\"]\"}"]
  * 
  * 
  * @command changeName
@@ -51,18 +51,18 @@
  * @type actor
  * @default 0
  *
- * @arg listId
+ * @arg selectListName
  * @text リストID
  * @desc 名前を変更する候補リストのIDを指定します。
  * @default 
  */
 
-/*~struct~listParam:
- * @param listNumber
- * @text リスト番号
- * @type number
- * @default 0
- * @desc 名前の候補リストのリスト番号
+/*~struct~nameList:
+ * @param listName
+ * @text リスト名
+ * @string
+ * @default list1
+ * @desc 名前の候補リストのリスト名。重複のない名前にしてください。
  *
  * @param actorNames
  * @text 名前候補
@@ -75,25 +75,34 @@
   "use strict";
 
   const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
-  const parameters = PluginManager.parameters(pluginName);
-  const variableId = Number(parameters['variableId']);
-  const nameList = JSON.parse(parameters['nameList'] || '{}');
+  const pluginParameters = PluginManager.parameters(pluginName);
+  const variableId = Number(pluginParameters['variableId']);
+
+  const settings = {
+    nameLists: JSON.parse(pluginParameters.nameLists || '[]').map((e) => {
+      return ((parameter) => {
+        const parsed = JSON.parse(parameter);
+        return {
+          listName: String(parsed.listName || ''),
+          actorNames: JSON.parse(parsed.actorNames || '[]').map((e) => {
+            return String(e || '');
+          }),
+        };
+      })(e || '{}');
+    }),
+  };
 
   PluginManager.registerCommand(pluginName, "changeName", args => {
     const actorId = Number(args.actorId);
-    const listId = Number(args.listId);
-    console.log(actorId);
-    console.log(listId);
-    console.log(nameList);
-    console.log(nameList.listNumber);
-    console.log(nameList.actorNames);
-
-    // const name = nameList.listNumber[Math.floor(Math.random() * nameList.listNumber.length)];
-
-    // if (variableId > 0) {
-    //   $gameVariables.setValue(variableId, name);
-    // }
-    // $gameActors.actor(actorId).setName(name);
+    const selectListName = String(args.selectListName);
+    const arr = settings.nameLists;
+    const filterArr = arr.filter(el => el.listName === selectListName);
+    const arrNames = filterArr[0].actorNames;
+    const changeName = arrNames[Math.floor(Math.random() * arrNames.length)];
+    if (variableId > 0) {
+      $gameVariables.setValue(variableId, changeName);
+    }
+    $gameActors.actor(actorId).setName(changeName);
   });
 
 })();
