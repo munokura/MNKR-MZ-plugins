@@ -80,7 +80,7 @@
  * @target MZ
  * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_MKR_EventGaugeMZ.js
  *
- * @plugindesc (v1.2.3) イベントゲージプラグイン
+ * @plugindesc イベントゲージ表示
  * @author マンカインド (改変 munokura)
  *
  * @help
