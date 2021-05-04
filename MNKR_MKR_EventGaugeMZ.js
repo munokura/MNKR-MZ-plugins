@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_MKR_EventGaugeMZ.js
- *   Ver.0.0.1
+ *   Ver.0.0.2
  * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -84,24 +84,6 @@
  * @author マンカインド (改変 munokura)
  *
  * @help
- * このプラグインは下記プラグインをMZに移植したものです。
- *  = イベントゲージプラグイン =
- * MKR_EventGauge.js
- * https://mankind-games.blogspot.com/2019/07/blog-post.html
- *   お問い合わせは改変者へお願いいたします。
- * 
- * 課題（問題）
- *   ゲージの高さが7未満を指定しても反映しない。
- *   MV時より大きく表示されてしまう。
- * 
- *
- * 利用規約:
- *   MITライセンスです。
- *   https://licenses.opensource.jp/MIT/MIT.html
- *   作者に無断で改変、再配布が可能で、
- *   利用形態（商用、18禁利用等）についても制限はありません。
- * 
- *
  * 指定したイベントの足元にゲージを表示します。(表示位置は調節が可能)
  * ゲージの最大値/残量はイベント生成(マップ移動)時に
  * イベント_メモ欄で指定した値(変数も使用可能)で設定されます。
@@ -531,6 +513,20 @@
  *     優先されますのでご注意ください。
  *
  *
+ * このプラグインは下記プラグインをMZに移植したものです。
+ *  = イベントゲージプラグイン =
+ * MKR_EventGauge.js
+ * https://mankind-games.blogspot.com/2019/07/blog-post.html
+ *   お問い合わせは改変者へお願いいたします。
+ * 
+ *
+ * 利用規約:
+ *   MITライセンスです。
+ *   https://licenses.opensource.jp/MIT/MIT.html
+ *   作者に無断で改変、再配布が可能で、
+ *   利用形態（商用、18禁利用等）についても制限はありません。
+ * 
+ *
  * @param Gauge_Width
  * @text ゲージ幅
  * @desc [初期値] ゲージの長さを数値で指定。(デフォルト:40)
@@ -826,57 +822,6 @@ Imported.MKR_EventGauge = true;
         "TileGaugeEnable": CheckParam("bool", "Tile_Gauge_Enable", false),
     };
 
-
-    //=========================================================================
-    // Game_Interpreter
-    //  ・プラグイン用コマンドを定義します。
-    //
-    //=========================================================================
-    // var _Game_Interpreter_pluginCommand = Game_Interpreter.prototype.pluginCommand;
-    // Game_Interpreter.prototype.pluginCommand = function (command, args) {
-    //     var eventId, value;
-    //     _Game_Interpreter_pluginCommand.call(this, command, args);
-    //     if (command.toLowerCase() === "egauge") {
-    //         eventId = this.eventId();
-    //         value = args[1];
-    //         switch (args[0].toLowerCase()) {
-    //             case "show":
-    //                 $gameMap.showGaugeWindow(eventId);
-    //                 break;
-    //             case "hide":
-    //                 $gameMap.hideGaugeWindow(eventId);
-    //                 break;
-    //             case "add":
-    //                 $gameMap.addGaugeValue(eventId, value);
-    //                 break;
-    //             case "set":
-    //                 $gameMap.setGaugeValue(eventId, value);
-    //                 break;
-    //             case "maxset":
-    //                 $gameMap.setGaugeMaxValue(eventId, value);
-    //                 break;
-    //             case "setx":
-    //                 $gameMap.setGaugeOffsetX(eventId, value);
-    //                 break;
-    //             case "sety":
-    //                 $gameMap.setGaugeOffsetY(eventId, value);
-    //                 break;
-    //             case "backcolor":
-    //                 $gameMap.setGaugeBackColor(eventId, value);
-    //                 break;
-    //             case "color1":
-    //                 $gameMap.setGaugeColor1(eventId, value);
-    //                 break;
-    //             case "color2":
-    //                 $gameMap.setGaugeColor2(eventId, value);
-    //                 break;
-    //             case "opacity":
-    //                 $gameMap.setGaugeOpacity(eventId, value);
-    //                 break;
-    //         }
-    //     }
-    // };
-
     //=========================================================================
     // PluginManager
     //  ・プラグイン用コマンドを定義します。
@@ -971,31 +916,37 @@ Imported.MKR_EventGauge = true;
 
         Window_Base.prototype.initialize.call(this, x, y, width, height);
 
-        try {
-            ver = Utils.RPGMAKER_VERSION;
-            key = String.randomStr(12);
-            ver = ver.replace(/\./g, "");
-            if (isFinite(ver)) {
-                ver = parseInt(ver);
-                if (ver >= 150) {
-                    bitmap = ImageManager._imageCache.get(key);
-                    if (!bitmap) {
-                        bitmap = new Bitmap(width - this.standardPadding() * 2, height - this.standardPadding() * 2);
-                        ImageManager._imageCache.add(key, bitmap);
-                    }
-                    this.contents = bitmap;
-                } else if (ver >= 131) {
-                    bitmap = ImageManager.cache.getItem(key);
-                    if (!bitmap) {
-                        bitmap = new Bitmap(width - this.standardPadding() * 2, height - this.standardPadding() * 2);
-                        ImageManager.cache.setItem(key, bitmap);
-                    }
-                    this.contents = bitmap;
-                }
-            }
-        } catch (e) {
-            // console.log(e);
+        if (!bitmap) {
+            bitmap = new Bitmap(width - this.standardPadding() * 2, height - this.standardPadding() * 2);
         }
+        this.contents = bitmap;
+
+        // try {
+        //     ver = Utils.RPGMAKER_VERSION;
+        //     key = String.randomStr(12);
+        //     ver = ver.replace(/\./g, "");
+        //     console.log(ver);
+        //     if (isFinite(ver)) {
+        //         ver = parseInt(ver);
+        //         if (ver >= 150) {
+        //             bitmap = ImageManager._imageCache.get(key);
+        //             if (!bitmap) {
+        //                 bitmap = new Bitmap(width - this.standardPadding() * 2, height - this.standardPadding() * 2);
+        //                 ImageManager._imageCache.add(key, bitmap);
+        //             }
+        //             this.contents = bitmap;
+        //         } else if (ver >= 131) {
+        //             bitmap = ImageManager.cache.getItem(key);
+        //             if (!bitmap) {
+        //                 bitmap = new Bitmap(width - this.standardPadding() * 2, height - this.standardPadding() * 2);
+        //                 ImageManager.cache.setItem(key, bitmap);
+        //             }
+        //             this.contents = bitmap;
+        //         }
+        //     }
+        // } catch (e) {
+        //     // console.log(e);
+        // }
 
         this.opacity = 0;
 
@@ -1510,7 +1461,7 @@ Imported.MKR_EventGauge = true;
         }
 
         if (eventId > 0 && eventId < this._events.length) {
-            console.log(eventId + " set opacity:" + value);
+            // console.log(eventId + " set opacity:" + value);
             this.event(eventId).setGaugeOpacity(value);
         }
     };
