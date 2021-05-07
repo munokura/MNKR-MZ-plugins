@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_SupponShopStockMZ.js
- *   Ver.0.0.3
+ *   Ver.0.0.4
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -114,8 +114,7 @@
  *
  * @arg stock
  * @text 在庫数
- * @desc 在庫数の設定値です。変数IDを-1にした場合のみ有効です。
- * @type variable
+ * @desc 在庫数の設定値です。
  * @default 1
  *
  * 
@@ -142,12 +141,11 @@
  *
  * @arg stock
  * @text 在庫数
- * @desc 在庫数の設定値です。変数IDを-1にした場合のみ有効です。
- * @type variable
+ * @desc 在庫数の設定値です。
  * @default 1
  *
  * 
- * @command addWeapon
+ * @command addArmor
  * @text 防具追加
  * @desc ショップに防具を追加します。
  *
@@ -170,8 +168,7 @@
  *
  * @arg stock
  * @text 在庫数
- * @desc 在庫数の設定値です。変数IDを-1にした場合のみ有効です。
- * @type variable
+ * @desc 在庫数の設定値です。
  * @default 1
  *
  * 
