@@ -44,7 +44,7 @@
   Scene_Map.prototype.callMenu = function () {
     const commonId = Number($gameVariables.value(variableCommon));
     if (commonId > 0) {
-      $gameTemp.reserveCommonEvent(commonId)
+      $gameTemp.reserveCommonEvent(commonId);
     } else {
       _Scene_Map_callMenu.call(this);
     }
