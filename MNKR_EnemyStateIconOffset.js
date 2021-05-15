@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_EnemyStateIconOffset.js
- *   Ver.0.0.2
+ *   Ver.0.0.3
  * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -40,7 +40,7 @@
     _Sprite_Enemy_updateStateSprite.call(this);
     const offSetY = Number($dataEnemies[this._battler._enemyId].meta.MNKR_EnemyStateIconOffset || 0);
     if (offSetY !== 0) {
-      this._stateIconSprite.y = this._stateIconSprite.y + offSetY;
+      this._stateIconSprite.y += offSetY;
     }
   };
 
