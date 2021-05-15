@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_ReplaceMenu.js
- *   Ver.0.0.1
+ *   Ver.0.0.2
  * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -45,6 +45,7 @@
     const commonId = Number($gameVariables.value(variableCommon));
     if (commonId > 0) {
       $gameTemp.reserveCommonEvent(commonId);
+      SceneManager.goto(Scene_Map);
     } else {
       _Scene_Map_callMenu.call(this);
     }
