@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_MKR_EventGaugeMZ.js
- *   Ver.0.0.2
+ *   Ver.0.0.3
  * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -11,11 +11,14 @@
 //=============================================================================
 // MKR_EventGauge.js
 //=============================================================================
-// Copyright (c) 2016 マンカインド
+// Copyright (c) 2021 マンカインド
 // This software is released under the MIT License.
 // http://opensource.org/licenses/mit-license.php
 // ----------------------------------------------------------------------------
 // Version
+// 2.0.0 2021/05/26 ・セーブデータにゲージ情報を保存しないよう修正。
+//                  ・マップ初期化時、ゲージ情報も初期化するように修正。
+//
 // 1.2.3 2020/04/10 ・イベントの一時消去後、
 //                    メニュー開閉を行うとエラーとなる問題を修正。
 //
@@ -1148,9 +1151,7 @@ Imported.MKR_EventGauge = true;
     Game_Map.prototype.setup = function (mapId) {
         _Game_Map_setup.call(this, mapId);
 
-        if (!this._gaugeInfos) {
-            this.initGauge();
-        }
+        this.initGauge();
     };
 
     Game_Map.prototype.initGauge = function () {
@@ -1178,6 +1179,14 @@ Imported.MKR_EventGauge = true;
         // return this._gaugeInfos.indexOf(id);
         return info;
     };
+
+    Game_Map.prototype.getGaugeInfos = function () {
+        return this._gaugeInfos;
+    };
+
+    Game_Map.prototype.setGaugeInfos = function (gaugeInfos) {
+        this._gaugeInfos = gaugeInfos;
+    }
 
     Game_Map.prototype.generatedGauge = function (id) {
         let info, i, cnt;
@@ -1254,6 +1263,10 @@ Imported.MKR_EventGauge = true;
 
     Game_Map.prototype.getGaugePush = function () {
         return this._gaugePush;
+    };
+
+    Game_Map.prototype.setGaugePush = function (gaugePush) {
+        this._gaugePush = gaugePush;
     };
 
     Game_Map.prototype.showGaugeWindow = function (eventId) {
@@ -1919,6 +1932,27 @@ Imported.MKR_EventGauge = true;
         if (this._gaugeOption !== undefined) {
             delete this._gaugeOption;
         }
+    };
+
+
+    //=========================================================================
+    // DataManager
+    //  ・セーブデータにゲージ情報を含まないようにします。
+    //
+    //=========================================================================
+    const _DataManager_saveGameWithoutRescue = DataManager.saveGameWithoutRescue;
+    DataManager.saveGameWithoutRescue = function (savefileId) {
+        const gaugeInfos = ($gameMap.getGaugeInfos()) ? [...$gameMap.getGaugeInfos()] : [];
+        const gaugePush = ($gameMap.getGaugePush()) ? [...$gameMap.getGaugePush()] : [];
+        $gameMap.initGauge();
+        const result = _DataManager_saveGameWithoutRescue.call(this, savefileId);
+        if (gaugeInfos.length > 0) {
+            $gameMap.setGaugeInfos(gaugeInfos);
+        }
+        if (gaugePush.length > 0) {
+            $gameMap.setGaugePush(gaugePush);
+        }
+        return result;
     };
 
 
