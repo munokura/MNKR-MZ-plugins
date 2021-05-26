@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_TMLogWindowMZ.js
- *   Ver.0.0.3
+ *   Ver.0.0.4
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -470,9 +470,9 @@ Imported.TMLogWindow = true;
 		this.refresh();
 	};
 
-	Window_MapLog.prototype.standardFontSize = function () {
-		return logWindowFontSize;
-	};
+	// Window_MapLog.prototype.standardFontSize = function () {
+	// 	return logWindowFontSize;
+	// };
 
 	// ウィンドウの幅を取得
 	Window_MapLog.prototype.windowWidth = function () {
@@ -557,7 +557,8 @@ Imported.TMLogWindow = true;
 		let lh = this.lineHeight();
 		let n = Math.min(logWindowLines, actionLog.length);
 		for (let i = 0; i < n; i++) {
-			this.drawTextEx(actionLog[actionLog.length - n + i], 0, lh * i);
+			// this.drawTextEx(actionLog[actionLog.length - n + i], 0, lh * i);
+			this.drawTextEx('\\FS[' + String(logWindowFontSize) + ']' + actionLog[actionLog.length - n + i], 0, lh * i);
 		}
 	};
 
@@ -581,9 +582,9 @@ Imported.TMLogWindow = true;
 		this.activate();
 	};
 
-	Window_MenuLog.prototype.standardFontSize = function () {
-		return logWindowFontSize;
-	};
+	// Window_MenuLog.prototype.standardFontSize = function () {
+	// 	return logWindowFontSize;
+	// };
 
 	Window_MenuLog.prototype.standardPadding = function () {
 		return logWindowPadding;
@@ -606,7 +607,8 @@ Imported.TMLogWindow = true;
 		let item = this._data[index];
 		if (item) {
 			let rect = this.itemRectWithPadding(index);
-			this.drawTextEx(item, 0, rect.y);
+			// this.drawTextEx(item, 0, rect.y);
+			this.drawTextEx('\\FS[' + String(logWindowFontSize) + ']' + item, 0, rect.y);
 		}
 	};
 
