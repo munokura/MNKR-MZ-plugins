@@ -1,8 +1,8 @@
 /*
  * --------------------------------------------------
  * MNKR_HenshinMZ.js
- *   Ver.1.0.1
- * Copyright (c) 2020 Munokura
+ *   Ver.1.1.0
+ * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
  * --------------------------------------------------
@@ -23,11 +23,7 @@
  * 
  * 
  * プラグインコマンド
- * henshin 変身前アクターID 変身後アクターID
- * 
- * 使用例
- * henshin 1 8
- * ID1のアクターがID8のアクターと入れ替わります。
+ * ・アクター入れ替え
  * 
  * 注意点
  * 下記の状況では、何も起こりません。
@@ -61,19 +57,29 @@
 
 (() => {
 
-  "use strict";
+  'use strict'
 
   const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
 
+  // 2021/05/31 chronicle氏に提示いただいたコードに全面差し替え
+
   PluginManager.registerCommand(pluginName, "henshin", args => {
-    const actorId1 = Number(args.ActorId1);
-    const actorId2 = Number(args.ActorId2);
-    if ($gameParty._actors.contains(actorId1) && !$gameParty._actors.contains(actorId2)) {
-      const i = $gameParty._actors.indexOf(actorId1);
-      $gameParty._actors.splice(i, 1, actorId2);
-      $gamePlayer.refresh();
-      $gameMap.requestRefresh();
-    }
+    const actor = $gameActors.actor(Number(args.ActorId1));
+    if (actor) actor.transform(Number(args.ActorId2));
   });
+
+  Game_Actor.prototype.transform = function (actorId) {
+    const index = $gameParty.allMembers().indexOf(this);
+    const transformActor = $gameActors.actor(actorId);
+    let transformIndex = $gameParty.allMembers().indexOf(transformActor);
+    if (!transformActor || index < 0 || transformIndex >= 0) return;
+
+    $gameParty.addActor(actorId);
+    transformIndex = $gameParty.allMembers().indexOf(transformActor);
+    if (transformIndex >= 0) {
+      $gameParty.swapOrder(index, transformIndex);
+      $gameParty.removeActor(this.actorId());
+    }
+  };
 
 })();
