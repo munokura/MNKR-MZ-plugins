@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_HenshinMZ.js
- *   Ver.1.1.0
+ *   Ver.1.1.1
  * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -61,7 +61,7 @@
 
   const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
 
-  // 2021/05/31 chronicle氏に提示いただいたコードに全面差し替え
+  // 2021/06/02 chronicle氏に提示いただいたコードに全面差し替え
 
   PluginManager.registerCommand(pluginName, "henshin", args => {
     const actor = $gameActors.actor(Number(args.ActorId1));
@@ -69,17 +69,36 @@
   });
 
   Game_Actor.prototype.transform = function (actorId) {
-    const index = $gameParty.allMembers().indexOf(this);
+    const allMemberIndex = actor => $gameParty.allMembers().indexOf(actor);
+
+    const index = allMemberIndex(this);
     const transformActor = $gameActors.actor(actorId);
-    let transformIndex = $gameParty.allMembers().indexOf(transformActor);
+    let transformIndex = allMemberIndex(transformActor);
     if (!transformActor || index < 0 || transformIndex >= 0) return;
 
+    const wasBattleMember = $gameParty.battleMembers().includes(this);
+    if (wasBattleMember) $gameParty._transformActorId = actorId;
     $gameParty.addActor(actorId);
-    transformIndex = $gameParty.allMembers().indexOf(transformActor);
+    transformIndex = allMemberIndex(transformActor);
     if (transformIndex >= 0) {
-      $gameParty.swapOrder(index, transformIndex);
+      $gameParty.swapOrder(index, allMemberIndex(transformActor));
+      if (wasBattleMember) $gameParty._transformActorId = this.actorId();
       $gameParty.removeActor(this.actorId());
     }
+    $gameParty._transformActorId = null;
+  };
+
+  const _Game_Party_initialize = Game_Party.prototype.initialize;
+  Game_Party.prototype.initialize = function () {
+    _Game_Party_initialize.apply(this, arguments);
+    this._transformActorId = null;
+  };
+
+  const _Game_Party_battleMembers = Game_Party.prototype.battleMembers;
+  Game_Party.prototype.battleMembers = function () {
+    const members = _Game_Party_battleMembers.apply(this, arguments);
+    if (this._transformActorId) members.push($gameActors.actor(this._transformActorId));
+    return members;
   };
 
 })();
