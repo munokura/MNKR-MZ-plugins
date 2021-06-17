@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_SupponShopStockMZ.js
- *   Ver.0.0.4
+ *   Ver.0.0.5
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -582,7 +582,8 @@
     Scene_supponSSshop.prototype.sortGoods = function () {
         this._goods = [];
         if (this._sortTyep == 1) {
-            for (i = 0; i < this._originalGoods.length; i++) {
+            // for (i = 0; i < this._originalGoods.length; i++) {
+            for (let i = 0; i < this._originalGoods.length; i++) {
                 this._goods.push(this._originalGoods[i]);
             }
             this._goods.sort(function (a, b) {
