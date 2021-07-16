@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_KMS_SaveWithSnapMZ.js
- *   Ver.0.1.3
+ *   Ver.0.1.4
  * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -290,7 +290,10 @@ THE SOFTWARE.
     DataManager.loadSavefileImages = function (info) {
         _KMS_SaveWithSnap_DataManager_loadSavefileImages.call(this, info);
         if (info.snapUrl) {
+            const hasEncryptedImages = Utils.hasEncryptedImages();
+            Utils._hasEncryptedImages = false;
             ImageManager.loadBitmap(info.snapUrl);
+            Utils._hasEncryptedImages = hasEncryptedImages;
         }
     };
 
@@ -396,7 +399,10 @@ THE SOFTWARE.
         if (!info.snapUrl) {
             return;
         }
+        const hasEncryptedImages = Utils.hasEncryptedImages();
+        Utils._hasEncryptedImages = false;
         const bitmap = ImageManager.loadBitmapFromUrl(info.snapUrl);
+        Utils._hasEncryptedImages = hasEncryptedImages;
         const dh = Params.imageHight < this.itemHeight() - 12 ? Params.imageHight : this.itemHeight() - 12;
         const dw = parseInt(bitmap.width * dh / bitmap.height);
         const dx = rect.x + Math.max(rect.width - dw - 120, 0) + Params.imageX;
