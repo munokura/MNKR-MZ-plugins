@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
- * MNKR_EnemyIcon.js
- *   Ver.1.0.1
+ * MNKR_EnemyIconMZ.js
+ *   Ver.1.0.2
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -10,7 +10,7 @@
 
 /*:
  * @target MZ
- * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_EnemyIcon.js
+ * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_MNKR_EnemyIcon.js
  * @plugindesc 戦闘画面で敵キャラの名前の前にアイコンを表示します。
  * @author munokura
  *
@@ -18,10 +18,10 @@
  * 戦闘画面で敵キャラの名前の前にアイコンを表示します。
  *
  * 敵キャラのメモ欄に下記のようにタグを入れてください。
- * <EnemyIcon:アイコンID>
+ * <MNKR_EnemyIcon:アイコンID>
  *
  * 例
- * <EnemyIcon:64>
+ * <MNKR_EnemyIcon:64>
  * 
  * プラグインコマンドはありません。
  *
@@ -51,7 +51,7 @@
     const _Window_BattleEnemy_drawItem = Window_BattleEnemy.prototype.drawItem
     Window_BattleEnemy.prototype.drawItem = function (index) {
         const enemy = this._enemies[index];
-        const icon = parseInt(enemy.enemy().meta.EnemyIcon) || defaultIcon;
+        const icon = parseInt(enemy.enemy().meta.MNKR_EnemyIcon) || defaultIcon;
         if (icon) {
             const name = enemy.name();
             const rect = this.itemLineRect(index);
