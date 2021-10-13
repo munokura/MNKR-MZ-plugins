@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_ChangeActorImages.js
+ * MNKR_ChangeActorImagesMZ.js
  *   Ver.0.0.1
  * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
@@ -9,8 +9,8 @@
  */
 
 /*:
- * @target MZ MV
- * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_RandomActorNameMZ.js
+ * @target MZ
+ * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_ChangeActorImagesMZ.js
  * @plugindesc 「アクターの画像変更」の指定アクターを変数値の挙動に変更します。
  * @author munokura
  *
