@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_DP_MapZoomMZ.js
- *   Ver.0.0.5
+ *   Ver.0.0.6
  * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -1085,12 +1085,14 @@ var drowsepost = drowsepost || {};
         };
 
         //@override
-        // MZ対策 munokura
-        // var _parent_initialize = Game_Screen.prototype.initialize;
-        // Game_Screen.prototype.initialize = function () {
-        //     _parent_initialize.call(this);
-        //     dp_renderSize.reset();
-        // };
+        // MZ 戦闘テスト対策 munokura
+        var _parent_initialize = Game_Screen.prototype.initialize;
+        Game_Screen.prototype.initialize = function () {
+            _parent_initialize.call(this);
+            if (DataManager.isBattleTest()) {
+                dp_renderSize.reset();
+            }
+        };
 
     }());
 
