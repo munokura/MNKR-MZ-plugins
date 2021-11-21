@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_SaveTimeData.js
- *   Ver.0.0.1
+ *   Ver.0.0.2
  * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -58,7 +58,7 @@
     Scene_Save.prototype.onSavefileOk = function () {
         const timeget = getTime();
         if (TimeVariable > 0) {
-            $gameVariables.setValue(timeVariable, timeget);
+            $gameVariables.setValue(TimeVariable, timeget);
         }
         _Scene_Save_onSavefileOk.call(this);
     };
