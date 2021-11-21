@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_SaveTimeData.js
- *   Ver.0.0.2
+ *   Ver.0.0.3
  * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -38,7 +38,7 @@
  * 
  * @command subtractionMinutes
  * @text 差分代入（単位：分）
- * @desc 実効時刻からセーブ時間を保存している変数を引いた値から、差となる値を代入します。
+ * @desc コマンド実行時刻から前回セーブ時刻を引いた値を代入します。
  *
  * @arg minutesVariable
  * @text 代入変数
@@ -52,28 +52,27 @@
 
     const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
     const parameters = PluginManager.parameters(pluginName);
-    const TimeVariable = Number(parameters['timeVariable'] || 0);
+    const param_timeVariable = Number(parameters['timeVariable'] || 0);
 
     const _Scene_Save_onSavefileOk = Scene_Save.prototype.onSavefileOk;
     Scene_Save.prototype.onSavefileOk = function () {
-        const timeget = getTime();
-        if (TimeVariable > 0) {
-            $gameVariables.setValue(TimeVariable, timeget);
+        const timeget = fetchSeconds();
+        if (param_timeVariable > 0) {
+            $gameVariables.setValue(param_timeVariable, timeget);
         }
         _Scene_Save_onSavefileOk.call(this);
     };
 
-    function getTime() {
+    function fetchSeconds() {
         const timeget = Math.round(Number(new Date()) / 1000);    //ミリ秒を秒に変換
         return timeget;
     };
 
     PluginManager.registerCommand(pluginName, "subtractionMinutes", function (args) {
-        const command = 'subtractionMinutes';
         const MinutesVariable = Number(args.minutesVariable);
-        const timeget = getTime();
-        if (TimeVariable > 0 && MinutesVariable > 0) {
-            const SubtractionMinutes = (timeget - $gameVariables.value(TimeVariable)) / 60;
+        const timeget = fetchSeconds();
+        if (param_timeVariable > 0 && MinutesVariable > 0) {
+            const SubtractionMinutes = (timeget - $gameVariables.value(param_timeVariable)) / 60;
             $gameVariables.setValue(MinutesVariable, SubtractionMinutes);
         }
     });
