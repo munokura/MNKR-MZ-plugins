@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_LogInBonusMZ.js
- *   Ver.0.0.1
+ *   Ver.0.0.2
  * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -11,17 +11,15 @@
 /*:
  * @target MZ
  * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_LogInBonusMZ.js
- * @plugindesc セーブ時に時刻値を変数に保存し、ログインボーナスを実装しやすくします。
+ * @plugindesc ログインボーナス実装を簡易にするプラグインコマンドを提供します。
  * @author munokura
  *
  * @help
- * セーブ時に時刻値を変数に保存します。
- * 時刻値は世界協定時 (UTC) 1970年1月1日午前0時0分0秒
- *  (ECMAScript 元期、 UNIX 元期と等価) からのミリ秒数を整数値で表し、
- * うるう秒は無視します。
+ * ログインボーナス実装を簡易にするプラグインコマンドを提供します。
  * 
- * 参考
- * https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Date/Date
+ * --プラグインコマンド--
+ * 前回ボーナス取得した時刻と比較し、日を跨いだ指定時刻を越えている場合に
+ * コモンイベント（ボーナス取得内容）を実行します。
  * 
  * 
  * 利用規約:
@@ -32,56 +30,28 @@
  *
  *
  * @param timeVariable
- * @text 保存変数
+ * @text 時刻値変数
  * @type variable
  * @default 0
- * @desc セーブ時の時刻値を保存する変数を指定。0の場合は動作しません。
+ * @desc 時刻値を保存する変数を指定。0の場合は動作しません。
  *
  * @param updateTime
  * @text ログインボーナス更新時刻
  * @type number
- * @max 24
+ * @max 23
  * @default 0
- * @desc 24時制の時刻を入力。セーブ後にこの時間を過ぎているか確認します。
+ * @desc 24時制の時刻を入力。この時間を過ぎているか確認します。
  * 
  * 
- * @command fetchTime
- * @text 時刻代入（単位：秒）
- * @desc コマンド実行時刻を代入します。
+ * @command checkBonus
+ * @text ボーナス確認
+ * @desc ボーナス取得条件を満たした場合、コモンイベントを実行します。
  *
- * @arg timeVariable
- * @text 代入変数
- * @type variable
- * @desc 代入する変数を指定
+ * @arg bonusCommon
+ * @text コモンイベント
+ * @type common_event
+ * @desc ボーナス取得時に実行するコモンイベントを指定
  * @default 0
- * 
- * 
- * @command subtractionTimes
- * @text 差分代入
- * @desc コマンド実行時刻から前回セーブ時刻を引いた値を代入します。
- *
- * @arg timeVariable
- * @text 代入変数
- * @type variable
- * @desc 差分を代入する変数を指定
- * @default 0
- * 
- * @arg eachTime
- * @text 単位
- * @type select
- * @option 年
- * @value years
- * @option 月
- * @value months
- * @option 日
- * @value days
- * @option 時間
- * @value hours
- * @option 分
- * @value minutes
- * @option 秒
- * @value seconds
- * @default hours
  * 
  */
 
@@ -94,20 +64,6 @@
     param.timeVariable = Number(parameters['timeVariable'] || 0);
     param.updateTime = Number(parameters['updateTime'] || 0);
 
-    const _Scene_Save_onSavefileOk = Scene_Save.prototype.onSavefileOk;
-    Scene_Save.prototype.onSavefileOk = function () {
-        const saveTime = fetchTime();
-        if (param.timeVariable > 0) {
-            $gameVariables.setValue(param.timeVariable, saveTime);
-        }
-        _Scene_Save_onSavefileOk.call(this);
-    };
-
-    function fetchTime() {
-        nowTime = new Date().getTime();
-        return nowTime;
-    };
-
     function fetchTimeObj(stamp) {
         const timeObj = {};
         timeObj.base = new Date(stamp);
@@ -115,42 +71,23 @@
         timeObj.month = timeObj.base.getMonth();
         timeObj.date = timeObj.base.getDate();
         timeObj.hours = timeObj.base.getHours();
-        timeObj.minutes = timeObj.base.getMinutes();
-        timeObj.seconds = timeObj.base.getSeconds();
         return timeObj;
     };
 
-    PluginManager.registerCommand(pluginName, "fetchTime", function (args) {
-        const timeVariableId = Number(args.timeVariable.stamp);
-        const nowTime = fetchTime();
-        if (param.timeVariable > 0 && timeVariableId > 0) {
-            $gameVariables.setValue(timeVariableId, nowTime);
-        }
-    });
-
-    PluginManager.registerCommand(pluginName, "subtractionTimes", function (args) {
-        const timeVariableId = Number(args.timeVariable);
-        const caseBy = args.eachTime;
-        const nowTime = fetchTime();
-
-        if (param.timeVariable > 0 && minutesVariableId > 0) {
-            switch (caseBy) {
-                case 'days':
-                    subtractionTimes = Math.floor(nowTime - $gameVariables.value(param.timeVariable) / 1000 / 60 / 60 / 24);
-                    $gameVariables.setValue(timeVariableId, subtractionTimes);
-                    break;
-                case 'hours':
-                    subtractionTimes = Math.floor(nowTime - $gameVariables.value(param.timeVariable) / 1000 / 60 / 60);
-                    $gameVariables.setValue(timeVariableId, subtractionTimes);
-                    break;
-                case 'minutes':
-                    subtractionTimes = Math.floor(nowTime - $gameVariables.value(param.timeVariable) / 1000 / 60);
-                    $gameVariables.setValue(timeVariableId, subtractionTimes);
-                    break;
-                case 'seconds':
-                    subtractionTimes = Math.floor(nowTime - $gameVariables.value(param.timeVariable) / 1000);
-                    $gameVariables.setValue(timeVariableId, subtractionTimes);
-                    break;
+    PluginManager.registerCommand(pluginName, "checkBonus", function (args) {
+        if (param.timeVariable > 0) {
+            const stamp = new Date();
+            const nowObj = fetchTimeObj(stamp);
+            let recentBonus;
+            if (nowObj.hours >= param.updateTime) {
+                recentBonus = new Date(nowObj.year, nowObj.month, nowObj.date, param.updateTime);
+            } else {
+                recentBonus = new Date(nowObj.year, nowObj.month, nowObj.date - 1, param.updateTime);
+            }
+            if (recentBonus >= $gameVariables.value(param.timeVariable)) {
+                const bonusCommonId = Number(args.bonusCommon);
+                $gameTemp.reserveCommonEvent(bonusCommonId);
+                $gameVariables.setValue(param.timeVariable, stamp);
             }
         }
     });
