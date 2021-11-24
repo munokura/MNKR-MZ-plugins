@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_LogInBonusMZ.js
- *   Ver.0.0.2
+ *   Ver.0.0.3
  * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -17,10 +17,6 @@
  * @help
  * ログインボーナス実装を簡易にするプラグインコマンドを提供します。
  * 
- * --プラグインコマンド--
- * 前回ボーナス取得した時刻と比較し、日を跨いだ指定時刻を越えている場合に
- * コモンイベント（ボーナス取得内容）を実行します。
- * 
  * 
  * 利用規約:
  *   MITライセンスです。
@@ -35,7 +31,7 @@
  * @default 0
  * @desc 時刻値を保存する変数を指定。0の場合は動作しません。
  *
- * @param updateTime
+ * @param updateHours
  * @text ログインボーナス更新時刻
  * @type number
  * @max 23
@@ -45,7 +41,18 @@
  * 
  * @command checkBonus
  * @text ボーナス確認
- * @desc ボーナス取得条件を満たした場合、コモンイベントを実行します。
+ * @desc ボーナス取得条件を満たす場合スイッチをON。満たしていない場合、OFFにします。
+ *
+ * @arg bonusSwitch
+ * @text スイッチ
+ * @type switch
+ * @desc ボーナス確認時に動作するスイッチを指定
+ * @default 0
+ * 
+ * 
+ * @command getBonus
+ * @text ボーナス取得
+ * @desc ボーナス取得条件を満たす場合、コモンイベントを実行します。
  *
  * @arg bonusCommon
  * @text コモンイベント
@@ -62,7 +69,7 @@
     const parameters = PluginManager.parameters(pluginName);
     const param = {};
     param.timeVariable = Number(parameters['timeVariable'] || 0);
-    param.updateTime = Number(parameters['updateTime'] || 0);
+    param.updateHours = Number(parameters['updateHours'] || 0);
 
     function fetchTimeObj(stamp) {
         const timeObj = {};
@@ -74,20 +81,33 @@
         return timeObj;
     };
 
+    function isBonus() {
+        const stamp = new Date();
+        const nowObj = fetchTimeObj(stamp);
+        const recentBonusDate = nowObj.hours >= param.updateHours ? nowObj.date : nowObj.date - 1;
+        const recentBonusStamp = new Date(nowObj.year, nowObj.month, recentBonusDate, param.updateHours);
+        const canBonus = recentBonusStamp > $gameVariables.value(param.timeVariable) ? true : false;
+        return canBonus;
+    };
+
     PluginManager.registerCommand(pluginName, "checkBonus", function (args) {
         if (param.timeVariable > 0) {
-            const stamp = new Date();
-            const nowObj = fetchTimeObj(stamp);
-            let recentBonus;
-            if (nowObj.hours >= param.updateTime) {
-                recentBonus = new Date(nowObj.year, nowObj.month, nowObj.date, param.updateTime);
-            } else {
-                recentBonus = new Date(nowObj.year, nowObj.month, nowObj.date - 1, param.updateTime);
-            }
-            if (recentBonus >= $gameVariables.value(param.timeVariable)) {
-                const bonusCommonId = Number(args.bonusCommon);
-                $gameTemp.reserveCommonEvent(bonusCommonId);
+            const canBonus = isBonus();
+            const bonusSwitchId = Number(args.bonusSwitch);
+            $gameSwitches.setValue(bonusSwitchId, canBonus);
+        }
+    });
+
+    PluginManager.registerCommand(pluginName, "getBonus", function (args) {
+        if (param.timeVariable > 0) {
+            const canBonus = isBonus();
+            if (canBonus) {
+                const stamp = new Date();
                 $gameVariables.setValue(param.timeVariable, stamp);
+                const bonusCommonId = Number(args.bonusCommon);
+                if (bonusCommonId > 0) {
+                    $gameTemp.reserveCommonEvent(bonusCommonId);
+                }
             }
         }
     });
