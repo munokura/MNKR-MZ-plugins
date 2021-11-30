@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_SimpleMsgSideViewMZ.js
- *   Ver.0.0.3
+ *   Ver.0.0.4
  * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -40,7 +40,7 @@
  * @param undisplaySkill
  * @text 非表示スキル
  * @type skill[]
- * @default 
+ * @default ["0"]
  * @desc 使用しても表示しないスキルを指定
  * 
  * @help
@@ -74,7 +74,7 @@
   const parameters = PluginManager.parameters(pluginName);
   const displayAttack = parameters['displayAttack'] === 'true';
   const displayIcon = parameters['displayIcon'] == 'true';
-  const undisplaySkill = JSON.parse(parameters['undisplaySkill']);
+  const undisplaySkill = parameters['undisplaySkill'] === '' ? ["0"] : JSON.parse(parameters['undisplaySkill']);
 
   //
   // main routine
