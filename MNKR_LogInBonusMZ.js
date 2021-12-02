@@ -38,6 +38,12 @@
  * @default 0
  * @desc 24時制の時刻を入力。この時間を過ぎているか確認します。
  *
+ * @param continueVariable
+ * @text 連続ログイン回数変数
+ * @type variable
+ * @default 0
+ * @desc 連続ログイン回数を保存する変数を指定。0の場合は動作しません。
+ *
  *
  * @command checkBonus
  * @text ボーナス確認
@@ -70,6 +76,7 @@
     const param = {};
     param.timeVariable = Number(parameters['timeVariable'] || 0);
     param.updateHours = Number(parameters['updateHours'] || 0);
+    param.continueVariable = Number(parameters['continueVariable'] || 0);
 
     function fetchTimeObj() {
         const timeObj = {};
@@ -89,6 +96,14 @@
         return canBonus;
     };
 
+    function isContinue() {
+        const nowObj = fetchTimeObj();
+        const recentBonusDate = nowObj.hours >= param.updateHours ? nowObj.date : nowObj.date - 1;
+        const continueStamp = new Date(nowObj.year, nowObj.month, recentBonusDate - 1, param.updateHours).getTime();
+        const canContinue = continueStamp < $gameVariables.value(param.timeVariable) ? true : false;
+        return canContinue;
+    };
+
     PluginManager.registerCommand(pluginName, "checkBonus", function (args) {
         if (param.timeVariable > 0) {
             const canBonus = isBonus();
@@ -100,7 +115,13 @@
     PluginManager.registerCommand(pluginName, "getBonus", function (args) {
         if (param.timeVariable > 0) {
             const canBonus = isBonus();
+            const canContinue = isContinue();
             if (canBonus) {
+                if (canContinue) {
+                    $gameVariables.setValue(param.continueVariable, $gameVariables.value(param.continueVariable) + 1);
+                } else {
+                    $gameVariables.setValue(param.continueVariable, 1);
+                }
                 const stamp = new Date().getTime();
                 $gameVariables.setValue(param.timeVariable, stamp);
                 const bonusCommonId = Number(args.bonusCommon);
