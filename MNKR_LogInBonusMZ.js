@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_LogInBonusMZ.js
- *   Ver.0.0.4
+ *   Ver.0.1.1
  * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -58,12 +58,12 @@
  *
  * @command getBonus
  * @text ボーナス取得
- * @desc ボーナス取得条件を満たす場合、時刻値変数を更新し、コモンイベントを実行します。
+ * @desc ボーナス取得条件を満たす場合、時刻値変数と連続ログイン回数を更新し、コモンイベントを実行します。
  *
  * @arg bonusCommon
  * @text コモンイベント
  * @type common_event
- * @desc 実行するコモンイベントを指定。指定しない場合、時刻値変数だけが更新されます。
+ * @desc 実行するコモンイベントを指定。指定しない場合、時刻値変数と連続ログイン回数だけが更新されます。
  * @default 0
  *
  */
@@ -88,34 +88,30 @@
         return timeObj;
     };
 
-    function isBonus() {
+    function fetchBonusObj() {
         const nowObj = fetchTimeObj();
         const recentBonusDate = nowObj.hours >= param.updateHours ? nowObj.date : nowObj.date - 1;
         const recentBonusStamp = new Date(nowObj.year, nowObj.month, recentBonusDate, param.updateHours).getTime();
-        const canBonus = recentBonusStamp > $gameVariables.value(param.timeVariable) ? true : false;
-        return canBonus;
-    };
-
-    function isContinue() {
-        const nowObj = fetchTimeObj();
-        const recentBonusDate = nowObj.hours >= param.updateHours ? nowObj.date : nowObj.date - 1;
         const continueStamp = new Date(nowObj.year, nowObj.month, recentBonusDate - 1, param.updateHours).getTime();
-        const canContinue = continueStamp < $gameVariables.value(param.timeVariable) ? true : false;
-        return canContinue;
+        const bonusObj = {};
+        bonusObj.hasBonus = recentBonusStamp > $gameVariables.value(param.timeVariable) ? true : false;
+        bonusObj.hasContinue = continueStamp < $gameVariables.value(param.timeVariable) ? true : false;
+        return bonusObj;
     };
 
     PluginManager.registerCommand(pluginName, "checkBonus", function (args) {
         if (param.timeVariable > 0) {
-            const canBonus = isBonus();
             const bonusSwitchId = Number(args.bonusSwitch);
+            const canBonus = fetchBonusObj().hasBonus;
             $gameSwitches.setValue(bonusSwitchId, canBonus);
         }
     });
 
     PluginManager.registerCommand(pluginName, "getBonus", function (args) {
         if (param.timeVariable > 0) {
-            const canBonus = isBonus();
-            const canContinue = isContinue();
+            const bonusObj = fetchBonusObj();
+            const canBonus = bonusObj.hasBonus;
+            const canContinue = bonusObj.hasContinue;
             if (canBonus) {
                 if (canContinue) {
                     $gameVariables.setValue(param.continueVariable, $gameVariables.value(param.continueVariable) + 1);
