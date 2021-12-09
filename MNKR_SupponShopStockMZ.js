@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_SupponShopStockMZ.js
- *   Ver.0.0.5
+ *   Ver.0.0.6
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -604,7 +604,7 @@
     Scene_supponSSshop.prototype.commandBuy = function () {
         this._trade = 'buy';
         if (this._sortTyep == 2) {
-            this._categoryWindow._list[3].enabled = false;//大事なもの選択不可
+            // this._categoryWindow._list[3].enabled = false;//大事なもの選択不可   MZ対策
             Window_Selectable.prototype.refresh.call(this._categoryWindow);
             this._categoryWindow.setItemWindow(null);
             this._categoryWindow.show();
@@ -653,7 +653,7 @@
 
     Scene_supponSSshop.prototype.commandSell = function () {
         this._trade = 'sell';
-        this._categoryWindow._list[3].enabled = true;//大事なもの選択可
+        // this._categoryWindow._list[3].enabled = true;//大事なもの選択可  MZ対策
         Window_Selectable.prototype.refresh.call(this._categoryWindow);
         this._categoryWindow.setItemWindow(this._sellWindow);
         Scene_Shop.prototype.commandSell.call(this);
