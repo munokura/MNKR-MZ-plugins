@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_SupponShopStockMZ.js
- *   Ver.0.0.6
+ *   Ver.0.0.7
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -331,65 +331,6 @@
     var DisplayOption1 = parameters['Display option'] === 'true';
     var Option1Space = Number(parameters['Display option space']);
 
-    // var _Game_Interpreter_pluginCommand = Game_Interpreter.prototype.pluginCommand;
-    // Game_Interpreter.prototype.pluginCommand = function (command1, args) {
-    //     _Game_Interpreter_pluginCommand.call(this, command1, args);
-    //     args = args.filter(function (n) {
-    //         return n !== '';
-    //     });
-    //     if (!$gameSystem._supponSS) { $gameSystem._supponSS = [] };
-    //     if (command1 === 'SupponSS') {
-    //         var command2 = args.shift();
-    //         switch (command2) {
-    //             case 'makeShop':
-    //                 $gameSystem.supponSSmakeShop(args);
-    //                 break;
-    //             case 'addItem':
-    //                 args.splice(1, 0, 0);
-    //                 $gameSystem.supponSSaddGoods(args);
-    //                 break;
-    //             case 'addWeapon':
-    //                 args.splice(1, 0, 1);
-    //                 $gameSystem.supponSSaddGoods(args);
-    //                 break;
-    //             case 'addArmor':
-    //                 args.splice(1, 0, 2);
-    //                 $gameSystem.supponSSaddGoods(args);
-    //                 break;
-    //             case 'removeItem':
-    //                 args.splice(1, 0, 0);
-    //                 $gameSystem.supponSSremoveGoods(args);
-    //                 break;
-    //             case 'removeWeapon':
-    //                 args.splice(1, 0, 1);
-    //                 $gameSystem.supponSSremoveGoods(args);
-    //                 break;
-    //             case 'removeArmor':
-    //                 args.splice(1, 0, 2);
-    //                 $gameSystem.supponSSremoveGoods(args);
-    //                 break;
-    //             case 'deleteShop':
-    //                 $gameSystem.supponSSdeleteShop(args);
-    //                 break;
-    //             case 'openShop':
-    //                 $gameSystem.supponSSopenShop(args);
-    //                 break;
-    //             case 'getNumItem':
-    //                 args.splice(1, 0, 0);
-    //                 $gameSystem.supponSSgetNumItem(args);
-    //                 break;
-    //             case 'getNumWeapon':
-    //                 args.splice(1, 0, 1);
-    //                 $gameSystem.supponSSgetNumItem(args);
-    //                 break;
-    //             case 'getNumArmor':
-    //                 args.splice(1, 0, 2);
-    //                 $gameSystem.supponSSgetNumItem(args);
-    //                 break;
-    //         }
-    //     }
-    // };
-
     PluginManager.registerCommand(pluginName, "makeShop", arr => {
         const args = Object.entries(arr).map(([key, value]) => `${value}`);
         $gameSystem.supponSSmakeShop(args);
@@ -497,7 +438,6 @@
     Game_System.prototype.supponSSremoveGoods = function (args) {
         var shop = this.supponSSsearchShop(args);
         if (!shop) { return };
-        //shop[1] => goods
         shop[1] = shop[1].filter(function (element) {
             return !(args[1] == element[0] && args[2] == element[1]);
         })
@@ -571,8 +511,6 @@
     Scene_supponSSshop.prototype.prepare = function (shop, purchaseOnly, sortType) {
         this._shop = shop;
         this._sortTyep = sortType;
-
-
         this._originalGoods = this._shop[1];
         this._goods = this._shop[1];
         this._purchaseOnly = purchaseOnly;
@@ -582,7 +520,6 @@
     Scene_supponSSshop.prototype.sortGoods = function () {
         this._goods = [];
         if (this._sortTyep == 1) {
-            // for (i = 0; i < this._originalGoods.length; i++) {
             for (let i = 0; i < this._originalGoods.length; i++) {
                 this._goods.push(this._originalGoods[i]);
             }
@@ -590,7 +527,8 @@
                 return a[0] - b[0] || a[0] == b[0] && a[1] - b[1]
             })
         } else if (this._sortTyep == 2) {
-            var type = this._categoryWindow.index();
+            const type = ["item", "weapon", "armor", "keyItem"].indexOf(this._categoryWindow.currentSymbol());  //Dark Plasma 2021.12.11
+            // var type = this._categoryWindow.index();
             this._goods = this._originalGoods.filter(function (element) {
                 return (element[0] == type);
             })
@@ -641,7 +579,6 @@
             Scene_Shop.prototype.onBuyCancel.call(this);
             return;
         }
-        //this._commandWindow.activate();
         this._dummyWindow.show();
         this._buyWindow.hide();
         this._statusWindow.hide();
