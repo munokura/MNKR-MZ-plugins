@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_InitTp.js
- *   Ver.0.0.1
+ *   Ver.0.0.2
  * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -29,6 +29,7 @@
  * <MNKR_InitTp:50>
  * このタグが入っている武器・防具・スキルがあるアクターは戦闘開始時に、
  * タグの増加量だけ、戦闘開始時にTPが加算されます。
+ * 負の値（マイナス値）を入れると、減算されます。
  * 
  * 
  * 利用規約:
@@ -49,19 +50,19 @@
         let i = 0;
         if (this.isActor()) {
             for (i = 0; i < this.equips().length; i++) {
-                index = this.equips()[i] ? parseInt(this.equips()[i].meta.MNKR_InitTp) : 0;
-                if (index > 0) {
+                index = this.equips()[i] ? Math.round(Number(this.equips()[i].meta.MNKR_InitTp)) : 0;
+                if (index) {
                     MNKR_InitTp += index;
                 }
             }
             for (i = 0; i < this.skills().length; i++) {
-                index = this.skills()[i] ? parseInt(this.skills()[i].meta.MNKR_InitTp) : 0;
-                if (index > 0) {
+                index = this.skills()[i] ? Math.round(Number(this.skills()[i].meta.MNKR_InitTp)) : 0;
+                if (index) {
                     MNKR_InitTp += index;
                 }
             }
         }
-        this.setTp(this.tp + MNKR_InitTp);
+        this.gainTp(MNKR_InitTp);
     };
 
 })();
