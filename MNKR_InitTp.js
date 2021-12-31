@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_InitTp.js
- *   Ver.0.0.2
+ *   Ver.0.0.3
  * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -45,20 +45,20 @@
     const _Game_Battler_initTp = Game_Battler.prototype.initTp;
     Game_Battler.prototype.initTp = function () {
         _Game_Battler_initTp.call(this);
-        let index = 0;
+        let addendTp = 0;
         let MNKR_InitTp = 0;
         let i = 0;
         if (this.isActor()) {
             for (i = 0; i < this.equips().length; i++) {
-                index = this.equips()[i] ? Math.round(Number(this.equips()[i].meta.MNKR_InitTp)) : 0;
-                if (index) {
-                    MNKR_InitTp += index;
+                addendTp = this.equips()[i] ? parseInt(this.equips()[i].meta.MNKR_InitTp, 10) : 0;
+                if (addendTp) {
+                    MNKR_InitTp += addendTp;
                 }
             }
             for (i = 0; i < this.skills().length; i++) {
-                index = this.skills()[i] ? Math.round(Number(this.skills()[i].meta.MNKR_InitTp)) : 0;
-                if (index) {
-                    MNKR_InitTp += index;
+                addendTp = this.skills()[i] ? parseInt(this.skills()[i].meta.MNKR_InitTp, 10) : 0;
+                if (addendTp) {
+                    MNKR_InitTp += addendTp;
                 }
             }
         }
