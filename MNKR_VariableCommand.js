@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_VariableCommand.js
- *   Ver.2.1.0
+ *   Ver.2.1.1
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -537,8 +537,8 @@
 
     PluginManager.registerCommand(pluginName, "changeItem", function (args) {
         const selectAction = args.selectAction === "true";
-        const changeItemId = $gameVariables.value(args.variableIdItem);
-        const changeQuantity = args.variableIdQuantity > 0 ? $gameVariables.value(args.variableIdQuantity) : args.constQuantity;
+        const changeItemId = Number($gameVariables.value(args.variableIdItem));
+        const changeQuantity = Number(args.variableIdQuantity > 0 ? $gameVariables.value(args.variableIdQuantity) : args.constQuantity);
         if (changeItemId > 0) {
             if (selectAction) {
                 $gameParty.gainItem($dataItems[changeItemId], changeQuantity);
@@ -551,8 +551,8 @@
     PluginManager.registerCommand(pluginName, "changeWeapon", function (args) {
         const selectAction = args.selectAction === "true";
         const includeEquip = args.includeEquip === "true";
-        const changeWeaponId = $gameVariables.value(args.variableIdWeapon);
-        const changeQuantity = args.variableIdQuantity > 0 ? $gameVariables.value(args.variableIdQuantity) : args.constQuantity;
+        const changeWeaponId = Number($gameVariables.value(args.variableIdWeapon));
+        const changeQuantity = Number(args.variableIdQuantity > 0 ? $gameVariables.value(args.variableIdQuantity) : args.constQuantity);
         if (changeWeaponId > 0) {
             if (selectAction) {
                 $gameParty.gainItem($dataWeapons[changeWeaponId], changeQuantity, includeEquip);
@@ -565,8 +565,8 @@
     PluginManager.registerCommand(pluginName, "changeArmor", function (args) {
         const selectAction = args.selectAction === "true";
         const includeEquip = args.includeEquip === "true";
-        const changeArmorId = $gameVariables.value(args.variableIdArmor);
-        const changeQuantity = args.variableIdQuantity > 0 ? $gameVariables.value(args.variableIdQuantity) : args.constQuantity;
+        const changeArmorId = Number($gameVariables.value(args.variableIdArmor));
+        const changeQuantity = Number(args.variableIdQuantity > 0 ? $gameVariables.value(args.variableIdQuantity) : args.constQuantity);
         if (changeArmorId > 0) {
             if (selectAction) {
                 $gameParty.gainItem($dataArmors[changeArmorId], changeQuantity, includeEquip);
@@ -578,7 +578,7 @@
 
     PluginManager.registerCommand(pluginName, "changeMember", function (args) {
         const selectMethod = args.selectMethod === "true";
-        const selectActorId = $gameVariables.value(args.variableIdActor);
+        const selectActorId = Number($gameVariables.value(args.variableIdActor));
         const initializeActor = args.initializeActor === "true";
         if (selectActorId > 0) {
             if (initializeActor) {
@@ -594,8 +594,8 @@
 
     PluginManager.registerCommand(pluginName, "changeState", function (args) {
         const selectAction = args.selectAction === "true";
-        const changeActorId = args.variableIdActor > 0 ? $gameVariables.value(args.variableIdActor) : args.constActorId;
-        const variableIdState = $gameVariables.value(args.variableIdState);
+        const changeActorId = Number(args.variableIdActor > 0 ? $gameVariables.value(args.variableIdActor) : args.constActorId);
+        const variableIdState = Number($gameVariables.value(args.variableIdState));
         if (changeActorId > 0) {
             if (selectAction) {
                 $gameActors.actor(changeActorId).addState(variableIdState);
@@ -607,8 +607,8 @@
 
     PluginManager.registerCommand(pluginName, "changeSkill", function (args) {
         const selectAction = args.selectAction === "true";
-        const changeActorId = args.variableIdActor > 0 ? $gameVariables.value(args.variableIdActor) : args.constActorId;
-        const variableIdSkill = args.variableIdSkill > 0 ? $gameVariables.value(args.variableIdSkill) : args.constSkillId;
+        const changeActorId = Number(args.variableIdActor > 0 ? $gameVariables.value(args.variableIdActor) : args.constActorId);
+        const variableIdSkill = Number(args.variableIdSkill > 0 ? $gameVariables.value(args.variableIdSkill) : args.constSkillId);
         if (changeActorId > 0) {
             if (selectAction) {
                 $gameActors.actor(changeActorId).learnSkill(variableIdSkill);
@@ -619,10 +619,10 @@
     });
 
     PluginManager.registerCommand(pluginName, "changeEquip", function (args) {
-        const changeActorId = args.variableIdActor > 0 ? $gameVariables.value(args.variableIdActor) : args.constActorId;
-        const changeWeaponId = args.variableIdWeapon > 0 ? $gameVariables.value(args.variableIdWeapon) : args.constWeaponId;
-        const changeArmorId = args.variableIdArmor > 0 ? $gameVariables.value(args.variableIdArmor) : args.constArmorId;
-        const changeEquipId = changeArmorId > 0 ? changeArmorId : changeWeaponId;
+        const changeActorId = Number(args.variableIdActor > 0 ? $gameVariables.value(args.variableIdActor) : args.constActorId);
+        const changeWeaponId = Number(args.variableIdWeapon > 0 ? $gameVariables.value(args.variableIdWeapon) : args.constWeaponId);
+        const changeArmorId = Number(args.variableIdArmor > 0 ? $gameVariables.value(args.variableIdArmor) : args.constArmorId);
+        const changeEquipId = Number(changeArmorId > 0 ? changeArmorId : changeWeaponId);
         const equipType = changeArmorId > 0 ? "Armor" : "Weapon";
         const autoGetTypeId = args.constEquipTypeId === '0';
         let changeEquipTypeId = 0;
@@ -641,16 +641,16 @@
     });
 
     PluginManager.registerCommand(pluginName, "changeName", function (args) {
-        const changeActorId = args.variableIdActor > 0 ? $gameVariables.value(args.variableIdActor) : args.constActorId;
-        const changeName = args.variableIdName > 0 ? $gameVariables.value(args.variableIdName) : args.constNameId;
+        const changeActorId = Number(args.variableIdActor > 0 ? $gameVariables.value(args.variableIdActor) : args.constActorId);
+        const changeName = Number(args.variableIdName > 0 ? $gameVariables.value(args.variableIdName) : args.constNameId);
         if (changeActorId > 0) {
             $gameActors.actor(changeActorId).setName(changeName);
         }
     });
 
     PluginManager.registerCommand(pluginName, "changeClass", function (args) {
-        const changeActorId = args.variableIdActor > 0 ? $gameVariables.value(args.variableIdActor) : args.constActorId;
-        const changeClassId = args.variableIdClass > 0 ? $gameVariables.value(args.variableIdClass) : args.constClassId;
+        const changeActorId = Number(args.variableIdActor > 0 ? $gameVariables.value(args.variableIdActor) : args.constActorId);
+        const changeClassId = Number(args.variableIdClass > 0 ? $gameVariables.value(args.variableIdClass) : args.constClassId);
         const holdLevel = args.holdLevel === "true";
         if (changeActorId > 0 && changeClassId > 0) {
             $gameActors.actor(changeActorId).changeClass(changeClassId, holdLevel);
@@ -658,24 +658,24 @@
     });
 
     PluginManager.registerCommand(pluginName, "changeNickname", function (args) {
-        const changeActorId = args.variableIdActor > 0 ? $gameVariables.value(args.variableIdActor) : args.constActorId;
-        const changeNickname = args.variableIdNickname > 0 ? $gameVariables.value(args.variableIdNickname) : args.constNicknameId;
+        const changeActorId = Number(args.variableIdActor > 0 ? $gameVariables.value(args.variableIdActor) : args.constActorId);
+        const changeNickname = Number(args.variableIdNickname > 0 ? $gameVariables.value(args.variableIdNickname) : args.constNicknameId);
         if (changeActorId > 0) {
             $gameActors.actor(changeActorId).setNickname(changeNickname);
         }
     });
 
     PluginManager.registerCommand(pluginName, "changeProfile", function (args) {
-        const changeActorId = args.variableIdActor > 0 ? $gameVariables.value(args.variableIdActor) : args.constActorId;
-        const changeProfile = args.variableIdProfile > 0 ? $gameVariables.value(args.variableIdProfile) : args.constProfileId;
+        const changeActorId = Number(args.variableIdActor > 0 ? $gameVariables.value(args.variableIdActor) : args.constActorId);
+        const changeProfile = Number(args.variableIdProfile > 0 ? $gameVariables.value(args.variableIdProfile) : args.constProfileId);
         if (changeActorId > 0) {
             $gameActors.actor(changeActorId).setProfile(changeProfile);
         }
     });
 
     PluginManager.registerCommand(pluginName, "requestAnimation", function (args) {
-        const eventId = args.variableIdEvent > 0 ? $gameVariables.value(args.variableIdEvent) : args.constEventId;
-        const animationId = args.variableIdAnimation > 0 ? $gameVariables.value(args.variableIdAnimation) : args.variableIdAnimation;
+        const eventId = Number(args.variableIdEvent > 0 ? $gameVariables.value(args.variableIdEvent) : args.constEventId);
+        const animationId = Number(args.variableIdAnimation > 0 ? $gameVariables.value(args.variableIdAnimation) : args.variableIdAnimation);
         const wait = args.wait === "true";
         $gameTemp.requestAnimation([this.character(eventId)], animationId);
         if (wait) {
@@ -684,8 +684,8 @@
     });
 
     PluginManager.registerCommand(pluginName, "requestBalloon", function (args) {
-        const eventId = args.variableIdEvent > 0 ? $gameVariables.value(args.variableIdEvent) : args.constEventId;
-        const balloonId = args.variableIdBalloon > 0 ? $gameVariables.value(args.variableIdBalloon) : args.variableIdBalloon;
+        const eventId = Number(args.variableIdEvent > 0 ? $gameVariables.value(args.variableIdEvent) : args.constEventId);
+        const balloonId = Number(args.variableIdBalloon > 0 ? $gameVariables.value(args.variableIdBalloon) : args.variableIdBalloon);
         const wait = args.wait === "true";
         $gameTemp.requestBalloon(this.character(eventId), balloonId);
         if (wait) {
@@ -694,8 +694,8 @@
     });
 
     PluginManager.registerCommand(pluginName, "changeNameScene", function (args) {
-        const changeActorId = args.variableIdActor > 0 ? $gameVariables.value(args.variableIdActor) : args.constActorId;
-        const maxLength = args.variableIdmaxLength > 0 ? $gameVariables.value(args.variableIdmaxLength) : args.maxLength;
+        const changeActorId = Number(args.variableIdActor > 0 ? $gameVariables.value(args.variableIdActor) : args.constActorId);
+        const maxLength = Number(args.variableIdmaxLength > 0 ? $gameVariables.value(args.variableIdmaxLength) : args.maxLength);
         if (changeActorId > 0 && maxLength > 0) {
             SceneManager.push(Scene_Name);
             SceneManager.prepareNextScene(changeActorId, maxLength);
