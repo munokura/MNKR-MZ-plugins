@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_ChangeMenuSe.js
- *   Ver.0.0.1
+ *   Ver.0.0.2
  * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -99,9 +99,8 @@
     };
 
     const _Window_Selectable_processCancel = Window_Selectable.prototype.processCancel;
-    Window_Command.prototype.processCancel = function () {
-        const isCommandWindow = SceneManager._scene._commandWindow ? SceneManager._scene._commandWindow.active : false;
-        if (isCommandWindow && setUpCloseMenuSe) {
+    Window_MenuCommand.prototype.processCancel = function () {
+        if (setUpCloseMenuSe) {
             AudioManager.playSe(param.closeMenuSe);
             this.updateInputData();
             this.deactivate();
