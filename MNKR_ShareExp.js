@@ -24,8 +24,6 @@
  *   https://licenses.opensource.jp/MIT/MIT.html
  *   作者に無断で改変、再配布が可能で、
  *   利用形態（商用、18禁利用等）についても制限はありません。
- *
- *
  */
 
 (() => {
@@ -34,8 +32,8 @@
   const _BattleManager_makeRewards = BattleManager.makeRewards;
   BattleManager.makeRewards = function () {
     _BattleManager_makeRewards.call(this);
-    const getMembrs = $gameParty.aliveMembers().length;
-    this._rewards.exp = Math.ceil(this._rewards.exp / getMembrs);
+    const getMembers = $gameParty.aliveMembers().length;
+    this._rewards.exp = Math.ceil(this._rewards.exp / getMembers);
   };
 
 })();
