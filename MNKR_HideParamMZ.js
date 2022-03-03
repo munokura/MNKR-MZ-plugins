@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_HideParamMZ.js
- *   Ver.0.1.1
+ *   Ver.0.1.2
  * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -137,12 +137,6 @@
       _Sprite_Gauge_redraw.call(this);
     }
   };
-
-  const _Window_StatusParams_drawAllParams = Window_StatusParams.prototype.drawAllParams;
-  Window_StatusParams.prototype.drawAllParams = function () {
-    console.log('drawAllParams');
-    _Window_StatusParams_drawAllParams.call(this);
-  }
 
   const _Window_StatusParams_drawAllItems = Window_StatusParams.prototype.drawAllItems;
   Window_StatusParams.prototype.drawAllItems = function () {
