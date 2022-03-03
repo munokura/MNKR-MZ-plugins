@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_HideParamMZ.js
- *   Ver.0.1.0
+ *   Ver.0.1.1
  * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -115,10 +115,7 @@
   PRM_displayParam.push(parameters['mdf'] === 'true');
   PRM_displayParam.push(parameters['agi'] === 'true');
   PRM_displayParam.push(parameters['luk'] === 'true');
-
   const hasHideParam = PRM_displayParam.some((element) => element === false);
-
-  let statusLineY = 0;
 
   const _Window_StatusBase_drawActorLevel = Window_StatusBase.prototype.drawActorLevel;
   Window_StatusBase.prototype.drawActorLevel = function (actor, x, y) {
@@ -141,23 +138,36 @@
     }
   };
 
-  const _Window_StatusParams_drawItem = Window_StatusParams.prototype.drawItem;
-  Window_StatusParams.prototype.drawItem = function (index) {
+  const _Window_StatusParams_drawAllParams = Window_StatusParams.prototype.drawAllParams;
+  Window_StatusParams.prototype.drawAllParams = function () {
+    console.log('drawAllParams');
+    _Window_StatusParams_drawAllParams.call(this);
+  }
+
+  const _Window_StatusParams_drawAllItems = Window_StatusParams.prototype.drawAllItems;
+  Window_StatusParams.prototype.drawAllItems = function () {
     if (hasHideParam) {
-      statusLineY = index === 0 ? 0 : statusLineY;
-      const paramId = index + 2;
-      if (PRM_displayParam[index]) {
-        const rect = this.itemLineRect(statusLineY);
-        statusLineY++;
-        const name = TextManager.param(paramId);
-        const value = this._actor.param(paramId);
-        this.changeTextColor(ColorManager.systemColor());
-        this.drawText(name, rect.x, rect.y, 160);
-        this.resetTextColor();
-        this.drawText(value, rect.x + 160, rect.y, 60, "right");
+      const topIndex = this.topIndex();
+      let statusLineY = 0;
+      for (let i = 0; i < this.maxVisibleItems(); i++) {
+        const index = topIndex + i;
+        if (index < this.maxItems()) {
+          this.drawItemBackground(index);
+          const paramId = index + 2;
+          if (PRM_displayParam[index]) {
+            const rect = this.itemLineRect(statusLineY);
+            statusLineY++;
+            const name = TextManager.param(paramId);
+            const value = this._actor.param(paramId);
+            this.changeTextColor(ColorManager.systemColor());
+            this.drawText(name, rect.x, rect.y, 160);
+            this.resetTextColor();
+            this.drawText(value, rect.x + 160, rect.y, 60, "right");
+          }
+        }
       }
     } else {
-      _Window_StatusParams_drawItem.call(this, index);
+      _Window_StatusParams_drawAllItems.call(this);
     }
   };
 
@@ -166,7 +176,6 @@
     if (hasHideParam) {
       let equipLineY = 0;
       for (let i = 0; i < 6; i++) {
-        equipLineY = i === 0 ? 0 : equipLineY;
         if (PRM_displayParam[i]) {
           equipLineY++;
           const x = this.itemPadding();
