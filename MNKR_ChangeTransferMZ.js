@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_ChangeTransferMZ.js
- *   Ver.0.0.1
+ *   Ver.0.0.2
  * Copyright (c) 2022 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -71,9 +71,12 @@
     const PRM_Green = Number(PRM_fadeColor.green);
     const PRM_Blue = Number(PRM_fadeColor.blue);
 
+    let MNKR_inTransFadeIn = false;
+    let MNKR_inTransfer = false;
+
     const _Game_Interpreter_command201 = Game_Interpreter.prototype.command201;
     Game_Interpreter.prototype.command201 = function (params) {
-        $gameTemp.MNKR_inTransferFade = true;
+        MNKR_inTransfer = true;
         return _Game_Interpreter_command201.call(this, params);
     };
 
@@ -104,6 +107,7 @@
                 case 0:
                 case 1:
                     this.startFadeIn(fadeDuration, fadeType === 1);
+                    MNKR_inTransFadeIn = true;
                     break;
             }
         } else {
@@ -111,19 +115,22 @@
         }
     };
 
-    const _Scene_Base_startFadeIn = Scene_Base.prototype.startFadeIn;
-    Scene_Map.prototype.startFadeIn = function (duration, white) {
-        _Scene_Base_startFadeIn.call(this, duration, white);
-        $gameTemp.MNKR_inTransferFade = this._fadeDuration === 0 ? false : $gameTemp.MNKR_inTransferFade;
-    };
-
     const _Scene_Map_updateColorFilter = Scene_Base.prototype.updateColorFilter;
     Scene_Map.prototype.updateColorFilter = function () {
-        if ($gameTemp.MNKR_inTransferFade && PRM_Red > -1) {
+        if (MNKR_inTransfer && PRM_Red > -1) {
             const blendColor = [PRM_Red, PRM_Green, PRM_Blue, this._fadeOpacity];
             this._colorFilter.setBlendColor(blendColor);
         } else {
             _Scene_Map_updateColorFilter.call(this);
+        }
+    };
+
+    const _Scene_Base_updateFade = Scene_Base.prototype.updateFade;
+    Scene_Base.prototype.updateFade = function () {
+        _Scene_Base_updateFade.call(this);
+        if (MNKR_inTransfer && MNKR_inTransFadeIn && this._fadeDuration === 0) {
+            MNKR_inTransFadeIn = false;
+            MNKR_inTransfer = false;
         }
     };
 
