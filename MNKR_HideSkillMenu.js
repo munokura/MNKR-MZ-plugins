@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_HideSkillMenu.js
- *   Ver.0.0.1
+ *   Ver.0.0.2
  * Copyright (c) 2022 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -19,6 +19,8 @@
  * メモ欄に下記タグを入れたスキルは一覧に表示されなくなります。
  * <MNKR_HideSkillMenu>
  * 
+ * 戦闘中のスキル一覧には表示されます。
+ * 
  *
  * 利用規約:
  *   MITライセンスです。
@@ -35,6 +37,10 @@
     if (item.meta.MNKR_HideSkillMenu) {
       return false;
     }
+    return _Window_SkillList_includes.call(this, item);
+  };
+
+  Window_BattleSkill.prototype.includes = function (item) {
     return _Window_SkillList_includes.call(this, item);
   };
 
