@@ -11,7 +11,7 @@
 /*:
  * @target MZ MV
  * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_HideSkill.js
- * @plugindesc マップでのスキル一覧に表示しないスキルを指定できます。
+ * @plugindesc スキル一覧に表示しないスキルを指定できます。
  * @author munokura
  *
  * @help
