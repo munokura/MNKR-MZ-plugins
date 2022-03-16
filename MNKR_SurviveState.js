@@ -2,7 +2,7 @@
  * --------------------------------------------------
  * MNKR_SurviveState.js
  *   Ver.0.0.1
- * Copyright (c) 2021 Munokura
+ * Copyright (c) 2022 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
  * --------------------------------------------------
