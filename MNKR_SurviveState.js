@@ -11,13 +11,13 @@
 /*:
  * @target MZ MV
  * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_SurviveState.js
- * @plugindesc ふんばりステートを作成できます。
+ * @plugindesc くいしばりステートを作成できます。
  * @author munokura
  *
  * @help
- * ふんばりステートを作成できます。
+ * くいしばりステートを作成できます。
  * 
- * -- ふんばりステートとは --
+ * -- くいしばりステートとは --
  * 攻撃を受け戦闘不能になる場合に、一度だけHPを1残すステートです。
  * 一度、使用するとステートは解除されます。
  * 他の設定はデータベースのステートの設定に従います。
@@ -33,8 +33,8 @@
  * 
  * 
  * @param surviveStateId
- * @text ふんばりステート
- * @desc ふんばりステートとして扱うステートを指定します。
+ * @text くいしばりステート
+ * @desc くいしばりステートとして扱うステートを指定します。
  * @type state
  * @default 0
  *
