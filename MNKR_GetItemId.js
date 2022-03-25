@@ -50,8 +50,8 @@
     const _Scene_Item_onItemOk = Scene_Item.prototype.onItemOk;
     Scene_Item.prototype.onItemOk = function () {
         _Scene_Item_onItemOk.call(this);
-        const MNKR_GetItemId = this.item().meta.MNKR_GetItemId;
-        if (MNKR_GetItemId) {
+        const getItemId = this.item().meta.MNKR_GetItemId;
+        if (getItemId) {
             const usedItemId = this.item().id;
             $gameVariables.setValue(PRM_itemIdVariables, usedItemId);
         }
