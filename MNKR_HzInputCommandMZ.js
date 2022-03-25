@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_HzInputCommandMZ.js
- *   Ver.0.0.2
+ *   Ver.0.0.3
  * Copyright (c) 2022 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -129,9 +129,9 @@ MITライセンスの下で公開されています。
  * @off その時点で失敗
  *
  * @arg switch_no
- * @text 結果スイッチID(必須)
- * @desc 入力結果をセットするスイッチ番号を指定します。「なし」の場合、1のスイッチを操作します。
- * @default 1
+ * @text 結果スイッチID
+ * @desc 入力結果をセットするスイッチ番号を指定
+ * @default 0
  * @type switch
  *
  * @arg command_input
@@ -155,7 +155,7 @@ MITライセンスの下で公開されています。
  *
  * @arg command_align
  * @text コマンド表示基準
- * @desc コマンドの表示の基準を指定します。
+ * @desc コマンドの表示の基準を指定
  * @type select
  * @option 中央
  * @value center
@@ -180,7 +180,7 @@ MITライセンスの下で公開されています。
         // var x = args[3] != null ? Number(args[3]) : SceneManager._screenWidth/2;
         // var y = args[4] != null ? Number(args[4]) : SceneManager._screenHeight/2;
         var mode = args[0] === "true" ? 1 : 2;
-        var switchId = args[1] === "0" ? 1 : Number(args[1]);
+        var switchId = Number(args[1]);
         var x = Number(args[3]) < 0 ? Graphics.width / 2 : Number(args[3]);
         var y = Number(args[4]) < 0 ? Graphics.height / 2 : Number(args[4]);
         var align = args[5] || "center";
