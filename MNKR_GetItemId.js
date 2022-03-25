@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_GetItemId.js
- *   Ver.0.0.1
+ *   Ver.1.0.0
  * Copyright (c) 2022 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -16,6 +16,7 @@
  *
  * @help
  * アイテムを使用した時、アイテムIDを指定変数に代入します。
+ * タグ指定していないアイテムを使用すると、0を代入します。
  * 
  * イベントの出現条件・条件分岐に使用することで、
  * アイテムを使用すると開始するイベント等が作成できます。
@@ -54,6 +55,8 @@
         if (getItemId) {
             const usedItemId = this.item().id;
             $gameVariables.setValue(PRM_itemIdVariables, usedItemId);
+        } else {
+            $gameVariables.setValue(PRM_itemIdVariables, 0);
         }
     };
 
