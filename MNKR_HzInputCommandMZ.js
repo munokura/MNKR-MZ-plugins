@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_HzInputCommand.js
+ * MNKR_HzInputCommandMZ.js
  *   Ver.0.0.1
  * Copyright (c) 2022 Munokura
  * This software is released under the MIT license.
@@ -43,7 +43,7 @@ MITライセンスの下で公開されています。
 
 /*:
  * @target MZ
- * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_HzInputCommand.js
+ * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_HzInputCommandMZ.js
  * @plugindesc 方向キーとボタンでのコマンド入力を実行します。
  * @author hiz (改変 munokura)
  * 
