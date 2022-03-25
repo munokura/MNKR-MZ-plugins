@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_HzInputCommandMZ.js
- *   Ver.0.0.1
+ *   Ver.0.0.2
  * Copyright (c) 2022 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -181,8 +181,8 @@ MITライセンスの下で公開されています。
         // var y = args[4] != null ? Number(args[4]) : SceneManager._screenHeight/2;
         var mode = args[0] === "true" ? 1 : 2;
         var switchId = args[1] === "0" ? 1 : Number(args[1]);
-        var x = args[3] > 0 ? Number(args[3]) : Graphics.width / 2;
-        var y = args[4] > 0 ? Number(args[4]) : Graphics.height / 2;
+        var x = Number(args[3]) < 0 ? Graphics.width / 2 : Number(args[3]);
+        var y = Number(args[4]) < 0 ? Graphics.height / 2 : Number(args[4]);
         var align = args[5] || "center";
         // ランダムコマンドの処理
         var com = args[2];
