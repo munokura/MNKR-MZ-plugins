@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_AddTitleLink.js
- *   Ver.0.0.5
+ *   Ver.0.0.6
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -27,7 +27,7 @@
  *   利用形態（商用、18禁利用等）についても制限はありません。
  * 
  *
- * @param Command Text
+ * @param commandText
  * @text コマンド表示名
  * @desc タイトルメニューに表示するコマンド名
  * @default サイトリンク
@@ -44,15 +44,13 @@
 
     const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
     const parameters = PluginManager.parameters(pluginName);
-    const commandText = String(parameters['Command Text'] || "");
-    const url = String(parameters['url'] || "");
+    const PRM_commandText = parameters['commandText'] || "サイトリンク";
+    const PRM_url = parameters['url'] || "https://tkool.jp/mz/";
 
     const _Window_TitleCommand_prototype_makeCommandList = Window_TitleCommand.prototype.makeCommandList;
     Window_TitleCommand.prototype.makeCommandList = function () {
         _Window_TitleCommand_prototype_makeCommandList.call(this);
-        if (commandText) {
-            this.addCommand(commandText, "MNKR_urlCommandName");
-        }
+        this.addCommand(PRM_commandText, "MNKR_urlCommandName");
     };
 
     const _Scene_Title_prototype_createCommandWindow = Scene_Title.prototype.createCommandWindow;
@@ -62,7 +60,7 @@
     };
 
     Scene_Title.prototype.MNKR_urlCommand = function () {
-        window.open(url);
+        window.open(PRM_url);
         this._commandWindow.activate();
     };
 
