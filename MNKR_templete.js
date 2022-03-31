@@ -2,7 +2,7 @@
  * --------------------------------------------------
  * MNKR_templete.js
  *   Ver.0.0.1
- * Copyright (c) 2021 Munokura
+ * Copyright (c) 2022 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
  * --------------------------------------------------
@@ -246,7 +246,26 @@
   const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
   const parameters = PluginManager.parameters(pluginName);
   const number = Number(parameters['Number'] || 0);
-  const String = String(parameters['String'] || "");
   const boolean = String(parameters['boolean']) === 'true';
+
+  // MZプラグインコマンド 1
+  PluginManager.registerCommand(pluginName, "コマンド名", args => {
+    // 処理
+  });
+
+  // MZプラグインコマンド 2
+  PluginManager.registerCommand(pluginName, "コマンド名", function (args) {
+    // 処理
+  });
+
+  // MVプラグインコマンド
+  const _Game_Interpreter_pluginCommand = Game_Interpreter.prototype.pluginCommand;
+  Game_Interpreter.prototype.pluginCommand = function (command, args) {
+    _Game_Interpreter_pluginCommand.call(this, command, args);
+
+    if (command === pluginName) {
+      //処理
+    }
+  };
 
 })();
