@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_AddSeBattleRegenerateMZ.js
- *   Ver.0.0.2
+ *   Ver.0.0.3
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -29,14 +29,12 @@
  * @param slipDamageSe
  * @text スリップダメージSE
  * @desc スリップダメージSEのパラメータ
- * 初期値: {"name":"Damage3","volume":"90","pitch":"100","pan":"0"}
  * @default {"name":"Damage3","volume":"90","pitch":"100","pan":"0"}
  * @type struct<sePram>
  * 
  * @param regenerateHpSe
  * @text HPリジェネSE
  * @desc HPリジェネSEのパラメータ
- * 初期値: {"name":"Heal3","volume":"90","pitch":"100","pan":"0"}
  * @default {"name":"Heal3","volume":"90","pitch":"100","pan":"0"}
  * @type struct<sePram>
  */
@@ -79,28 +77,28 @@
 
   const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
   const parameters = PluginManager.parameters(pluginName);
-  const slipDamageSe = JSON.parse(parameters['slipDamageSe'] || '{}');
-  const regenerateHpSe = JSON.parse(parameters['regenerateHpSe'] || '{}');
+  const PRM_slipDamageSe = JSON.parse(parameters['slipDamageSe'] || '{}');
+  const PRM_regenerateHpSe = JSON.parse(parameters['regenerateHpSe'] || '{}');
 
-  const setUpSlipDamageSe = (slipDamageSe.name !== '');
-  const setUpRegenerateHpSe = (regenerateHpSe.name !== '');
+  const setUpSlipDamageSe = (PRM_slipDamageSe.name !== '');
+  const setUpRegenerateHpSe = (PRM_regenerateHpSe.name !== '');
 
   const _Game_Battler_regenerateAll = Game_Battler.prototype.regenerateAll;
   Game_Battler.prototype.regenerateAll = function () {
     if (this.isAlive()) {
       const hp = this.hp;
       _Game_Battler_regenerateAll.call(this);
-      this.regenerateHpSe(this.hp - hp);
+      regenerateHpSe(this.hp - hp);
     }
   };
 
-  Game_Battler.prototype.regenerateHpSe = function (value) {
+  function regenerateHpSe(value) {
     if (value !== 0) {
       if (value > 0 && setUpRegenerateHpSe) {
-        AudioManager.playSe(regenerateHpSe);
+        AudioManager.playSe(PRM_regenerateHpSe);
       }
       if (value < 0 && setUpSlipDamageSe) {
-        AudioManager.playSe(slipDamageSe);
+        AudioManager.playSe(PRM_slipDamageSe);
       }
     }
   };
