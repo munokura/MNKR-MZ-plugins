@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_ChangeCommandHeightMZ.js
- *   Ver.0.0.2
+ *   Ver.0.0.3
  * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -91,123 +91,122 @@
 
     const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
     const parameters = PluginManager.parameters(pluginName);
-    const param = {};
-    param.titleHeight = Number(parameters['titleHeight'] || 48);
-    param.optionsHeight = Number(parameters['optionsHeight'] || 48);
-    param.gameEndHeight = Number(parameters['gameEndHeight'] || 48);
-    param.menuCommandHeight = Number(parameters['menuCommandHeight'] || 48);
-    param.itemListHeight = Number(parameters['itemListHeight'] || 48);
-    param.skillListHeight = Number(parameters['skillListHeight'] || 48);
-    param.equipCommandHeight = Number(parameters['equipCommandHeight'] || 48);
-    param.shopCommandHeight = Number(parameters['shopCommandHeight'] || 48);
-    param.battleCommandHeight = Number(parameters['battleCommandHeight'] || 48);
-    param.choiceListHeight = Number(parameters['choiceListHeight'] || 48);
+    const PRM_titleHeight = Number(parameters['titleHeight'] || 48);
+    const PRM_optionsHeight = Number(parameters['optionsHeight'] || 48);
+    const PRM_gameEndHeight = Number(parameters['gameEndHeight'] || 48);
+    const PRM_menuCommandHeight = Number(parameters['menuCommandHeight'] || 48);
+    const PRM_itemListHeight = Number(parameters['itemListHeight'] || 48);
+    const PRM_skillListHeight = Number(parameters['skillListHeight'] || 48);
+    const PRM_equipCommandHeight = Number(parameters['equipCommandHeight'] || 48);
+    const PRM_shopCommandHeight = Number(parameters['shopCommandHeight'] || 48);
+    const PRM_battleCommandHeight = Number(parameters['battleCommandHeight'] || 48);
+    const PRM_choiceListHeight = Number(parameters['choiceListHeight'] || 48);
 
     // タイトル
-    if (param.titleHeight > 0) {
+    if (PRM_titleHeight > 0) {
         Scene_Title.prototype.calcWindowHeight = function (numLines) {
-            return numLines * param.titleHeight + $gameSystem.windowPadding() * 2;
+            return numLines * PRM_titleHeight + $gameSystem.windowPadding() * 2;
         };
 
         Window_TitleCommand.prototype.itemHeight = function () {
-            return param.titleHeight;
+            return PRM_titleHeight;
         };
     }
 
     // オプション
-    if (param.optionsHeight > 0) {
+    if (PRM_optionsHeight > 0) {
         Scene_Options.prototype.calcWindowHeight = function (numLines) {
-            return numLines * param.optionsHeight + $gameSystem.windowPadding() * 2;
+            return numLines * PRM_optionsHeight + $gameSystem.windowPadding() * 2;
         };
 
         Window_Options.prototype.itemHeight = function () {
-            return param.optionsHeight;
+            return PRM_optionsHeight;
         };
     }
 
     // ゲーム終了
-    if (param.gameEndHeight > 0) {
+    if (PRM_gameEndHeight > 0) {
         Scene_GameEnd.prototype.calcWindowHeight = function (numLines) {
-            return numLines * param.optionsHeight + $gameSystem.windowPadding() * 2;
+            return numLines * PRM_optionsHeight + $gameSystem.windowPadding() * 2;
         };
 
         Window_GameEnd.prototype.itemHeight = function () {
-            return param.optionsHeight;
+            return PRM_optionsHeight;
         };
     }
 
     // メニュー
-    if (param.menuCommandHeight > 0) {
+    if (PRM_menuCommandHeight > 0) {
         Window_MenuCommand.prototype.itemHeight = function () {
-            return param.menuCommandHeight;
+            return PRM_menuCommandHeight;
         };
     }
 
     // アイテム
-    if (param.itemListHeight > 0) {
+    if (PRM_itemListHeight > 0) {
         Scene_Item.prototype.categoryWindowRect = function () {
             const wx = 0;
             const wy = this.mainAreaTop();
             const ww = Graphics.boxWidth;
-            const wh = 1 * param.itemListHeight + $gameSystem.windowPadding() * 2;
-            // const wh = 1 * param.itemListHeight + $gameSystem.windowPadding() * 2 + 8;
+            const wh = 1 * PRM_itemListHeight + $gameSystem.windowPadding() * 2;
+            // const wh = 1 * itemListHeight + $gameSystem.windowPadding() * 2 + 8;
             // const wh = this.calcWindowHeight(1, true);
             return new Rectangle(wx, wy, ww, wh);
         };
 
         Window_ItemList.prototype.itemHeight = function () {
-            return param.itemListHeight;
+            return PRM_itemListHeight;
         };
 
         Window_ItemCategory.prototype.itemHeight = function () {
-            return param.itemListHeight;
+            return PRM_itemListHeight;
         };
     }
 
     // スキル
-    if (param.skillListHeight > 0) {
+    if (PRM_skillListHeight > 0) {
         Window_SkillList.prototype.itemHeight = function () {
-            return param.skillListHeight;
+            return PRM_skillListHeight;
         };
 
         Window_SkillStatus.prototype.itemHeight = function () {
-            return param.skillListHeight;
+            return PRM_skillListHeight;
         };
 
         Window_SkillType.prototype.itemHeight = function () {
-            return param.skillListHeight;
+            return PRM_skillListHeight;
         };
     }
 
     // 装備
-    if (param.equipCommandHeight > 0) {
+    if (PRM_equipCommandHeight > 0) {
         Scene_Equip.prototype.commandWindowRect = function () {
             const wx = this.statusWidth();
             const wy = this.mainAreaTop();
             const ww = Graphics.boxWidth - this.statusWidth();
-            const wh = 1 * param.equipCommandHeight + $gameSystem.windowPadding() * 2 + 8;
+            const wh = 1 * PRM_equipCommandHeight + $gameSystem.windowPadding() * 2 + 8;
             // const wh = this.calcWindowHeight(1, true);
             return new Rectangle(wx, wy, ww, wh);
         };
 
         Window_EquipCommand.prototype.lineHeight = function () {
-            return param.equipCommandHeight;
+            return PRM_equipCommandHeight;
         };
 
         Window_EquipSlot.prototype.lineHeight = function () {
-            return param.equipCommandHeight;
+            return PRM_equipCommandHeight;
         };
 
         Window_EquipItem.prototype.lineHeight = function () {
-            return param.equipCommandHeight;
+            return PRM_equipCommandHeight;
         };
     }
 
     //ショップ
-    if (param.shopCommandHeight > 0) {
+    if (PRM_shopCommandHeight > 0) {
         Scene_Shop.prototype.goldWindowRect = function () {
             const ww = this.mainCommandWidth();
-            const wh = 1 * param.shopCommandHeight + $gameSystem.windowPadding() * 2 + 8;
+            const wh = 1 * PRM_shopCommandHeight + $gameSystem.windowPadding() * 2 + 8;
             // const wh = this.calcWindowHeight(1, true);
             const wx = Graphics.boxWidth - ww;
             const wy = this.mainAreaTop();
@@ -218,7 +217,7 @@
             const wx = 0;
             const wy = this.mainAreaTop();
             const ww = this._goldWindow.x;
-            const wh = 1 * param.shopCommandHeight + $gameSystem.windowPadding() * 2 + 8;
+            const wh = 1 * PRM_shopCommandHeight + $gameSystem.windowPadding() * 2 + 8;
             // const wh = this.calcWindowHeight(1, true);
             return new Rectangle(wx, wy, ww, wh);
         };
@@ -227,8 +226,8 @@
             const wx = 0;
             const wy = this._dummyWindow.y;
             const ww = Graphics.boxWidth;
-            const wh = 1 * param.shopCommandHeight + $gameSystem.windowPadding() * 2;
-            // const wh = 1 * param.shopCommandHeight + $gameSystem.windowPadding() * 2 + 8;
+            const wh = 1 * PRM_shopCommandHeight + $gameSystem.windowPadding() * 2;
+            // const wh = 1 * shopCommandHeight + $gameSystem.windowPadding() * 2 + 8;
             // const wh = this.calcWindowHeight(1, true);
             return new Rectangle(wx, wy, ww, wh);
         };
@@ -239,7 +238,7 @@
             if (isScene_Shop) {
                 const rect = this.itemLineRect(0);
                 const x = rect.x;
-                const y = rect.y + Math.round((param.shopCommandHeight - 36) / 2);
+                const y = rect.y + Math.round((PRM_shopCommandHeight - 36) / 2);
                 // const y = rect.y;
                 const width = rect.width;
                 this.contents.clear();
@@ -250,19 +249,19 @@
         };
 
         Window_ShopBuy.prototype.lineHeight = function () {
-            return param.shopCommandHeight;
+            return PRM_shopCommandHeight;
         };
 
         Window_ShopCommand.prototype.lineHeight = function () {
-            return param.shopCommandHeight;
+            return PRM_shopCommandHeight;
         };
     }
 
     // 戦闘
-    if (param.battleCommandHeight > 0) {
+    if (PRM_battleCommandHeight > 0) {
         Scene_Battle.prototype.partyCommandWindowRect = function () {
             const ww = 192;
-            const wh = 4 * param.shopCommandHeight + $gameSystem.windowPadding() * 2 + 8 * 4;
+            const wh = 4 * PRM_shopCommandHeight + $gameSystem.windowPadding() * 2 + 8 * 4;
             // const wh = this.windowAreaHeight();
             const wx = this.isRightInputMode() ? Graphics.boxWidth - ww : 0;
             const wy = Graphics.boxHeight - wh;
@@ -270,12 +269,12 @@
         };
 
         Window_PartyCommand.prototype.lineHeight = function () {
-            return param.battleCommandHeight;
+            return PRM_battleCommandHeight;
         };
 
         Scene_Battle.prototype.actorCommandWindowRect = function () {
             const ww = 192;
-            const wh = 4 * param.shopCommandHeight + $gameSystem.windowPadding() * 2 + 8 * 4;
+            const wh = 4 * PRM_shopCommandHeight + $gameSystem.windowPadding() * 2 + 8 * 4;
             // const wh = this.windowAreaHeight();
             const wx = this.isRightInputMode() ? Graphics.boxWidth - ww : 0;
             const wy = Graphics.boxHeight - wh;
@@ -283,26 +282,26 @@
         };
 
         Window_ActorCommand.prototype.lineHeight = function () {
-            return param.battleCommandHeight;
+            return PRM_battleCommandHeight;
         };
 
         Window_BattleEnemy.prototype.lineHeight = function () {
-            return param.battleCommandHeight;
+            return PRM_battleCommandHeight;
         };
 
         Window_BattleSkill.prototype.lineHeight = function () {
-            return param.battleCommandHeight;
+            return PRM_battleCommandHeight;
         };
 
         Window_BattleItem.prototype.lineHeight = function () {
-            return param.battleCommandHeight;
+            return PRM_battleCommandHeight;
         };
     }
 
     //選択肢・アイテム選択
-    if (param.choiceListHeight > 0) {
+    if (PRM_choiceListHeight > 0) {
         Window_ChoiceList.prototype.lineHeight = function () {
-            return param.choiceListHeight;
+            return PRM_choiceListHeight;
         };
     }
 
