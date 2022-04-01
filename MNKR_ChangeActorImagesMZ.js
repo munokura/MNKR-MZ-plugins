@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_ChangeActorImagesMZ.js
- *   Ver.0.0.1
+ *   Ver.0.0.2
  * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -36,7 +36,7 @@
  * @text アクターID変数
  * @desc 「アクターの画像変更」の対象になるアクターIDを入れる変数
  * @type variable
- * @default 0
+ * @default 1
  */
 
 (() => {
@@ -44,15 +44,16 @@
 
     const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
     const pluginParameters = PluginManager.parameters(pluginName);
-    const RaiseSwitch = Number(pluginParameters['raiseSwitch'] || 0);
-    const ActorIdVariableId = Number(pluginParameters['actorIdVariableId'] || 0);
+    const PRM_raiseSwitch = Number(pluginParameters['raiseSwitch'] || 0);
+    const PRM_actorIdVariableId = Number(pluginParameters['actorIdVariableId'] || 0);
 
     // Change Actor Images
     const _Game_Interpreter_command322 = Game_Interpreter.prototype.command322;
     Game_Interpreter.prototype.command322 = function (params) {
-        const raise = RaiseSwitch === 0 ? true : $gameSwitches.value(RaiseSwitch);
-        if (raise) {
-            const actor = $gameActors.actor($gameVariables.value(ActorIdVariableId));
+        const raise = PRM_raiseSwitch === 0 ? true : $gameSwitches.value(PRM_raiseSwitch);
+        const actorId = $gameVariables.value(PRM_actorIdVariableId);
+        if (raise && actorId > 0) {
+            const actor = $gameActors.actor(actorId);
             if (actor) {
                 actor.setCharacterImage(params[1], params[2]);
                 actor.setFaceImage(params[3], params[4]);
