@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_ChangeBackScreenColor.js
- *   Ver.0.0.1
+ *   Ver.0.0.2
  * Copyright (c) 2022 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -68,11 +68,6 @@
     Spriteset_Base.prototype.createBaseSprite = function () {
         _Spriteset_Base_createBaseSprite.call(this);
         this._blackScreen.setColor(PRM_Red, PRM_Green, PRM_Blue);
-    };
-
-    const _ScreenSprite_setColor = ScreenSprite.prototype.setColor;
-    Spriteset_Base.prototype.setColor = function (r, g, b) {
-        _ScreenSprite_setColor.call(this, r, g, b);
     };
 
 })();
