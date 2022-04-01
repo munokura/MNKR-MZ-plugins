@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_BattleStatusMaxColsMZ.js
- *   Ver.0.0.2
+ *   Ver.0.0.3
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -48,18 +48,18 @@
 
     const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
     const parameters = PluginManager.parameters(pluginName);
-    const maxCols = Number(parameters['maxCols'] || 1);
-    const gaugeWidth = Number(parameters['gaugeWidth'] || 576);
+    const PRM_maxCols = Number(parameters['maxCols'] || 1);
+    const PRM_gaugeWidth = Number(parameters['gaugeWidth'] || 576);
 
     Window_BattleStatus.prototype.maxCols = function () {
-        return maxCols;
+        return PRM_maxCols;
     };
 
     //戦闘シーンのゲージ幅のみ変更
     const _Sprite_Gauge_bitmapWidth = Sprite_Gauge.prototype.bitmapWidth;
     Sprite_Gauge.prototype.bitmapWidth = function () {
-        const isSceneMenu = SceneManager._scene.constructor.name;
-        return (['Scene_Battle'].includes(isSceneMenu)) ? gaugeWidth : _Sprite_Gauge_bitmapWidth.call(this);
+        const isSceneBattle = SceneManager._scene.constructor.name === 'Scene_Battle';
+        return isSceneBattle ? PRM_gaugeWidth : _Sprite_Gauge_bitmapWidth.call(this);
     };
 
 })();
