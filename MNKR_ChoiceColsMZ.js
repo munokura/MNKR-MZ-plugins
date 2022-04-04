@@ -50,22 +50,21 @@
 
   const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
   const parameters = PluginManager.parameters(pluginName);
-  const param = {};
-  param.choiceColsVariableId = Number(parameters['choiceColsVariableId'] || 0);
-  param.choiceYpositionVariableId = Number(parameters['choiceYpositionVariableId'] || 0);
+  const PRM_choiceColsVariableId = Number(parameters['choiceColsVariableId'] || 0);
+  const PRM_choiceYpositionVariableId = Number(parameters['choiceYpositionVariableId'] || 0);
 
-  const useCols = param.choiceColsVariableId > 0;
-  const useYpos = param.choiceYpositionVariableId > 0;
+  const useCols = PRM_choiceColsVariableId > 0;
+  const useYpos = PRM_choiceYpositionVariableId > 0;
 
   if (useCols) {
     Window_ChoiceList.prototype.maxCols = function () {
-      const choiceCols = $gameVariables.value(param.choiceColsVariableId);
+      const choiceCols = $gameVariables.value(PRM_choiceColsVariableId);
       return Math.max(choiceCols, 1);
     };
 
     const _Window_ChoiceList_windowWidth = Window_ChoiceList.prototype.windowWidth;
     Window_ChoiceList.prototype.windowWidth = function () {
-      const choiceCols = $gameVariables.value(param.choiceColsVariableId);
+      const choiceCols = $gameVariables.value(PRM_choiceColsVariableId);
       if (choiceCols > 1) {
         const width = (this.maxChoiceWidth() + this.colSpacing()) * choiceCols + this.padding * 2;
         return Math.min(width, Graphics.boxWidth);
@@ -75,7 +74,7 @@
 
     const _Window_ChoiceList_windowHeight = Window_ChoiceList.prototype.windowHeight;
     Window_ChoiceList.prototype.windowHeight = function () {
-      const choiceCols = $gameVariables.value(param.choiceColsVariableId);
+      const choiceCols = $gameVariables.value(PRM_choiceColsVariableId);
       if (choiceCols > 1) {
         const height = this.fittingHeight(Math.ceil(this.numVisibleRows() / choiceCols));
         return height;
@@ -88,7 +87,7 @@
     const _Window_ChoiceList_updatePlacement = Window_ChoiceList.prototype.updatePlacement;
     Window_ChoiceList.prototype.updatePlacement = function () {
       _Window_ChoiceList_updatePlacement.call(this);
-      const choiceY = $gameVariables.value(param.choiceYpositionVariableId);
+      const choiceY = $gameVariables.value(PRM_choiceYpositionVariableId);
       if (choiceY >= 0) {
         const maxY = Graphics.boxHeight - this.windowHeight();
         const fixChoiceY = choiceY > maxY ? maxY : choiceY;
