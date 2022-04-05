@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_ChangeMenuSe.js
- *   Ver.0.0.2
+ *   Ver.0.0.3
  * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -77,17 +77,16 @@
 
     const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
     const parameters = PluginManager.parameters(pluginName);
-    const param = {};
-    param.callMenuSe = JSON.parse(parameters['callMenuSe'] || '{}');
-    param.closeMenuSe = JSON.parse(parameters['closeMenuSe'] || '{}');
+    const PRM_callMenuSe = JSON.parse(parameters['callMenuSe'] || '{}');
+    const PRM_closeMenuSe = JSON.parse(parameters['closeMenuSe'] || '{}');
 
-    const setUpCallMenuSe = (param.callMenuSe.name !== '');
-    const setUpCloseMenuSe = (param.closeMenuSe.name !== '');
+    const hasCallMenuSe = PRM_callMenuSe.name !== '';
+    const hasCloseMenuSe = PRM_closeMenuSe.name !== '';
 
     const _Scene_Map_callMenu = Scene_Map.prototype.callMenu;
     Scene_Map.prototype.callMenu = function () {
-        if (setUpCallMenuSe) {
-            AudioManager.playSe(param.callMenuSe);
+        if (hasCallMenuSe) {
+            AudioManager.playSe(PRM_callMenuSe);
             SceneManager.push(Scene_Menu);
             Window_MenuCommand.initCommandPosition();
             $gameTemp.clearDestination();
@@ -100,8 +99,8 @@
 
     const _Window_Selectable_processCancel = Window_Selectable.prototype.processCancel;
     Window_MenuCommand.prototype.processCancel = function () {
-        if (setUpCloseMenuSe) {
-            AudioManager.playSe(param.closeMenuSe);
+        if (hasCloseMenuSe) {
+            AudioManager.playSe(PRM_closeMenuSe);
             this.updateInputData();
             this.deactivate();
             this.callCancelHandler();
