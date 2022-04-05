@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_EncounterEffect.js
- *   Ver.1.1.1
+ *   Ver.1.1.2
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -18,8 +18,9 @@
  * エンカウント時の演出を調整できます。
  * プラグインパラメーターで設定してください。
  * 
- * プラグインコマンドはありません。
- *
+ * エンカウントに関係する他のプラグインを併用する場合、
+ * このプラグインをプラグイン管理リストで上位に配置してください。
+ * 
  *
  * 利用規約:
  *   MITライセンスです。
@@ -28,7 +29,7 @@
  *   利用形態（商用、18禁利用等）についても制限はありません。
  * 
  *
- * @param Zoom Process
+ * @param zoomProcess
  * @text ズーム処理？
  * @type boolean
  * @on ズームする
@@ -37,7 +38,7 @@
  * ツクールデフォルト：する
  * @default false
  * 
- * @param Flash Process
+ * @param flashProcess
  * @text フラッシュ処理？
  * @type boolean
  * @on フラッシュする
@@ -46,7 +47,7 @@
  * ツクールデフォルト：する
  * @default false
  * 
- * @param Fade Out
+ * @param fadeOut
  * @text フェードアウト？
  * @type boolean
  * @on フェードアウトする
@@ -61,9 +62,9 @@
 
     const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
     const parameters = PluginManager.parameters(pluginName);
-    const zoomProcess = String(parameters['Zoom Process']) === 'true';
-    const flashProcess = String(parameters['Flash Process']) === 'true';
-    const fadeOut = String(parameters['Fade Out']) === 'true';
+    const PRM_zoomProcess = parameters['zoomProcess'] === 'true';
+    const PRM_flashProcess = parameters['flashProcess'] === 'true';
+    const PRM_fadeOut = parameters['fadeOut'] === 'true';
 
     Scene_Map.prototype.updateEncounterEffect = function () {
         if (this._encounterEffectDuration > 0) {
@@ -77,21 +78,21 @@
             if (n === 2) {
                 $gameScreen.setZoom(zoomX, zoomY, 1);
                 this.snapForBattleBackground();
-                if (flashProcess) {
+                if (PRM_flashProcess) {
                     this.startFlashForEncounter(speed / 2);
                 }
             }
-            if (zoomProcess) {
+            if (PRM_zoomProcess) {
                 $gameScreen.setZoom(zoomX, zoomY, q);
             }
             if (n === Math.floor(speed / 6)) {
-                if (flashProcess) {
+                if (PRM_flashProcess) {
                     this.startFlashForEncounter(speed / 2);
                 }
             }
             if (n === Math.floor(speed / 2)) {
                 BattleManager.playBattleBgm();
-                if (fadeOut) {
+                if (PRM_fadeOut) {
                     this.startFadeOut(this.fadeSpeed());
                 }
             }
