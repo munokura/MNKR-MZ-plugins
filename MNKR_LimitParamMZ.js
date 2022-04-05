@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_LimitParamMZ.js
- *   Ver.0.0.1
+ *   Ver.0.0.2
  * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -110,9 +110,11 @@
  *
  * @param lowerHp
  * @text 最大HP
- * @default 0
+ * @default 1
  * @desc 最大HPの下限値を指定します。
- * ツクールデフォルト : 0
+ * ツクールデフォルト : 1
+ * @type number
+ * @min 1
  * @parent lowerParam
  *
  * @param lowerMp
@@ -120,6 +122,7 @@
  * @default 0
  * @desc 最大MPの下限値を指定します。
  * ツクールデフォルト : 0
+ * @type number
  * @parent lowerParam
  *
  * @param lowerAtk
@@ -127,6 +130,7 @@
  * @default 0
  * @desc 攻撃力の下限値を指定します。
  * ツクールデフォルト : 0
+ * @type number
  * @parent lowerParam
  *
  * @param lowerDef
@@ -134,6 +138,7 @@
  * @default 0
  * @desc 防御力の下限値を指定します。
  * ツクールデフォルト : 0
+ * @type number
  * @parent lowerParam
  *
  * @param lowerMat
@@ -141,6 +146,7 @@
  * @default 0
  * @desc 魔法力の下限値を指定します。
  * ツクールデフォルト : 0
+ * @type number
  * @parent lowerParam
  *
  * @param lowerMdf
@@ -148,6 +154,7 @@
  * @default 0
  * @desc 魔法防御の下限値を指定します。
  * ツクールデフォルト : 0
+ * @type number
  * @parent lowerParam
  *
  * @param lowerAgi
@@ -155,6 +162,7 @@
  * @default 0
  * @desc 俊敏性の下限値を指定します。
  * ツクールデフォルト : 0
+ * @type number
  * @parent lowerParam
  *
  * @param lowerLuk
@@ -162,6 +170,7 @@
  * @default 0
  * @desc 運の下限値を指定します。
  * ツクールデフォルト : 0
+ * @type number
  * @parent lowerParam
  */
 
@@ -171,46 +180,51 @@
   const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
   const parameters = PluginManager.parameters(pluginName);
 
-  const upperHp = Math.ceil(Math.abs(parameters['upperHp'] || Infinity));
-  const upperMp = Math.ceil(Math.abs(parameters['upperMp'] || Infinity));
-  const upperAtk = Math.ceil(Math.abs(parameters['upperAtk'] || Infinity));
-  const upperDef = Math.ceil(Math.abs(parameters['upperDef'] || Infinity));
-  const upperMat = Math.ceil(Math.abs(parameters['upperMat'] || Infinity));
-  const upperMdf = Math.ceil(Math.abs(parameters['upperMdf'] || Infinity));
-  const upperAgi = Math.ceil(Math.abs(parameters['upperAgi'] || Infinity));
-  const upperLuk = Math.ceil(Math.abs(parameters['upperLuk'] || Infinity));
+  const PRM_upperHp = Math.ceil(Math.abs(parameters['upperHp'] || Infinity));
+  const PRM_upperMp = Math.ceil(Math.abs(parameters['upperMp'] || Infinity));
+  const PRM_upperAtk = Math.ceil(Math.abs(parameters['upperAtk'] || Infinity));
+  const PRM_upperDef = Math.ceil(Math.abs(parameters['upperDef'] || Infinity));
+  const PRM_upperMat = Math.ceil(Math.abs(parameters['upperMat'] || Infinity));
+  const PRM_upperMdf = Math.ceil(Math.abs(parameters['upperMdf'] || Infinity));
+  const PRM_upperAgi = Math.ceil(Math.abs(parameters['upperAgi'] || Infinity));
+  const PRM_upperLuk = Math.ceil(Math.abs(parameters['upperLuk'] || Infinity));
 
-  const lowerHp = Math.ceil(Math.abs(parameters['lowerHp'])) < upperHp ? Math.ceil(Math.abs(parameters['lowerHp'])) : upperHp;
-  const lowerMp = Math.ceil(Math.abs(parameters['lowerMp'])) < upperMp ? Math.ceil(Math.abs(parameters['lowerMp'])) : upperMp;
-  const lowerAtk = Math.ceil(Math.abs(parameters['lowerAtk'])) < upperAtk ? Math.ceil(Math.abs(parameters['lowerAtk'])) : upperAtk;
-  const lowerDef = Math.ceil(Math.abs(parameters['lowerDef'])) < upperDef ? Math.ceil(Math.abs(parameters['lowerDef'])) : upperDef;
-  const lowerMat = Math.ceil(Math.abs(parameters['lowerMat'])) < upperMat ? Math.ceil(Math.abs(parameters['lowerMat'])) : upperMat;
-  const lowerMdf = Math.ceil(Math.abs(parameters['lowerMdf'])) < upperMdf ? Math.ceil(Math.abs(parameters['lowerMdf'])) : upperMdf;
-  const lowerAgi = Math.ceil(Math.abs(parameters['lowerAgi'])) < upperAgi ? Math.ceil(Math.abs(parameters['lowerAgi'])) : upperAgi;
-  const lowerLuk = Math.ceil(Math.abs(parameters['lowerLuk'])) < upperLuk ? Math.ceil(Math.abs(parameters['lowerLuk'])) : upperLuk;
+  const PRM_lowerHp = lowerCheck(parameters['lowerHp'], PRM_upperHp);
+  const PRM_lowerMp = lowerCheck(parameters['lowerMp'], PRM_upperMp);
+  const PRM_lowerAtk = lowerCheck(parameters['lowerAtk'], PRM_upperAtk);
+  const PRM_lowerDef = lowerCheck(parameters['lowerDef'], PRM_upperDef);
+  const PRM_lowerMat = lowerCheck(parameters['lowerMat'], PRM_upperMat);
+  const PRM_lowerMdf = lowerCheck(parameters['lowerMdf'], PRM_upperMdf);
+  const PRM_lowerAgi = lowerCheck(parameters['lowerAgi'], PRM_upperAgi);
+  const PRM_lowerLuk = lowerCheck(parameters['lowerLuk'], PRM_upperLuk);
+
+  function lowerCheck(lowValue, highValue) {
+    const lowParam = Number(lowValue);
+    return lowParam < highValue ? lowParam : highValue;
+  }
 
   const _Game_BattlerBase_paramMax = Game_BattlerBase.prototype.paramMax;
   Game_BattlerBase.prototype.paramMax = function (paramId) {
     switch (paramId) {
       case 0:
-        if (upperHp < 1) {
+        if (PRM_upperHp < 1) {
           return 1;
         }
-        return upperHp;
+        return PRM_upperHp;
       case 1:
-        return upperMp;
+        return PRM_upperMp;
       case 2:
-        return upperAtk;
+        return PRM_upperAtk;
       case 3:
-        return upperDef;
+        return PRM_upperDef;
       case 4:
-        return upperMat;
+        return PRM_upperMat;
       case 5:
-        return upperMdf;
+        return PRM_upperMdf;
       case 6:
-        return upperAgi;
+        return PRM_upperAgi;
       case 7:
-        return upperLuk;
+        return PRM_upperLuk;
     }
     return _Game_BattlerBase_paramMax.call(this, paramId);
   };
@@ -219,24 +233,24 @@
   Game_BattlerBase.prototype.paramMin = function (paramId) {
     switch (paramId) {
       case 0:
-        if (lowerHp < 1) {
+        if (PRM_lowerHp < 1) {
           return 1;
         }
-        return lowerHp;
+        return PRM_lowerHp;
       case 1:
-        return lowerMp;
+        return PRM_lowerMp;
       case 2:
-        return lowerAtk;
+        return PRM_lowerAtk;
       case 3:
-        return lowerDef;
+        return PRM_lowerDef;
       case 4:
-        return lowerMat;
+        return PRM_lowerMat;
       case 5:
-        return lowerMdf;
+        return PRM_lowerMdf;
       case 6:
-        return lowerAgi;
+        return PRM_lowerAgi;
       case 7:
-        return lowerLuk;
+        return PRM_lowerLuk;
     }
     return _Game_BattlerBase_paramMin.call(this, paramId);
   };
