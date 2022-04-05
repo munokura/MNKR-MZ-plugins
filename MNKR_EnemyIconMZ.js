@@ -33,7 +33,7 @@
  *   利用形態（商用、18禁利用等）についても制限はありません。
  * 
  *
- * @param Default Icon
+ * @param defaultIcon
  * @text デフォルトアイコン
  * @type number
  * @desc メモタグを入れない場合に表示するアイコン。デフォルト16
@@ -46,14 +46,14 @@
 
     const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
     const parameters = PluginManager.parameters(pluginName);
-    const defaultIcon = Number(parameters['Default Icon'] || 16);
+    const PRM_defaultIcon = Number(parameters['defaultIcon'] || 16);
 
     const _Window_BattleEnemy_drawItem = Window_BattleEnemy.prototype.drawItem
     Window_BattleEnemy.prototype.drawItem = function (index) {
-        const enemy = this._enemies[index];
-        const icon = parseInt(enemy.enemy().meta.MNKR_EnemyIcon) || defaultIcon;
-        if (icon) {
-            const name = enemy.name();
+        const enemyObj = this._enemies[index];
+        const icon = Number(enemyObj.enemy().meta.MNKR_EnemyIcon) || PRM_defaultIcon;
+        if (icon > 0) {
+            const name = enemyObj.name();
             const rect = this.itemLineRect(index);
             const iconY = rect.y + (this.lineHeight() - ImageManager.iconHeight) / 2;
             const textMargin = ImageManager.iconWidth + 4;
@@ -62,7 +62,7 @@
             this.drawIcon(icon, rect.x, iconY);
             this.drawText(name, rect.x + textMargin, rect.y, itemWidth);
         } else {
-            _Window_BattleEnemy_drawItem.apply(this, arguments);
+            _Window_BattleEnemy_drawItem.call(this, index);
         };
     };
 
