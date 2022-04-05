@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_GetItemId.js
- *   Ver.1.0.0
+ *   Ver.1.1.0
  * Copyright (c) 2022 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -17,6 +17,7 @@
  * @help
  * アイテムを使用した時、アイテムIDを指定変数に代入します。
  * タグ指定していないアイテムを使用すると、0を代入します。
+ * アイテムシーンをキャンセルした時にも、0を代入します。
  * 
  * イベントの出現条件・条件分岐に使用することで、
  * アイテムを使用すると開始するイベント等が作成できます。
@@ -50,14 +51,20 @@
 
     const _Scene_Item_onItemOk = Scene_Item.prototype.onItemOk;
     Scene_Item.prototype.onItemOk = function () {
-        _Scene_Item_onItemOk.call(this);
-        const getItemId = this.item().meta.MNKR_GetItemId;
-        if (getItemId) {
+        const hasItemMeta = this.item().meta.MNKR_GetItemId;
+        if (hasItemMeta) {
             const usedItemId = this.item().id;
             $gameVariables.setValue(PRM_itemIdVariables, usedItemId);
         } else {
             $gameVariables.setValue(PRM_itemIdVariables, 0);
         }
+        _Scene_Item_onItemOk.call(this);
+    };
+
+    const _Scene_Item_onItemCancel = Scene_Item.prototype.onItemCancel;
+    Scene_Item.prototype.onItemCancel = function () {
+        $gameVariables.setValue(PRM_itemIdVariables, 0);
+        _Scene_Item_onItemCancel.call(this);
     };
 
 })();
