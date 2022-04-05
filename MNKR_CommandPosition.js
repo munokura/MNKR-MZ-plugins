@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_CommandPosition.js
- *   Ver.1.0.1
+ *   Ver.1.0.2
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -40,7 +40,7 @@
  *   利用形態（商用、18禁利用等）についても制限はありません。
  * 
  *
- * @param Command Position
+ * @param commandPosition
  * @text メニュー位置
  * @type number
  * @min 1
@@ -48,13 +48,13 @@
  * @desc メニューの表示位置を指定します。数字はテンキーの位置
  * @default 7
  *
- * @param Command Rows
+ * @param commandRows
  * @text メニュー行数
  * @type number
  * @desc メニューの行数を指定します。0にすると、コマンド数に併せて変動します。
  * @default 8
  * 
- * @param Status Window Hide
+ * @param statusWindowHide
  * @text ステータスウィンドウ無効化
  * @type boolean
  * @on 無効化
@@ -62,7 +62,7 @@
  * @desc ステータスウィンドウを無効化します。スキル、装備、ステータス、並び替えのコマンドが使えなくなります。
  * @default true
  *
- * @param Gold Window Hide
+ * @param goldWindowHide
  * @text 所持金ウィンドウ非表示
  * @type boolean
  * @on 非表示
@@ -77,14 +77,14 @@
 
     const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
     const parameters = PluginManager.parameters(pluginName);
-    const commandPosition = Number(parameters['Command Position'] || 7);
-    const commandRows = Number(parameters['Command Rows'] || 8);
-    const statusWindowHide = String(parameters['Status Window Hide']) === 'true';
-    const goldWindowHide = String(parameters['Gold Window Hide']) === 'true';
+    const PRM_commandPosition = Number(parameters['commandPosition'] || 7);
+    const PRM_commandRows = Number(parameters['commandRows'] || 8);
+    const PRM_statusWindowHide = parameters['statusWindowHide'] === 'true';
+    const PRM_goldWindowHide = parameters['goldWindowHide'] === 'true';
 
     const _Scene_Menu_createStatusWindow = Scene_Menu.prototype.createStatusWindow;
     Scene_Menu.prototype.createStatusWindow = function () {
-        if (statusWindowHide) {
+        if (PRM_statusWindowHide) {
             _Scene_Menu_createStatusWindow.call(this);
             this._statusWindow.hide();
         } else {
@@ -92,13 +92,11 @@
         }
     };
 
-    Scene_Menu.prototype.create = function () {
-        Scene_MenuBase.prototype.create.call(this);
-        this.createCommandWindow();
-        if (!goldWindowHide) {
-            this.createGoldWindow();
+    const _Scene_Menu_createGoldWindow = Scene_Menu.prototype.createGoldWindow;
+    Scene_Menu.prototype.createGoldWindow = function () {
+        if (!PRM_goldWindowHide) {
+            _Scene_Menu_createGoldWindow.call(this);
         }
-        this.createStatusWindow();
     };
 
     Scene_Menu.prototype.commandWindowRectangles = function (width, height) {
@@ -127,8 +125,8 @@
 
     Scene_Menu.prototype.commandWindowRect = function () {
         const ww = this.mainCommandWidth();
-        const wh = this.calcWindowHeight(commandRows === 0 ? this.countCommand() : commandRows, true);
-        return this.commandWindowRectangles(ww, wh)[commandPosition];
+        const wh = this.calcWindowHeight(PRM_commandRows === 0 ? this.countCommand() : PRM_commandRows, true);
+        return this.commandWindowRectangles(ww, wh)[PRM_commandPosition];
     };
 
     Scene_Menu.prototype.countCommand = function () {
