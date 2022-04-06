@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_SelectCollapseSe.js
- *   Ver.0.0.4
+ *   Ver.0.0.5
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -44,26 +44,25 @@
 (() => {
   "use strict";
 
-  let CollapseSe = '';
-
   const _Game_Enemy_performCollapse = Game_Enemy.prototype.performCollapse;
   Game_Enemy.prototype.performCollapse = function () {
     Game_Battler.prototype.performCollapse.call(this);
-    CollapseSe = this.enemy().meta.CollapseSeFile ? String(this.enemy().meta.CollapseSeFile) : null;
-    if (CollapseSe) {
-      this.performCollapseMetaSe();
+    const collapseSe = this.enemy().meta.CollapseSeFile || false;
+    if (collapseSe) {
+      this.performCollapseMetaSe(collapseSe);
     } else {
       _Game_Enemy_performCollapse.call(this);
     }
   };
 
-  Game_Enemy.prototype.performCollapseMetaSe = function () {
+  Game_Enemy.prototype.performCollapseMetaSe = function (collapseSe) {
     Game_Battler.prototype.performCollapse.call(this);
-    if (this.collapseType() === 0 && (CollapseSe !== null)) {
-      const Param = this.enemy().meta.CollapseVPP ? JsonEx.parse(`[${this.enemy().meta.CollapseVPP}]`) : [90, 100, 0];
-      const CollapseSeAudio = { "name": CollapseSe, "volume": Param[0], "pitch": Param[1], "pan": Param[2] };
+    if (this.collapseType() === 0) {
+      const VppMeta = this.enemy().meta.CollapseVPP;
+      const seParam = VppMeta ? VppMeta.split(',').map(Number) : [90, 100, 0];
+      const collapseSeAudio = { "name": collapseSe, "volume": seParam[0], "pitch": seParam[1], "pan": seParam[2] };
       this.requestEffect('collapse');
-      AudioManager.playSe(CollapseSeAudio);
+      AudioManager.playSe(collapseSeAudio);
     }
   };
 
