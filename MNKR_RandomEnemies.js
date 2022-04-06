@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_RandomEnemies.js
- *   Ver.1.0.4
+ *   Ver.1.0.5
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -38,21 +38,19 @@
  */
 
 (() => {
-
     'use strict';
 
     const _Game_Troop_setup = Game_Troop.prototype.setup;
     Game_Troop.prototype.setup = function (troopId) {
         _Game_Troop_setup.call(this, troopId);
-        var condition = true;
+        let condition = true;
         while (condition) {
             this.clear();
             this._troopId = troopId;
             this._enemies = [];
-
             this.troop().members.forEach(function (member) {
-                var randomEnemyId = selectEnemyId($dataEnemies[member.enemyId]);
-                var enemy = new Game_Enemy(randomEnemyId || member.enemyId, member.x, member.y);
+                const randomEnemyId = selectEnemyId($dataEnemies[member.enemyId]);
+                const enemy = new Game_Enemy(randomEnemyId || member.enemyId, member.x, member.y);
                 if (randomEnemyId === 0 || member.hidden) {
                     enemy.hide();
                 } else {
@@ -64,11 +62,11 @@
         };
     };
 
-    function selectEnemyId(arrayData) {
-        if (!arrayData.meta.RandomEnemy) {
+    function selectEnemyId(enemyArray) {
+        if (!enemyArray.meta.RandomEnemy) {
             return null;
         };
-        var pool = JsonEx.parse(`[${arrayData.meta.RandomEnemy}]`);
+        const pool = enemyArray.meta.RandomEnemy.split(',').map(Number);
         return Number(pool[Math.randomInt(pool.length)]);
     };
 
