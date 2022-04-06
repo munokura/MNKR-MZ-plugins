@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_ProhibitSkill.js
- *   Ver.0.0.3
+ *   Ver.0.0.4
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -51,13 +51,11 @@
   };
 
   Game_Action.prototype.prohibitSkill = function (target) {
-    if (target.isActor() && this.isItem()) {
-      const item = this.item();
-      if (item.meta.ProhibitSkill) {
-        const prohibitSkills = item.meta.ProhibitSkill.split(',').map(Number);
-        const even = (element) => target.isLearnedSkill(element);
-        return prohibitSkills.some(even);
-      }
+    const itemMeta = this.item().meta.ProhibitSkill || false;
+    if (target.isActor() && itemMeta) {
+      const prohibitSkills = itemMeta.split(',').map(Number);
+      const even = (element) => target.isLearnedSkill(element);
+      return prohibitSkills.some(even);
     }
     return false;
   };
