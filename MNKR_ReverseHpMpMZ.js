@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_ReverseHpMpMZ.js
- *   Ver.0.0.2
+ *   Ver.0.0.3
  * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -47,28 +47,25 @@
 
     const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
     const parameters = PluginManager.parameters(pluginName);
-    const reverseHp = String(parameters['reverseHp']) === 'true';
-    const reverseMp = String(parameters['reverseMp']) === 'true';
+    const PRM_reverseHp = parameters['reverseHp'] === 'true';
+    const PRM_reverseMp = parameters['reverseMp'] === 'true';
 
     const _Sprite_Gauge_currentValue = Sprite_Gauge.prototype.currentValue;
     Sprite_Gauge.prototype.currentValue = function () {
         if (this._battler) {
             switch (this._statusType) {
                 case "hp":
-                    if (reverseHp) {
+                    if (PRM_reverseHp) {
                         return this._battler.mhp - this._battler.hp;
-                    } else {
-                        return _Sprite_Gauge_currentValue.call(this);
                     }
+                    return _Sprite_Gauge_currentValue.call(this);
                 case "mp":
-                    if (reverseMp) {
+                    if (PRM_reverseMp) {
                         return this._battler.mmp - this._battler.mp;
-                    } else {
-                        return _Sprite_Gauge_currentValue.call(this);
                     }
-                default:
                     return _Sprite_Gauge_currentValue.call(this);
             }
+            return _Sprite_Gauge_currentValue.call(this);
         }
     };
 
