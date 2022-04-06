@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_ProhibitSkill.js
- *   Ver.0.0.2
+ *   Ver.0.0.3
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -15,7 +15,7 @@
  * @author munokura
  *
  * @help
- * 指定スキルを習得済みのアクターに使えないアイテムを作れます。
+ * 指定スキルを習得済みのアクターに使えないアイテム（範囲が味方単体）を作れます。
  *
  * アイテムのメモ欄に下記のようにタグを入れてください。
  * <ProhibitSkill:スキルID>
@@ -44,7 +44,9 @@
 
   const _Game_Action_testApply = Game_Action.prototype.testApply;
   Game_Action.prototype.testApply = function (target) {
-    if (this.prohibitSkill(target)) return false;
+    if (this.prohibitSkill(target)) {
+      return false;
+    }
     return _Game_Action_testApply.call(this, target);
   };
 
@@ -52,7 +54,7 @@
     if (target.isActor() && this.isItem()) {
       const item = this.item();
       if (item.meta.ProhibitSkill) {
-        const prohibitSkills = JsonEx.parse(`[${item.meta.ProhibitSkill}]`);
+        const prohibitSkills = item.meta.ProhibitSkill.split(',').map(Number);
         const even = (element) => target.isLearnedSkill(element);
         return prohibitSkills.some(even);
       }
