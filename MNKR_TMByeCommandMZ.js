@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_TMByeCommandMZ.js
- *   Ver.1.0.2
+ *   Ver.1.1.0
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -46,6 +46,12 @@
  *   enableBye
  *     使用不可にしたさよならコマンドを元に戻します。
  *
+ *
+ * 利用規約:
+ *   MITライセンスです。
+ *   https://licenses.opensource.jp/MIT/MIT.html
+ *   作者に無断で改変、再配布が可能で、
+ *   利用形態（商用、18禁利用等）についても制限はありません。
  * 
  * @param byeCommand
  * @text コマンド表示
@@ -69,6 +75,13 @@
  * @default {"volume":"90","pitch":"100","pan":"0"}
  * @type struct<seParam>
  * 
+ * @param clearEquipments
+ * @text 装備を外す
+ * @desc 分かれる直前に装備を外すか？
+ * @type boolean
+ * @on 外す
+ * @off 外さない
+ * @default false
  *
  * @command disableBye
  * @text さよならコマンド無効化
@@ -118,6 +131,7 @@ var TMPlugin = TMPlugin || {};
   TMPlugin.ByeCommand.ByeCommand = TMPlugin.ByeCommand.Parameters['byeCommand'] || '別れる';
   TMPlugin.ByeCommand.ByeSe = JSON.parse(TMPlugin.ByeCommand.Parameters['byeSeParam'] || '{}');
   TMPlugin.ByeCommand.ByeSe.name = TMPlugin.ByeCommand.Parameters['byeSe'] || '';
+  TMPlugin.ByeCommand.clearEquipments = TMPlugin.ByeCommand.Parameters['clearEquipments'] === 'true';
 
   //-----------------------------------------------------------------------------
   // Game_System
@@ -140,11 +154,11 @@ var TMPlugin = TMPlugin || {};
   // PluginManager
   //
 
-  PluginManager.registerCommand(pluginName, "disableBye", args => {
+  PluginManager.registerCommand(pluginName, "disableBye", function () {
     $gameSystem.disableBye();
   });
 
-  PluginManager.registerCommand(pluginName, "enableBye", args => {
+  PluginManager.registerCommand(pluginName, "enableBye", function () {
     $gameSystem.enableBye();
   });
 
@@ -220,6 +234,11 @@ var TMPlugin = TMPlugin || {};
   Scene_Menu.prototype.onByeOk = function () {
     let index = this._statusWindow.index();
     let actor = $gameParty.members()[index];
+    // 機能追加
+    if (TMPlugin.ByeCommand.clearEquipments) {
+      $gameActors.actor(actor.actorId()).clearEquipments();
+    }
+
     $gameParty.removeActor(actor.actorId());
     this._statusWindow.refresh();
     let n = $gameParty.size();
