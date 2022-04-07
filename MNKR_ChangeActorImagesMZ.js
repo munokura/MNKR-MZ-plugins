@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_ChangeActorImagesMZ.js
- *   Ver.0.0.2
+ *   Ver.0.0.3
  * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -62,7 +62,7 @@
             $gamePlayer.refresh();
             return true;
         } else {
-            _Game_Interpreter_command322.call(this, params);
+            return _Game_Interpreter_command322.call(this, params);
         }
     };
 
