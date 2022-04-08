@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_AddSkillWtype.js
- *   Ver.0.0.2
+ *   Ver.0.0.3
  * Copyright (c) 2022 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -59,13 +59,10 @@
 
   function getEquipsMeta(equipsArray) {
     let equipsMetaArray = [];
+    let hasEquipsMeta = false;
     for (let i = 0; i < equipsArray.length; i++) {
-      if (equipsArray[i]) {
-        const hasEquipsMeta = equipsArray[i].meta.MNKR_AddSkillWtype || false;
-        if (hasEquipsMeta) {
-          equipsMetaArray = equipsMetaArray.concat(equipsArray[i].meta.MNKR_AddSkillWtype.split(',').map(Number));
-        }
-      }
+      hasEquipsMeta = equipsArray[i] ? equipsArray[i].meta.MNKR_AddSkillWtype : false;
+      equipsMetaArray = hasEquipsMeta ? equipsMetaArray.concat(hasEquipsMeta.split(',').map(Number)) : equipsMetaArray;
     }
     return equipsMetaArray;
   }
