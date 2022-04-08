@@ -11,7 +11,7 @@
 /*:
  * @target MZ MV
  * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_AddSkillWtype.js
- * @plugindesc 
+ * @plugindesc 装備している防具に、スキルの必要武器タイプを追加できます。
  * @author munokura
  *
  * @help
