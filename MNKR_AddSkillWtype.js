@@ -45,29 +45,29 @@
   const _Game_Actor_isSkillWtypeOk = Game_Actor.prototype.isSkillWtypeOk;
   Game_Actor.prototype.isSkillWtypeOk = function (skill) {
     const equipsArray = this.equips();
-    const armorMetaArray = equipsMeta(equipsArray);
-    if (armorMetaArray.length === 0) {
+    const equipsMetaArray = getEquipsMeta(equipsArray);
+    if (equipsMetaArray.length === 0) {
       return _Game_Actor_isSkillWtypeOk.call(this, skill);
     }
     const wtypeId1 = skill.requiredWtypeId1;
     const wtypeId2 = skill.requiredWtypeId2;
-    if (armorMetaArray.includes(wtypeId1) || armorMetaArray.includes(wtypeId2)) {
+    if (equipsMetaArray.includes(wtypeId1) || equipsMetaArray.includes(wtypeId2)) {
       return true;
     }
     return _Game_Actor_isSkillWtypeOk.call(this, skill);
   };
 
-  function equipsMeta(equipsArray) {
-    let equipMetaArray = [];
+  function getEquipsMeta(equipsArray) {
+    let equipsMetaArray = [];
     for (let i = 0; i < equipsArray.length; i++) {
       if (equipsArray[i]) {
         const hasEquipsMeta = equipsArray[i].meta.MNKR_AddSkillWtype || false;
         if (hasEquipsMeta) {
-          equipMetaArray = equipMetaArray.concat(equipsArray[i].meta.MNKR_AddSkillWtype.split(',').map(Number));
+          equipsMetaArray = equipsMetaArray.concat(equipsArray[i].meta.MNKR_AddSkillWtype.split(',').map(Number));
         }
       }
     }
-    return equipMetaArray;
+    return equipsMetaArray;
   }
 
 })();
