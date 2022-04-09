@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_SurviveState.js
- *   Ver.0.0.1
+ *   Ver.0.0.2
  * Copyright (c) 2022 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -50,8 +50,8 @@
   const _Game_Battler_refresh = Game_Battler.prototype.refresh;
   Game_Battler.prototype.refresh = function () {
     Game_BattlerBase.prototype.refresh.call(this);
-    const battlerStates = this._states;
-    const hasSurviveState = battlerStates.find(value => value === PRM_surviveStateId);
+    const battlerStatesArray = this._states;
+    const hasSurviveState = battlerStatesArray.find(value => value === PRM_surviveStateId);
     if (hasSurviveState && this.hp === 0) {
       this.setHp(1);
       this.removeState(PRM_surviveStateId);
