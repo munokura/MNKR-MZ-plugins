@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_CommandPosition.js
- *   Ver.1.0.2
+ *   Ver.1.0.3
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -125,11 +125,11 @@
 
     Scene_Menu.prototype.commandWindowRect = function () {
         const ww = this.mainCommandWidth();
-        const wh = this.calcWindowHeight(PRM_commandRows === 0 ? this.countCommand() : PRM_commandRows, true);
+        const wh = this.calcWindowHeight(PRM_commandRows === 0 ? countCommand() : PRM_commandRows, true);
         return this.commandWindowRectangles(ww, wh)[PRM_commandPosition];
     };
 
-    Scene_Menu.prototype.countCommand = function () {
+    function countCommand() {
         return $dataSystem.menuCommands.filter(commandEnabled => commandEnabled).length + 2;
     };
 
