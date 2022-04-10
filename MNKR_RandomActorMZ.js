@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_RandomActorMZ.js
- *   Ver.0.0.4
+ *   Ver.0.0.5
  * Copyright (c) 2022 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -111,7 +111,7 @@
   function getActor(getActorId) {
     const hasActor = $gameParty.members().contains($gameActors.actor(getActorId));
     if (hasActor) {
-      const actorLevel = $gameActors.actor(getActorId)._level;
+      const actorLevel = $gameActors.actor(getActorId).level;
       $gameActors.actor(getActorId).changeLevel(actorLevel + 1, PRM_levelUpDisplay);
     } else {
       $gameParty.addActor(getActorId);
