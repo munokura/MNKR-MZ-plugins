@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_RandomActorMZ.js
- *   Ver.0.0.1
+ *   Ver.0.0.2
  * Copyright (c) 2022 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -85,10 +85,13 @@
 
   PluginManager.registerCommand(pluginName, "randomActor", function (args) {
     const listArray = JSON.parse(args.randomActorList).map(element => JSON.parse(element));
+
+    // 無くても動くように後処理でNumberしているが、ここで整形するベターな方法を求む
     for (let i = 0; i < listArray.length; i++) {
       listArray[i].actor = Number(listArray[i].actor);
       listArray[i].weight = Number(listArray[i].weight);
     }
+
     const getActorId = gachaActor(listArray);
     getActor(getActorId);
 
@@ -96,23 +99,21 @@
 
   function gachaActor(listArray) {
 
-    // アクターガチャ
+    // アクターガチャ配列生成:リファクタリング希望（読みにくいし、バグがあるか分かりにくい）
     let gachaArray = [];
     for (let i = 0; i < listArray.length; i++) {
       for (let j = 0; j < listArray[i].weight; j++) {
         gachaArray.push(Number(listArray[i].actor));
       }
     }
-    const rand = Math.floor(Math.random() * gachaArray.length);
-    const getActorId = gachaArray[rand];
+
+    const randomValue = Math.floor(Math.random() * gachaArray.length);
+    const getActorId = gachaArray[randomValue];
     $gameVariables.setValue(PRM_actorIdVariable, getActorId);
 
-    // 重み取得
-    let actorArray = [];
-    for (let k = 0; k < listArray.length; k++) {
-      actorArray.push(Number(listArray[k].actor));
-    }
-    const weightIndex = actorArray.findIndex((element) => element === getActorId);
+    // 重み取得：基本設計からやり直したら、より簡便になる可能性
+    const actorListArray = listArray.map(listArray => Number(listArray.actor));
+    const weightIndex = actorListArray.findIndex((element) => element === getActorId);
     const getWeight = listArray[weightIndex].weight;
     $gameVariables.setValue(PRM_weightVariable, getWeight);
 
