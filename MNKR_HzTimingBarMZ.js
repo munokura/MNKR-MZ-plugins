@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_HzTimingBarMZ.js
- *   Ver.0.0.2
+ *   Ver.0.1.0
  * Copyright (c) 2022 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -22,8 +22,6 @@ MITライセンスの下で公開されています。
  * @help
  * タイミングを合わせてボタン入力するタイミングバーを実行します。
  * プラグインコマンドでタイミングバーを設定・実行します。
- * 
- * なお、タイミング入力にマウスクリックは対応していません。
  * 
  * ヒットかクリティカルを取得した時点でバーが終了します。
  * （入力必須範囲がある場合、それを含めて取得した時点）
@@ -59,6 +57,19 @@ MITライセンスの下で公開されています。
  * このプラグインについて
  *   RPGツクールMV用に作成されたプラグインをMZ用に移植したものです。
  *   お問い合わせは改変者へお願いいたします。
+ * 
+ * 
+ * Ver.0.1.0 by munokura (2020/4/12)
+ * マウス対応追加
+ * 
+ * Ver.0.0.2 by munokura (2020/4/12)
+ * 変数に値が代入されない不具合を修正
+ * プラグインコマンド後に文章の表示がない場合、無限ループになる不具合を修正
+ * 必須エリアが他エリアの後ろにある場合、必ずミスになる不具合を修正
+ * 
+ * Ver.0.0.1 by munokura (2020/4/11)
+ * MZへ移植
+ * 変数に値が代入されない不具合を修正
  * 
  * 
  * 利用規約:
@@ -261,7 +272,6 @@ Ver.0.0.2 by munokura (2020/4/12)
         this._container = new Sprite();
         this._container.position.set(x - HzTimingBar.WIDTH / 2, y - HzTimingBar.HEIGHT / 2);
 
-
         // 枠
         var barFrameBmp = new Bitmap(HzTimingBar.WIDTH + 4, HzTimingBar.HEIGHT + 4);
         // var framePath = roundedRectangle(barFrameBmp.context, 2, 2, HzTimingBar.WIDTH, HzTimingBar.HEIGHT, HzTimingBar.RADIUS);
@@ -364,7 +374,9 @@ Ver.0.0.2 by munokura (2020/4/12)
             return false;
         }
         // ボタン押下時の判定
-        if (Input.isTriggered('ok') && this._frame >= 0) {
+        // ボタン押下時の判定 (マウス対応追加)
+        var inputCheck = Input.isTriggered('ok') || TouchInput.isTriggered();
+        if (inputCheck && this._frame >= 0) {
             var result = 0;
             // 必須エリアチェック
             for (var i = 0; i < this._requiredAreas.length; i++) {
@@ -402,7 +414,8 @@ Ver.0.0.2 by munokura (2020/4/12)
             if (missSe) {
                 AudioManager.playSe({ name: missSe, volume: 90, pitch: 100, pan: 0 });
             }
-            $gameVariables.setValue(this._varNo, 0);
+            result = 0;
+            $gameVariables.setValue(this._varNo, result);
             this._frame = HzTimingBar.maxFrame;
             // }
             // $gameVariables.setValue(this._varNo, result);
