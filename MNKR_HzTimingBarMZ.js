@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_HzTimingBarMZ.js
- *   Ver.0.0.1
+ *   Ver.0.0.2
  * Copyright (c) 2022 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -76,6 +76,7 @@ MITライセンスの下で公開されています。
  *
  * @param required SE
  * @type file
+ * @typr reauire 1
  * @dir audio/se/
  * @text 必須エリアヒット時SE
  * @desc 必須エリアヒット時のSE
@@ -83,6 +84,7 @@ MITライセンスの下で公開されています。
  *
  * @param hit SE
  * @type file
+ * @typr reauire 1
  * @dir audio/se/
  * @text ヒットエリアヒット時SE
  * @desc ヒットエリアヒット時のSE
@@ -90,6 +92,7 @@ MITライセンスの下で公開されています。
  * 
  * @param critical SE
  * @type file
+ * @typr reauire 1
  * @dir audio/se/
  * @text クリティカルエリアヒット時SE
  * @desc クリティカルエリアヒット時のSE
@@ -97,6 +100,7 @@ MITライセンスの下で公開されています。
  *
  * @param miss SE
  * @type file
+ * @typr reauire 1
  * @dir audio/se/
  * @text 入力時（失敗）SE
  * @desc 入力時（失敗）のSE
@@ -144,6 +148,16 @@ MITライセンスの下で公開されています。
  * @default -1
  */
 
+/*
+Ver.0.0.1 by munokura (2020/4/11)
+MZへ移植
+変数に値が代入されない不具合を修正
+
+Ver.0.0.2 by munokura (2020/4/12)
+プラグインコマンド後に文章の表示がない場合、無限ループになる不具合を修正
+必須エリアが他エリアの後ろにある場合、必ずミスになる不具合を修正
+*/
+
 // 必須エリア追加
 // 必須エリアヒット時、効果音を出す
 // プラグインコマンド
@@ -159,18 +173,13 @@ MITライセンスの下で公開されています。
     var criticalSe = parameters['critical SE'];
     var missSe = parameters['miss SE'];
 
-    // PluginManager.registerCommand(pluginName, "HzTimingBar", arr => {
     PluginManager.registerCommand(pluginName, "HzTimingBar", function (obj) {
         var args = Object.entries(obj).map(([key, value]) => `${value}`);
         this.setWaitMode("hzTimingBar");
         var varNo = Number(args[0]);
         var hitAreaParm = String(args[1]);
-        // var criticalAreaParm = String(args[2]);
-        // var requiredAreaParm = String(args[3]);
         var criticalAreaParm = args[2] || false;
         var requiredAreaParm = args[3] ? '[' + args[3] + ']' : false;
-        // var x = args[4] != null ? Number(args[4]) : SceneManager._screenWidth / 2;
-        // var y = args[5] != null ? Number(args[5]) : SceneManager._screenHeight / 2;
         var x = Number(args[4] || -1) < 0 ? Graphics.width / 2 : Number(args[4]);
         var y = Number(args[5] || -1) < 0 ? Graphics.height / 2 : Number(args[5]);
         var hitArea = hitAreaParm.split("-").map(function (elm) { return Number(elm); });
@@ -235,8 +244,10 @@ MITライセンスの下で公開されています。
     //     this._varNo = 1;
     // 変数が代入されないバグ修正
     HzTimingBar.prototype.initialize = function (x, y, hitArea, criticalArea, requiredAreas, varNo) {
-        this._varNo = varNo;
         this._hitArea = hitArea;
+        this._varNo = varNo;
+        $gameVariables.setValue(this._varNo, 0);
+        // クリティカルエリアが無いとバーの左に表示されるのを修正
         // this._criticalArea = criticalArea != null ? criticalArea : [-1, 0];
         this._criticalArea = criticalArea != null ? criticalArea : [];
         this._requiredAreas = requiredAreas != null ? requiredAreas : [];
@@ -253,7 +264,8 @@ MITライセンスの下で公開されています。
 
         // 枠
         var barFrameBmp = new Bitmap(HzTimingBar.WIDTH + 4, HzTimingBar.HEIGHT + 4);
-        var framePath = roundedRectangle(barFrameBmp.context, 2, 2, HzTimingBar.WIDTH, HzTimingBar.HEIGHT, HzTimingBar.RADIUS);
+        // var framePath = roundedRectangle(barFrameBmp.context, 2, 2, HzTimingBar.WIDTH, HzTimingBar.HEIGHT, HzTimingBar.RADIUS);
+        roundedRectangle(barFrameBmp.context, 2, 2, HzTimingBar.WIDTH, HzTimingBar.HEIGHT, HzTimingBar.RADIUS);
         barFrameBmp.context.fillStyle = "#FFFFFF";
         barFrameBmp.context.lineWidth = 2;
         barFrameBmp.context.strokeStyle = "#000000";
@@ -325,6 +337,9 @@ MITライセンスの下で公開されています。
         // タイマーによる時間制限
         if ($gameTimer.isWorking() && $gameTimer._frames === 0) {
             // 終了（失敗）
+            if (missSe) {
+                AudioManager.playSe({ name: missSe, volume: 90, pitch: 100, pan: 0 });
+            }
             $gameVariables.setValue(this._varNo, 0);
             return false;
         }
@@ -339,9 +354,12 @@ MITライセンスの下で公開されています。
         }
         // 時間経過でミス
         if (this._frame > HzTimingBar.maxFrame) {
-            $gameVariables.setValue(this._varNo, 0);
-            if (missSe) {
-                AudioManager.playSe({ name: missSe, volume: 90, pitch: 100, pan: 0 });
+            // 設計ミスと予想：タイムオーバーで必須エリア未クリア時にミス判定
+            if (!this.allRequiredAreaHitted()) {
+                $gameVariables.setValue(this._varNo, 0);
+                if (missSe) {
+                    AudioManager.playSe({ name: missSe, volume: 90, pitch: 100, pan: 0 });
+                }
             }
             return false;
         }
@@ -360,27 +378,35 @@ MITライセンスの下で公開されています。
                 }
             }
             if (this._criticalArea[0] <= this._frame && this._frame < this._criticalArea[1]) {
-                if (this.allRequiredAreaHitted()) {
-                    result = 2;
-                    if (criticalSe) {
-                        AudioManager.playSe({ name: criticalSe, volume: 90, pitch: 100, pan: 0 });
-                    }
+                // if (this.allRequiredAreaHitted()) {
+                // result = 2;
+                result = result > 2 ? result : 2;
+                if (criticalSe) {
+                    AudioManager.playSe({ name: criticalSe, volume: 90, pitch: 100, pan: 0 });
                 }
+                $gameVariables.setValue(this._varNo, result);
+                return true;
+                // }
             } else if (this._hitArea[0] <= this._frame && this._frame < this._hitArea[1]) {
-                if (this.allRequiredAreaHitted()) {
-                    result = 1;
-                    if (hitSe) {
-                        AudioManager.playSe({ name: hitSe, volume: 90, pitch: 100, pan: 0 });
-                    }
+                // if (this.allRequiredAreaHitted()) {
+                // result = 1;
+                result = result > 1 ? result : 1;
+                if (hitSe) {
+                    AudioManager.playSe({ name: hitSe, volume: 90, pitch: 100, pan: 0 });
                 }
+                $gameVariables.setValue(this._varNo, result);
+                return true;
+                // }
             }
-            if (result === 0) {
-                if (missSe) {
-                    AudioManager.playSe({ name: missSe, volume: 90, pitch: 100, pan: 0 });
-                }
+            // if (result === 0) {
+            if (missSe) {
+                AudioManager.playSe({ name: missSe, volume: 90, pitch: 100, pan: 0 });
             }
-            $gameVariables.setValue(this._varNo, result);
-            return false;
+            $gameVariables.setValue(this._varNo, 0);
+            this._frame = HzTimingBar.maxFrame;
+            // }
+            // $gameVariables.setValue(this._varNo, result);
+            // return false;
         }
 
         return true;
