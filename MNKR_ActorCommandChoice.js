@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_ActorCommandChoice.js
- *   Ver.1.0.2
+ *   Ver.1.0.3
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -59,6 +59,12 @@
  * @on 表示
  * @off 非表示
  * @default true
+ * 
+ * @param commandCols
+ * @text コマンド列数
+ * @desc アクターコマンドの列数を指定します。
+ * @type number
+ * @default 1
  */
 
 (() => {
@@ -70,6 +76,11 @@
     const PRM_addSkill = parameters['addSkill'] === 'true';
     const PRM_addGuard = parameters['addGuard'] === 'true';
     const PRM_addItem = parameters['addItem'] === 'true';
+    const PRM_commandCols = Number(parameters['commandCols'] || 1);
+
+    Window_ActorCommand.prototype.maxCols = function () {
+        return PRM_commandCols;
+    };
 
     Window_ActorCommand.prototype.makeCommandList = function () {
         if (this._actor) {
