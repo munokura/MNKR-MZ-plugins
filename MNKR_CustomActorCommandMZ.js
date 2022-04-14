@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_CustomActorCommandMZ.js
- *   Ver.0.0.1
+ *   Ver.0.0.2
  * Copyright (c) 2022 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -126,16 +126,8 @@
         } else {
             wh = this.windowAreaHeight();
         }
-        if (PRM_commandX > 0) {
-            wx = PRM_commandX;
-        } else {
-            wx = this.isRightInputMode() ? Graphics.boxWidth - ww : 0;
-        }
-        if (PRM_commandY > 0) {
-            wy = PRM_commandY;
-        } else {
-            wy = Graphics.boxHeight - wh;
-        }
+        wx = this.isRightInputMode() ? Graphics.boxWidth - ww : 0;
+        wy = Graphics.boxHeight - wh;
         return new Rectangle(wx, wy, ww, wh);
     };
 
@@ -162,5 +154,22 @@
             }
         }
     };
+
+    const _Window_ActorCommand_refresh = Window_ActorCommand.prototype.refresh;
+    Window_ActorCommand.prototype.refresh = function () {
+        _Window_ActorCommand_refresh.call(this);
+        // 自動調整を試みたが、下のコマンドが表示されなくなってしまう
+        // if (PRM_commandHeight < 0) {
+        //     const lines = Math.ceil(this.maxItems() / PRM_commandCols);
+        //     this.height = this.fittingHeight(lines);
+        // }
+        if (PRM_commandX > 0) {
+            this.x = PRM_commandX;
+        }
+        if (PRM_commandY > 0) {
+            this.y = PRM_commandY;
+        }
+    }
+
 
 })();
