@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_AddSkillWtype.js
- *   Ver.0.0.4
+ *   Ver.0.0.5
  * Copyright (c) 2022 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -45,7 +45,7 @@
 
   const _Game_Actor_isSkillWtypeOk = Game_Actor.prototype.isSkillWtypeOk;
   Game_Actor.prototype.isSkillWtypeOk = function (skill) {
-    const equipsArray = this.equips();
+    const equipsArray = this.weapons().concat(this.armors());
     const equipsMetaArray = getEquipsMeta(equipsArray);
     if (equipsMetaArray.length === 0) {
       return _Game_Actor_isSkillWtypeOk.call(this, skill);
@@ -59,8 +59,7 @@
   };
 
   function getEquipsMeta(equipsArray) {
-    const hasEquipsArray = equipsArray.filter(element => element);
-    const hasMetaEquipsArray = hasEquipsArray.filter(element => element.meta.MNKR_AddSkillWtype);
+    const hasMetaEquipsArray = equipsArray.filter(element => element.meta.MNKR_AddSkillWtype);
     const equipsMetaArray = hasMetaEquipsArray.flatMap(element => element.meta.MNKR_AddSkillWtype.split(',').map(Number));
     const uniqueEquipsMetaArray = equipsMetaArray.filter((value, index, element) => element.indexOf(value) === index);
     return uniqueEquipsMetaArray;
