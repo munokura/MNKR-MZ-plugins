@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_AddSkillWtype.js
- *   Ver.0.0.3
+ *   Ver.0.0.4
  * Copyright (c) 2022 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -16,7 +16,8 @@
  *
  * @help
  * 装備に、スキル＞必要武器＞必要武器タイプ1・2を追加できます。
- * 装備で追加した場合、スキルで必要とされる武器タイプの武器を装備していなくても、
+ * 装備で追加した場合、
+ * スキルで必要とされる武器タイプの武器を装備していなくても、
  * スキル使用可能になります。
  * 
  * 武器・防具のメモ欄に下記のタグを入れてください。
@@ -58,13 +59,11 @@
   };
 
   function getEquipsMeta(equipsArray) {
-    let equipsMetaArray = [];
-    let hasEquipsMeta = false;
-    for (let i = 0; i < equipsArray.length; i++) {
-      hasEquipsMeta = equipsArray[i] ? equipsArray[i].meta.MNKR_AddSkillWtype : false;
-      equipsMetaArray = hasEquipsMeta ? equipsMetaArray.concat(hasEquipsMeta.split(',').map(Number)) : equipsMetaArray;
-    }
-    return equipsMetaArray;
+    const hasEquipsArray = equipsArray.filter(element => element);
+    const hasMetaEquipsArray = hasEquipsArray.filter(element => element.meta.MNKR_AddSkillWtype);
+    const equipsMetaArray = hasMetaEquipsArray.flatMap(element => element.meta.MNKR_AddSkillWtype.split(',').map(Number));
+    const uniqueEquipsMetaArray = equipsMetaArray.filter((value, index, element) => element.indexOf(value) === index);
+    return uniqueEquipsMetaArray;
   }
 
 })();
