@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_SwitchGameoverMusic.js
- *   Ver.0.0.2
+ *   Ver.0.0.3
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -44,7 +44,7 @@
     const _Scene_Gameover_playGameoverMusic = Scene_Gameover.prototype.playGameoverMusic;
     Scene_Gameover.prototype.playGameoverMusic = function () {
         if (!$gameSwitches.value(gameOverSwitchId)) {
-            _Scene_Gameover_playGameoverMusic;
+            _Scene_Gameover_playGameoverMusic.call(this);
         }
     };
 
