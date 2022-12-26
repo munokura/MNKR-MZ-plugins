@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_SwitchSell.js
- *   Ver.0.0.1
+ *   Ver.0.0.2
  * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -51,7 +51,10 @@
   const _Window_ShopSell_isEnabled = Window_ShopSell.prototype.isEnabled;
   Window_ShopSell.prototype.isEnabled = function (item) {
     const switchSell = switchId === 0 ? true : $gameSwitches.value(switchId);
-    const isTag = item.meta.MNKR_SwitchSell;
+    var isTag = false;
+    if (item && item.meta) {
+      isTag = item.meta.MNKR_SwitchSell;
+    }
     return (switchSell && isTag) ? false : _Window_ShopSell_isEnabled.call(this, item);
   };
 
