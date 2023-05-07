@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_HzTimingBarMZ.js
- *   Ver.0.1.0
+ *   Ver.0.0.3
  * Copyright (c) 2022 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -25,7 +25,8 @@ MITライセンスの下で公開されています。
  * 
  * カーソルがバー終了地点まで動きます。
  * 何もない範囲で入力した時点で終了し、0が代入されます。
- * 終了までに、ヒット(1)・クリティカル(2)のどちらかを入力したポイントの高い方が変数に代入されます。
+ * 終了までに、ヒット(1)・クリティカル(2)のどちらかを入力したポイントの高い方が
+ * 変数に代入されます。
  * ただし、入力必須範囲がある場合、それを入力していないと0が代入されます。
  * 
  * バーが終了した時点で変数が代入されます。
@@ -61,24 +62,23 @@ MITライセンスの下で公開されています。
  *   お問い合わせは改変者へお願いいたします。
  * 
  * 
- * Ver.0.1.0 by munokura (2020/4/12)
- * マウス対応追加
- * 
- * Ver.0.0.2 by munokura (2020/4/12)
- * 変数に値が代入されない不具合を修正
- * プラグインコマンド後に文章の表示がない場合、無限ループになる不具合を修正
- * 必須エリアが他エリアの後ろにある場合、必ずミスになる不具合を修正
- * 
- * Ver.0.0.1 by munokura (2020/4/11)
- * MZへ移植
- * 変数に値が代入されない不具合を修正
- * 
- * 
  * 利用規約:
  *   MITライセンスです。
  *   https://licenses.opensource.jp/MIT/MIT.html
  *   作者に無断で改変、再配布が可能で、
  *   利用形態（商用、18禁利用等）についても制限はありません。
+ * 
+ * 
+ * Ver.0.0.1 by munokura (2022/4/11)
+ * MZへ移植
+ * 変数に値が代入されない不具合を修正
+ * 
+ * Ver.0.0.2 by munokura (2022/4/12)
+ * プラグインコマンド後に文章の表示がない場合、無限ループになる不具合を修正
+ * 必須エリアが他エリアの後ろにある場合、必ずミスになる不具合を修正
+ * 
+ * Ver.0.0.3 by munokura (2023/5/7)
+ * クリティカルの後にヒットを取ると、ヒットの値を取得する不具合を修正
  * 
  * 
  * @param bar width
@@ -162,13 +162,16 @@ MITライセンスの下で公開されています。
  */
 
 /*
-Ver.0.0.1 by munokura (2020/4/11)
+Ver.0.0.1 by munokura (2022/4/11)
 MZへ移植
 変数に値が代入されない不具合を修正
 
-Ver.0.0.2 by munokura (2020/4/12)
+Ver.0.0.2 by munokura (2022/4/12)
 プラグインコマンド後に文章の表示がない場合、無限ループになる不具合を修正
 必須エリアが他エリアの後ろにある場合、必ずミスになる不具合を修正
+
+Ver.0.0.3 by munokura (2023/5/7)
+クリティカルの後にヒットを取ると、ヒットの値を取得する不具合を修正
 */
 
 // 必須エリア追加
@@ -186,6 +189,8 @@ Ver.0.0.2 by munokura (2020/4/12)
     var criticalSe = parameters['critical SE'];
     var missSe = parameters['miss SE'];
 
+    var result = 0;
+
     PluginManager.registerCommand(pluginName, "HzTimingBar", function (obj) {
         var args = Object.entries(obj).map(([key, value]) => `${value}`);
         this.setWaitMode("hzTimingBar");
@@ -195,6 +200,11 @@ Ver.0.0.2 by munokura (2020/4/12)
         var requiredAreaParm = args[3] ? '[' + args[3] + ']' : false;
         var x = Number(args[4] || -1) < 0 ? Graphics.width / 2 : Number(args[4]);
         var y = Number(args[5] || -1) < 0 ? Graphics.height / 2 : Number(args[5]);
+
+        //エリア数カウント
+        // var areaCount = [hitAreaParm, criticalAreaParm, requiredAreaParm];
+        // console.log(areaCount);
+
         var hitArea = hitAreaParm.split("-").map(function (elm) { return Number(elm); });
         if (criticalAreaParm) {
             var criticalArea = criticalAreaParm.split("-").map(function (elm) { return Number(elm); });
@@ -256,6 +266,8 @@ Ver.0.0.2 by munokura (2020/4/12)
     // HzTimingBar.prototype.initialize = function (x, y, hitArea, criticalArea, requiredAreas) {
     //     this._varNo = 1;
     // 変数が代入されないバグ修正
+    // 
+
     HzTimingBar.prototype.initialize = function (x, y, hitArea, criticalArea, requiredAreas, varNo) {
         this._hitArea = hitArea;
         this._varNo = varNo;
@@ -379,7 +391,6 @@ Ver.0.0.2 by munokura (2020/4/12)
         // ボタン押下時の判定 (マウス対応追加)
         var inputCheck = Input.isTriggered('ok') || TouchInput.isTriggered();
         if (inputCheck && this._frame >= 0) {
-            var result = 0;
             // 必須エリアチェック
             for (var i = 0; i < this._requiredAreas.length; i++) {
                 var requiredArea = this._requiredAreas[i];
@@ -415,15 +426,14 @@ Ver.0.0.2 by munokura (2020/4/12)
             // if (result === 0) {
             if (missSe) {
                 AudioManager.playSe({ name: missSe, volume: 90, pitch: 100, pan: 0 });
+                result = 0;
+                $gameVariables.setValue(this._varNo, result);
             }
-            result = 0;
-            $gameVariables.setValue(this._varNo, result);
             this._frame = HzTimingBar.maxFrame;
             // }
             // $gameVariables.setValue(this._varNo, result);
             // return false;
         }
-
         return true;
     };
 
