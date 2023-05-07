@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_HzTimingBarMZ.js
- *   Ver.0.0.4
+ *   Ver.0.1.0
  * Copyright (c) 2022 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -83,6 +83,8 @@ MITライセンスの下で公開されています。
  * Ver.0.0.4 by munokura (2023/5/7)
  * 2回目以降に前回のスコアが影響してしまう不具合を修正
  * 
+ * Ver.0.1.0 by munokura (2023/5/7)
+ * ヒット時にクリア条件が揃っている場合、末端まで待たずにクリアする仕様変更
  * 
  * @param bar width
  * @type number
@@ -179,6 +181,8 @@ MITライセンスの下で公開されています。
     var criticalSe = parameters['critical SE'];
     var missSe = parameters['miss SE'];
     var result = 0;
+    var hitAreaHitted = false;
+    var criticalAreaHitted = false;
 
     PluginManager.registerCommand(pluginName, "HzTimingBar", function (obj) {
         result = 0;
@@ -191,9 +195,13 @@ MITライセンスの下で公開されています。
         var x = Number(args[4] || -1) < 0 ? Graphics.width / 2 : Number(args[4]);
         var y = Number(args[5] || -1) < 0 ? Graphics.height / 2 : Number(args[5]);
 
-        //エリア数カウント
-        // var areaCount = [hitAreaParm, criticalAreaParm, requiredAreaParm];
-        // console.log(areaCount);
+        if (!hitAreaParm) {
+            hitAreaHitted = true;
+        }
+
+        if (!criticalAreaParm) {
+            criticalAreaHitted = true;
+        }
 
         var hitArea = hitAreaParm.split("-").map(function (elm) { return Number(elm); });
         if (criticalAreaParm) {
@@ -381,6 +389,7 @@ MITライセンスの下で公開されています。
         // ボタン押下時の判定 (マウス対応追加)
         var inputCheck = Input.isTriggered('ok') || TouchInput.isTriggered();
         if (inputCheck && this._frame >= 0) {
+
             // 必須エリアチェック
             for (var i = 0; i < this._requiredAreas.length; i++) {
                 var requiredArea = this._requiredAreas[i];
@@ -392,6 +401,7 @@ MITライセンスの下で公開されています。
                     return true;
                 }
             }
+
             if (this._criticalArea[0] <= this._frame && this._frame < this._criticalArea[1]) {
                 // if (this.allRequiredAreaHitted()) {
                 // result = 2;
@@ -400,6 +410,10 @@ MITライセンスの下で公開されています。
                     AudioManager.playSe({ name: criticalSe, volume: 90, pitch: 100, pan: 0 });
                 }
                 $gameVariables.setValue(this._varNo, result);
+                criticalAreaHitted = true;
+                if (this.allRequiredAreaHitted() && hitAreaHitted && criticalAreaHitted) {
+                    return false;
+                }
                 return true;
                 // }
             } else if (this._hitArea[0] <= this._frame && this._frame < this._hitArea[1]) {
@@ -410,6 +424,10 @@ MITライセンスの下で公開されています。
                     AudioManager.playSe({ name: hitSe, volume: 90, pitch: 100, pan: 0 });
                 }
                 $gameVariables.setValue(this._varNo, result);
+                hitAreaHitted = true;
+                if (this.allRequiredAreaHitted() && hitAreaHitted && criticalAreaHitted) {
+                    return false;
+                }
                 return true;
                 // }
             }
