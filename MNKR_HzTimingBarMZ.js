@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_HzTimingBarMZ.js
- *   Ver.0.1.1
+ *   Ver.0.1.2
  * Copyright (c) 2022 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -95,7 +95,7 @@ MITライセンスの下で公開されています。
  *
  * @param required SE
  * @type file
- * @typr reauire 1
+ * @reauire 1
  * @dir audio/se/
  * @text 必須エリアヒット時SE
  * @desc 必須エリアヒット時のSE
@@ -103,7 +103,7 @@ MITライセンスの下で公開されています。
  *
  * @param hit SE
  * @type file
- * @typr reauire 1
+ * @reauire 1
  * @dir audio/se/
  * @text ヒットエリアヒット時SE
  * @desc ヒットエリアヒット時のSE
@@ -111,7 +111,7 @@ MITライセンスの下で公開されています。
  * 
  * @param critical SE
  * @type file
- * @typr reauire 1
+ * @reauire 1
  * @dir audio/se/
  * @text クリティカルエリアヒット時SE
  * @desc クリティカルエリアヒット時のSE
@@ -119,7 +119,7 @@ MITライセンスの下で公開されています。
  *
  * @param miss SE
  * @type file
- * @typr reauire 1
+ * @reauire 1
  * @dir audio/se/
  * @text 入力時（失敗）SE
  * @desc 入力時（失敗）のSE
