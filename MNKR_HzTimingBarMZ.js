@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_HzTimingBarMZ.js
- *   Ver.0.0.3
+ *   Ver.0.0.4
  * Copyright (c) 2022 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -79,6 +79,9 @@ MITライセンスの下で公開されています。
  * 
  * Ver.0.0.3 by munokura (2023/5/7)
  * クリティカルの後にヒットを取ると、ヒットの値を取得する不具合を修正
+ * 
+ * Ver.0.0.4 by munokura (2023/5/7)
+ * 2回目以降に前回のスコアが影響してしまう不具合を修正
  * 
  * 
  * @param bar width
@@ -161,19 +164,6 @@ MITライセンスの下で公開されています。
  * @default -1
  */
 
-/*
-Ver.0.0.1 by munokura (2022/4/11)
-MZへ移植
-変数に値が代入されない不具合を修正
-
-Ver.0.0.2 by munokura (2022/4/12)
-プラグインコマンド後に文章の表示がない場合、無限ループになる不具合を修正
-必須エリアが他エリアの後ろにある場合、必ずミスになる不具合を修正
-
-Ver.0.0.3 by munokura (2023/5/7)
-クリティカルの後にヒットを取ると、ヒットの値を取得する不具合を修正
-*/
-
 // 必須エリア追加
 // 必須エリアヒット時、効果音を出す
 // プラグインコマンド
@@ -188,10 +178,10 @@ Ver.0.0.3 by munokura (2023/5/7)
     var hitSe = parameters['hit SE'];
     var criticalSe = parameters['critical SE'];
     var missSe = parameters['miss SE'];
-
     var result = 0;
 
     PluginManager.registerCommand(pluginName, "HzTimingBar", function (obj) {
+        result = 0;
         var args = Object.entries(obj).map(([key, value]) => `${value}`);
         this.setWaitMode("hzTimingBar");
         var varNo = Number(args[0]);
@@ -426,9 +416,9 @@ Ver.0.0.3 by munokura (2023/5/7)
             // if (result === 0) {
             if (missSe) {
                 AudioManager.playSe({ name: missSe, volume: 90, pitch: 100, pan: 0 });
-                result = 0;
-                $gameVariables.setValue(this._varNo, result);
             }
+            result = 0;
+            $gameVariables.setValue(this._varNo, result);
             this._frame = HzTimingBar.maxFrame;
             // }
             // $gameVariables.setValue(this._varNo, result);
