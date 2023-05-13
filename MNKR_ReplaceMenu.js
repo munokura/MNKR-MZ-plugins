@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_ReplaceMenu.js
- *   Ver.0.0.2
+ *   Ver.0.0.3
  * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -24,6 +24,9 @@
  *   https://licenses.opensource.jp/MIT/MIT.html
  *   作者に無断で改変、再配布が可能で、
  *   利用形態（商用、18禁利用等）についても制限はありません。
+ * 
+ * Ver.0.0.3
+ * コモンイベント実行前にフェードが入ってしまうバグを修正
  *
  *
  * @param variableCommon
@@ -45,7 +48,7 @@
     const commonId = Number($gameVariables.value(variableCommon));
     if (commonId > 0) {
       $gameTemp.reserveCommonEvent(commonId);
-      SceneManager.goto(Scene_Map);
+      this.menuCalling = false;
     } else {
       _Scene_Map_callMenu.call(this);
     }
