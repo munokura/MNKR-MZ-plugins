@@ -411,6 +411,8 @@ var TMPlugin = TMPlugin || {};
     }
   };
 
+  globalThis.Game_CloudDust = Game_CloudDust;
+
   //-----------------------------------------------------------------------------
   // Game_CharacterBase
   //
