@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_TMCloudDustMZ.js
- *   Ver.1.0.0
+ *   Ver.1.0.1
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -117,6 +117,9 @@
  *   https://licenses.opensource.jp/MIT/MIT.html
  *   作者に無断で改変、再配布が可能で、
  *   利用形態（商用、18禁利用等）についても制限はありません。
+ *
+ * Ver.1.0.1
+ *   プラグイン導入後のセーブデータでコンティニューするとエラーになる不具合を修正
  *
  * 
  * @param dustImage
