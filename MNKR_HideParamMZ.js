@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_HideParamMZ.js
- *   Ver.0.1.2
+ *   Ver.0.2.0
  * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -48,6 +48,14 @@
  * @off 非表示
  * @default false
  * @desc ゲージ一式(HP/MP/TP)を表示するか指定します。
+ * 
+ * @param cost
+ * @text 消費MP/TP
+ * @type boolean
+ * @on 表示
+ * @off 非表示
+ * @default false
+ * @desc スキルメニューの消費MP/TPを表示するか指定します。
  * 
  * @param atk
  * @text 攻撃力
@@ -108,6 +116,7 @@
   const PRM_level = parameters['level'] === 'true';
   const PRM_exp = parameters['exp'] === 'true';
   const PRM_gauge = parameters['gauge'] === 'true';
+  const PRM_cost = parameters['cost'] === 'true';
   const PRM_displayParam = [];
   PRM_displayParam.push(parameters['atk'] === 'true');
   PRM_displayParam.push(parameters['def'] === 'true');
@@ -179,6 +188,20 @@
       }
     } else {
       _Window_EquipStatus_drawAllParams.call(this);
+    }
+  };
+
+  const _Window_SkillList_drawItem = Window_SkillList.prototype.drawItem;
+  Window_SkillList.prototype.drawItem = function (index) {
+    if (PRM_cost) {
+      _Window_SkillList_drawItem.call(this, index);
+    } else {
+      const skill = this.itemAt(index); if (skill) {
+        const rect = this.itemLineRect(index);
+        this.changePaintOpacity(this.isEnabled(skill));
+        this.drawItemName(skill, rect.x, rect.y, rect.width);
+        this.changePaintOpacity(1);
+      }
     }
   };
 
