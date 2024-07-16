@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_SkillChoiceSceneMZ.js
- *   Ver.0.0.3
+ *   Ver.0.0.4
  * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -31,6 +31,7 @@
  * 更新履歴
  * Ver.0.0.2 キャンセル時処理追加
  * Ver.0.0.3 ヘルプウィンドウ表示機能追加
+ * Ver.0.0.4 ヘルプウィンドウ表示設定をプラグインパラメーターへ変更
  *  
  *
  * @param windowX
@@ -57,6 +58,13 @@
  * @default 0
  * @desc スキル選択シーンのウィンドウ行数。0の場合、UIエリアの高さにします。
  *
+ * @param helpWindow
+ * @text ヘルプウィンドウ表示
+ * @desc スキルのヘルプウィンドウを表示します。
+ * @type boolean
+ * @on 表示
+ * @off 非表示
+ * @default true
  * 
  * @command skillChoiceScene
  * @text スキル選択シーンを表示
@@ -79,14 +87,6 @@
  * @desc スキルIDを変数に代入します。
  * @type variable
  * @default 0
- *
- * @arg helpWindow
- * @text ヘルプウィンドウ表示
- * @desc スキルのヘルプウィンドウを表示します。
- * @type boolean
- * @on 表示
- * @off 非表示
- * @default true
  */
 
 (() => {
@@ -100,12 +100,14 @@
 	param.windowY = Number(parameters['windowY'] || 0);
 	param.windowWidth = Number(parameters['windowWidth'] || 0);
 	param.windowHeight = Number(parameters['windowHeight'] || 0);
+	param.helpWindow = parameters['helpWindow'] === "true";
 
 	const MNKR_SkillChoice = {
 		actorId: 0,
 		variableId: 0,
-		selectSkillId: 0,
-		helpWindow: false
+		selectSkillId: 0
+		// ,
+		// helpWindow: false
 	};
 
 	PluginManager.registerCommand(pluginName, "skillChoiceScene", function (args) {
@@ -116,7 +118,7 @@
 		if (MNKR_SkillChoice.actorId > 0 && MNKR_SkillChoice.variableId > 0) {
 			SceneManager.push(MNKR_Scene_SkillChoice);
 		}
-		MNKR_SkillChoice.helpWindow = args.helpWindow === "true";
+		// MNKR_SkillChoice.helpWindow = args.helpWindow === "true";
 	});
 
 	//-----------------------------------------------------------------------------
@@ -131,7 +133,8 @@
 
 	MNKR_Scene_SkillChoice.prototype.create = function () {
 		Scene_MenuBase.prototype.create.call(this);
-		if (MNKR_SkillChoice.helpWindow) {
+		if (param.helpWindow) {
+			// if (MNKR_SkillChoice.helpWindow) {
 			this.createHelpWindow();
 		}
 		this.createSkillChoiceWindow();
@@ -140,7 +143,8 @@
 	MNKR_Scene_SkillChoice.prototype.createSkillChoiceWindow = function () {
 		const rect = this.skillChoiceWindowRect();
 		this._skillChoiceWindow = new MNKR_Window_SkillChoice(rect);
-		if (MNKR_SkillChoice.helpWindow) {
+		if (param.helpWindow) {
+			// if (MNKR_SkillChoice.helpWindow) {
 			this._skillChoiceWindow.setHelpWindow(this._helpWindow);
 		}
 		this._skillChoiceWindow.setHandler('ok', this.onItemOk.bind(this));
