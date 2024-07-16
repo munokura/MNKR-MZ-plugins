@@ -106,8 +106,6 @@
 		actorId: 0,
 		variableId: 0,
 		selectSkillId: 0
-		// ,
-		// helpWindow: false
 	};
 
 	PluginManager.registerCommand(pluginName, "skillChoiceScene", function (args) {
@@ -118,7 +116,6 @@
 		if (MNKR_SkillChoice.actorId > 0 && MNKR_SkillChoice.variableId > 0) {
 			SceneManager.push(MNKR_Scene_SkillChoice);
 		}
-		// MNKR_SkillChoice.helpWindow = args.helpWindow === "true";
 	});
 
 	//-----------------------------------------------------------------------------
@@ -134,7 +131,6 @@
 	MNKR_Scene_SkillChoice.prototype.create = function () {
 		Scene_MenuBase.prototype.create.call(this);
 		if (param.helpWindow) {
-			// if (MNKR_SkillChoice.helpWindow) {
 			this.createHelpWindow();
 		}
 		this.createSkillChoiceWindow();
@@ -144,7 +140,6 @@
 		const rect = this.skillChoiceWindowRect();
 		this._skillChoiceWindow = new MNKR_Window_SkillChoice(rect);
 		if (param.helpWindow) {
-			// if (MNKR_SkillChoice.helpWindow) {
 			this._skillChoiceWindow.setHelpWindow(this._helpWindow);
 		}
 		this._skillChoiceWindow.setHandler('ok', this.onItemOk.bind(this));
