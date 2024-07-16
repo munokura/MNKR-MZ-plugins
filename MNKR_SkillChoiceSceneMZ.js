@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_SkillChoiceSceneMZ.js
- *   Ver.0.0.2
+ *   Ver.0.0.3
  * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -27,7 +27,11 @@
  *   https://licenses.opensource.jp/MIT/MIT.html
  *   作者に無断で改変、再配布が可能で、
  *   利用形態（商用、18禁利用等）についても制限はありません。
- * 
+ *
+ * 更新履歴
+ * Ver.0.0.2 キャンセル時処理追加
+ * Ver.0.0.3 ヘルプウィンドウ表示機能追加
+ *  
  *
  * @param windowX
  * @text ウィンドウX座標
@@ -75,6 +79,14 @@
  * @desc スキルIDを変数に代入します。
  * @type variable
  * @default 0
+ *
+ * @arg helpWindow
+ * @text ヘルプウィンドウ表示
+ * @desc スキルのヘルプウィンドウを表示します。
+ * @type boolean
+ * @on 表示
+ * @off 非表示
+ * @default true
  */
 
 (() => {
@@ -92,7 +104,8 @@
 	const MNKR_SkillChoice = {
 		actorId: 0,
 		variableId: 0,
-		selectSkillId: 0
+		selectSkillId: 0,
+		helpWindow: false
 	};
 
 	PluginManager.registerCommand(pluginName, "skillChoiceScene", function (args) {
@@ -103,6 +116,7 @@
 		if (MNKR_SkillChoice.actorId > 0 && MNKR_SkillChoice.variableId > 0) {
 			SceneManager.push(MNKR_Scene_SkillChoice);
 		}
+		MNKR_SkillChoice.helpWindow = args.helpWindow === "true";
 	});
 
 	//-----------------------------------------------------------------------------
@@ -117,12 +131,18 @@
 
 	MNKR_Scene_SkillChoice.prototype.create = function () {
 		Scene_MenuBase.prototype.create.call(this);
+		if (MNKR_SkillChoice.helpWindow) {
+			this.createHelpWindow();
+		}
 		this.createSkillChoiceWindow();
 	};
 
 	MNKR_Scene_SkillChoice.prototype.createSkillChoiceWindow = function () {
 		const rect = this.skillChoiceWindowRect();
 		this._skillChoiceWindow = new MNKR_Window_SkillChoice(rect);
+		if (MNKR_SkillChoice.helpWindow) {
+			this._skillChoiceWindow.setHelpWindow(this._helpWindow);
+		}
 		this._skillChoiceWindow.setHandler('ok', this.onItemOk.bind(this));
 		this._skillChoiceWindow.setHandler('cancel', this.onItemCancel.bind(this));
 		this.addWindow(this._skillChoiceWindow);
