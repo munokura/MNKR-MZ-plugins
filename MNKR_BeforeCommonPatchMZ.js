@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_BeforeCommonPatchMZ.js
- *   Ver.0.0.1
+ *   Ver.0.0.2
  * Copyright (c) 2024 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -94,7 +94,9 @@
 
         // 行動開始メッセージの表示
         if (DataManager.isSkill(item)) {
-            BattleManager._logWindow.push('addText', message1.format(userName, skillName));
+            if (message1) {
+                BattleManager._logWindow.push('addText', message1.format(userName, skillName));
+            }
             if (message2) {
                 BattleManager._logWindow.push('addText', message2.format(userName, skillName));
             }
@@ -105,7 +107,7 @@
         }
 
         // コモンイベント前ウェイト
-        beforeCommonWait = Number(args.beforeCommonWait);
+        const beforeCommonWait = Number(args.beforeCommonWait);
         if (beforeCommonWait > 0) {
             this.wait(args.beforeCommonWait);
         }
