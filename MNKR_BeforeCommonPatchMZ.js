@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_BeforeCommonPatchMZ.js
- *   Ver.0.0.2
+ *   Ver.0.0.3
  * Copyright (c) 2024 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -109,7 +109,7 @@
         // コモンイベント前ウェイト
         const beforeCommonWait = Number(args.beforeCommonWait);
         if (beforeCommonWait > 0) {
-            this.wait(args.beforeCommonWait);
+            this.wait(beforeCommonWait);
         }
     });
 
