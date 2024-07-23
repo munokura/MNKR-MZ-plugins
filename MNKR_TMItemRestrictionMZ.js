@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_TMItemRestrictionMZ.js
- *   Ver.1.0.3
+ *   Ver.1.0.4
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -68,10 +68,6 @@
  * @default 0
  */
 
-var Imported = Imported || {};
-Imported.TMItemRestriction = true;
-var TMPlugin = TMPlugin || {};
-
 (() => {
   "use strict";
 
@@ -126,9 +122,9 @@ var TMPlugin = TMPlugin || {};
 
   Game_Action.prototype.isTargetActorValid = function (target) {
     if (target.isActor() && this.isItem()) {
-      let item = this.item();
+      const item = this.item();
       if (item.meta.targetActor) {
-        let targetActors = item.meta.targetActor.split(' ').map(Number);
+        const targetActors = item.meta.targetActor.split(' ').map(Number);
         return targetActors.contains(target.actorId());
       }
     }
@@ -146,13 +142,26 @@ var TMPlugin = TMPlugin || {};
     if (this.isItem() && item.meta.justOnce) target.setAlreadyUsed(item);
   };
 
+  Game_Action.prototype.isTargetActorValidInBattle = function (actorId) {
+    // if (target.isActor() && this.isItem()) {
+    if (this.isItem()) {
+      const item = this.item();
+      if (item.meta.targetActor) {
+        const targetActors = item.meta.targetActor.split(' ').map(Number);
+        // return targetActors.contains(target.actorId());
+        return targetActors.contains(actorId);
+      }
+    }
+    return true;
+  };
+
   //-----------------------------------------------------------------------------
   // PluginManager
   //
 
   PluginManager.registerCommand(pluginName, "clearItemRestriction", args => {
     const arr = [args.actorId];
-    let actor = $gameActors.actor(+arr[0]);
+    const actor = $gameActors.actor(+arr[0]);
     if (actor) actor.clearItemRestriction();
   });
 
@@ -172,9 +181,11 @@ var TMPlugin = TMPlugin || {};
 
   const _Scene_Battle_onActorOk = Scene_Battle.prototype.onActorOk;
   Scene_Battle.prototype.onActorOk = function () {
-    let action = BattleManager.inputtingAction();
-    let actor = this._actorWindow.actor();
-    if (action.isAlreadyUsed(actor) || !action.isTargetActorValid(actor)) {
+    const action = BattleManager.inputtingAction();
+    // var actor = this._actorWindow.actor();
+    const targetActorId = $gameParty.members()[this._actorWindow.index()].actorId();
+    // if (action.isAlreadyUsed(actor) || !action.isTargetActorValid(actor)) {
+    if (action.isAlreadyUsed(targetActorId) || !action.isTargetActorValidInBattle(targetActorId)) {
       SoundManager.playBuzzer();
       this._actorWindow.activate();
     } else {
