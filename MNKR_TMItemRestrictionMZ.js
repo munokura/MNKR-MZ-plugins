@@ -22,10 +22,17 @@
 /*:
  * @target MZ
  * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMItemRestrictionMZ.js
- * @author tomoaky (改変 munokura)
+ * @author tomoaky (改変:ムノクラ)
  * @plugindesc アイテムの対象アクターに関する制約を追加します。
  *
  * @help
+ * 注意：
+ * このプラグインは自動マップ生成（tomoaky様作TMItemRestriction.js）を
+ * ムノクラが改変したものです。
+ * このプラグインの質問はムノクラへお願いいたします。
+ * https://x.com/munokura/
+ * 
+ * 
  * 使い方:
  * 
  *   アイテムのメモ欄にタグをつけることで対象として選択できるアクターを
@@ -183,9 +190,9 @@
   Scene_Battle.prototype.onActorOk = function () {
     const action = BattleManager.inputtingAction();
     // var actor = this._actorWindow.actor();
-    const targetActorId = $gameParty.members()[this._actorWindow.index()].actorId();
+    const actor = $gameParty.members()[this._actorWindow.index()].actorId();
     // if (action.isAlreadyUsed(actor) || !action.isTargetActorValid(actor)) {
-    if (action.isAlreadyUsed(targetActorId) || !action.isTargetActorValidInBattle(targetActorId)) {
+    if (action.isAlreadyUsed(actor) || !action.isTargetActorValidInBattle(actor)) {
       SoundManager.playBuzzer();
       this._actorWindow.activate();
     } else {
