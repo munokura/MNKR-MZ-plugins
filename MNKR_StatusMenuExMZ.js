@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_StatusMenuExMZ.js
- *   Ver.0.0.3
+ *   Ver.0.0.4
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -12,7 +12,7 @@
  * @target MZ
  * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_StatusMenuExMZ.js
  * @plugindesc ステータスシーンに表示するパラメータを追加します。
- * @author munokura
+ * @author ムノクラ
  *
  * @help
  * ステータスシーンに表示するパラメータを追加します。
@@ -205,7 +205,7 @@
     const xparamId = index;
     const xname = xparamText[xparamId];
     if (xname) {
-      const xvalue = this._actor.xparam(xparamId) * 100;
+      const xvalue = Math.round(this._actor.xparam(xparamId) * 1000) / 10;
 
       this.changeTextColor(ColorManager.systemColor());
       this.drawText(xname, xparamNameX, rect.y, xparamNameWidth);
@@ -217,7 +217,7 @@
     const sname = sparamText[sparamId];
     if (sname) {
 
-      const svalue = this._actor.sparam(sparamId) * 100;
+      const svalue = Math.round(this._actor.sparam(sparamId) * 1000) / 10;
 
       this.changeTextColor(ColorManager.systemColor());
       this.drawText(sname, sparamNameX, rect.y, sparamNameWidth);
