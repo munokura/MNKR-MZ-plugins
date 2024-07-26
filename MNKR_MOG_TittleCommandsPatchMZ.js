@@ -4,7 +4,7 @@
 
 /*:
  * @target MZ
- * @plugindesc MOG_TitleCommands でセーブデータがない場合、画像の色相を変えたり、差し替えたり出来利用にします。
+ * @plugindesc MOG_TitleCommands でセーブデータがない場合、画像の色相を変えたり、差し替えたり出来ます。
  * @author Moghunter
  * @base MOG_TitleCommands
  * @orderAfter MOG_TitleCommands
