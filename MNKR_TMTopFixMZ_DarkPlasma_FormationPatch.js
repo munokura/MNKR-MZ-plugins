@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_TMTopFixMZ_DarkPlasma_FormationPatch.js
- *   Ver.0.0.4
+ *   Ver.3.0.0
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -20,6 +20,7 @@
  * @help
  * DarkPlasma_Formation のシーンにおいて、
  * パーティの先頭にいるアクターの並び替えを禁止します。
+ * DarkPlasma_Formation Ver3.0.0 で動作確認しています。
  *
  * 使い方:
  * DarkPlasma_Formation と MNKR_TMTopFixMZ をプラグイン管理でONにします。
@@ -42,12 +43,12 @@
 (() => {
     'use strict';
 
-    const _Window_FormationSelect_isCurrentItemEnabled = Window_FormationSelect.prototype.isCurrentItemEnabled;
-    Window_FormationSelect.prototype.isCurrentItemEnabled = function () {
+    const _Window_FormationBattleMember_isCurrentItemEnabled = Window_FormationBattleMember.prototype.isCurrentItemEnabled;
+    Window_FormationBattleMember.prototype.isCurrentItemEnabled = function () {
         if ($gameSystem.isTopFix() && this.index() === 0) {
             return false;
         }
-        return _Window_FormationSelect_isCurrentItemEnabled.call(this);
+        return _Window_FormationBattleMember_isCurrentItemEnabled.call(this);
     };
 
 })();
