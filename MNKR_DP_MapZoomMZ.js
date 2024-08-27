@@ -174,19 +174,18 @@ var drowsepost = drowsepost || {};
  * 
  * @param Picture Size Fixation
  * @text ピクチャ除外
- * @desc ピクチャをマップの拡大処理から除外します
- * Default: ALL (ALL: true / OFF: false / $ / screen_ / fix_)
+ * @desc マップの拡大処理から除外するピクチャを選択します。
  * @default true
  * @type select
- * @option OFF
+ * @option 全ピクチャを拡大
  * @value false
- * @option ALL
+ * @option 全ピクチャを除外
  * @value true
- * @option $
+ * @option $がファイル名先頭のピクチャを除外
  * @value $
- * @option screen_
+ * @option screen_がファイル名先頭のピクチャを除外
  * @value screen_
- * @option fix_
+ * @option fix_がファイル名先頭のピクチャを除外
  * @value fix_
  * 
  * @param Old Focus
