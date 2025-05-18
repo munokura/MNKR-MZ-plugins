@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_BattleHelpHideMZ.js
- *   Ver.0.0.1
+ *   Ver.0.0.2
  * Copyright (c) 2025 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -10,7 +10,7 @@
 
 /*:
  * @target MZ
- * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_BattleSkillHelpHideMZ.js
+ * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_BattleHelpHideMZ.js
  * @plugindesc 戦闘でスキル・アイテムを選択後にヘルプウィンドウを非表示にします。
  * @author munokura
  *
