@@ -1,6 +1,6 @@
 /*
  * --------------------------------------------------
- * MNKR_RandomSeMvAnmation.js
+ * MNKR_RandomSeMvAnimation.js
  * Ver.1.0.0
  * Copyright (c) 2025 Munokura
  * This software is released under the MIT license.
@@ -10,7 +10,7 @@
 
 /*:
  * @target MZ
- * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_RandomSeMvAnmation.js
+ * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_RandomSeMvAnimation.js
  * @plugindesc MV互換データのアニメーションのSEをランダムにします。
  * @author munokura
  *
