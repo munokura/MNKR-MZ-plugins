@@ -10,6 +10,7 @@
 
 /*:
  * @target MZ
+ * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_AltMenuScreenMZ.js
  * @plugindesc メインメニュー画面をシンプルにします。
  * @author munokura
  * 

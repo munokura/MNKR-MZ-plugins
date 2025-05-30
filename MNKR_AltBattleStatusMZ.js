@@ -10,6 +10,7 @@
 
 /*:
  * @target MZ
+ * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_AltBattleStatusMZ.js
  * @plugindesc 戦闘中のステータスウィンドウをシンプルにします。
  * @author munokura
  * 
