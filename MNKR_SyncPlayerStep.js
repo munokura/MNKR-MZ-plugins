@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_SyncPlayerStep.js
- *   Ver.0.0.1
+ *   Ver.0.0.2
  * Copyright (c) 2025 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -51,20 +51,10 @@
 (() => {
     "use strict";
 
-    const _Game_CharacterBase_updateAnimation = Game_CharacterBase.prototype.updateAnimation;
-    Game_CharacterBase.prototype.updateAnimation = function () {
-        if (this instanceof Game_Follower && $gamePlayer && !$gamePlayer.isMoving()) {
-            this._pattern = $gamePlayer._pattern;
-            this._animeCount = $gamePlayer._animeCount;
-        } else {
-            _Game_CharacterBase_updateAnimation.call(this);
-        }
-    };
-
     const _Game_Follower_update = Game_Follower.prototype.update;
     Game_Follower.prototype.update = function () {
         _Game_Follower_update.call(this);
-        if ($gamePlayer && !$gamePlayer.isMoving()) {
+        if (!$gamePlayer.isMoving()) {
             this._pattern = $gamePlayer._pattern;
             this._animeCount = $gamePlayer._animeCount;
         }
