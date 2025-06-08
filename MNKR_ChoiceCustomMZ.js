@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_ChoiceCustomMZ.js
- * Ver.0.1.0
+ * Ver.0.1.1
  * Copyright (c) 2025 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -98,9 +98,9 @@
  *
  * @arg columns
  * @text 列数
- * @desc 2以上の数値を指定してください。
+ * @desc 1以上の数値を指定してください。
  * @type number
- * @min 2
+ * @min 1
  * @default 2
  *
  * @arg yPosition
