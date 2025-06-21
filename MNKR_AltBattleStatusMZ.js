@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_AltBattleStatusMZ.js
- *   Ver.0.0.1
+ *   Ver.0.0.2
  * Copyright (c) 2025 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -41,12 +41,12 @@
     const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
     const parameters = PluginManager.parameters(pluginName);
 
-    const param = {};
-    param.actorAutoCols = parameters['actorAutoCols'] === 'true';
+    const PRM = {};
+    PRM.actorAutoCols = parameters['actorAutoCols'] === 'true';
 
     const _Window_BattleStatus_maxCols = Window_BattleStatus.prototype.maxCols;
     Window_BattleStatus.prototype.maxCols = function () {
-        if (param.actorAutoCols) {
+        if (PRM.actorAutoCols) {
             const cols = $gameParty.battleMembers().length;
             return cols;
         }
@@ -55,7 +55,7 @@
 
     const _Window_BattleStatus_maxItems = Window_BattleStatus.prototype.maxItems;
     Window_BattleStatus.prototype.maxItems = function () {
-        if (param.actorAutoCols) {
+        if (PRM.actorAutoCols) {
             const cols = $gameParty.battleMembers().length;
             return cols;
         }
@@ -63,16 +63,12 @@
     };
 
     Window_BattleStatus.prototype.drawItemImage = function (index) {
-        // const actor = this.actor(index);
-        // const rect = this.faceRect(index);
-        // this.drawActorFace(actor, rect.x, rect.y, rect.width, rect.height);
     };
 
     Window_BattleStatus.prototype.drawItemStatus = function (index) {
         const lineHeight = this.lineHeight();
         const actor = this.actor(index);
         const rect = this.itemRectWithPadding(index);
-        const itemWidth = rect.width;
         const nameX = this.nameX(rect);
         const nameY = 8;
         const stateIconX = this.stateIconX(rect);
@@ -92,7 +88,7 @@
         if (!isScene) {
             return _Sprite_Gauge_bitmapWidth.call(this);
         }
-        if (param.actorAutoCols) {
+        if (PRM.actorAutoCols) {
             const bitmapWidth = Math.round(128 * 4 / $gameParty.battleMembers().length);
             return bitmapWidth;
         }
@@ -100,7 +96,7 @@
     };
 
     Window_BattleStatus.prototype.drawActorLevel = function (actor, x, y) {
-        const bitmapWidth = Math.round(128 * 4 / $gameParty.battleMembers().length);
+        const bitmapWidth = PRM.actorAutoCols ? Math.round(128 * 4 / $gameParty.battleMembers().length) : 128;
         const levelTextWidth = this.textWidth(String(actor.level));
         const levelX = x + bitmapWidth - levelTextWidth;
         this.changeTextColor(ColorManager.systemColor());
