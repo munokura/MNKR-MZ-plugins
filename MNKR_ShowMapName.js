@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_ShowMapName.js
- *   Ver.0.2.0
+ *   Ver.0.2.1
  * Copyright (c) 2021 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -55,26 +55,31 @@
 
   const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
   const parameters = PluginManager.parameters(pluginName);
-  const globalSetting = parameters['globalSetting'] === 'true';
-  const fadeOutSetting = parameters['fadeOutSetting'] === 'true';
+  const PRM = {};
+  PRM.globalSetting = parameters['globalSetting'] === 'true';
+  PRM.fadeOutSetting = parameters['fadeOutSetting'] === 'true';
 
   const _Window_MapName_update = Window_MapName.prototype.update;
   Window_MapName.prototype.update = function () {
-    const showMapName = $dataMap.meta.MNKR_ShowMapName || globalSetting;
-    if (showMapName) {
-      if ($gameMap.isNameDisplayEnabled()) {
-        this.updateFadeIn();
-      } else {
-        this.updateFadeOut();
-      }
-    } else {
+    if (DataManager.isEventTest()) {
       _Window_MapName_update.call(this);
+      return;
+    };
+    const showMapName = $dataMap.meta[pluginName] || PRM.globalSetting;
+    if (!showMapName) {
+      _Window_MapName_update.call(this);
+      return;
+    }
+    if ($gameMap.isNameDisplayEnabled()) {
+      this.updateFadeIn();
+    } else {
+      this.updateFadeOut();
     }
   };
 
   const _Game_Screen_startFadeOut = Game_Screen.prototype.startFadeOut;
   Game_Screen.prototype.startFadeOut = function (duration) {
-    if (fadeOutSetting) {
+    if (PRM.fadeOutSetting) {
       $gameMap.disableNameDisplay();
     }
     _Game_Screen_startFadeOut.call(this, duration);
@@ -82,7 +87,7 @@
 
   const _Game_Screen_startFadeIn = Game_Screen.prototype.startFadeIn;
   Game_Screen.prototype.startFadeIn = function (duration) {
-    if (fadeOutSetting) {
+    if (PRM.fadeOutSetting) {
       $gameMap.enableNameDisplay();
     }
     _Game_Screen_startFadeIn.call(this, duration);
