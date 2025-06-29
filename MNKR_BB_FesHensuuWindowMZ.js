@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_BB_FesHensuuWindowMZ.js
- *   Ver.0.0.2
+ *   Ver.0.0.3
  * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -202,6 +202,7 @@
     Scene_Map.prototype.createAllWindows = function () {
         this._FesWindow = new Window_Fes();
         this.addWindow(this._FesWindow);
+        this._FesWindow.hide();
         _Scene_map_createAllWindows.call(this);
     };
 
