@@ -1,8 +1,8 @@
 /*
  * --------------------------------------------------
  * MNKR_CommonPopupCoreMZ.js
- *   Ver.0.1.0
- * Copyright (c) 2020 Munokura
+ * Ver.0.1.1
+ * Copyright (c) 2020, 2025 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
  * --------------------------------------------------
@@ -25,21 +25,11 @@
  * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_CommonPopupCoreMZ.js
  * @plugindesc 汎用的なポップアップの仕組みを提供するためのベースプラグインです。
  * @author Yana (改変 munokura)
- * 
  * @help
- * このプラグインは、汎用的なポップアップの仕組みを提供するプラグインです。
- * このプラグイン単体ではプラグインコマンドを追加する以外の機能はありません。
+ * # 機能
+ * ポップアップを表示するプラグインコマンドを追加します。
  * 
- * ------------------------------------------------------
- *  プラグインコマンド
- * ------------------------------------------------------
- * CommonPopup add param1 param2 param3 ・・・
- * 
- * 必要なパラメータのみを指定できます。
- *  例:プレイヤーの上にテストと240フレームポップアップさせる
- * CommonPopup add text:テスト count:240 eventId:-1
- * 
- * パラメータ詳細:
+ * ## プラグインコマンドのパラメータ
  * text:表示テキスト
  * eventId:表示するイベントのID
  * count:表示時間
@@ -53,50 +43,36 @@
  * bx:テキスト表示位置補正X
  * by:テキスト表示位置補正Y
  * extend:
- *   表示タイミングの調整用配列で指定。
- *   例:extend:[20,50] 20フレーム掛けて出現し、50フレーム目から消え始める。
+ * 表示タイミングの調整用配列で指定。
+ * 例:extend:[20,50] 20フレーム掛けて出現し、50フレーム目から消え始める。
  * 
- * 本家で未実装のものを追加
- *   backImage:ファイル名（img/pictures内）
+ * - 移植前で未実装のものを追加
+ * backImage:ファイル名（img/pictures内）
  * 
- * 必要性が低いと考え、プラグインコマンドから削除
- *   anchorX:ポップアップ原点X。0イベントの右端。タイル単位。
- *   anchorY:ポップアップ原点Y。0イベントの下端。タイル単位。
+ * - 必要性が低いと考え、プラグインコマンドから削除
+ * anchorX:ポップアップ原点X。0イベントの右端。タイル単位。
+ * anchorY:ポップアップ原点Y。0イベントの下端。タイル単位。
  * 
- * 未実装と思われる機能
- *   fixed:画面に固定するか？ true/falseで指定。
- *   slideCount:新しいポップアップが発生した際、上にスライドさせる速度。
- *
- * イベントコマンドのスクリプトを使う場合、
- *
- * this.addPopup(["add","text:テスト","count:120"…]);
- *
- * のように記述すればスクリプトでポップアップを行うことができます。
- * 同じように、イベントコマンドの移動ルート内のスクリプトで使用する場合、
- *
- * $gameMap._interpreter.addPopup(["add","text:テスト","count:120"…]);
- *
- * のように記述すれば使用可能です。
- * 
- * ------------------------------------------------------
- * 利用規約
- * ------------------------------------------------------
- *   MITライセンスです。
- *   https://licenses.opensource.jp/MIT/MIT.html
- *   作者に無断で改変、再配布が可能で、
- *   利用形態（商用、18禁利用等）についても制限はありません。
+ * - 未実装と思われる機能
+ * fixed:画面に固定するか？ true/falseで指定。
+ * slideCount:新しいポップアップが発生した際、上にスライドさせる速度。
  * 
  * 
- * @command CommonPopupAdd
+ * # 利用規約:
+ * MITライセンスです。
+ * https://licenses.opensource.jp/MIT/MIT.html
+ * 作者に無断で改変、再配布が可能で、
+ * 利用形態（商用、18禁利用等）についても制限はありません。
+ * 
+ * 
+ * * @command CommonPopupAdd
  * @text ポップアップ表示
  * @desc テキストをポップアップ表示します。
- * 
  * @arg text
  * @type string
  * @text 表示テキスト
  * @desc 表示テキストを入力します。
  * @default 
- * 
  * @arg eventId
  * @type number
  * @min -1
@@ -104,19 +80,16 @@
  * @desc 表示するイベントのID。
  * -1:プレイヤー / 0:実行イベント / 1以上:イベントID
  * @default -1
- * 
  * @arg count
  * @type number
  * @text 表示時間
  * @desc ポップアップを完了するまでのフレーム数
  * @default 60
- * 
  * @arg delay
  * @type number
  * @text 表示遅延
  * @desc ポップアップを開始するまでのフレーム数
  * @default 0
- * 
  * @arg moveX
  * @type number
  * @min -9007
@@ -124,7 +97,6 @@
  * @text 移動先地点X(相対座標)
  * @desc ポップアップ完了時のX位置補正
  * @default 0
- * 
  * @arg moveY
  * @type number
  * @min -9007
@@ -132,7 +104,6 @@
  * @text 移動先地点Y(相対座標)
  * @desc ポップアップ完了時のY位置補正
  * @default -48
- * 
  * @arg sx
  * @type number
  * @min -9007
@@ -140,7 +111,6 @@
  * @text ポップ位置補正X
  * @desc ポップアップのX位置補正
  * @default 0
- * 
  * @arg sy
  * @type number
  * @min -9007
@@ -148,7 +118,6 @@
  * @text ポップ位置補正Y
  * @desc ポップアップのY位置補正
  * @default 0
- * 
  * @arg pattern
  * @type select
  * @option フェード
@@ -160,14 +129,12 @@
  * @text 表示パターン
  * @desc ポップアップ表示の変形パターン
  * @default Normal
- * 
  * @arg back
  * @text 背景色
  * @type string
  * @desc 背景色:Red,Green,Blue,Alpha / 透明:-1
  * 例:0, 0, 0, 0.6
  * @default 0,0,0,0.6
- * 
  * @arg backImage
  * @text 背景画像
  * @type file
@@ -175,7 +142,6 @@
  * @dir img/pictures
  * @desc 背景画像を指定します。背景画像を使用すると背景色は無視されます。
  * @default
- * 
  * @arg bx
  * @type number
  * @min -9007
@@ -183,7 +149,6 @@
  * @text テキスト位置補正X
  * @desc テキストの表示位置補正X
  * @default 0
- * 
  * @arg by
  * @type number
  * @min -9007
@@ -191,15 +156,13 @@
  * @text テキスト位置補正Y
  * @desc テキストの表示位置補正Y
  * @default 0
- * 
  * @arg extend
  * @type string
  * @text 表示タイミングの調整
  * @desc 表示タイミングの調整用配列で指定。例:[20,50] 20フレーム掛けて出現し、50フレーム目から消え始める。
  * @default
  * 
- * 
- * @command CommonPopupClear
+ * * @command CommonPopupClear
  * @text ポップアップ消去
  * @desc 表示されているポップアップを消去します。
  */
@@ -218,21 +181,21 @@ function CommonPopupManager() {
 (() => {
     'use strict';
 
-    var pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
+    const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
 
     PluginManager.registerCommand(pluginName, "CommonPopupAdd", function (args) {
-        var argParam = Object.entries(args).map(([key, value]) => `${key}:${value}`);
+        const argParam = Object.entries(args).map(([key, value]) => `${key}:${value}`);
         argParam.unshift("add");
 
-        var eventId = 0;
-        for (var i = 0; i < argParam.length; i++) {
+        let eventId = 0;
+        for (let i = 0; i < argParam.length; i++) {
             if (argParam[i].match(/^eventId:(.+)/g)) {
                 eventId = Number(RegExp.$1);
                 break;
             }
         }
-        var character = this.character(eventId);
-        var arg = CommonPopupManager.setPopup(argParam, character);
+        const character = this.character(eventId);
+        const arg = CommonPopupManager.setPopup(argParam, character);
 
         if (arg.backImage !== '') {
             CommonPopupManager.bltCheck(CommonPopupManager.makeBitmap(arg));
@@ -247,7 +210,7 @@ function CommonPopupManager() {
     });
 
     Array.prototype.setNullPos = function (object) {
-        for (var i = 0; i < this.length; i++) {
+        for (let i = 0; i < this.length; i++) {
             if (this[i] === null || this[i] === '') {
                 this[i] = object;
                 return i;
@@ -257,8 +220,8 @@ function CommonPopupManager() {
     };
 
     Array.prototype.compact = function () {
-        var result = [];
-        for (var i = 0; i < this.length; i++) {
+        const result = [];
+        for (let i = 0; i < this.length; i++) {
             if (this[i] !== null && this[i] !== '') {
                 result.push(this[i]);
             }
@@ -274,7 +237,7 @@ function CommonPopupManager() {
 
     CommonPopupManager.window = function () {
         if (this._window) { return this._window }
-        this._window = new Window_Base(0, 0, Graphics.boxWidth, Graphics.boxHeight);
+        this._window = new Window_Base(new Rectangle(0, 0, Graphics.boxWidth, Graphics.boxHeight));
         return this._window;
     };
 
@@ -316,11 +279,11 @@ function CommonPopupManager() {
             this.bitmap = this._arg.bitmap;
         } else {
             CommonPopupManager.window().resetFontSettings();
-            var text = this._arg.text;
-            var size = CommonPopupManager.window().textSizeEx(text);
-            var width = size.width;
-            var height = size.height;
-            var sh = 8;
+            const text = this._arg.text;
+            const size = CommonPopupManager.window().textSizeEx(text);
+            const width = size.width;
+            const height = size.height;
+            const sh = 8;
             CommonPopupManager.window().createContents();
             this.bitmap = new Bitmap(width + 24, height + sh);
             this.drawBackRect(width + 24, height + sh);
@@ -331,9 +294,9 @@ function CommonPopupManager() {
 
     Sprite_Popup.prototype.drawBackRect = function (width, height) {
         if (this._arg.backImage !== '') {
-            var bitmap = CommonPopupManager.makeBitmap(this._arg);
-            var w = this._bitmap.width;
-            var h = this._bitmap.height;
+            const bitmap = CommonPopupManager.makeBitmap(this._arg);
+            const w = this._bitmap.width;
+            const h = this._bitmap.height;
             if (typeof this._arg.back === 'string') {
                 w = bitmap.width > this._bitmap.width ? bitmap.width : w;
                 h = bitmap.height > this._bitmap.height ? bitmap.height : h;
@@ -342,14 +305,12 @@ function CommonPopupManager() {
                 }
             }
             this.bitmap.blt(bitmap, 0, 0, bitmap.width, bitmap.height, 0, 0, w, h);
-            // bitmap.clear();
-            // bitmap = null;
         } else {
             if (this._arg.back === '-1') {
             } else {
-                var color1 = 'rgba(' + this._arg.back + ')';
-                var color2 = 'rgba(0,0,0,0)';
-                var dSize = width / 4;
+                const color1 = 'rgba(' + this._arg.back + ')';
+                const color2 = 'rgba(0,0,0,0)';
+                const dSize = width / 4;
                 this.bitmap.gradientFillRect(0, 0, dSize, height, color2, color1);
                 this.bitmap.fillRect(dSize, 0, dSize * 2, height, color1);
                 this.bitmap.gradientFillRect(dSize * 3, 0, dSize, height, color1, color2);
@@ -399,9 +360,9 @@ function CommonPopupManager() {
 
     Sprite_Popup.prototype.updateMoveSlide = function () {
         if (CommonPopupManager._setedPopups) {
-            var array = CommonPopupManager._setedPopups.clone().reverse();
-            var n = 0;
-            for (var i = 0; i < array.length; i++) {
+            let array = CommonPopupManager._setedPopups.clone().reverse();
+            let n = 0;
+            for (let i = 0; i < array.length; i++) {
                 if (this._index === array[i][0]) {
                     if (this._arg.slideAction === 'Down') {
                         this.y = this.y + n;
@@ -409,14 +370,14 @@ function CommonPopupManager() {
                         this.y = this.y - n;
                     }
                 }
-                var sprite = CommonPopupManager._tempCommonSprites[array[i][0]];
+                const sprite = CommonPopupManager._tempCommonSprites[array[i][0]];
                 if (sprite.pattern === -2 || sprite.pattern === 'GrowUp') {
                     n += (array[i][1] * sprite.rate);
                 } else {
                     n += (array[i][1] * ((this._arg.slideCount - array[i][2]) / this._arg.slideCount));
                 }
             }
-            for (var i = 0; i < CommonPopupManager._setedPopups.length; i++) {
+            for (let i = 0; i < CommonPopupManager._setedPopups.length; i++) {
                 CommonPopupManager._setedPopups[i][2]--;
                 if (CommonPopupManager._setedPopups[i][2] < 0) {
                     CommonPopupManager._setedPopups[i][2] = 0
@@ -427,29 +388,30 @@ function CommonPopupManager() {
     };
 
     Sprite_Popup.prototype.updateSlide = function () {
-        var originalWait = this._arg.count;
-        var cnt = originalWait - this._count;
+        const originalWait = this._arg.count;
+        const cnt = originalWait - this._count;
         this.opacity = 255;
-        var act = [originalWait * 0.25, originalWait * 0.75];
+        const act = [originalWait * 0.25, originalWait * 0.75];
         if (this._arg.extend !== '') { act = this._arg.extend }
-        var opTime1 = act[0];
-        var moveX = 0;
-        var moveY = 0;
+        const opTime1 = act[0];
+        let moveX = 0;
+        let moveY = 0;
         if (act[2]) { opTime1 = originalWait - act[2] }
-        var opTime2 = originalWait - act[1];
-        var n = 0;
+        const opTime2 = originalWait - act[1];
         if (act[3]) { opTime2 = act[3] }
         // 登場演出
+        let up = 0;
+        let slide = 0;
         if (cnt < act[0]) {
-            var up = (this._arg.moveY / act[0]);
-            var slide = (this._arg.moveX / act[0]);
+            up = (this._arg.moveY / act[0]);
+            slide = (this._arg.moveX / act[0]);
             this.opacity = Math.floor(255 * (cnt / opTime1));
             moveX = Math.floor(slide * cnt);
             moveY = Math.floor(up * cnt);
             // 退場演出
         } else if (cnt >= act[1]) {
-            var up = (this._arg.moveY / (originalWait - act[1]));
-            var slide = (this._arg.moveX / (originalWait - act[1]));
+            up = (this._arg.moveY / (originalWait - act[1]));
+            slide = (this._arg.moveX / (originalWait - act[1]));
             this.opacity = Math.floor(255 * (this._count / opTime2));
             if (this._arg.enableOutEffect) {
                 moveX = Math.floor(this._arg.moveX * (this._count / opTime2));
@@ -467,23 +429,24 @@ function CommonPopupManager() {
     };
 
     Sprite_Popup.prototype.updateTurn = function () {
-        var originalWait = this._arg.count;
-        var cnt = originalWait - this._count;
-        var act = [originalWait * 0.25, originalWait * 0.75];
+        const originalWait = this._arg.count;
+        const cnt = originalWait - this._count;
+        const act = [originalWait * 0.25, originalWait * 0.75];
         if (this._arg.extend) act = this._arg.extend;
         if (this._count === 0) this.scale.x = 0;
-        var moveX = 0;
-        var moveY = 0;
+        let moveX = 0;
+        let moveY = 0;
+        let rate = 0;
         if (cnt < act[0]) {
-            var up = (this._arg.moveY / act[0]);
-            var slide = (this._arg.moveX / act[0]);
-            var rate = cnt / act[0];
+            const up = (this._arg.moveY / act[0]);
+            const slide = (this._arg.moveX / act[0]);
+            rate = cnt / act[0];
             this.scale.x = rate;
             moveX = Math.floor(slide * cnt);
             moveY = Math.floor(up * cnt);
         } else if (cnt > act[1]) {
-            var a1 = originalWait - act[1];
-            var rate = this._count / a1;
+            const a1 = originalWait - act[1];
+            rate = this._count / a1;
             this.scale.x = rate;
             if (this._arg.enableOutEffect) {
                 moveX = Math.floor(this._arg.moveX * (this._count / a1));
@@ -502,24 +465,25 @@ function CommonPopupManager() {
     };
 
     Sprite_Popup.prototype.updateGrowUp = function () {
-        var originalWait = this._arg.count;
-        var cnt = originalWait - this._count;
-        var act = [originalWait * 0.25, originalWait * 0.75];
+        const originalWait = this._arg.count;
+        const cnt = originalWait - this._count;
+        const act = [originalWait * 0.25, originalWait * 0.75];
         if (this._arg.extend) act = this._arg.extend;
         if (this._count === 0) this.scale.y = 0;
-        var moveX = 0;
-        var moveY = 0;
+        let moveX = 0;
+        let moveY = 0;
+        let rate = 0;
         if (cnt < act[0]) {
-            var up = (this._arg.moveY / act[0]);
-            var slide = (this._arg.moveX / act[0]);
-            var rate = cnt / act[0];
+            const up = (this._arg.moveY / act[0]);
+            const slide = (this._arg.moveX / act[0]);
+            rate = cnt / act[0];
             this.scale.y = rate;
             moveX = Math.floor(slide * cnt);
             moveY = Math.floor(up * cnt);
             this._arg.rate = rate;
         } else if (cnt >= act[1]) {
-            var a1 = originalWait - act[1];
-            var rate = this._count / a1;
+            const a1 = originalWait - act[1];
+            rate = this._count / a1;
             this.scale.y = rate;
             this._arg.rate = rate;
             if (this._arg.enableOutEffect) {
@@ -541,40 +505,28 @@ function CommonPopupManager() {
     Sprite_Popup.prototype.setPosition = function (x, y) {
         this.x = this._arg.x + x + this._arg.sx;
         this.y = this._arg.y + y + this._arg.sy;
-        if (this._arg.battler) {
-            if ($gameParty.inBattle()) {
-                this.x += this._arg.battler.x;
-                this.y += this._arg.battler.y;
-            } else {
-                this.x += this._arg.battler._realX * $gameMap.tileWidth();
-                this.y += this._arg.battler._realY * $gameMap.tileHeight();
-            }
+        // バトラー用の座標加算（戦闘シーンで使用）
+        if (this._arg.battler && $gameParty.inBattle()) {
+            this.x += this._arg.battler.x;
+            this.y += this._arg.battler.y;
         }
-        var xx = this.x;
-        var yy = this.y;
-        if (this._arg.fixed) {
-            var dx = $gameMap._displayX;
-            var dy = $gameMap._displayY;
-            xx = this.x - dx * $gameMap.tileWidth();
-            yy = this.y - dy * $gameMap.tileHeight();
-            if (xx < 0 || yy < 0) {
-                if (xx < 0 && $gameMap.isLoopHorizontal()) dx -= $dataMap.width;
-                if (yy < 0 && $gameMap.isLoopVertical()) dy -= $dataMap.height;
-                xx = this.x - dx * $gameMap.tileWidth();
-                yy = this.y - dy * $gameMap.tileHeight();
-            }
+
+        // マップ画面の場合、マップスクロールによる補正を適用
+        if (!this._arg.battler && this._arg.fixed) {
+            const dx = $gameMap._displayX;
+            const dy = $gameMap._displayY;
+            this.x -= dx * $gameMap.tileWidth();
+            this.y -= dy * $gameMap.tileHeight();
         }
-        this.x = xx;
-        this.y = yy;
     };
 
     Sprite_Popup.prototype.updateAnime = function () {
-        var anime = $dataAnimations[Number(this._arg.pattern)];
-        var frameId = Math.floor((anime.frames.length * (this._arg.count - this._count)) / this._arg.count);
+        const anime = $dataAnimations[Number(this._arg.pattern)];
+        const frameId = Math.floor((anime.frames.length * (this._arg.count - this._count)) / this._arg.count);
         if (frameId !== anime.frames.length) {
-            var array = anime.frames[frameId][0];
-            var x = array[1];
-            var y = array[2];
+            const array = anime.frames[frameId][0];
+            const x = array[1];
+            const y = array[2];
             this.x = this._arg.x + x + this._arg.sx;
             this.y = this._arg.y + y + this._arg.sy;
             this.scale = new Point(array[3] / 100, array[3] / 100);
@@ -595,7 +547,7 @@ function CommonPopupManager() {
             CommonPopupManager._tempCommonSprites[this._index].terminate = true;
         }
         if (CommonPopupManager._setedPopups) {
-            for (var i = 0; i < CommonPopupManager._setedPopups.length; i++) {
+            for (let i = 0; i < CommonPopupManager._setedPopups.length; i++) {
                 if (CommonPopupManager._setedPopups[i][0] === this._index) {
                     delete CommonPopupManager._setedPopups[i];
                 }
@@ -605,40 +557,40 @@ function CommonPopupManager() {
     };
 
     CommonPopupManager.setPopup = function (argParam, character) {
-        var arg = {
+        const arg = {
             x: null,
             y: null,
-            text: '',                // 表示テキスト
-            eventId: -1,             // 表示するイベントのID
-            count: 60,               // 表示時間
-            delay: 0,                // 表示遅延
-            moveX: 0,                // 目標地点X(相対座標)
-            moveY: -48,              // 目標地点Y(相対座標)
-            sx: 0,                   // 表示位置補正X
-            sy: 0,                   // 表示位置補正Y
-            pattern: 0,              // 表示パターン
-            back: -1,                // 背景に使う画像インデックス
-            backImage: '',           // 背景に使う画像ファイル名
-            bx: 0,                   // 内容の表示位置補正X
-            by: 0,                   // 内容の表示位置補正Y
-            extend: '',              // 
-            fixed: true,             //
-            anchorX: 0.5,
-            anchorY: 0.5,
+            text: '',              // 表示テキスト
+            eventId: -1,           // 表示するイベントのID
+            count: 60,             // 表示時間
+            delay: 0,              // 表示遅延
+            moveX: 0,              // 目標地点X(相対座標)
+            moveY: -48,            // 目標地点Y(相対座標)
+            sx: 0,                 // 表示位置補正X
+            sy: 0,                 // 表示位置補正Y
+            pattern: 0,            // 表示パターン
+            back: -1,              // 背景に使う画像インデックス
+            backImage: '',         // 背景に使う画像ファイル名
+            bx: 0,                 // 内容の表示位置補正X
+            by: 0,                 // 内容の表示位置補正Y
+            extend: '',            // 
+            fixed: true,           //
+            anchorX: 0.5,          // ★ここがデフォルトで0.5になっていることを確認
+            anchorY: 0.5,          // ★ここがデフォルトで0.5になっていることを確認
             battler: null,
             se: { name: '', volume: 90, pitch: 100, pan: 0 },
             enableOutEffect: true
         };
-        var array = ['x', 'y', 'text', 'eventId', 'count', 'delay', 'moveX', 'moveY',
+        const array = ['x', 'y', 'text', 'eventId', 'count', 'delay', 'moveX', 'moveY',
             'sx', 'sy', 'pattern', 'back', 'backImage', 'bx', 'by', 'extend', 'fixed',
             'anchorX', 'anchorY', 'slideCount'];
-        for (var i = 0; i < argParam.length; i++) {
+        for (let i = 0; i < argParam.length; i++) {
             if (i > 0) {
-                for (var j = 0; j < array.length; j++) {
-                    var r = new RegExp('^(' + array[j] + ')' + ':(.+)');
+                for (let j = 0; j < array.length; j++) {
+                    const r = new RegExp('^(' + array[j] + ')' + ':(.+)');
                     if (argParam[i].match(r)) {
-                        var code = RegExp.$1;
-                        var value = RegExp.$2;
+                        const code = RegExp.$1;
+                        const value = RegExp.$2;
                         if (code === 'text' || code === 'extend') {
                             arg[code] = value;
                         } else if (code === 'fixed') {
@@ -658,22 +610,19 @@ function CommonPopupManager() {
         }
         if (arg.x === null) {
             if (character) {
-                var screenX = $gameParty.inBattle() ? 0 : character.screenX();
-                var displayX = $gameParty.inBattle() ? 0 : $gameMap._displayX * 48;
-                arg.x = screenX + displayX;
+                arg.x = character.screenX() - ($gameMap.tileWidth() / 2);
             } else {
-                arg.x = 0;
+                arg.x = Graphics.boxWidth / 2;
             }
         }
         if (arg.y === null) {
             if (character) {
-                var screenY = $gameParty.inBattle() ? 0 : character.screenY();
-                var displayY = $gameParty.inBattle() ? 0 : $gameMap._displayY * 48;
-                arg.y = screenY + displayY;
+                arg.y = character.screenY() - $gameMap.tileHeight();
             } else {
-                arg.y = 0;
+                arg.y = Graphics.boxHeight / 2;
             }
         }
+
         if (arg.extend) {
             arg.extend = eval(arg.extend);
         }
@@ -684,9 +633,9 @@ function CommonPopupManager() {
 
     CommonPopupManager.setPopUpdate = function () {
         if (this._readyPopup) {
-            for (var i = 0; i < this._readyPopup.length; i++) {
+            for (let i = 0; i < this._readyPopup.length; i++) {
                 if (this._readyPopup[i]) {
-                    var arg = this._readyPopup[i];
+                    const arg = this._readyPopup[i];
                     if (ImageManager.isReady()) {
                         this.startPopup(arg);
                         delete this._readyPopup[i];
@@ -701,7 +650,7 @@ function CommonPopupManager() {
     };
 
     CommonPopupManager.makeBitmap = function (arg) {
-        var fileName = arg.backImage;
+        const fileName = arg.backImage;
         ImageManager.loadPicture(fileName);
         return ImageManager.loadPicture(fileName);
     };
@@ -720,37 +669,38 @@ function CommonPopupManager() {
             CommonPopupManager.initTempSprites();
         }
 
-        for (var i = 0; i < CommonPopupManager._tempCommonSprites.length; i++) {
+        for (let i = 0; i < CommonPopupManager._tempCommonSprites.length; i++) {
             if (CommonPopupManager._tempCommonSprites[i]) {
                 if (!tag || tag === CommonPopupManager._tempCommonSprites[i].tag) {
                     CommonPopupManager._tempCommonSprites[i].delay = 0;
                     CommonPopupManager._tempCommonSprites[i].count = 1;
-                    var sprite = CommonPopupManager._tempCommonSprites[i].sprite;
+                    const sprite = CommonPopupManager._tempCommonSprites[i].sprite;
                     if (sprite) sprite._count = 1;
                 }
             }
         }
     };
 
-    var _cPU_SsBase_initialize = Spriteset_Base.prototype.initialize;
+    const _cPU_SsBase_initialize = Spriteset_Base.prototype.initialize;
     Spriteset_Base.prototype.initialize = function () {
         _cPU_SsBase_initialize.call(this);
         this.createSpritePopup();
     };
 
-    var _cPU_SsBase_update = Spriteset_Base.prototype.update;
+    const _cPU_SsBase_update = Spriteset_Base.prototype.update;
     Spriteset_Base.prototype.update = function () {
         _cPU_SsBase_update.call(this);
         if (this._popupContainer === '') { return }
         if (CommonPopupManager._tempCommonSprites) {
-            for (var i = 0; i < CommonPopupManager._tempCommonSprites.length; i++) {
+            for (let i = 0; i < CommonPopupManager._tempCommonSprites.length; i++) {
                 if (CommonPopupManager._tempCommonSprites[i]) {
+                    let sprite = null;
                     if (CommonPopupManager._tempCommonSprites[i].terminate) {
-                        var sprite = CommonPopupManager._tempCommonSprites[i].sprite;
+                        sprite = CommonPopupManager._tempCommonSprites[i].sprite;
                         this._popupContainer.removeChild(sprite);
                         delete CommonPopupManager._tempCommonSprites[i]
                     } else if (!CommonPopupManager._tempCommonSprites[i].sprite) {
-                        var sprite = new Sprite_Popup(i);
+                        sprite = new Sprite_Popup(i);
                         this._popupContainer.addChild(sprite);
                         CommonPopupManager._tempCommonSprites[i].sprite = sprite;
                     }
@@ -759,23 +709,20 @@ function CommonPopupManager() {
         }
     };
 
-    var _cPU_SBase_update = Scene_Base.prototype.update;
+    const _cPU_SBase_update = Scene_Base.prototype.update;
     Scene_Base.prototype.update = function () {
         _cPU_SBase_update.call(this);
         if (CommonPopupManager) { CommonPopupManager.setPopUpdate() };
     };
 
     Spriteset_Base.prototype.createSpritePopup = function () {
-        var width = Graphics.boxWidth;
-        var height = Graphics.boxHeight;
-        var x = (Graphics.width - width) / 2;
-        var y = (Graphics.height - height) / 2;
         this._popupContainer = new Sprite();
-        this._popupContainer.setFrame(x, y, width, height);
+        this._popupContainer.x = 0;
+        this._popupContainer.y = 0;
         this.addChild(this._popupContainer);
     };
 
-    var _cPU_SBase_terminate = Scene_Base.prototype.terminate;
+    const _cPU_SBase_terminate = Scene_Base.prototype.terminate;
     Scene_Base.prototype.terminate = function () {
         _cPU_SBase_terminate.call(this);
         this.terminatePopup();
@@ -785,9 +732,9 @@ function CommonPopupManager() {
         if (!CommonPopupManager._tempCommonSprites) {
             CommonPopupManager.initTempSprites();
         }
-        for (var i = 0; i < CommonPopupManager._tempCommonSprites.length; i++) {
+        for (let i = 0; i < CommonPopupManager._tempCommonSprites.length; i++) {
             if (CommonPopupManager._tempCommonSprites[i]) {
-                var sprite = CommonPopupManager._tempCommonSprites[i].sprite;
+                const sprite = CommonPopupManager._tempCommonSprites[i].sprite;
                 if (sprite) sprite.terminate();
                 delete CommonPopupManager._tempCommonSprites[i];
             }
@@ -796,32 +743,10 @@ function CommonPopupManager() {
         CommonPopupManager._readyPopup = [];
     };
 
-    var _cPU_SMap_launchBattle = Scene_Map.prototype.launchBattle;
+    const _cPU_SMap_launchBattle = Scene_Map.prototype.launchBattle;
     Scene_Map.prototype.launchBattle = function () {
         _cPU_SMap_launchBattle.call(this);
         this.terminatePopup();
     };
-
-    //ここから MV Joint
-
-    function isRect(value) {
-        return (typeof value) === "object";
-    };
-
-    function rectlize(x, y, w, h) {
-        if (isRect(x)) {
-            return x;
-        }
-        var newRect = new Rectangle(x, y, w, h);
-        return newRect;
-    };
-
-    var Window_Base_initialize = Window_Base.prototype.initialize;
-    Window_Base.prototype.initialize = function (x, y, w, h) {
-        var rect = rectlize(x, y, w, h);
-        Window_Base_initialize.call(this, rect);
-    };
-
-    //ここまで MV Joint
 
 })();
