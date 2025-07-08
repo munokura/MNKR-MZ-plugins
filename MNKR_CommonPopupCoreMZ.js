@@ -1,8 +1,8 @@
 /*
  * --------------------------------------------------
  * MNKR_CommonPopupCoreMZ.js
- * Ver.0.1.1
- * Copyright (c) 2020, 2025 Munokura
+ *   Ver.0.2.0
+ * Copyright (c) 2020 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
  * --------------------------------------------------
@@ -25,11 +25,21 @@
  * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_CommonPopupCoreMZ.js
  * @plugindesc 汎用的なポップアップの仕組みを提供するためのベースプラグインです。
  * @author Yana (改変 munokura)
- * @help
- * # 機能
- * ポップアップを表示するプラグインコマンドを追加します。
  * 
- * ## プラグインコマンドのパラメータ
+ * @help
+ * このプラグインは、汎用的なポップアップの仕組みを提供するプラグインです。
+ * このプラグイン単体ではプラグインコマンドを追加する以外の機能はありません。
+ * 
+ * ------------------------------------------------------
+ *  プラグインコマンド
+ * ------------------------------------------------------
+ * CommonPopup add param1 param2 param3 ・・・
+ * 
+ * 必要なパラメータのみを指定できます。
+ *  例:プレイヤーの上にテストと240フレームポップアップさせる
+ * CommonPopup add text:テスト count:240 eventId:-1
+ * 
+ * パラメータ詳細:
  * text:表示テキスト
  * eventId:表示するイベントのID
  * count:表示時間
@@ -43,36 +53,50 @@
  * bx:テキスト表示位置補正X
  * by:テキスト表示位置補正Y
  * extend:
- * 表示タイミングの調整用配列で指定。
- * 例:extend:[20,50] 20フレーム掛けて出現し、50フレーム目から消え始める。
+ *   表示タイミングの調整用配列で指定。
+ *   例:extend:[20,50] 20フレーム掛けて出現し、50フレーム目から消え始める。
  * 
- * - 移植前で未実装のものを追加
- * backImage:ファイル名（img/pictures内）
+ * 本家で未実装のものを追加
+ *   backImage:ファイル名（img/pictures内）
  * 
- * - 必要性が低いと考え、プラグインコマンドから削除
- * anchorX:ポップアップ原点X。0イベントの右端。タイル単位。
- * anchorY:ポップアップ原点Y。0イベントの下端。タイル単位。
+ * 必要性が低いと考え、プラグインコマンドから削除
+ *   anchorX:ポップアップ原点X。0イベントの右端。タイル単位。
+ *   anchorY:ポップアップ原点Y。0イベントの下端。タイル単位。
  * 
- * - 未実装と思われる機能
- * fixed:画面に固定するか？ true/falseで指定。
- * slideCount:新しいポップアップが発生した際、上にスライドさせる速度。
+ * 未実装と思われる機能
+ *   fixed:画面に固定するか？ true/falseで指定。
+ *   slideCount:新しいポップアップが発生した際、上にスライドさせる速度。
+ *
+ * イベントコマンドのスクリプトを使う場合、
+ *
+ * this.addPopup(["add","text:テスト","count:120"…]);
+ *
+ * のように記述すればスクリプトでポップアップを行うことができます。
+ * 同じように、イベントコマンドの移動ルート内のスクリプトで使用する場合、
+ *
+ * $gameMap._interpreter.addPopup(["add","text:テスト","count:120"…]);
+ *
+ * のように記述すれば使用可能です。
+ * 
+ * ------------------------------------------------------
+ * 利用規約
+ * ------------------------------------------------------
+ *   MITライセンスです。
+ *   https://licenses.opensource.jp/MIT/MIT.html
+ *   作者に無断で改変、再配布が可能で、
+ *   利用形態（商用、18禁利用等）についても制限はありません。
  * 
  * 
- * # 利用規約:
- * MITライセンスです。
- * https://licenses.opensource.jp/MIT/MIT.html
- * 作者に無断で改変、再配布が可能で、
- * 利用形態（商用、18禁利用等）についても制限はありません。
- * 
- * 
- * * @command CommonPopupAdd
+ * @command CommonPopupAdd
  * @text ポップアップ表示
  * @desc テキストをポップアップ表示します。
+ * 
  * @arg text
  * @type string
  * @text 表示テキスト
  * @desc 表示テキストを入力します。
  * @default 
+ * 
  * @arg eventId
  * @type number
  * @min -1
@@ -80,16 +104,19 @@
  * @desc 表示するイベントのID。
  * -1:プレイヤー / 0:実行イベント / 1以上:イベントID
  * @default -1
+ * 
  * @arg count
  * @type number
  * @text 表示時間
  * @desc ポップアップを完了するまでのフレーム数
  * @default 60
+ * 
  * @arg delay
  * @type number
  * @text 表示遅延
  * @desc ポップアップを開始するまでのフレーム数
  * @default 0
+ * 
  * @arg moveX
  * @type number
  * @min -9007
@@ -97,6 +124,7 @@
  * @text 移動先地点X(相対座標)
  * @desc ポップアップ完了時のX位置補正
  * @default 0
+ * 
  * @arg moveY
  * @type number
  * @min -9007
@@ -104,6 +132,7 @@
  * @text 移動先地点Y(相対座標)
  * @desc ポップアップ完了時のY位置補正
  * @default -48
+ * 
  * @arg sx
  * @type number
  * @min -9007
@@ -111,6 +140,7 @@
  * @text ポップ位置補正X
  * @desc ポップアップのX位置補正
  * @default 0
+ * 
  * @arg sy
  * @type number
  * @min -9007
@@ -118,6 +148,7 @@
  * @text ポップ位置補正Y
  * @desc ポップアップのY位置補正
  * @default 0
+ * 
  * @arg pattern
  * @type select
  * @option フェード
@@ -129,12 +160,14 @@
  * @text 表示パターン
  * @desc ポップアップ表示の変形パターン
  * @default Normal
+ * 
  * @arg back
  * @text 背景色
  * @type string
  * @desc 背景色:Red,Green,Blue,Alpha / 透明:-1
  * 例:0, 0, 0, 0.6
  * @default 0,0,0,0.6
+ * 
  * @arg backImage
  * @text 背景画像
  * @type file
@@ -142,6 +175,7 @@
  * @dir img/pictures
  * @desc 背景画像を指定します。背景画像を使用すると背景色は無視されます。
  * @default
+ * 
  * @arg bx
  * @type number
  * @min -9007
@@ -149,6 +183,7 @@
  * @text テキスト位置補正X
  * @desc テキストの表示位置補正X
  * @default 0
+ * 
  * @arg by
  * @type number
  * @min -9007
@@ -156,13 +191,15 @@
  * @text テキスト位置補正Y
  * @desc テキストの表示位置補正Y
  * @default 0
+ * 
  * @arg extend
  * @type string
  * @text 表示タイミングの調整
  * @desc 表示タイミングの調整用配列で指定。例:[20,50] 20フレーム掛けて出現し、50フレーム目から消え始める。
  * @default
  * 
- * * @command CommonPopupClear
+ * 
+ * @command CommonPopupClear
  * @text ポップアップ消去
  * @desc 表示されているポップアップを消去します。
  */
@@ -237,7 +274,7 @@ function CommonPopupManager() {
 
     CommonPopupManager.window = function () {
         if (this._window) { return this._window }
-        this._window = new Window_Base(new Rectangle(0, 0, Graphics.boxWidth, Graphics.boxHeight));
+        this._window = new Window_Base(new Rectangle(0, 0, Graphics.width, Graphics.height));
         return this._window;
     };
 
@@ -360,8 +397,8 @@ function CommonPopupManager() {
 
     Sprite_Popup.prototype.updateMoveSlide = function () {
         if (CommonPopupManager._setedPopups) {
-            let array = CommonPopupManager._setedPopups.clone().reverse();
-            let n = 0;
+            const array = CommonPopupManager._setedPopups.clone().reverse();
+            const n = 0;
             for (let i = 0; i < array.length; i++) {
                 if (this._index === array[i][0]) {
                     if (this._arg.slideAction === 'Down') {
@@ -400,18 +437,14 @@ function CommonPopupManager() {
         const opTime2 = originalWait - act[1];
         if (act[3]) { opTime2 = act[3] }
         // 登場演出
-        let up = 0;
-        let slide = 0;
         if (cnt < act[0]) {
-            up = (this._arg.moveY / act[0]);
-            slide = (this._arg.moveX / act[0]);
+            const up = (this._arg.moveY / act[0]);
+            const slide = (this._arg.moveX / act[0]);
             this.opacity = Math.floor(255 * (cnt / opTime1));
             moveX = Math.floor(slide * cnt);
             moveY = Math.floor(up * cnt);
             // 退場演出
         } else if (cnt >= act[1]) {
-            up = (this._arg.moveY / (originalWait - act[1]));
-            slide = (this._arg.moveX / (originalWait - act[1]));
             this.opacity = Math.floor(255 * (this._count / opTime2));
             if (this._arg.enableOutEffect) {
                 moveX = Math.floor(this._arg.moveX * (this._count / opTime2));
@@ -434,8 +467,8 @@ function CommonPopupManager() {
         const act = [originalWait * 0.25, originalWait * 0.75];
         if (this._arg.extend) act = this._arg.extend;
         if (this._count === 0) this.scale.x = 0;
-        let moveX = 0;
-        let moveY = 0;
+        const moveX = 0;
+        const moveY = 0;
         let rate = 0;
         if (cnt < act[0]) {
             const up = (this._arg.moveY / act[0]);
@@ -470,20 +503,19 @@ function CommonPopupManager() {
         const act = [originalWait * 0.25, originalWait * 0.75];
         if (this._arg.extend) act = this._arg.extend;
         if (this._count === 0) this.scale.y = 0;
-        let moveX = 0;
-        let moveY = 0;
-        let rate = 0;
+        const moveX = 0;
+        const moveY = 0;
         if (cnt < act[0]) {
             const up = (this._arg.moveY / act[0]);
             const slide = (this._arg.moveX / act[0]);
-            rate = cnt / act[0];
+            const rate = cnt / act[0];
             this.scale.y = rate;
             moveX = Math.floor(slide * cnt);
             moveY = Math.floor(up * cnt);
             this._arg.rate = rate;
         } else if (cnt >= act[1]) {
             const a1 = originalWait - act[1];
-            rate = this._count / a1;
+            const rate = this._count / a1;
             this.scale.y = rate;
             this._arg.rate = rate;
             if (this._arg.enableOutEffect) {
@@ -505,19 +537,31 @@ function CommonPopupManager() {
     Sprite_Popup.prototype.setPosition = function (x, y) {
         this.x = this._arg.x + x + this._arg.sx;
         this.y = this._arg.y + y + this._arg.sy;
-        // バトラー用の座標加算（戦闘シーンで使用）
-        if (this._arg.battler && $gameParty.inBattle()) {
-            this.x += this._arg.battler.x;
-            this.y += this._arg.battler.y;
+        if (this._arg.battler) {
+            if ($gameParty.inBattle()) {
+                this.x += this._arg.battler.x;
+                this.y += this._arg.battler.y;
+            } else {
+                this.x += this._arg.battler._realX * $gameMap.tileWidth();
+                this.y += this._arg.battler._realY * $gameMap.tileHeight();
+            }
         }
-
-        // マップ画面の場合、マップスクロールによる補正を適用
-        if (!this._arg.battler && this._arg.fixed) {
+        let xx = this.x;
+        let yy = this.y;
+        if (this._arg.fixed) {
             const dx = $gameMap._displayX;
             const dy = $gameMap._displayY;
-            this.x -= dx * $gameMap.tileWidth();
-            this.y -= dy * $gameMap.tileHeight();
+            xx = this.x - dx * $gameMap.tileWidth();
+            yy = this.y - dy * $gameMap.tileHeight();
+            if (xx < 0 || yy < 0) {
+                if (xx < 0 && $gameMap.isLoopHorizontal()) dx -= $dataMap.width;
+                if (yy < 0 && $gameMap.isLoopVertical()) dy -= $dataMap.height;
+                xx = this.x - dx * $gameMap.tileWidth();
+                yy = this.y - dy * $gameMap.tileHeight();
+            }
         }
+        this.x = xx;
+        this.y = yy;
     };
 
     Sprite_Popup.prototype.updateAnime = function () {
@@ -560,23 +604,23 @@ function CommonPopupManager() {
         const arg = {
             x: null,
             y: null,
-            text: '',              // 表示テキスト
-            eventId: -1,           // 表示するイベントのID
-            count: 60,             // 表示時間
-            delay: 0,              // 表示遅延
-            moveX: 0,              // 目標地点X(相対座標)
-            moveY: -48,            // 目標地点Y(相対座標)
-            sx: 0,                 // 表示位置補正X
-            sy: 0,                 // 表示位置補正Y
-            pattern: 0,            // 表示パターン
-            back: -1,              // 背景に使う画像インデックス
-            backImage: '',         // 背景に使う画像ファイル名
-            bx: 0,                 // 内容の表示位置補正X
-            by: 0,                 // 内容の表示位置補正Y
-            extend: '',            // 
-            fixed: true,           //
-            anchorX: 0.5,          // ★ここがデフォルトで0.5になっていることを確認
-            anchorY: 0.5,          // ★ここがデフォルトで0.5になっていることを確認
+            text: '',                // 表示テキスト
+            eventId: -1,             // 表示するイベントのID
+            count: 60,               // 表示時間
+            delay: 0,                // 表示遅延
+            moveX: 0,                // 目標地点X(相対座標)
+            moveY: -48,              // 目標地点Y(相対座標)
+            sx: 0,                   // 表示位置補正X
+            sy: 0,                   // 表示位置補正Y
+            pattern: 0,              // 表示パターン
+            back: -1,                // 背景に使う画像インデックス
+            backImage: '',           // 背景に使う画像ファイル名
+            bx: 0,                   // 内容の表示位置補正X
+            by: 0,                   // 内容の表示位置補正Y
+            extend: '',              // 
+            fixed: true,             //
+            anchorX: 0.5,
+            anchorY: 0.5,
             battler: null,
             se: { name: '', volume: 90, pitch: 100, pan: 0 },
             enableOutEffect: true
@@ -610,19 +654,22 @@ function CommonPopupManager() {
         }
         if (arg.x === null) {
             if (character) {
-                arg.x = character.screenX() - ($gameMap.tileWidth() / 2);
+                const screenX = $gameParty.inBattle() ? 0 : character.screenX();
+                const displayX = $gameParty.inBattle() ? 0 : $gameMap._displayX * 48;
+                arg.x = screenX + displayX;
             } else {
-                arg.x = Graphics.boxWidth / 2;
+                arg.x = 0;
             }
         }
         if (arg.y === null) {
             if (character) {
-                arg.y = character.screenY() - $gameMap.tileHeight();
+                const screenY = $gameParty.inBattle() ? 0 : character.screenY();
+                const displayY = $gameParty.inBattle() ? 0 : $gameMap._displayY * 48;
+                arg.y = screenY + displayY;
             } else {
-                arg.y = Graphics.boxHeight / 2;
+                arg.y = 0;
             }
         }
-
         if (arg.extend) {
             arg.extend = eval(arg.extend);
         }
@@ -694,13 +741,12 @@ function CommonPopupManager() {
         if (CommonPopupManager._tempCommonSprites) {
             for (let i = 0; i < CommonPopupManager._tempCommonSprites.length; i++) {
                 if (CommonPopupManager._tempCommonSprites[i]) {
-                    let sprite = null;
                     if (CommonPopupManager._tempCommonSprites[i].terminate) {
-                        sprite = CommonPopupManager._tempCommonSprites[i].sprite;
+                        const sprite = CommonPopupManager._tempCommonSprites[i].sprite;
                         this._popupContainer.removeChild(sprite);
                         delete CommonPopupManager._tempCommonSprites[i]
                     } else if (!CommonPopupManager._tempCommonSprites[i].sprite) {
-                        sprite = new Sprite_Popup(i);
+                        const sprite = new Sprite_Popup(i);
                         this._popupContainer.addChild(sprite);
                         CommonPopupManager._tempCommonSprites[i].sprite = sprite;
                     }
@@ -716,9 +762,12 @@ function CommonPopupManager() {
     };
 
     Spriteset_Base.prototype.createSpritePopup = function () {
+        const width = Graphics.width;
+        const height = Graphics.height;
+        const x = 0;
+        const y = 0;
         this._popupContainer = new Sprite();
-        this._popupContainer.x = 0;
-        this._popupContainer.y = 0;
+        this._popupContainer.setFrame(x, y, width, height);
         this.addChild(this._popupContainer);
     };
 
