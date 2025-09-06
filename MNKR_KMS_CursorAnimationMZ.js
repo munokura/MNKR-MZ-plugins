@@ -8,6 +8,96 @@
  * --------------------------------------------------
  */
 
+/*:
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_KMS_CursorAnimationMZ.js
+@plugindesc Displays the animation at the cursor position.
+@author example
+@license MIT License
+
+@help
+Displays animation at the cursor position.
+
+This plugin does not have any plugin commands.
+
+# Contact Information
+This plugin was originally created for RPG Maker MV and has been adapted for
+MZ.
+Please contact the original author for any inquiries.
+
+# Terms of Use
+MIT License.
+http://opensource.org/licenses/mit-license.php
+You may modify and redistribute this plugin without permission from the
+author, and there are no restrictions on its use (commercial, R18+, etc.).
+
+@param Radius X
+@text Anime X Radius
+@desc Specifies the X radius of the animation in pixels.
+@type number
+@default 16
+
+@param Radius Y
+@text Anime Y Radius
+@desc Specifies the Y radius of the animation in pixels.
+@type number
+@default 16
+
+@param Animation speed
+@text Anime Speed
+@desc The speed of the animation.
+@type number
+@default 1.50
+@decimals 2
+*/
+
+/*:ja
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_KMS_CursorAnimationMZ.js
+@plugindesc カーソルの位置にアニメーションを表示します。
+@author TOMY (改変:munokura)
+
+@help
+カーソルの位置にアニメーションを表示します。
+
+このプラグインには、プラグインコマンドはありません。
+
+
+# 問い合わせ先
+これはRPGツクールMV用に作成されたプラグインをMZ用に移植したものです。
+お問い合わせは改変者へお願いいたします。
+
+
+# 利用規約
+MITライセンスです。
+http://opensource.org/licenses/mit-license.php
+作者に無断で改変、再配布が可能で、
+利用形態（商用、18禁利用等）についても制限はありません。
+
+
+@param Radius X
+@text アニメX半径
+@type number
+@decimals
+@default 16
+@desc アニメーションの X 方向半径をピクセル単位で指定します。
+
+@param Radius Y
+@text アニメY半径
+@type number
+@decimals
+@default 16
+@desc アニメーションの Y 方向半径をピクセル単位で指定します。
+
+@param Animation speed
+@text アニメ速度
+@type number
+@decimals 2
+@default 1.50
+@desc アニメーションの速度です。
+大きいほど速くなります。
+*/
+
 //=============================================================================
 // KMS_CursorAnimation.js
 //  last update: 2016/12/24
@@ -15,19 +105,19 @@
 
 /**
  * The MIT License
- * 
+ *
  * Copyright © 2015 TOMY
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -37,49 +127,7 @@
  * THE SOFTWARE.
  */
 
-/*:
- * @target MZ
- * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_KMS_CursorAnimationMZ.js
- * @plugindesc カーソルの位置にアニメーションを表示します。
- * @author TOMY (改変 munokura)
- *
- * @help
- * カーソルの位置にアニメーションを表示します。
- * 
- * このプラグインには、プラグインコマンドはありません。
- *
- *
- * ------------------------------------------------------
- * 利用規約
- * ------------------------------------------------------
- *   MITライセンスです。
- *   https://licenses.opensource.jp/MIT/MIT.html
- *   作者に無断で改変、再配布が可能で、
- *   利用形態（商用、18禁利用等）についても制限はありません。
- * 
- *
- * @param Radius X
- * @text アニメX半径
- * @type number
- * @decimals
- * @default 16
- * @desc アニメーションの X 方向半径をピクセル単位で指定します。
- *
- * @param Radius Y
- * @text アニメY半径
- * @type number
- * @decimals
- * @default 16
- * @desc アニメーションの Y 方向半径をピクセル単位で指定します。
- *
- * @param Animation speed
- * @text アニメ速度
- * @type number
- * @decimals 2
- * @default 1.50
- * @desc アニメーションの速度です。
- * 大きいほど速くなります。
- */
+
 
 (() => {
     'use strict';

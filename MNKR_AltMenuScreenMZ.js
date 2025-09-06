@@ -9,31 +9,60 @@
  */
 
 /*:
- * @target MZ
- * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_AltMenuScreenMZ.js
- * @plugindesc メインメニュー画面をシンプルにします。
- * @author munokura
- * 
- * @help
- * # 機能
- * メインメニュー画面をシンプルにします。
- * 
- * プラグインコマンドはありません。
- * 
- * 
- * # 利用規約
- * MITライセンスです。
- * https://licenses.opensource.jp/MIT/MIT.html
- * 作者に無断で改変、再配布が可能で、
- * 利用形態（商用、18禁利用等）についても制限はありません。
- * 
- * @param actorCols
- * @text アクター表示数
- * @desc メインメニュー画面のアクター表示ウィンドウの1画面の表示数。0にすると、パーティ人数で自動調整
- * @type number
- * @min 0
- * @default 4
- */
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_AltMenuScreenMZ.js
+@plugindesc Simplify the main menu screen.
+@author example
+@license MIT License
+
+@help
+# Features
+Simplifies the main menu screen.
+
+No plugin commands.
+
+# Terms of Use
+MIT License.
+http://opensource.org/licenses/mit-license.php
+You may modify and redistribute this without permission from the author, and
+there are no restrictions on its use (commercial, R18+, etc.).
+
+@param actorCols
+@text Actors Displayed
+@desc The number of actors displayed on one screen in the main menu screen. If set to 0, it will automatically adjust based on the number of players in the party.
+@type number
+@default 4
+@min 0
+*/
+
+/*:ja
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_AltMenuScreenMZ.js
+@plugindesc メインメニュー画面をシンプルにします。
+@author munokura
+
+@help
+# 機能
+メインメニュー画面をシンプルにします。
+
+
+プラグインコマンドはありません。
+
+
+# 利用規約
+MITライセンスです。
+http://opensource.org/licenses/mit-license.php
+作者に無断で改変、再配布が可能で、
+利用形態（商用、18禁利用等）についても制限はありません。
+
+
+@param actorCols
+@text アクター表示数
+@desc メインメニュー画面のアクター表示ウィンドウの1画面の表示数。0にすると、パーティ人数で自動調整
+@type number
+@min 0
+@default 4
+*/
 
 (() => {
     "use strict";

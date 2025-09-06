@@ -8,6 +8,103 @@
  * --------------------------------------------------
  */
 
+/*:
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMItemRestrictionMZ.js
+@plugindesc Adds constraints on the target actors for the item.
+@author example
+@license MIT License
+
+@help
+# Usage
+By adding a tag to an item's memo field, you can limit the actors that can be
+selected as targets.
+
+# Memo Field Tag (Item)
+<justOnce>
+Items with this tag in the memo field can only be used once with the same
+actor.
+
+<targetActor:1 2>
+Items with this tag in the memo field can only be used with actors 1 and 2.
+
+# Plugin Command
+clearItemRestriction 1
+Resets the item usage history for actor 1, making items with the <justOnce>
+tag usable again.
+
+# Contact Information
+This is a plugin originally created for RPG Maker MV that has been adapted for
+use with MZ.
+Please contact the original author for any inquiries.
+
+# Terms of Use
+MIT License.
+http://opensource.org/licenses/mit-license.php
+You may modify and redistribute this without permission from the author, and
+there are no restrictions on its use (commercial, R18, etc.).
+
+@command clearItemRestriction
+@text Item usage history initialization
+@desc Initializes the actor's item usage history.
+@arg actorId
+@text Actor ID
+@desc The actor to initialize the usage history for.
+@type actor
+@default 0
+*/
+
+/*:ja
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMItemRestrictionMZ.js
+@author tomoaky (改変:munokura)
+@plugindesc アイテムの対象アクターに関する制約を追加します。
+
+@help
+# 使い方
+  アイテムのメモ欄にタグをつけることで対象として選択できるアクターを
+  制限できるようになります。
+
+
+# メモ欄タグ (アイテム)
+<justOnce>
+  メモ欄にこのタグがついているアイテムは、同じアクターに対して 1 回しか
+  使えなくなります。
+
+<targetActor:1 2>
+  メモ欄にこのタグがついているアイテムは、1 番と 2 番のアクターにのみ
+  使用できるようになります。
+
+
+# プラグインコマンド
+clearItemRestriction 1
+  アクター 1 番のアイテム使用履歴を初期化し、<justOnce> タグのついた
+  アイテムを再び使用できる状態にします。
+
+
+# 問い合わせ先
+これはRPGツクールMV用に作成されたプラグインをMZ用に移植したものです。
+お問い合わせは改変者へお願いいたします。
+
+
+# 利用規約
+MITライセンスです。
+http://opensource.org/licenses/mit-license.php
+作者に無断で改変、再配布が可能で、
+利用形態（商用、18禁利用等）についても制限はありません。
+
+
+@command clearItemRestriction
+@text アイテム使用履歴初期化
+@desc アクターのアイテム使用履歴を初期化します。
+
+@arg actorId
+@text アクターID
+@desc 使用履歴を初期化するアクター。
+@type actor
+@default 0
+*/
+
 //=============================================================================
 // TMPlugin - アイテム制約拡張
 // バージョン: 1.0.1
@@ -19,61 +116,7 @@
 // http://opensource.org/licenses/mit-license.php
 //=============================================================================
 
-/*:
- * @target MZ
- * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMItemRestrictionMZ.js
- * @author tomoaky (改変:ムノクラ)
- * @plugindesc アイテムの対象アクターに関する制約を追加します。
- *
- * @help
- * 注意：
- * このプラグインは自動マップ生成（tomoaky様作TMItemRestriction.js）を
- * ムノクラが改変したものです。
- * このプラグインの質問はムノクラへお願いいたします。
- * https://x.com/munokura/
- * 
- * 
- * 使い方:
- * 
- *   アイテムのメモ欄にタグをつけることで対象として選択できるアクターを
- *   制限できるようになります。
- * 
- * 
- * メモ欄タグ (アイテム):
- * 
- *   <justOnce>
- *     メモ欄にこのタグがついているアイテムは、同じアクターに対して 1 回しか
- *     使えなくなります。
- * 
- *   <targetActor:1 2>
- *     メモ欄にこのタグがついているアイテムは、1 番と 2 番のアクターにのみ
- *     使用できるようになります。
- * 
- * 
- * プラグインコマンド:
- * 
- *   clearItemRestriction 1
- *     アクター 1 番のアイテム使用履歴を初期化し、<justOnce> タグのついた
- *     アイテムを再び使用できる状態にします。
- * 
- * 
- * 利用規約:
- *   MITライセンスです。
- *   https://licenses.opensource.jp/MIT/MIT.html
- *   作者に無断で改変、再配布が可能で、
- *   利用形態（商用、18禁利用等）についても制限はありません。
- * 
- * 
- * @command clearItemRestriction
- * @text アイテム使用履歴初期化
- * @desc アクターのアイテム使用履歴を初期化します。
- *
- * @arg actorId
- * @text アクターID
- * @desc 使用履歴を初期化するアクター。
- * @type actor
- * @default 0
- */
+
 
 (() => {
   "use strict";

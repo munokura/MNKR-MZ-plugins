@@ -9,30 +9,58 @@
  */
 
 /*:
- * @target MZ
- * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_AltSkillMenuMZ.js
- * @plugindesc メインメニュー内スキル画面をシンプルにします。
- * @author munokura
- * 
- * @help
- * # 機能
- * メインメニュー内スキル画面をシンプルにします。
- * 
- * プラグインコマンドはありません。
- * 
- * 
- * # 利用規約
- * MITライセンスです。
- * https://licenses.opensource.jp/MIT/MIT.html
- * 作者に無断で改変、再配布が可能で、
- * 利用形態（商用、18禁利用等）についても制限はありません。
- * 
- * @param gaugeWidth
- * @text ゲージ幅
- * @desc HP等のゲージの幅を指定
- * @type number
- * @default 352
- */
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_AltSkillMenuMZ.js
+@plugindesc Simplify the skills screen in the main menu.
+@author example
+@license MIT License
+
+@help
+# Function
+Simplifies the skills screen in the main menu.
+
+No plugin commands.
+
+# Terms of Use
+MIT License.
+http://opensource.org/licenses/mit-license.php
+You may modify and redistribute this without permission from the author, and
+there are no restrictions on its use (commercial, 18+, etc.).
+
+@param gaugeWidth
+@text Gauge Width
+@desc Specify the width of gauges such as HP
+@type number
+@default 352
+*/
+
+/*:ja
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_AltSkillMenuMZ.js
+@plugindesc メインメニュー内スキル画面をシンプルにします。
+@author munokura
+
+@help
+# 機能
+メインメニュー内スキル画面をシンプルにします。
+
+
+プラグインコマンドはありません。
+
+
+# 利用規約
+MITライセンスです。
+http://opensource.org/licenses/mit-license.php
+作者に無断で改変、再配布が可能で、
+利用形態（商用、18禁利用等）についても制限はありません。
+
+
+@param gaugeWidth
+@text ゲージ幅
+@desc HP等のゲージの幅を指定
+@type number
+@default 352
+*/
 
 (() => {
     "use strict";

@@ -7,93 +7,188 @@
  * http://opensource.org/licenses/mit-license.php
  * --------------------------------------------------
  */
+
 /*:
- * @target MZ MV
- * @plugindesc 戦闘シーンの背景をマスクし、ウィンドウっぽく表示できます。
- * @author munokura
- * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_BattleBackgroundMask.js
- *
- * @help
- * # 機能
- * 戦闘シーンの背景をマスクし、敵グループの領域のみに表示します。
- * その外側には現在のマップ画面のスナップショットが表示されます。
- * 
- * マスクの範囲・位置等はプラグインパラメータで設定してください。
- *
- * # 注意
- * - 戦闘テスト時、マップシーン以外からの戦闘開始時は、
- * スナップショットがないため、枠外は黒になります。
- *
- * # 利用規約
- * MITライセンスです。
- * https://licenses.opensource.jp/MIT/MIT.html
- * 作者に無断で改変、再配布が可能で、
- * 利用形態（商用、18禁利用等）についても制限はありません。
- *
- *
- * @param MaskSettings
- * @text マスク範囲・位置設定
- * @default
- *
- * @param maskWidth
- * @text マスクの幅
- * @parent MaskSettings
- * @type number
- * @min -1
- * @desc マスクの幅をピクセルで指定。(-1で画面幅の半分)
- * @default -1
- *
- * @param maskHeight
- * @text マスクの高さ
- * @parent MaskSettings
- * @type number
- * @min -1
- * @desc マスクの高さをピクセルで指定。(-1で画面高さの半分)
- * @default -1
- *
- * @param maskX
- * @text マスクのX座標
- * @parent MaskSettings
- * @type number
- * @min -1
- * @desc マスクのX座標(左端)をピクセルで指定。(-1で画面中央)
- * @default -1
- *
- * @param maskY
- * @text マスクのY座標
- * @parent MaskSettings
- * @type number
- * @min -1
- * @desc マスクのY座標(上端)をピクセルで指定。(-1で画面中央)
- * @default 48
- *
- * @param FrameSettings
- * @text 枠設定
- * @default
- *
- * @param frameColor
- * @text 枠の色
- * @parent FrameSettings
- * @type string
- * @desc 枠の色を16進数で指定 (例: #FFFFFF for white, #808080 for gray)
- * @default #D0E0FF
- *
- * @param frameWidth
- * @text 枠の太さ
- * @parent FrameSettings
- * @type number
- * @min 0
- * @desc 枠の太さをピクセルで指定。
- * @default 6
- *
- * @param cornerRadius
- * @text 枠の角の丸み
- * @parent FrameSettings
- * @type number
- * @min 0
- * @desc 枠の角の丸み半径をピクセルで指定。(枠と背景マスクに影響)
- * @default 8
- */
+@target MZ MV
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_BattleBackgroundMask.js
+@plugindesc You can mask the background of battle scenes to make them appear more windowed.
+@author example
+@license MIT License
+
+@help
+# Function
+Masks the background of the battle scene, displaying only the enemy group's
+area.
+A snapshot of the current map screen is displayed outside of that.
+
+Set the mask range and position using the plugin parameters.
+
+# Note
+- During battle testing, or when starting a battle from a scene other than the
+map scene,
+there is no snapshot, so the area outside the frame will be black.
+
+There are no plugin commands.
+
+# Terms of Use
+MIT License.
+http://opensource.org/licenses/mit-license.php
+You may modify and redistribute this without permission from the author, and
+there are no restrictions on its use (commercial, R18, etc.).
+
+@param MaskSettings
+@text Mask range and position settings
+
+@param maskWidth
+@text Mask Width
+@desc Specifies the mask width in pixels (-1 is half the screen width).
+@type number
+@default -1
+@min -1
+@parent MaskSettings
+
+@param maskHeight
+@text Mask height
+@desc Specifies the mask height in pixels (-1 is half the screen height).
+@type number
+@default -1
+@min -1
+@parent MaskSettings
+
+@param maskX
+@text X coordinate of the mask
+@desc Specify the X coordinate (left edge) of the mask in pixels (-1 is the center of the screen).
+@type number
+@default -1
+@min -1
+@parent MaskSettings
+
+@param maskY
+@text Y coordinate of the mask
+@desc Specify the Y coordinate (top) of the mask in pixels (-1 is the center of the screen).
+@type number
+@default 48
+@min -1
+@parent MaskSettings
+
+@param FrameSettings
+@text Frame Settings
+
+@param frameColor
+@text Frame color
+@desc Specify the border color in hexadecimal (e.g. #FFFFFF for white, #808080 for gray)
+@type string
+@default #D0E0FF
+@parent FrameSettings
+
+@param frameWidth
+@text Frame Thickness
+@desc Specify the border thickness in pixels.
+@type number
+@default 6
+@min 0
+@parent FrameSettings
+
+@param cornerRadius
+@text Rounded corners of the frame
+@desc Specifies the roundness of the border corners in pixels (affects border and background mask).
+@type number
+@default 8
+@min 0
+@parent FrameSettings
+*/
+
+/*:ja
+@target MZ MV
+@plugindesc 戦闘シーンの背景をマスクし、ウィンドウっぽく表示できます。
+@author munokura
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_BattleBackgroundMask.js
+
+@help
+# 機能
+戦闘シーンの背景をマスクし、敵グループの領域のみに表示します。
+その外側には現在のマップ画面のスナップショットが表示されます。
+
+マスクの範囲・位置等はプラグインパラメータで設定してください。
+
+# 注意
+- 戦闘テスト時、マップシーン以外からの戦闘開始時は、
+スナップショットがないため、枠外は黒になります。
+
+
+プラグインコマンドはありません。
+
+
+# 利用規約
+MITライセンスです。
+http://opensource.org/licenses/mit-license.php
+作者に無断で改変、再配布が可能で、
+利用形態（商用、18禁利用等）についても制限はありません。
+
+
+@param MaskSettings
+@text マスク範囲・位置設定
+@default
+
+@param maskWidth
+@text マスクの幅
+@parent MaskSettings
+@type number
+@min -1
+@desc マスクの幅をピクセルで指定。(-1で画面幅の半分)
+@default -1
+
+@param maskHeight
+@text マスクの高さ
+@parent MaskSettings
+@type number
+@min -1
+@desc マスクの高さをピクセルで指定。(-1で画面高さの半分)
+@default -1
+
+@param maskX
+@text マスクのX座標
+@parent MaskSettings
+@type number
+@min -1
+@desc マスクのX座標(左端)をピクセルで指定。(-1で画面中央)
+@default -1
+
+@param maskY
+@text マスクのY座標
+@parent MaskSettings
+@type number
+@min -1
+@desc マスクのY座標(上端)をピクセルで指定。(-1で画面中央)
+@default 48
+
+@param FrameSettings
+@text 枠設定
+@default
+
+@param frameColor
+@text 枠の色
+@parent FrameSettings
+@type string
+@desc 枠の色を16進数で指定 (例: #FFFFFF for white, #808080 for gray)
+@default #D0E0FF
+
+@param frameWidth
+@text 枠の太さ
+@parent FrameSettings
+@type number
+@min 0
+@desc 枠の太さをピクセルで指定。
+@default 6
+
+@param cornerRadius
+@text 枠の角の丸み
+@parent FrameSettings
+@type number
+@min 0
+@desc 枠の角の丸み半径をピクセルで指定。(枠と背景マスクに影響)
+@default 8
+*/
 
 (() => {
     const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");

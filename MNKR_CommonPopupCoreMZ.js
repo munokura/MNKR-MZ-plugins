@@ -8,6 +8,362 @@
  * --------------------------------------------------
  */
 
+/*:
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_CommonPopupCoreMZ.js
+@plugindesc This is a base plugin that provides a general-purpose popup mechanism.
+@author example
+@license MIT License
+
+@help
+This plugin provides a general-purpose popup mechanism.
+This plugin alone does not have any functionality beyond adding plugin
+commands.
+
+-----------------------------------------------------
+Plugin Commands
+------------------------------------------------------
+CommonPopup add param1 param2 param3 ...
+
+You can specify only the necessary parameters.
+Example: Pop up a test popup above the player for 240 frames.
+CommonPopup add text:test count:240 eventId:-1
+
+Parameter Details:
+text: Display text
+eventId: Event ID to display
+count: Display time
+delay: Display delay
+moveX: Destination X (relative coordinates)
+moveY: Destination Y (relative coordinates)
+sx: Pop-up position offset X
+sy: Pop-up position offset Y
+pattern: Display pattern. 0 is fade, -1 is horizontal stretch, -2 is vertical
+stretch
+back: -1: transparent background, 0: background color gradient
+bx: Text display position offset X
+by: Text display position offset Y
+extend:
+Specify an array to adjust the display timing.
+Example: extend:[20,50] Appears over 20 frames and starts disappearing on the
+50th frame.
+
+Added features not yet implemented in the original version.
+backImage: Filename (in img/pictures)
+
+Deemed less necessary, removed from plugin commands.
+anchorX: Popup origin X. Right edge of the 0 event. In tiles.
+anchorY: Popup origin Y. Bottom edge of the 0 event. In tiles.
+
+Features likely to be unimplemented
+fixed: Fixed to the screen? Specify true/false.
+slideCount: The speed at which a new popup slides up when it appears.
+
+When using an event command script,
+
+this.addPopup(["add","text:test","count:120"…]);
+
+You can create a popup using a script by writing something like this.
+Similarly, if you want to use it in a script within an event command's
+movement route, you can use it by writing:
+
+$gameMap._interpreter.addPopup(["add","text:test","count:120"…]);
+
+# Contact Information
+This is a plugin originally created for RPG Maker MV ported for MZ.
+Please contact the modifier for any inquiries.
+
+# Terms of Use
+MIT License.
+http://opensource.org/licenses/mit-license.php
+You may modify and redistribute this without permission, and there are no
+restrictions on its use (commercial, R18+, etc.).
+
+@command CommonPopupAdd
+@text Pop-up display
+@desc Pop up the text.
+@arg text
+@text Display Text
+@desc Enter the display text.
+@type string
+@arg eventId
+@text Event ID
+@desc The ID of the event to display.
+@type number
+@default -1
+@min -1
+@arg count
+@text Display Time
+@desc Number of frames to complete the popup
+@type number
+@default 60
+@arg delay
+@text Display Delay
+@desc Number of frames to start popup
+@type number
+@default 0
+@arg moveX
+@text Destination point X (relative coordinates)
+@desc X position correction when pop-up is completed
+@type number
+@default 0
+@min -9007
+@max 9007
+@arg moveY
+@text Destination point Y (relative coordinate)
+@desc Y position correction when pop-up is completed
+@type number
+@default -48
+@min -9007
+@max 9007
+@arg sx
+@text Pop Position Correction X
+@desc Popup X position offset
+@type number
+@default 0
+@min -9007
+@max 9007
+@arg sy
+@text Pop position correction Y
+@desc Popup Y position correction
+@type number
+@default 0
+@min -9007
+@max 9007
+@arg pattern
+@text Display Pattern
+@desc Pop-up display transformation pattern
+@type select
+@default Normal
+@option fade
+@value Normal
+@option Horizontal stretch
+@value Stretch
+@option Vertical stretch
+@value GrowUp
+@arg back
+@text background color
+@desc Background color: Red, Green, Blue, Alpha / Transparency: -1
+@type string
+@default 0,0,0,0.6
+@arg backImage
+@text background image
+@desc Specifies a background image. If a background image is used, the background color will be ignored.
+@type file
+@require 1
+@dir img/pictures
+@arg bx
+@text Text Alignment X
+@desc Text display position correction X
+@type number
+@default 0
+@min -9007
+@max 9007
+@arg by
+@text Text position offset Y
+@desc Text display position correction Y
+@type number
+@default 0
+@min -9007
+@max 9007
+@arg extend
+@text Display timing adjustment
+@desc Specify an array for adjusting the display timing. Example: [20,50] Appears over 20 frames and starts disappearing from the 50th frame.
+@type string
+
+@command CommonPopupClear
+@text Remove Pop-up
+@desc Dismisses the displayed popup.
+*/
+
+/*:ja
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_CommonPopupCoreMZ.js
+@plugindesc 汎用的なポップアップの仕組みを提供するためのベースプラグインです。
+@author Yana (改変 munokura)
+
+@help
+このプラグインは、汎用的なポップアップの仕組みを提供するプラグインです。
+このプラグイン単体ではプラグインコマンドを追加する以外の機能はありません。
+
+------------------------------------------------------
+ プラグインコマンド
+------------------------------------------------------
+CommonPopup add param1 param2 param3 ・・・
+
+必要なパラメータのみを指定できます。
+ 例:プレイヤーの上にテストと240フレームポップアップさせる
+CommonPopup add text:テスト count:240 eventId:-1
+
+パラメータ詳細:
+text:表示テキスト
+eventId:表示するイベントのID
+count:表示時間
+delay:表示遅延
+moveX:移動先地点X(相対座標)
+moveY:移動先地点Y(相対座標)
+sx:ポップ位置補正X
+sy:ポップ位置補正Y
+pattern:表示パターン　0がフェード、-1が横ストレッチ、-2が縦ストレッチ
+back:-1:透明背景,0:背景カラーのグラデーション
+bx:テキスト表示位置補正X
+by:テキスト表示位置補正Y
+extend:
+  表示タイミングの調整用配列で指定。
+  例:extend:[20,50] 20フレーム掛けて出現し、50フレーム目から消え始める。
+
+本家で未実装のものを追加
+  backImage:ファイル名（img/pictures内）
+
+必要性が低いと考え、プラグインコマンドから削除
+  anchorX:ポップアップ原点X。0イベントの右端。タイル単位。
+  anchorY:ポップアップ原点Y。0イベントの下端。タイル単位。
+
+未実装と思われる機能
+  fixed:画面に固定するか？ true/falseで指定。
+  slideCount:新しいポップアップが発生した際、上にスライドさせる速度。
+
+イベントコマンドのスクリプトを使う場合、
+
+this.addPopup(["add","text:テスト","count:120"…]);
+
+のように記述すればスクリプトでポップアップを行うことができます。
+同じように、イベントコマンドの移動ルート内のスクリプトで使用する場合、
+
+$gameMap._interpreter.addPopup(["add","text:テスト","count:120"…]);
+
+のように記述すれば使用可能です。
+
+
+# 問い合わせ先
+これはRPGツクールMV用に作成されたプラグインをMZ用に移植したものです。
+お問い合わせは改変者へお願いいたします。
+
+
+# 利用規約
+MITライセンスです。
+http://opensource.org/licenses/mit-license.php
+作者に無断で改変、再配布が可能で、
+利用形態（商用、18禁利用等）についても制限はありません。
+
+
+@command CommonPopupAdd
+@text ポップアップ表示
+@desc テキストをポップアップ表示します。
+
+@arg text
+@type string
+@text 表示テキスト
+@desc 表示テキストを入力します。
+@default
+
+@arg eventId
+@type number
+@min -1
+@text イベントID
+@desc 表示するイベントのID。
+-1:プレイヤー / 0:実行イベント / 1以上:イベントID
+@default -1
+
+@arg count
+@type number
+@text 表示時間
+@desc ポップアップを完了するまでのフレーム数
+@default 60
+
+@arg delay
+@type number
+@text 表示遅延
+@desc ポップアップを開始するまでのフレーム数
+@default 0
+
+@arg moveX
+@type number
+@min -9007
+@max 9007
+@text 移動先地点X(相対座標)
+@desc ポップアップ完了時のX位置補正
+@default 0
+
+@arg moveY
+@type number
+@min -9007
+@max 9007
+@text 移動先地点Y(相対座標)
+@desc ポップアップ完了時のY位置補正
+@default -48
+
+@arg sx
+@type number
+@min -9007
+@max 9007
+@text ポップ位置補正X
+@desc ポップアップのX位置補正
+@default 0
+
+@arg sy
+@type number
+@min -9007
+@max 9007
+@text ポップ位置補正Y
+@desc ポップアップのY位置補正
+@default 0
+
+@arg pattern
+@type select
+@option フェード
+@value Normal
+@option 横ストレッチ
+@value Stretch
+@option 縦ストレッチ
+@value GrowUp
+@text 表示パターン
+@desc ポップアップ表示の変形パターン
+@default Normal
+
+@arg back
+@text 背景色
+@type string
+@desc 背景色:Red,Green,Blue,Alpha / 透明:-1
+例:0, 0, 0, 0.6
+@default 0,0,0,0.6
+
+@arg backImage
+@text 背景画像
+@type file
+@require 1
+@dir img/pictures
+@desc 背景画像を指定します。背景画像を使用すると背景色は無視されます。
+@default
+
+@arg bx
+@type number
+@min -9007
+@max 9007
+@text テキスト位置補正X
+@desc テキストの表示位置補正X
+@default 0
+
+@arg by
+@type number
+@min -9007
+@max 9007
+@text テキスト位置補正Y
+@desc テキストの表示位置補正Y
+@default 0
+
+@arg extend
+@type string
+@text 表示タイミングの調整
+@desc 表示タイミングの調整用配列で指定。例:[20,50] 20フレーム掛けて出現し、50フレーム目から消え始める。
+@default
+
+
+@command CommonPopupClear
+@text ポップアップ消去
+@desc 表示されているポップアップを消去します。
+*/
+
 //
 //  汎用ポップアップコア ver1.06
 //
@@ -20,189 +376,7 @@
 // author Yana
 //
 
-/*:
- * @target MZ
- * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_CommonPopupCoreMZ.js
- * @plugindesc 汎用的なポップアップの仕組みを提供するためのベースプラグインです。
- * @author Yana (改変 munokura)
- * 
- * @help
- * このプラグインは、汎用的なポップアップの仕組みを提供するプラグインです。
- * このプラグイン単体ではプラグインコマンドを追加する以外の機能はありません。
- * 
- * ------------------------------------------------------
- *  プラグインコマンド
- * ------------------------------------------------------
- * CommonPopup add param1 param2 param3 ・・・
- * 
- * 必要なパラメータのみを指定できます。
- *  例:プレイヤーの上にテストと240フレームポップアップさせる
- * CommonPopup add text:テスト count:240 eventId:-1
- * 
- * パラメータ詳細:
- * text:表示テキスト
- * eventId:表示するイベントのID
- * count:表示時間
- * delay:表示遅延
- * moveX:移動先地点X(相対座標)
- * moveY:移動先地点Y(相対座標)
- * sx:ポップ位置補正X
- * sy:ポップ位置補正Y
- * pattern:表示パターン　0がフェード、-1が横ストレッチ、-2が縦ストレッチ
- * back:-1:透明背景,0:背景カラーのグラデーション
- * bx:テキスト表示位置補正X
- * by:テキスト表示位置補正Y
- * extend:
- *   表示タイミングの調整用配列で指定。
- *   例:extend:[20,50] 20フレーム掛けて出現し、50フレーム目から消え始める。
- * 
- * 本家で未実装のものを追加
- *   backImage:ファイル名（img/pictures内）
- * 
- * 必要性が低いと考え、プラグインコマンドから削除
- *   anchorX:ポップアップ原点X。0イベントの右端。タイル単位。
- *   anchorY:ポップアップ原点Y。0イベントの下端。タイル単位。
- * 
- * 未実装と思われる機能
- *   fixed:画面に固定するか？ true/falseで指定。
- *   slideCount:新しいポップアップが発生した際、上にスライドさせる速度。
- *
- * イベントコマンドのスクリプトを使う場合、
- *
- * this.addPopup(["add","text:テスト","count:120"…]);
- *
- * のように記述すればスクリプトでポップアップを行うことができます。
- * 同じように、イベントコマンドの移動ルート内のスクリプトで使用する場合、
- *
- * $gameMap._interpreter.addPopup(["add","text:テスト","count:120"…]);
- *
- * のように記述すれば使用可能です。
- * 
- * ------------------------------------------------------
- * 利用規約
- * ------------------------------------------------------
- *   MITライセンスです。
- *   https://licenses.opensource.jp/MIT/MIT.html
- *   作者に無断で改変、再配布が可能で、
- *   利用形態（商用、18禁利用等）についても制限はありません。
- * 
- * 
- * @command CommonPopupAdd
- * @text ポップアップ表示
- * @desc テキストをポップアップ表示します。
- * 
- * @arg text
- * @type string
- * @text 表示テキスト
- * @desc 表示テキストを入力します。
- * @default 
- * 
- * @arg eventId
- * @type number
- * @min -1
- * @text イベントID
- * @desc 表示するイベントのID。
- * -1:プレイヤー / 0:実行イベント / 1以上:イベントID
- * @default -1
- * 
- * @arg count
- * @type number
- * @text 表示時間
- * @desc ポップアップを完了するまでのフレーム数
- * @default 60
- * 
- * @arg delay
- * @type number
- * @text 表示遅延
- * @desc ポップアップを開始するまでのフレーム数
- * @default 0
- * 
- * @arg moveX
- * @type number
- * @min -9007
- * @max 9007
- * @text 移動先地点X(相対座標)
- * @desc ポップアップ完了時のX位置補正
- * @default 0
- * 
- * @arg moveY
- * @type number
- * @min -9007
- * @max 9007
- * @text 移動先地点Y(相対座標)
- * @desc ポップアップ完了時のY位置補正
- * @default -48
- * 
- * @arg sx
- * @type number
- * @min -9007
- * @max 9007
- * @text ポップ位置補正X
- * @desc ポップアップのX位置補正
- * @default 0
- * 
- * @arg sy
- * @type number
- * @min -9007
- * @max 9007
- * @text ポップ位置補正Y
- * @desc ポップアップのY位置補正
- * @default 0
- * 
- * @arg pattern
- * @type select
- * @option フェード
- * @value Normal
- * @option 横ストレッチ
- * @value Stretch
- * @option 縦ストレッチ
- * @value GrowUp
- * @text 表示パターン
- * @desc ポップアップ表示の変形パターン
- * @default Normal
- * 
- * @arg back
- * @text 背景色
- * @type string
- * @desc 背景色:Red,Green,Blue,Alpha / 透明:-1
- * 例:0, 0, 0, 0.6
- * @default 0,0,0,0.6
- * 
- * @arg backImage
- * @text 背景画像
- * @type file
- * @require 1
- * @dir img/pictures
- * @desc 背景画像を指定します。背景画像を使用すると背景色は無視されます。
- * @default
- * 
- * @arg bx
- * @type number
- * @min -9007
- * @max 9007
- * @text テキスト位置補正X
- * @desc テキストの表示位置補正X
- * @default 0
- * 
- * @arg by
- * @type number
- * @min -9007
- * @max 9007
- * @text テキスト位置補正Y
- * @desc テキストの表示位置補正Y
- * @default 0
- * 
- * @arg extend
- * @type string
- * @text 表示タイミングの調整
- * @desc 表示タイミングの調整用配列で指定。例:[20,50] 20フレーム掛けて出現し、50フレーム目から消え始める。
- * @default
- * 
- * 
- * @command CommonPopupClear
- * @text ポップアップ消去
- * @desc 表示されているポップアップを消去します。
- */
+
 
 var Imported = Imported || {};
 Imported['CommonPopupCore'] = 1.06;
@@ -617,7 +791,7 @@ function CommonPopupManager() {
             backImage: '',           // 背景に使う画像ファイル名
             bx: 0,                   // 内容の表示位置補正X
             by: 0,                   // 内容の表示位置補正Y
-            extend: '',              // 
+            extend: '',              //
             fixed: true,             //
             anchorX: 0.5,
             anchorY: 0.5,

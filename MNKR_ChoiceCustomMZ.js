@@ -9,114 +9,223 @@
  */
 
 /*:
- * @target MZ
- * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_ChoiceCustomMZ.js
- * @plugindesc 選択肢の列数・行数・Y軸位置を変更する機能を追加します。
- * @author munokura
- *
- * @help
- * # 機能
- * 選択肢の列数・行数・Y軸位置を変更する機能を追加します。
- * イベントコマンド「プラグインコマンド」で選択肢の表示を制御できます。
- *
- * # プラグインコマンドの使い方
- *
- * イベントコマンド「プラグインコマンド」を開き、
- * このプラグイン名「MNKR_ChoiceCustomMZ」を選択すると、
- * 以下のコマンドが表示されます。使いたい機能を選択し、引数を設定してください。
- *
- * ## 列数の設定 (SetChoiceColumns)
- * - 選択肢の列数を設定します。
- * - 引数「列数」に1以上を指定してください。
- *
- * ### 使用例：2列表示
- * プラグインコマンド：MNKR_ChoiceCustomMZ
- * コマンド名：列数の設定
- * 引数：
- * 列数: 2
- *
- * ## 行数の設定 (SetChoiceRows)
- * - 選択肢の表示行数を設定します。
- * - 引数「行数」に1以上を指定してください。
- *
- * ### 使用例：2行表示
- * プラグインコマンド：MNKR_ChoiceCustomMZ
- * コマンド名：行数の設定
- * 引数：
- * 行数: 2
- *
- * ## Y軸位置の設定 (SetChoiceYPosition)
- * - 選択肢のY軸位置を設定します。
- * - 引数「Y座標」に0以上を指定してください。
- *
- * ### 使用例：画面最上部
- * プラグインコマンド：MNKR_ChoiceCustomMZ
- * コマンド名：Y軸位置の設定
- * 引数：
- * Y座標: 0
- *
- * ## 設定のリセット (ResetChoiceSettings)
- * - すべての設定をデフォルト（1列表示など）に戻します。
- * - 場所移動後も設定は引き継がれるため、不要になった場合は
- * このコマンドでリセットしてください。
- *
- * # 注意事項
- *
- * ## Y軸位置について
- * - Y位置指定の値が大きすぎて画面外にはみ出る場合、
- *   自動的に画面最上部に調整されます
- * - 行数指定により解像度を越えるウィンドウサイズになる場合、
- *   ウィンドウサイズが自動的に調整され、
- *   画面最上部に表示されます。
- *
- * ## 行数と列数の組み合わせ
- * - 行数指定は、列数指定と組み合わせて使用できます。
- * - 「表示行数 × 列数」が選択肢の総数より少ない場合、
- * ウィンドウはスクロール可能になります。
- *
- * ### 使用例：2列×3行の表示（最大6個の選択肢を表示）
- * 以下の2つのプラグインコマンドを連続して実行します。
- *
- * プラグインコマンド：列数の設定 (列数: 2)
- * プラグインコマンド：行数の設定 (行数: 3)
- *
- * # 利用規約
- *
- * MITライセンスです。
- * https://licenses.opensource.jp/MIT/MIT.html
- *
- * 作者に無断で改変、再配布が可能で、
- * 利用形態（商用、18禁利用等）についても制限はありません。
- *
- * @command SetChoiceCustom
- * @text 選択肢のカスタム設定
- * @desc 選択肢の列数・行数・Y軸位置を設定します。
- *
- * @arg rows
- * @text 行数
- * @desc 1以上の数値を指定してください。
- * @type number
- * @min 1
- * @default 6
- *
- * @arg columns
- * @text 列数
- * @desc 1以上の数値を指定してください。
- * @type number
- * @min 1
- * @default 2
- *
- * @arg yPosition
- * @text Y座標
- * @desc 0以上の数値を指定してください。
- * @type number
- * @min 0
- * @default 0
- *
- * @command ResetChoiceSettings
- * @text 設定のリセット
- * @desc 全ての設定をデフォルトに戻します。
- */
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_ChoiceCustomMZ.js
+@plugindesc Adds a plugin command to change the number of columns, rows, and Y-axis position of the options.
+@author example
+@license MIT License
+
+@help
+# Function
+Adds a plugin command to change the number of columns, rows, and Y-axis
+position of choices.
+
+# How to Use the Plugin Command
+
+Open the "Plugin Command" event command and select this plugin name
+"MNKR_ChoiceCustomMZ."
+The following commands will be displayed. Select the function you want to use
+and set the arguments.
+
+## Set Columns (SetChoiceColumns)
+- Sets the number of columns of choices.
+- Specify 1 or more for the "Columns" argument.
+
+## Example: Displaying Two Columns
+Plugin Command: MNKR_ChoiceCustomMZ
+Command Name: Set Columns
+Arguments:
+Number of Columns: 2
+
+## Set Rows (SetChoiceRows)
+- Sets the number of rows displayed for choices.
+- Specify 1 or more for the "Rows" argument.
+
+### Usage Example: 2-Column Display
+Plugin Command: MNKR_ChoiceCustomMZ
+Command Name: Set Number of Rows
+Arguments:
+Number of Rows: 2
+
+## Setting Y-Axis Position (SetChoiceYPosition)
+- Sets the Y-axis position of the choice.
+- Specify a value greater than or equal to 0 for the "Y Coordinate" argument.
+
+## Usage Example: Top of Screen
+Plugin Command: MNKR_ChoiceCustomMZ
+Command Name: Set Y-Axis Position
+Arguments:
+Y Coordinate: 0
+
+## Reset Settings (ResetChoiceSettings)
+- Resets all settings to default (e.g., single-column display).
+- Settings are retained even after moving locations, so if you no longer need
+them, use this command to reset them.
+
+# Notes
+
+## About Y-Axis Position
+- If the specified Y-position value is too large and extends off the screen,
+it will automatically be adjusted to the top of the screen.
+- If the specified number of rows results in a window size that exceeds the
+resolution,
+the window size will be automatically adjusted and
+displayed at the top of the screen.
+
+## Combination of Rows and Columns
+- Specifying the number of rows can be used in combination with specifying the
+number of columns.
+- If the "number of rows × number of columns" is less than the total number of
+options,
+the window will be scrollable.
+
+### Usage Example: Displaying 2 columns x 3 rows (displaying up to 6 options)
+Execute the following two plugin commands in succession.
+
+Plugin Command: Set Number of Columns (Number of Columns: 2)
+Plugin Command: Set Number of Rows (Number of Rows: 3)
+
+# Terms of Use
+MIT License.
+http://opensource.org/licenses/mit-license.php
+Modification and redistribution are permitted without the author's permission,
+and there are no restrictions on usage (commercial, R18+, etc.).
+
+@command SetChoiceCustom
+@text Custom options
+@desc Set the number of columns, rows, and Y-axis position of the options.
+@arg rows
+@text Number of rows
+@desc Please specify a number greater than or equal to 1.
+@type number
+@default 6
+@min 1
+@arg columns
+@text number of columns
+@desc Please specify a number greater than or equal to 1.
+@type number
+@default 2
+@min 1
+@arg yPosition
+@text Y coordinate
+@desc Please specify a number greater than or equal to 0.
+@type number
+@default 0
+@min 0
+
+@command ResetChoiceSettings
+@text Reset settings
+@desc Reset all settings to default.
+*/
+
+/*:ja
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_ChoiceCustomMZ.js
+@plugindesc 選択肢の列数・行数・Y軸位置を変更するプラグインコマンドを追加します。
+@author munokura
+
+@help
+# 機能
+選択肢の列数・行数・Y軸位置を変更するプラグインコマンドを追加します。
+
+# プラグインコマンドの使い方
+
+イベントコマンド「プラグインコマンド」を開き、
+このプラグイン名「MNKR_ChoiceCustomMZ」を選択すると、
+以下のコマンドが表示されます。使いたい機能を選択し、引数を設定してください。
+
+## 列数の設定 (SetChoiceColumns)
+- 選択肢の列数を設定します。
+- 引数「列数」に1以上を指定してください。
+
+### 使用例：2列表示
+プラグインコマンド：MNKR_ChoiceCustomMZ
+コマンド名：列数の設定
+引数：
+列数: 2
+
+## 行数の設定 (SetChoiceRows)
+- 選択肢の表示行数を設定します。
+- 引数「行数」に1以上を指定してください。
+
+### 使用例：2行表示
+プラグインコマンド：MNKR_ChoiceCustomMZ
+コマンド名：行数の設定
+引数：
+行数: 2
+
+## Y軸位置の設定 (SetChoiceYPosition)
+- 選択肢のY軸位置を設定します。
+- 引数「Y座標」に0以上を指定してください。
+
+### 使用例：画面最上部
+プラグインコマンド：MNKR_ChoiceCustomMZ
+コマンド名：Y軸位置の設定
+引数：
+Y座標: 0
+
+## 設定のリセット (ResetChoiceSettings)
+- すべての設定をデフォルト（1列表示など）に戻します。
+- 場所移動後も設定は引き継がれるため、不要になった場合は
+このコマンドでリセットしてください。
+
+# 注意事項
+
+## Y軸位置について
+- Y位置指定の値が大きすぎて画面外にはみ出る場合、
+  自動的に画面最上部に調整されます
+- 行数指定により解像度を越えるウィンドウサイズになる場合、
+  ウィンドウサイズが自動的に調整され、
+  画面最上部に表示されます。
+
+## 行数と列数の組み合わせ
+- 行数指定は、列数指定と組み合わせて使用できます。
+- 「表示行数 × 列数」が選択肢の総数より少ない場合、
+ウィンドウはスクロール可能になります。
+
+### 使用例：2列×3行の表示（最大6個の選択肢を表示）
+以下の2つのプラグインコマンドを連続して実行します。
+
+プラグインコマンド：列数の設定 (列数: 2)
+プラグインコマンド：行数の設定 (行数: 3)
+
+
+# 利用規約
+MITライセンスです。
+http://opensource.org/licenses/mit-license.php
+作者に無断で改変、再配布が可能で、
+利用形態（商用、18禁利用等）についても制限はありません。
+
+
+@command SetChoiceCustom
+@text 選択肢のカスタム設定
+@desc 選択肢の列数・行数・Y軸位置を設定します。
+
+@arg rows
+@text 行数
+@desc 1以上の数値を指定してください。
+@type number
+@min 1
+@default 6
+
+@arg columns
+@text 列数
+@desc 1以上の数値を指定してください。
+@type number
+@min 1
+@default 2
+
+@arg yPosition
+@text Y座標
+@desc 0以上の数値を指定してください。
+@type number
+@min 0
+@default 0
+
+@command ResetChoiceSettings
+@text 設定のリセット
+@desc 全ての設定をデフォルトに戻します。
+*/
 
 (() => {
     "use strict";

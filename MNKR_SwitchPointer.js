@@ -9,27 +9,57 @@
  */
 
 /*:
- * @target MZ MV
- * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_SwitchPointer.js
- * @plugindesc 指定スイッチがON時、タップによる移動先の点滅（ポインタ）表示を止めます。
- * @author munokura
- *
- * @help
- * 指定スイッチがON時、タップによる移動先の点滅（ポインタ）表示を止めます。
- *
- * 利用規約:
- *   MITライセンスです。
- *   https://licenses.opensource.jp/MIT/MIT.html
- *   作者に無断で改変、再配布が可能で、
- *   利用形態（商用、18禁利用等）についても制限はありません。
- *
- *
- * @param destinationSwitch
- * @text ポインタスイッチID
- * @type switch
- * @default 0
- * @desc 指定スイッチがON時、タップによる移動先の点滅（ポインタ）表示を止めます。無指定の場合、常にONと同等になります。
- */
+@target MZ MV
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_SwitchPointer.js
+@plugindesc When the specified switch is ON, the flashing (pointer) display of the destination by tapping will stop.
+@author example
+@license MIT License
+
+@help
+When the specified switch is ON, the blinking pointer display of the
+destination will be disabled when tapped.
+
+There are no plugin commands.
+
+# Terms of Use
+MIT License.
+http://opensource.org/licenses/mit-license.php
+You may modify and redistribute this without permission from the author, and
+there are no restrictions on its use (commercial, R18, etc.).
+
+@param destinationSwitch
+@text Pointer Switch ID
+@desc When the specified switch is ON, the flashing (pointer) display of the destination by tapping will stop. If not specified, it will always be the same as ON.
+@type switch
+@default 0
+*/
+
+/*:ja
+@target MZ MV
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_SwitchPointer.js
+@plugindesc 指定スイッチがON時、タップによる移動先の点滅（ポインタ）表示を止めます。
+@author munokura
+
+@help
+指定スイッチがON時、タップによる移動先の点滅（ポインタ）表示を止めます。
+
+
+プラグインコマンドはありません。
+
+
+# 利用規約
+MITライセンスです。
+http://opensource.org/licenses/mit-license.php
+作者に無断で改変、再配布が可能で、
+利用形態（商用、18禁利用等）についても制限はありません。
+
+
+@param destinationSwitch
+@text ポインタスイッチID
+@type switch
+@default 0
+@desc 指定スイッチがON時、タップによる移動先の点滅（ポインタ）表示を止めます。無指定の場合、常にONと同等になります。
+*/
 
 (() => {
   "use strict";

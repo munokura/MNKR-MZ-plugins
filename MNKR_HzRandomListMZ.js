@@ -8,134 +8,269 @@
  * --------------------------------------------------
  */
 
+/*:
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_HzRandomListMZ.js
+@plugindesc You can create a random list of values without duplicates.
+@author example
+@license MIT License
+
+@help
+You can create unique random values within a specific integer range and
+retrieve them one by one.
+For example, if you create random values from 1 to 6,
+you can retrieve values from 1 to 6 in a random order without any duplicates.
+This can be used for things like lotteries at night stalls, where you'll
+eventually win if you keep drawing (as long as the vendor isn't cheating),
+or when you want to use random values but want to avoid duplicate values.
+* The state of the random values is saved to a save file.
+
+Plugin Command:
+hzrandomCreate id min max loop
+# Creates a random number list with ID [id] from min to max (including max).
+# The loop setting is optional. (1: LOOP ON; otherwise: LOOP OFF)
+
+hzrandomNext id varNo
+# Retrieves the next element from the random number list with ID [id] and sets it to variable [varNo].
+# When all elements of the random number list have been retrieved,
+# If LOOP ON, restarts from the first element.
+# If LOOP OFF, shuffles the random number list.
+
+hzrandomShuffle id
+# Shuffle the random number list for ID [id].
+
+Usage example)
+hzrandomCreate 1 1 3 false
+-> Create a random number list (ID=1) from 1 to 3 (LOOP OFF)
+Example) [3, 1, 2]
+
+hzrandomNext 1 1
+-> Get the next element of the random number list (3 in the above example) and
+assign it to variable 1
+hzrandomNext 1 1
+
+-> Get the next element of the random number list (1 in the above example) and
+assign it to variable 1
+hzrandomNext 1 1
+
+-> Get the next element of the random number list (2 in the above example) and
+assign it to variable 1
+hzrandomNext 1 1
+
+-> Now that all elements of the random number list have been obtained, shuffle
+the random number list.
+Example) [2, 1, 3]
+Get the next element of the random number list (2 in the above example) and
+assign it to variable 1
+
+hzrandomNext 1 1
+-> Get the next element in the random number list (1 in the example above) and
+assign it to variable 1.
+
+hzrandomShuffle 1
+-> Shuffle the random number list.
+Example: [1, 3, 2]
+
+hzrandomNext 1 1
+-> Get the next element in the random number list (1 in the example above) and
+assign it to variable 1.
+
+# Contact Information
+This is a plugin originally created for RPG Maker MV that has been adapted for
+MZ.
+Please contact the modifier for any inquiries.
+
+# Terms of Use
+MIT License.
+http://opensource.org/licenses/mit-license.php
+You may modify and redistribute this without permission, and there are no
+restrictions on its use (commercial, 18+, etc.).
+
+@command hzrandomCreate
+@text Create a random number list
+@desc Create a random number list.
+@arg id
+@text Random Number List ID
+@desc Specify the ID that manages the random number list.
+@type Number
+@default 1
+@arg min
+@text Minimum
+@desc Specifies the minimum value in the random number list.
+@type Number
+@default 1
+@arg max
+@text Maximum
+@desc Specifies the maximum value in the random number list.
+@type Number
+@default 3
+@arg loop
+@text loop
+@desc After the entire list of random numbers has been drawn, start over.
+@type boolean
+@on Loop
+@off Don't loop
+@default false
+
+@command hzrandomNext
+@text Get random number
+@desc Get a random number from a list and assign it to a variable.
+@arg id
+@text Random Number List ID
+@desc Specify the ID that manages the random number list.
+@type Number
+@default 1
+@arg varNo
+@text Variable ID
+@desc Specify the variable to which the subtracted value will be assigned.
+@type variable
+@default 0
+
+@command hzrandomShuffle
+@text shuffle
+@desc Shuffles a list of random numbers.
+@arg id
+@text Random Number List ID
+@desc Specify the ID that manages the random number list.
+@type Number
+@default 1
+*/
+
+/*:ja
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_HzRandomListMZ.js
+@plugindesc 重複の無いランダム値リストを作成できます
+@author hiz (改変:munokura)
+
+@help
+特定の整数範囲の重複の無いランダム値を作成し、一つずつ取得できます。
+例えば１から６のランダム値を作成した場合、
+１から６の値を重複なくランダムな順番で取得することができます。
+夜店のくじ等の（店がズルしてなければ）引き続ければいつかは当たるくじや、
+ランダム値を使いたいけど同じ値が重複することは避けたい場合等に使えます。
+※ ランダム値の状態はセーブファイルに保存されます。
+
+プラグイン コマンド:
+  hzrandomCreate id min max loop
+# min~max(max含む)のID[id]の乱数リストを作成します
+# loopは任意設定です。（1:LOOP ON それ以外：LOOP OFF）
+
+  hzrandomNext id varNo
+# ID[id]の乱数リストの次の要素を取得して、変数[varNo]にセットします。
+# 乱数リストの要素を全て取得した場合、
+# LOOP ONの場合、最初の要素から取得し直します。
+# LOOP OFFの場合、乱数リストをシャッフルします。
+
+  hzrandomShuffle id
+# ID[id]の乱数リストをシャッフルします。
+
+使用例）
+  hzrandomCreate 1 1 3 false
+-> 1~3の乱数リスト（ID=1）を作成（LOOP OFF）
+   例） [3, 1, 2]
+
+  hzrandomNext 1 1
+-> 乱数リストの次の要素（上記例では3）を取得し、変数1に代入
+  hzrandomNext 1 1
+
+-> 乱数リストの次の要素（上記例では1）を取得し、変数1に代入
+  hzrandomNext 1 1
+
+-> 乱数リストの次の要素（上記例では2）を取得し、変数1に代入
+  hzrandomNext 1 1
+
+-> 乱数リストの要素を全て取得したため、乱数リストをシャッフル
+   例） [2, 1, 3]
+   乱数リストの次の要素（上記例では2）を取得し、変数1に代入
+
+  hzrandomNext 1 1
+-> 乱数リストの次の要素（上記例では1）を取得し、変数1に代入
+
+  hzrandomShuffle 1
+-> 乱数リストをシャッフル
+   例） [1, 3, 2]
+
+  hzrandomNext 1 1
+-> 乱数リストの次の要素（上記例では1）を取得し、変数1に代入
+
+
+# 問い合わせ先
+これはRPGツクールMV用に作成されたプラグインをMZ用に移植したものです。
+お問い合わせは改変者へお願いいたします。
+
+
+# 利用規約
+MITライセンスです。
+http://opensource.org/licenses/mit-license.php
+作者に無断で改変、再配布が可能で、
+利用形態（商用、18禁利用等）についても制限はありません。
+
+
+@command hzrandomCreate
+@text 乱数リスト作成
+@desc 乱数リストを作成します。
+
+@arg id
+@text 乱数リストID
+@desc 乱数リストを管理するIDを指定します。
+@type Number
+@default 1
+
+@arg min
+@text 最小値
+@desc 乱数リスト内の最小値を指定します。
+@type Number
+@default 1
+
+@arg max
+@text 最大値
+@desc 乱数リスト内の最大値を指定します。
+@type Number
+@default 3
+
+@arg loop
+@text ループ
+@desc 乱数リストが全て引き終わった後、最初からやり直します。
+@type boolean
+@on ループする
+@off ループしない
+@default false
+
+
+@command hzrandomNext
+@text 乱数取得
+@desc 乱数をリストから取得して、変数に代入します。
+
+@arg id
+@text 乱数リストID
+@desc 乱数リストを管理するIDを指定します。
+@type Number
+@default 1
+
+@arg varNo
+@text 変数ID
+@desc 引いた値を代入する変数を指定。
+@type variable
+@default 0
+
+
+@command hzrandomShuffle
+@text シャッフル
+@desc 乱数リストをシャッフルします。
+
+@arg id
+@text 乱数リストID
+@desc 乱数リストを管理するIDを指定します。
+@type Number
+@default 1
+*/
+
 /*
 Copyright (c) <2016> <hiz>
 MITライセンスの下で公開されています。
 */
 
-/*:
- * @target MZ
- * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_HzRandomListMZ.js
- * @plugindesc 重複の無いランダム値リストを作成できます
- * @author hiz (改変:munokura)
- * 
- * @help
- * 特定の整数範囲の重複の無いランダム値を作成し、一つずつ取得できます。
- * 例えば１から６のランダム値を作成した場合、
- * １から６の値を重複なくランダムな順番で取得することができます。
- * 夜店のくじ等の（店がズルしてなければ）引き続ければいつかは当たるくじや、
- * ランダム値を使いたいけど同じ値が重複することは避けたい場合等に使えます。
- * ※ ランダム値の状態はセーブファイルに保存されます。
- *  
- * プラグイン コマンド:
- *   hzrandomCreate id min max loop
- * # min~max(max含む)のID[id]の乱数リストを作成します
- * # loopは任意設定です。（1:LOOP ON それ以外：LOOP OFF）
- *
- *   hzrandomNext id varNo
- * # ID[id]の乱数リストの次の要素を取得して、変数[varNo]にセットします。
- * # 乱数リストの要素を全て取得した場合、
- * # LOOP ONの場合、最初の要素から取得し直します。
- * # LOOP OFFの場合、乱数リストをシャッフルします。
- *
- *   hzrandomShuffle id
- * # ID[id]の乱数リストをシャッフルします。
- *
- * 使用例）
- *   hzrandomCreate 1 1 3 false
- * -> 1~3の乱数リスト（ID=1）を作成（LOOP OFF）
- *    例） [3, 1, 2]
- * 
- *   hzrandomNext 1 1
- * -> 乱数リストの次の要素（上記例では3）を取得し、変数1に代入
- *   hzrandomNext 1 1
- * 
- * -> 乱数リストの次の要素（上記例では1）を取得し、変数1に代入
- *   hzrandomNext 1 1
- * 
- * -> 乱数リストの次の要素（上記例では2）を取得し、変数1に代入
- *   hzrandomNext 1 1
- * 
- * -> 乱数リストの要素を全て取得したため、乱数リストをシャッフル
- *    例） [2, 1, 3]
- *    乱数リストの次の要素（上記例では2）を取得し、変数1に代入
- * 
- *   hzrandomNext 1 1
- * -> 乱数リストの次の要素（上記例では1）を取得し、変数1に代入
- * 
- *   hzrandomShuffle 1
- * -> 乱数リストをシャッフル
- *    例） [1, 3, 2]
- * 
- *   hzrandomNext 1 1
- * -> 乱数リストの次の要素（上記例では1）を取得し、変数1に代入
- * 
- * 
- * 利用規約:
- *   MITライセンスです。
- *   https://licenses.opensource.jp/MIT/MIT.html
- *   作者に無断で改変、再配布が可能で、
- *   利用形態（商用、18禁利用等）についても制限はありません。
- * 
- * 
- * @command hzrandomCreate
- * @text 乱数リスト作成
- * @desc 乱数リストを作成します。
- *
- * @arg id
- * @text 乱数リストID
- * @desc 乱数リストを管理するIDを指定します。
- * @type Number
- * @default 1
- * 
- * @arg min
- * @text 最小値
- * @desc 乱数リスト内の最小値を指定します。
- * @type Number
- * @default 1
- * 
- * @arg max
- * @text 最大値
- * @desc 乱数リスト内の最大値を指定します。
- * @type Number
- * @default 3
- * 
- * @arg loop
- * @text ループ
- * @desc 乱数リストが全て引き終わった後、最初からやり直します。
- * @type boolean
- * @on ループする
- * @off ループしない
- * @default false
- * 
- * 
- * @command hzrandomNext
- * @text 乱数取得
- * @desc 乱数をリストから取得して、変数に代入します。
- *
- * @arg id
- * @text 乱数リストID
- * @desc 乱数リストを管理するIDを指定します。
- * @type Number
- * @default 1
- * 
- * @arg varNo
- * @text 変数ID
- * @desc 引いた値を代入する変数を指定。
- * @type variable
- * @default 0
- * 
- * 
- * @command hzrandomShuffle
- * @text シャッフル
- * @desc 乱数リストをシャッフルします。
- *
- * @arg id
- * @text 乱数リストID
- * @desc 乱数リストを管理するIDを指定します。
- * @type Number
- * @default 1
- */
+
 
 (() => {
     "use strict";

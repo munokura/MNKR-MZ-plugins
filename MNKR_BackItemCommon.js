@@ -9,33 +9,73 @@
  */
 
 /*:
- * @target MZ MV
- * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_BackItemCommon.js
- * @plugindesc アイテム・スキルの使用効果コモンイベント後、元の選択に自動で戻るようにできます。
- * @author munokura
- * @help
- * # 機能
- * デフォルトではアイテム・スキルの使用効果にコモンイベントを設定すると、
- * メニューを閉じ、マップ画面でコモンイベントが実行されて完了します。
- * 
- * このプラグインの機能を使用すると、
- * アイテム・スキルのコモンイベント完了後、元の選択に戻れるアイテム・スキルが作れます。
- * 
- * # 使用方法
- * 機能を動作させたいアイテム・スキルのメモ欄に下記のタグを記入してください。
- * <MNKR_BackItemCommon>
- * タグが記入されていないアイテム・スキルは、デフォルトの動作をします。
- * 
- * # 注意
- * - マップ画面でのアイテム・スキル使用時のみ適用されます。
- * - 戦闘中は対象外です。
- * 
- * # 利用規約
- * MITライセンスです。
- * https://licenses.opensource.jp/MIT/MIT.html
- * 作者に無断で改変、再配布が可能で、
- * 利用形態（商用、18禁利用等）についても制限はありません。
- */
+@target MZ MV
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_BackItemCommon.js
+@plugindesc After the common event of using an item or skill, you can automatically return to the original selection.
+@author example
+@license MIT License
+
+@help
+# Function
+By default, when you set a common event as the effect of an item or skill,
+the menu closes and the common event is executed and completed on the map
+screen.
+
+Using this plugin's function,
+you can create items and skills that return to the original selection after
+completing their common event.
+
+# Usage
+Enter the following tag in the memo field of the item or skill you want this
+function to work on.
+<MNKR_BackItemCommon>
+Items and skills without this tag will operate by default.
+
+# Notes
+- Only applies when using items or skills on the map screen.
+- Does not apply during battle.
+
+No plugin commands.
+
+# Terms of Use
+MIT License.
+http://opensource.org/licenses/mit-license.php
+Modifications and redistribution are permitted without the author's
+permission,
+and there are no restrictions on usage (commercial, 18+, etc.).
+*/
+
+/*:ja
+@target MZ MV
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_BackItemCommon.js
+@plugindesc アイテム・スキルの使用効果コモンイベント後、元の選択に自動で戻るようにできます。
+@author munokura
+@help
+# 機能
+デフォルトではアイテム・スキルの使用効果にコモンイベントを設定すると、
+メニューを閉じ、マップ画面でコモンイベントが実行されて完了します。
+
+このプラグインの機能を使用すると、
+アイテム・スキルのコモンイベント完了後、元の選択に戻れるアイテム・スキルが作れます。
+
+# 使用方法
+機能を動作させたいアイテム・スキルのメモ欄に下記のタグを記入してください。
+<MNKR_BackItemCommon>
+タグが記入されていないアイテム・スキルは、デフォルトの動作をします。
+
+# 注意
+- マップ画面でのアイテム・スキル使用時のみ適用されます。
+- 戦闘中は対象外です。
+
+プラグインコマンドはありません。
+
+
+# 利用規約
+MITライセンスです。
+http://opensource.org/licenses/mit-license.php
+作者に無断で改変、再配布が可能で、
+利用形態（商用、18禁利用等）についても制限はありません。
+*/
 
 (() => {
     "use strict";

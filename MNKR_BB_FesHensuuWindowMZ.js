@@ -8,6 +8,335 @@
  * --------------------------------------------------
  */
 
+/*:
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_BB_FesHensuuWindowMZ.js
+@plugindesc A plugin that adds a window that displays variable names and values.
+@author example
+@license MIT License
+
+@help
+◆ Overview
+This plugin adds a window displaying the names and values of variables, a
+feature of RPG Maker Fes.
+This plugin can display the names and values of up to four variables.
+
+◆ Usage
+You can switch the displayed variable using the numeric value stored in the
+variables specified by the plugin parameters [A_VariableId] through
+[D_VariableId].
+Example:
+If [A_VariableId] is set to 1 and variable 1's value is 5,
+the name and value of variable 5 will be displayed at the top of the window.
+
+◆ Plugin Parameter Description
+[ShowWindowSwitch]
+Specifies the ID of the switch that displays the window.
+The window will be displayed when the switch with the specified ID is ON.
+
+[A_VariableId]
+The ID of the variable that specifies the variable to display in pane A (top).
+The numeric value stored in the variable with the specified ID is the ID of
+the variable that will actually be displayed.
+
+[B_VariableId]
+The ID of the variable that specifies the variable to display in pane B
+(second from the top).
+The numeric value stored in the variable with the specified ID is the ID of
+the variable that will actually be displayed.
+
+[C_VariableId]
+Variable ID that specifies the variable to display in display pane C (third
+from the top).
+The value stored in the variable with the specified ID is the ID of the
+variable that will actually be displayed.
+
+[D_VariableId]
+Variable ID that specifies the variable to display in display pane D (bottom).
+The value stored in the variable with the specified ID is the ID of the
+variable that will actually be displayed.
+
+[FontSize]
+Specifies the font size of the variable name and value displayed in the
+window.
+
+[NameFontColor]
+Specifies the font color of the variable name displayed in the window.
+
+[UnderLineOpacity]
+Specifies the opacity of the line displayed under the variable. (0 for hidden)
+
+[BetweenNameAndValue]
+Specifies the symbol to display between the variable name and value. (Leave
+blank for hidden)
+
+[FesWindowX]
+Specifies the X coordinate of the display position of the variable display
+window.
+
+[FesWindowY]
+Specifies the X coordinate of the display position of the variable display
+window.
+
+[ShowMaxItem]
+Specifies the number of rows (height) of the variable display window.
+*Cannot be changed during gameplay.
+
+There are no plugin commands.
+
+# Regarding plugin inquiries
+This is a plugin originally created for RPG Maker MV that has been adapted for
+MZ.
+Please contact the modifier with any inquiries.
+
+# Terms of Use
+MIT License.
+http://opensource.org/licenses/mit-license.php
+You may modify and redistribute this without permission from the author, and
+there are no restrictions on its use (commercial, R18+, etc.).
+
+@param ShowWindowSwitch
+@text Window Display Switch ID
+@desc Specify the ID of the switch that displays the window.
+@type switch
+@default 1
+
+@param A_VariableId
+@text Frame A variable ID
+@desc Specify the ID of the variable to display in display pane A.
+@type variable
+@default 0
+
+@param B_VariableId
+@text Frame B variable ID
+@desc Specify the ID of the variable to be displayed in display pane B.
+@type variable
+@default 0
+
+@param C_VariableId
+@text Frame C variable ID
+@desc Specify the ID of the variable to be displayed in display pane C.
+@type variable
+@default 0
+
+@param D_VariableId
+@text Frame D variable ID
+@desc Specify the ID of the variable to be displayed in display pane D.
+@type variable
+@default 0
+
+@param FontSize
+@text Font size
+@desc Specify the font size.
+@default 26
+
+@param NameFontColor
+@text Variable name text color
+@desc Specifies the font color for the variable name.
+@type number
+@default 0
+@min 0
+@max 31
+
+@param UnderLineOpacity
+@text Variable underline transparency
+@desc Specifies the transparency of the line displayed under the variable (0 for invisible).
+@type number
+@default 96
+@min 0
+@max 255
+
+@param BetweenNameAndValue
+@text Variable Names and Value Separators
+@desc Specify the symbol to be displayed between the variable name and value (blank to hide).
+@type string
+@default :
+
+@param FesWindowX
+@text Window X coordinate
+@desc X coordinate of the display position of the variable display window
+@default 0
+
+@param FesWindowY
+@text Window Y coordinate
+@desc Y coordinate of the variable display window display position. Place it so that it does not overlap with the touch UI. Default: 64
+@default 64
+
+@param ShowMaxItem
+@text Window Row Count
+@desc Specifies the number of rows in the variable display window.
+@type number
+@default 4
+@min 1
+@max 4
+*/
+
+/*:ja
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_BB_FesHensuuWindowMZ.js
+@plugindesc 変数の名前と値を表示するウィンドウを追加するプラグイン
+@author ビービー（改変:munokura）
+
+@help
+◆概要
+RPGツクールフェスの機能の一つである
+変数の名前と値を表示するウィンドウを追加するプラグインです。
+このプラグインでは最大4つまで変数の名前と値を表示することができます。
+
+◆使用方法
+プラグインパラメータ【A_VariableId】～【D_VariableId】で指定した変数に
+格納されている数値で表示する変数を切り替えることができます。
+使用例：
+【A_VariableId】で1を指定した場合に変数1の値が5の時
+ウィンドウの一番上に変数5の名前と値が表示されます。
+
+◆プラグインパラメータの説明
+【ShowWindowSwitch】
+ウィンドウを表示するスイッチのIDを指定。
+ここで指定したIDのスイッチがONのときウィンドウが表示されます。
+
+【A_VariableId】
+表示枠A(一番上)に表示する変数を指定する変数のID
+ここで指定したIDの変数に格納されている数値が実際に表示される変数のIDです。
+
+【B_VariableId】
+表示枠B(上から二番目)に表示する変数を指定する変数のID
+ここで指定したIDの変数に格納されている数値が実際に表示される変数のIDです。
+
+【C_VariableId】
+表示枠C(上から三番目)に表示する変数を指定する変数のID
+ここで指定したIDの変数に格納されている数値が実際に表示される変数のIDです。
+
+【D_VariableId】
+表示枠D(一番下)に表示する変数を指定する変数のID
+ここで指定したIDの変数に格納されている数値が実際に表示される変数のIDです。
+
+【FontSize】
+ウィンドウに表示される変数の名前と値のフォントサイズを指定。
+
+【NameFontColor】
+ウィンドウに表示される変数の名前のフォントカラーを指定。
+
+【UnderLineOpacity】
+変数の下に表示する線の透明度を指定。(0で非表示)
+
+【BetweenNameAndValue】
+変数の名前と値の間に表示する記号を指定。(空白で非表示)
+
+【FesWindowX】
+変数表示ウィンドウの表示位置のX座標を指定。
+
+【FesWindowY】
+変数表示ウィンドウの表示位置のX座標を指定。
+
+【ShowMaxItem】
+変数表示ウィンドウの行数(高さ)を指定。
+※ゲーム中に変更することはできません。
+
+
+プラグインコマンドはありません。
+
+
+# プラグインの問い合わせについて
+これはRPGツクールMV用に作成されたプラグインをMZ用に移植したものです。
+問い合わせは改変者へお願いいたします。
+
+
+# 利用規約
+MITライセンスです。
+http://opensource.org/licenses/mit-license.php
+作者に無断で改変、再配布が可能で、
+利用形態（商用、18禁利用等）についても制限はありません。
+
+
+@param ShowWindowSwitch
+@text ウィンドウ表示スイッチID
+@type switch
+@desc ウィンドウを表示するスイッチのIDを指定。
+初期値: 1
+@default 1
+
+@param A_VariableId
+@text 枠A変数ID
+@type variable
+@desc 表示枠Aに表示する変数を指定する変数のIDを指定。
+初期値: 0
+@default 0
+
+@param B_VariableId
+@text 枠B変数ID
+@type variable
+@desc 表示枠Bに表示する変数を指定する変数のIDを指定。
+初期値: 0
+@default 0
+
+@param C_VariableId
+@text 枠C変数ID
+@type variable
+@desc 表示枠Cに表示する変数を指定する変数のIDを指定。
+初期値: 0
+@default 0
+
+@param D_VariableId
+@text 枠D変数ID
+@type variable
+@desc 表示枠Dに表示する変数を指定する変数のIDを指定。
+初期値: 0
+@default 0
+
+@param FontSize
+@text フォントサイズ
+@desc フォントサイズを指定。
+初期値: 26
+@default 26
+
+@param NameFontColor
+@text 変数名の文字色
+@type number
+@min 0
+@max 31
+@desc 変数の名前のフォントカラーを指定。
+初期値: 0（白）
+@default 0
+
+@param UnderLineOpacity
+@text 変数下線の透明度
+@type number
+@min 0
+@max 255
+@desc 変数の下に表示する線の透明度を指定。(0で非表示)
+初期値: 96
+@default 96
+
+@param BetweenNameAndValue
+@text 変数名と値区切り記号
+@type string
+@desc 変数の名前と値の間に表示する記号を指定。(空白で非表示)
+初期値: :
+@default :
+
+
+@param FesWindowX
+@text ウィンドウX座標
+@desc 変数表示ウィンドウの表示位置のX座標
+初期値: 0
+@default 0
+
+@param FesWindowY
+@text ウィンドウY座標
+@desc 変数表示ウィンドウの表示位置のY座標。タッチUIと重ならないように配置してください。初期値: 64
+@default 64
+
+@param ShowMaxItem
+@text ウィンドウ行数
+@type number
+@min 1
+@max 4
+@desc 変数表示ウィンドウの行数を指定。
+初期値: 4
+@default 4
+*/
+
 //=============================================================================
 // BB_FesHensuuWindow.js
 // Copyright (c) 2017 BB ENTERTAINMENT
@@ -15,168 +344,7 @@
 // http://opensource.org/licenses/mit-license.php
 //=============================================================================
 
-/*:
- * @target MZ
- * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_BB_FesHensuuWindowMZ.js
- * @plugindesc 変数の名前と値を表示するウィンドウを追加するプラグイン
- * @author ビービー（改変 munokura）
- *
- * @help
- * ◆概要
- * RPGツクールフェスの機能の一つである
- * 変数の名前と値を表示するウィンドウを追加するプラグインです。
- * このプラグインでは最大4つまで変数の名前と値を表示することができます。
- * 
- * ◆使用方法
- * プラグインパラメータ【A_VariableId】～【D_VariableId】で指定した変数に
- * 格納されている数値で表示する変数を切り替えることができます。
- * 使用例：
- * 【A_VariableId】で1を指定した場合に変数1の値が5の時
- * ウィンドウの一番上に変数5の名前と値が表示されます。
- * 
- * ◆プラグインパラメータの説明
- * 【ShowWindowSwitch】
- * ウィンドウを表示するスイッチのIDを指定。
- * ここで指定したIDのスイッチがONのときウィンドウが表示されます。
- * 
- * 【A_VariableId】
- * 表示枠A(一番上)に表示する変数を指定する変数のID
- * ここで指定したIDの変数に格納されている数値が実際に表示される変数のIDです。
- * 
- * 【B_VariableId】
- * 表示枠B(上から二番目)に表示する変数を指定する変数のID
- * ここで指定したIDの変数に格納されている数値が実際に表示される変数のIDです。
- * 
- * 【C_VariableId】
- * 表示枠C(上から三番目)に表示する変数を指定する変数のID
- * ここで指定したIDの変数に格納されている数値が実際に表示される変数のIDです。
- * 
- * 【D_VariableId】
- * 表示枠D(一番下)に表示する変数を指定する変数のID
- * ここで指定したIDの変数に格納されている数値が実際に表示される変数のIDです。
- * 
- * 【FontSize】
- * ウィンドウに表示される変数の名前と値のフォントサイズを指定。
- * 
- * 【NameFontColor】
- * ウィンドウに表示される変数の名前のフォントカラーを指定。
- * 
- * 【UnderLineOpacity】
- * 変数の下に表示する線の透明度を指定。(0で非表示)
- * 
- * 【BetweenNameAndValue】
- * 変数の名前と値の間に表示する記号を指定。(空白で非表示)
- * 
- * 【FesWindowX】
- * 変数表示ウィンドウの表示位置のX座標を指定。
- *
- * 【FesWindowY】
- * 変数表示ウィンドウの表示位置のX座標を指定。
- *
- * 【ShowMaxItem】
- * 変数表示ウィンドウの行数(高さ)を指定。
- * ※ゲーム中に変更することはできません。
- * 
- * 
- * このプラグインについて
- *   ビービー氏がRPGツクールMV用に作成されたものを
- *   ムノクラがRPGツクールMZ用に移植したものです。
- *   原作者への連絡はお控えください。
- *
- * 利用規約:
- *   MITライセンスです。
- *   https://licenses.opensource.jp/MIT/MIT.html
- *   作者に無断で改変、再配布が可能で、
- *   利用形態（商用、18禁利用等）についても制限はありません。
- * 
- * 
- * @param ShowWindowSwitch
- * @text ウィンドウ表示スイッチID
- * @type switch
- * @desc ウィンドウを表示するスイッチのIDを指定。
- * 初期値: 1
- * @default 1
- * 
- * @param A_VariableId
- * @text 枠A変数ID
- * @type variable
- * @desc 表示枠Aに表示する変数を指定する変数のIDを指定。
- * 初期値: 0
- * @default 0
- * 
- * @param B_VariableId
- * @text 枠B変数ID
- * @type variable
- * @desc 表示枠Bに表示する変数を指定する変数のIDを指定。
- * 初期値: 0
- * @default 0
- * 
- * @param C_VariableId
- * @text 枠C変数ID
- * @type variable
- * @desc 表示枠Cに表示する変数を指定する変数のIDを指定。
- * 初期値: 0
- * @default 0
- * 
- * @param D_VariableId
- * @text 枠D変数ID
- * @type variable
- * @desc 表示枠Dに表示する変数を指定する変数のIDを指定。
- * 初期値: 0
- * @default 0
- * 
- * @param FontSize
- * @text フォントサイズ
- * @desc フォントサイズを指定。
- * 初期値: 26
- * @default 26
- * 
- * @param NameFontColor
- * @text 変数名の文字色
- * @type number
- * @min 0
- * @max 31
- * @desc 変数の名前のフォントカラーを指定。
- * 初期値: 0（白）
- * @default 0
- * 
- * @param UnderLineOpacity
- * @text 変数下線の透明度
- * @type number
- * @min 0
- * @max 255
- * @desc 変数の下に表示する線の透明度を指定。(0で非表示)
- * 初期値: 96
- * @default 96
- * 
- * @param BetweenNameAndValue
- * @text 変数名と値区切り記号
- * @type string
- * @desc 変数の名前と値の間に表示する記号を指定。(空白で非表示)
- * 初期値: :
- * @default :
- * 
- * 
- * @param FesWindowX
- * @text ウィンドウX座標
- * @desc 変数表示ウィンドウの表示位置のX座標
- * 初期値: 0
- * @default 0
- * 
- * @param FesWindowY
- * @text ウィンドウY座標
- * @desc 変数表示ウィンドウの表示位置のY座標。タッチUIと重ならないように配置してください。初期値: 64
- * @default 64
- * 
- * @param ShowMaxItem
- * @text ウィンドウ行数
- * @type number
- * @min 1
- * @max 4
- * @desc 変数表示ウィンドウの行数を指定。
- * 初期値: 4
- * @default 4
- */
+
 
 (function () {
     'use strict';

@@ -8,6 +8,453 @@
  * --------------------------------------------------
  */
 
+/*:
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMCloudDustMZ.js
+@plugindesc Adds dust effects to jumps and dashes.
+@author example
+@license MIT License
+
+@help
+How to Use:
+
+Save the dust image in the img/system folder.
+The default filename is Dust1.png.
+If you change the filename,
+also change the dustImage plugin parameter.
+
+When the plugin is enabled,
+dust will be displayed when the character lands after a jump.
+Dust will also be displayed when the player sprints (by holding down the shift
+key or clicking).
+
+You can also display dust at specified coordinates at any time using the
+plugin command.
+
+Additional Plugin Parameter Information:
+
+dustImage
+Specify the dust image filename without the extension.
+Save the file in the img/system folder.
+
+maxDusts
+If you attempt to display more dust than the number specified in this
+parameter simultaneously,
+nothing will be displayed and the plugin command will be ignored.
+Increasing the value will allow more dust to be displayed,
+but it will also increase processing load, which can cause FPS drops on
+low-spec systems.
+
+jumpDusts
+This sets the number of dust particles displayed when a character lands after
+jumping using the "Set Movement Route" event command.
+The dust particles will overlap by the specified amount, resulting in a
+thicker dust cloud.
+Setting 0 will disable dust particles when landing.
+
+dashDusts
+This sets the number of dust particles displayed when the player dashes.
+The dust particles will overlap by the specified amount, resulting in a
+thicker dust cloud.
+Setting 0 will disable dust particles when dashing.
+
+Plugin Command:
+
+setDustXy 5 8
+Displays dust particles at the specified coordinates. The values are the same
+as the coordinates used in the "Move Location" event command, not the screen
+resolution.
+You can also specify a value between coordinates (5, 8) and (6, 8) by entering
+a decimal point, such as setDustXy 5.5 8.
+
+setDustXy 5 8 3
+Displays three dust particles at the specified coordinates. If the setting is
+omitted, only one will be displayed.
+
+setDustXy 5 8 1 0.04
+Sets the movement speed of the dust clouds to be displayed. If the setting is
+omitted, 0.02 will be applied.
+
+setDustXy 5 8 1 0.02 3.14
+Limits the movement direction of the dust clouds to be displayed. The value is
+0 for right, and 6.28 for one full rotation clockwise.
+Specifying 3.14 as shown above will cause the dust clouds to move slightly to
+the left.
+
+setDustEvent 3
+Displays dust clouds at the feet of event 3. Specifying 0 will target the
+event executing the command, while specifying -1 will target the player.
+As with setDustXy, you can also specify the number of dust clouds, their
+movement direction, and movement speed.
+Add the event number, number of dust clouds, movement speed, and movement
+direction in that order.
+
+setJumpDusts 5
+Changes the number of sprites displayed when landing from a jump to the
+specified value.
+
+setDashDusts 3
+Changes the number of sprites displayed when dashing to the specified value.
+
+stopDust
+Disables the display of new dust clouds.
+Does not affect dust clouds already displayed.
+
+startDust
+Cancels the effect of stopDust, allowing new dust clouds to be displayed.
+
+# Contact Information
+This is a plugin originally created for RPG Maker MV ported for MZ.
+Please contact the modifier for any inquiries.
+
+# Terms of Use
+MIT License.
+http://opensource.org/licenses/mit-license.php
+Modifications and redistributions are permitted without permission from the
+author, and there are no restrictions on use (commercial, 18+, etc.).
+
+Ver. 1.0.1
+Fixed an error that occurred when continuing with saved data after installing
+the plugin.
+
+@param dustImage
+@text Image of dust cloud
+@desc Image file name to use as dust cloud
+@type file
+@default Dust1
+@require 1
+@dir img/system/
+
+@param maxDusts
+@text Number of sprites displayed simultaneously
+@desc Number of sprites that can be displayed simultaneously
+@type number
+@default 64
+
+@param jumpDusts
+@text Number of sprites when landing from a jump
+@desc Number of sprites to display when landing from a jump
+@type number
+@default 5
+
+@param dashDusts
+@text Number of sprites when dashing
+@desc Number of sprites to display when dashing
+@type number
+@default 3
+
+@command setDustXy
+@text Show dust clouds on the map
+@desc Displays the dust cloud at the specified map coordinates.
+@arg setX
+@text X coordinate
+@desc The X coordinate to display.
+@default 0.00
+@arg setY
+@text Y coordinate
+@desc The Y coordinate to display.
+@default 0.00
+@arg dusts
+@text Number of sprites
+@desc Number of sprites to display
+@type number
+@default 3
+@arg speed
+@text movement speed
+@desc Sets the speed at which the dust cloud moves.
+@default 0.02
+@arg direction
+@text Movement direction
+@desc Sets the direction the dust cloud moves.
+@default 0.00
+
+@command setDustEvent
+@text Show dust clouds in events
+@desc Displays dust clouds at the feet of the event.
+@arg EventId
+@text Event ID
+@desc Event ID to display
+@type number
+@default 0
+@min -1
+@arg dusts
+@text Number of sprites
+@desc Number of sprites to display
+@type number
+@default 3
+@arg speed
+@text movement speed
+@desc Sets the speed at which the dust cloud moves.
+@default 0.02
+@arg direction
+@text Movement direction
+@desc Sets the direction the dust cloud moves.
+@default 0.00
+
+@command setJumpDusts
+@text Change the number of sprites when landing from a jump
+@desc Changes the number of sprites displayed when landing from a jump to the specified value.
+@arg dusts
+@text Number of sprites
+@desc Number of sprites to display when landing from a jump
+@type number
+@default 0
+
+@command setDashDusts
+@text Change the number of sprites when dashing
+@desc Changes the number of sprites displayed when dashing to the specified value.
+@arg dusts
+@text Number of sprites
+@desc Number of sprites to display when dashing
+@type number
+@default 0
+
+@command stopDust
+@text Stop adding dust clouds
+@desc Prevents new dust clouds from being added.
+
+@command startDust
+@text Cancellation of suspension of dust cloud addition
+@desc Allows you to add new dust clouds to the display.
+*/
+
+/*:ja
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMCloudDustMZ.js
+@plugindesc ジャンプとダッシュに土煙のエフェクトを追加します。
+任意のタイミングで土煙を表示することもできます。
+
+@author tomoaky (改変:munokura)
+
+@help
+使い方:
+
+  土煙の画像を img/system フォルダに保存してください。
+  ファイル名はデフォルトで Dust1.png となっています。
+  ファイル名を変更する場合は
+  プラグインパラメータの dustImage も一緒に変更してください。
+
+  プラグインを有効にすると、
+  キャラクターがジャンプ後に着地したタイミングで
+  土煙が表示されるようになります。
+  プレイヤーがダッシュ（shiftキー押しながら or クリック）で移動する時にも
+  土煙が表示されます。
+
+  プラグインコマンドで任意のタイミングで指定した座標に
+  土煙を表示することもできます。
+
+
+プラグインパラメータ補足:
+
+  dustImage
+    土煙の画像ファイル名を拡張子抜きで指定します。
+    ファイルは img/system フォルダに保存してください。
+
+  maxDusts
+    このパラメータに指定した数を超える土煙を同時に表示しようとした場合は
+    何も表示されず、プラグインコマンドは無視されます。
+    数値を大きくすればたくさんの土煙を表示することができますが、
+    それだけ処理が重くなり、低スペック環境ではFPSが低下する原因になります。
+
+  jumpDusts
+    キャラクターをイベントコマンド『移動ルートの設定』などでジャンプ後、
+    着地の際に表示する土煙の数です。
+    数値の分だけ土煙が重なり、より濃い土煙になります。
+    0 を指定すれば着地時の土煙は表示されなくなります。
+
+  dashDusts
+    プレイヤーがダッシュで移動した際に表示する土煙の数です。
+    数値の分だけ土煙が重なり、より濃い土煙になります。
+    0 を指定すればダッシュ時の土煙は表示されなくなります。
+
+
+プラグインコマンド:
+
+  setDustXy 5 8
+    指定した座標に土煙を表示します。数値はイベントコマンド『場所移動』で
+    利用する座標と同じです、画面のドット数ではありません。
+    setDustXy 5.5 8 のように小数点以下を入力することによって座標(5, 8)と
+    座標(6, 8)の中間を指定することもできます。
+
+  setDustXy 5 8 3
+    指定した座標に土煙を 3 つ表示します。設定が省略された場合は 1 つしか
+    表示されません。
+
+  setDustXy 5 8 1 0.04
+    表示する土煙の移動速度を設定します。設定が省略された場合は 0.02 が
+    適用されます。
+
+  setDustXy 5 8 1 0.02 3.14
+    表示する土煙の移動方向を限定します。数値は右を 0 として、時計回りに
+    6.28 で 1 周となります。
+    上記のように3.14を指定した場合は土煙が左に向かって少し移動します。
+
+  setDustEvent 3
+    イベント 3 番の足元に土煙を表示します。0 を指定した場合はコマンドを
+    実行しているイベント自体が、-1 を指定した場合はプレイヤーが対象に
+    なります。
+    setDustXy と同様に土煙の数や移動方向、移動速度も指定できます。
+    イベント番号に続けて、土煙の数、移動速度、移動方向の順に数値を
+    足していってください。
+
+  setJumpDusts 5
+    ジャンプの着地時に表示するスプライト数を指定した値に変更します。
+
+  setDashDusts 3
+    ダッシュ時に表示するスプライト数を指定した値に変更します。
+
+  stopDust
+    新しい土煙が表示できなくなります。
+    すでに表示されている土煙には影響しません。
+
+  startDust
+    stopDust の効果を解除し、新しい土煙を表示できるようにします。
+
+
+# 問い合わせ先
+これはRPGツクールMV用に作成されたプラグインをMZ用に移植したものです。
+お問い合わせは改変者へお願いいたします。
+
+
+# 利用規約
+MITライセンスです。
+http://opensource.org/licenses/mit-license.php
+作者に無断で改変、再配布が可能で、
+利用形態（商用、18禁利用等）についても制限はありません。
+
+
+Ver.1.0.1
+  プラグイン導入後のセーブデータでコンティニューするとエラーになる不具合を修正
+
+
+@param dustImage
+@text 土煙の画像
+@desc 土煙として利用する画像ファイル名
+初期値: Dust1
+@default Dust1
+@require 1
+@dir img/system/
+@type file
+
+@param maxDusts
+@type number
+@text 同時表示スプライト数
+@desc 同時に表示できるスプライトの数
+初期値: 64
+@default 64
+
+@param jumpDusts
+@type number
+@text ジャンプ着地時スプライト数
+@desc ジャンプの着地時に表示するスプライト数
+初期値: 5
+@default 5
+
+@param dashDusts
+@type number
+@text ダッシュ時スプライト数
+@desc ダッシュ時に表示するスプライト数
+初期値: 3
+@default 3
+
+
+@command setDustXy
+@text マップに土煙を表示
+@desc 指定したマップ座標に土煙を表示します。
+
+@arg setX
+@text X座標
+@desc 表示するX座標です。
+整数で『場所移動』で利用する座標になります。
+@default 0.00
+
+@arg setY
+@text Y座標
+@desc 表示するY座標です。
+整数で『場所移動』で利用する座標になります。
+@default 0.00
+
+@arg dusts
+@text スプライト数
+@desc 表示するスプライト数
+@type number
+@default 3
+
+@arg speed
+@text 移動速度
+@desc 土煙の移動速度を設定します。
+@default 0.02
+
+@arg direction
+@text 移動方向
+@desc 土煙の移動方向を設定します。
+数値は右を0として、時計回りに6.28で1周となります。
+@default 0.00
+
+
+@command setDustEvent
+@text イベントに土煙を表示
+@desc イベントの足元に土煙を表示します。
+
+@arg EventId
+@text イベントID
+@desc 表示するイベントID
+-1:プレイヤー / 0:実行イベント / 1以上:イベントID
+@type number
+@min -1
+@default 0
+
+@arg dusts
+@text スプライト数
+@desc 表示するスプライト数
+@type number
+@default 3
+
+@arg speed
+@text 移動速度
+@desc 土煙の移動速度を設定します。
+@default 0.02
+
+@arg direction
+@text 移動方向
+@desc 土煙の移動方向を設定します。
+数値は右を0として、時計回りに6.28で1周となります。
+@default 0.00
+
+
+@command setJumpDusts
+@text ジャンプ着地時スプライト数変更
+@desc ジャンプの着地時に表示するスプライト数を指定した値に変更します。
+
+@arg dusts
+@text スプライト数
+@desc ジャンプの着地時に表示するスプライト数
+@type number
+@default 0
+
+
+@command setDashDusts
+@text ダッシュ時スプライト数変更
+@desc ダッシュ時に表示するスプライト数を指定した値に変更します。
+
+@arg dusts
+@text スプライト数
+@desc ダッシュ時に表示するスプライト数
+@type number
+@default 0
+
+
+@command stopDust
+@text 土煙の追加停止
+@desc 新しい土煙を追加表示できなくします。
+既に表示されている土煙には影響しません。
+
+
+@command startDust
+@text 土煙の追加停止の解除
+@desc 新しい土煙を追加表示できるようにします。
+*/
+
 //=============================================================================
 // TMPlugin - つちけむり
 // バージョン: 2.1.0
@@ -19,236 +466,7 @@
 // http://opensource.org/licenses/mit-license.php
 //=============================================================================
 
-/*:
- * @target MZ
- * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMCloudDustMZ.js
- * @plugindesc ジャンプとダッシュに土煙のエフェクトを追加します。
- * 任意のタイミングで土煙を表示することもできます。
- *
- * @author tomoaky (改変 munokura)
- *
- * @help
- * 使い方:
- *
- *   土煙の画像を img/system フォルダに保存してください。
- *   ファイル名はデフォルトで Dust1.png となっています。
- *   ファイル名を変更する場合は
- *   プラグインパラメータの dustImage も一緒に変更してください。
- *
- *   プラグインを有効にすると、
- *   キャラクターがジャンプ後に着地したタイミングで
- *   土煙が表示されるようになります。
- *   プレイヤーがダッシュ（shiftキー押しながら or クリック）で移動する時にも
- *   土煙が表示されます。
- *
- *   プラグインコマンドで任意のタイミングで指定した座標に
- *   土煙を表示することもできます。
- * 
- *
- * プラグインパラメータ補足:
- *
- *   dustImage
- *     土煙の画像ファイル名を拡張子抜きで指定します。
- *     ファイルは img/system フォルダに保存してください。
- *
- *   maxDusts
- *     このパラメータに指定した数を超える土煙を同時に表示しようとした場合は
- *     何も表示されず、プラグインコマンドは無視されます。
- *     数値を大きくすればたくさんの土煙を表示することができますが、
- *     それだけ処理が重くなり、低スペック環境ではFPSが低下する原因になります。
- *
- *   jumpDusts
- *     キャラクターをイベントコマンド『移動ルートの設定』などでジャンプ後、
- *     着地の際に表示する土煙の数です。
- *     数値の分だけ土煙が重なり、より濃い土煙になります。
- *     0 を指定すれば着地時の土煙は表示されなくなります。
- * 
- *   dashDusts
- *     プレイヤーがダッシュで移動した際に表示する土煙の数です。
- *     数値の分だけ土煙が重なり、より濃い土煙になります。
- *     0 を指定すればダッシュ時の土煙は表示されなくなります。
- * 
- * 
- * プラグインコマンド:
- *
- *   setDustXy 5 8
- *     指定した座標に土煙を表示します。数値はイベントコマンド『場所移動』で
- *     利用する座標と同じです、画面のドット数ではありません。
- *     setDustXy 5.5 8 のように小数点以下を入力することによって座標(5, 8)と
- *     座標(6, 8)の中間を指定することもできます。
- *
- *   setDustXy 5 8 3
- *     指定した座標に土煙を 3 つ表示します。設定が省略された場合は 1 つしか
- *     表示されません。
- *
- *   setDustXy 5 8 1 0.04
- *     表示する土煙の移動速度を設定します。設定が省略された場合は 0.02 が
- *     適用されます。
- *
- *   setDustXy 5 8 1 0.02 3.14
- *     表示する土煙の移動方向を限定します。数値は右を 0 として、時計回りに
- *     6.28 で 1 周となります。
- *     上記のように3.14を指定した場合は土煙が左に向かって少し移動します。
- *
- *   setDustEvent 3
- *     イベント 3 番の足元に土煙を表示します。0 を指定した場合はコマンドを
- *     実行しているイベント自体が、-1 を指定した場合はプレイヤーが対象に
- *     なります。
- *     setDustXy と同様に土煙の数や移動方向、移動速度も指定できます。
- *     イベント番号に続けて、土煙の数、移動速度、移動方向の順に数値を
- *     足していってください。
- * 
- *   setJumpDusts 5
- *     ジャンプの着地時に表示するスプライト数を指定した値に変更します。
- * 
- *   setDashDusts 3
- *     ダッシュ時に表示するスプライト数を指定した値に変更します。
- * 
- *   stopDust
- *     新しい土煙が表示できなくなります。
- *     すでに表示されている土煙には影響しません。
- * 
- *   startDust
- *     stopDust の効果を解除し、新しい土煙を表示できるようにします。
- *
- *
- * 利用規約:
- *   MITライセンスです。
- *   https://licenses.opensource.jp/MIT/MIT.html
- *   作者に無断で改変、再配布が可能で、
- *   利用形態（商用、18禁利用等）についても制限はありません。
- *
- * Ver.1.0.1
- *   プラグイン導入後のセーブデータでコンティニューするとエラーになる不具合を修正
- *
- * 
- * @param dustImage
- * @text 土煙の画像
- * @desc 土煙として利用する画像ファイル名
- * 初期値: Dust1
- * @default Dust1
- * @require 1
- * @dir img/system/
- * @type file
- *
- * @param maxDusts
- * @type number
- * @text 同時表示スプライト数
- * @desc 同時に表示できるスプライトの数
- * 初期値: 64
- * @default 64
- *
- * @param jumpDusts
- * @type number
- * @text ジャンプ着地時スプライト数
- * @desc ジャンプの着地時に表示するスプライト数
- * 初期値: 5
- * @default 5
- *
- * @param dashDusts
- * @type number
- * @text ダッシュ時スプライト数
- * @desc ダッシュ時に表示するスプライト数
- * 初期値: 3
- * @default 3
- * 
- * 
- * @command setDustXy
- * @text マップに土煙を表示
- * @desc 指定したマップ座標に土煙を表示します。
- *
- * @arg setX
- * @text X座標
- * @desc 表示するX座標です。
- * 整数で『場所移動』で利用する座標になります。
- * @default 0.00
- *
- * @arg setY
- * @text Y座標
- * @desc 表示するY座標です。
- * 整数で『場所移動』で利用する座標になります。
- * @default 0.00
- * 
- * @arg dusts
- * @text スプライト数
- * @desc 表示するスプライト数
- * @type number
- * @default 3
- * 
- * @arg speed
- * @text 移動速度
- * @desc 土煙の移動速度を設定します。
- * @default 0.02
- * 
- * @arg direction
- * @text 移動方向
- * @desc 土煙の移動方向を設定します。
- * 数値は右を0として、時計回りに6.28で1周となります。
- * @default 0.00
- * 
- * 
- * @command setDustEvent
- * @text イベントに土煙を表示
- * @desc イベントの足元に土煙を表示します。
- *
- * @arg EventId
- * @text イベントID
- * @desc 表示するイベントID
- * -1:プレイヤー / 0:実行イベント / 1以上:イベントID
- * @type number
- * @min -1
- * @default 0
- * 
- * @arg dusts
- * @text スプライト数
- * @desc 表示するスプライト数
- * @type number
- * @default 3
- * 
- * @arg speed
- * @text 移動速度
- * @desc 土煙の移動速度を設定します。
- * @default 0.02
- * 
- * @arg direction
- * @text 移動方向
- * @desc 土煙の移動方向を設定します。
- * 数値は右を0として、時計回りに6.28で1周となります。
- * @default 0.00
- * 
- * 
- * @command setJumpDusts
- * @text ジャンプ着地時スプライト数変更
- * @desc ジャンプの着地時に表示するスプライト数を指定した値に変更します。
- *
- * @arg dusts
- * @text スプライト数
- * @desc ジャンプの着地時に表示するスプライト数
- * @type number
- * @default 0
- * 
- * 
- * @command setDashDusts
- * @text ダッシュ時スプライト数変更
- * @desc ダッシュ時に表示するスプライト数を指定した値に変更します。
- *
- * @arg dusts
- * @text スプライト数
- * @desc ダッシュ時に表示するスプライト数
- * @type number
- * @default 0
- * 
- * 
- * @command stopDust
- * @text 土煙の追加停止
- * @desc 新しい土煙を追加表示できなくします。
- * 既に表示されている土煙には影響しません。
- * 
- * 
- * @command startDust
- * @text 土煙の追加停止の解除
- * @desc 新しい土煙を追加表示できるようにします。
- */
+
 
 var Imported = Imported || {};
 Imported.TMCloudDust = true;

@@ -8,6 +8,167 @@
  * --------------------------------------------------
  */
 
+/*:
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMBattlerExMZ.js
+@plugindesc v2.0.0 Adds perspective and breathing to enemy characters.
+@author example
+@license MIT License
+
+@help
+How to Use:
+
+This plugin adds the following effects to enemy character display:
+- Enemies appearing at the top of the screen are displayed smaller
+(perspective)
+- Slowly zoom in and out repeatedly (breathing)
+- Randomly flip left and right
+
+Horizontal flipping is disabled in side view.
+You can adjust the intensity of the effects for each enemy character by
+entering tags in the enemy character's memo field.
+
+There are no plugin commands.
+
+Memo Field (Enemy Character) Tags:
+
+<scale:1>
+Sets the magnification individually. Perspective effects will not be applied
+to enemy characters with this tag.
+
+<breathH:0.05>
+Sets the breathing volume individually.
+
+<noMirror>
+Disables horizontal flipping.
+
+# Contact Information
+This is a plugin originally created for RPG Maker MV that has been adapted for
+MZ.
+Please contact the modifier for any inquiries.
+
+# Terms of Use
+MIT License.
+http://opensource.org/licenses/mit-license.php
+You may modify and redistribute this without permission from the author, and
+there are no restrictions on its use (commercial, R18, etc.).
+
+@param baseY
+@text Base Y coordinate
+@desc The Y coordinate where the magnification becomes 1x.
+@type number
+@default 400
+
+@param breathH
+@text Breathing magnification
+@desc The volume of your breathing.
+@default 0.05
+
+@param mirrorRate
+@text Probability of left-right reversal
+@desc Probability of left-right reversal.
+@default 0.40
+
+@param breathStop
+@text Breath-holding when incapacitated
+@desc Stop breathing when incapacitated.
+@type boolean
+@on stop
+@off Don't stop
+@default true
+
+@param shakeEffect
+@text Shake when damaged
+@desc Replace the blinking effect with a shaking effect.
+@type boolean
+@on Shake effect
+@off Blink effect
+@default true
+*/
+
+/*:ja
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMBattlerExMZ.js
+@plugindesc v2.0.0 敵キャラに遠近感や息づかいの表現を追加します。
+@author tomoaky (改変:munokura)
+
+@help
+使い方:
+
+  このプラグインを導入すると、敵キャラの表示に以下の演出が追加されます。
+    ・画面の上の方に出現する敵が小さく表示される(遠近感)
+    ・ゆっくりと拡大縮小を繰り返す(息づかい)
+    ・ランダムに左右が反転する
+
+  サイドビューでは左右反転が無効になります。
+  敵キャラのメモ欄にタグを書き込むことで、敵キャラごとに演出の強弱を
+  設定することができます。
+
+  プラグインコマンドはありません。
+
+メモ欄(敵キャラ)タグ:
+
+  <scale:1>
+    拡大率を個別に設定します、このタグがある敵キャラには遠近感の表現が
+    適用されません。
+
+  <breathH:0.05>
+    息づかいの大きさを個別に設定します。
+
+  <noMirror>
+    左右反転を禁止します。
+
+
+# 問い合わせ先
+これはRPGツクールMV用に作成されたプラグインをMZ用に移植したものです。
+お問い合わせは改変者へお願いいたします。
+
+
+# 利用規約
+MITライセンスです。
+http://opensource.org/licenses/mit-license.php
+作者に無断で改変、再配布が可能で、
+利用形態（商用、18禁利用等）についても制限はありません。
+
+
+@param baseY
+@text 基本Y座標
+@type number
+@desc 拡大率が等倍になるY座標。
+初期値: 400
+@default 400
+
+@param breathH
+@text 息づかい拡大率
+@desc 息づかいの大きさ。
+初期値: 0.05
+@default 0.05
+
+@param mirrorRate
+@text 左右反転の確率
+@desc 左右反転の確率。
+初期値: 0.40（ 0 ～ 1 ）
+@default 0.40
+
+@param breathStop
+@text 行動不能時の息停止
+@type boolean
+@on 止める
+@off 止めない
+@desc 行動不能時に息づかいを止める。
+初期値: true
+@default true
+
+@param shakeEffect
+@text ダメージ時揺れ
+@type boolean
+@on 揺れエフェクト
+@off 点滅エフェクト
+@desc 点滅エフェクトを揺れエフェクトに差し替える。
+初期値: true
+@default true
+*/
+
 //=============================================================================
 // TMPlugin - バトラー表示拡張
 // バージョン: 2.0.0
@@ -19,83 +180,7 @@
 // http://opensource.org/licenses/mit-license.php
 //=============================================================================
 
-/*:
- * @target MZ
- * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMBattlerExMZ.js
- * @plugindesc v2.0.0 敵キャラに遠近感や息づかいの表現を追加します。
- * @author tomoaky (改変 munokura)
- *
- * @help
- * 使い方:
- *
- *   このプラグインを導入すると、敵キャラの表示に以下の演出が追加されます。
- *     ・画面の上の方に出現する敵が小さく表示される(遠近感)
- *     ・ゆっくりと拡大縮小を繰り返す(息づかい)
- *     ・ランダムに左右が反転する
- *
- *   サイドビューでは左右反転が無効になります。
- *   敵キャラのメモ欄にタグを書き込むことで、敵キャラごとに演出の強弱を
- *   設定することができます。
- *
- *   プラグインコマンドはありません。
- *
- * メモ欄(敵キャラ)タグ:
- *
- *   <scale:1>
- *     拡大率を個別に設定します、このタグがある敵キャラには遠近感の表現が
- *     適用されません。
- *
- *   <breathH:0.05>
- *     息づかいの大きさを個別に設定します。
- *
- *   <noMirror>
- *     左右反転を禁止します。
- * 
- * 
- * 利用規約:
- *   MITライセンスです。
- *   https://licenses.opensource.jp/MIT/MIT.html
- *   作者に無断で改変、再配布が可能で、
- *   利用形態(商用、18禁利用等)についても制限はありません。
- * 
- * 
- * @param baseY
- * @text 基本Y座標
- * @type number
- * @desc 拡大率が等倍になるY座標。
- * 初期値: 400
- * @default 400
- *
- * @param breathH
- * @text 息づかい拡大率
- * @desc 息づかいの大きさ。
- * 初期値: 0.05
- * @default 0.05
- *
- * @param mirrorRate
- * @text 左右反転の確率
- * @desc 左右反転の確率。
- * 初期値: 0.40（ 0 ～ 1 ）
- * @default 0.40
- *
- * @param breathStop
- * @text 行動不能時の息停止
- * @type boolean
- * @on 止める
- * @off 止めない
- * @desc 行動不能時に息づかいを止める。
- * 初期値: true
- * @default true
- *
- * @param shakeEffect
- * @text ダメージ時揺れ
- * @type boolean
- * @on 揺れエフェクト
- * @off 点滅エフェクト
- * @desc 点滅エフェクトを揺れエフェクトに差し替える。
- * 初期値: true
- * @default true
- */
+
 
 var Imported = Imported || {};
 Imported.TMBattlerEx = true;

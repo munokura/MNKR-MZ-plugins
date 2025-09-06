@@ -9,50 +9,96 @@
  */
 
 /*:
- * @target MZ MV
- * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_SelectWinAction.js
- * @plugindesc 指定変数の値により、戦闘勝利時のSVアクター動作を指定できます。
- * @author munokura
- *
- * @help
- * 指定変数の値により、戦闘勝利時のSVアクター動作を指定できます。
- *
- * 変数の値：動作
- *        0：勝利(ツクールデフォルト)
- *        1：前進
- *        2：通常待機
- *        3：詠唱待機
- *        4：防御
- *        5：ダメージ
- *        6：回避
- *        7：突き
- *        8：振り
- *        9：飛び道具
- *       10：汎用スキル
- *       11：魔法
- *       12：アイテム
- *       13：逃げる
- *       14：瀕死
- *       15：状態異常
- *       16：睡眠
- *       17：戦闘不能
- *
- * プラグインコマンドはありません。
- *
- *
- * 利用規約:
- *   MITライセンスです。
- *   https://licenses.opensource.jp/MIT/MIT.html
- *   作者に無断で改変、再配布が可能で、
- *   利用形態（商用、18禁利用等）についても制限はありません。
- * 
- *
- * @param Variable Id
- * @text 指定変数
- * @type variable
- * @desc 指定する変数ID
- * @default 0
- */
+@target MZ MV
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_SelectWinAction.js
+@plugindesc Depending on the value of the specified variable, you can specify the SV actor's behavior when the battle is won.
+@author example
+@license MIT License
+
+@help
+The specified variable value determines the SV actor's behavior upon victory.
+
+Variable Value: Action
+0: Victory (Tkool default)
+1: Advance
+2: Normal standby
+3: Casting standby
+4: Defense
+5: Damage
+6: Evade
+7: Thrust
+8: Swing
+9: Projectile
+10: General skill
+11: Magic
+12: Item
+13: Escape
+14: Near death
+15: Abnormal status
+16: Sleep
+17: Incapacitated
+
+There are no plugin commands.
+
+# Terms of Use
+MIT License.
+http://opensource.org/licenses/mit-license.php
+Modifications and redistribution are permitted without permission from the
+author, and there are no restrictions on use (commercial, R18, etc.).
+
+@param Variable Id
+@text Designated variables
+@desc The variable ID to specify
+@type variable
+@default 0
+*/
+
+/*:ja
+@target MZ MV
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_SelectWinAction.js
+@plugindesc 指定変数の値により、戦闘勝利時のSVアクター動作を指定できます。
+@author munokura
+
+@help
+指定変数の値により、戦闘勝利時のSVアクター動作を指定できます。
+
+変数の値：動作
+       0：勝利(ツクールデフォルト)
+       1：前進
+       2：通常待機
+       3：詠唱待機
+       4：防御
+       5：ダメージ
+       6：回避
+       7：突き
+       8：振り
+       9：飛び道具
+      10：汎用スキル
+      11：魔法
+      12：アイテム
+      13：逃げる
+      14：瀕死
+      15：状態異常
+      16：睡眠
+      17：戦闘不能
+
+
+プラグインコマンドはありません。
+
+
+# 利用規約
+MITライセンスです。
+http://opensource.org/licenses/mit-license.php
+作者に無断で改変、再配布が可能で、
+利用形態（商用、18禁利用等）についても制限はありません。
+
+
+@param Variable Id
+@text 指定変数
+@type variable
+@desc 指定する変数ID
+@default 0
+*/
 
 (() => {
 	'use strict';

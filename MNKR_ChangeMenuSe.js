@@ -9,68 +9,135 @@
  */
 
 /*:
- * @target MZ MV
- * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_ChangeMenuSe.js
- * @plugindesc メニューを開閉するSEを変更します。
- * @author munokura
- *
- * @help
- * メニューを開閉するSEを変更します。
- * 
- * 利用規約:
- *   MITライセンスです。
- *   https://licenses.opensource.jp/MIT/MIT.html
- *   作者に無断で改変、再配布が可能で、
- *   利用形態（商用、18禁利用等）についても制限はありません。
- * 
- * 
- * @param callMenuSe
- * @text メニューを開くSE
- * @desc メニューを開くSEのパラメータ
- * 初期値: {"name":"Damage3","volume":"90","pitch":"100","pan":"0"}
- * @default {"name":"Damage3","volume":"90","pitch":"100","pan":"0"}
- * @type struct<seParam>
- * 
- * @param closeMenuSe
- * @text メニューを閉じるSE
- * @desc メニューを閉じるSEのパラメータ
- * 初期値: {"name":"Dog","volume":"90","pitch":"100","pan":"0"}
- * @default {"name":"Dog","volume":"90","pitch":"100","pan":"0"}
- * @type struct<seParam>
- */
+@target MZ MV
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_ChangeMenuSe.js
+@plugindesc Change the sound effect that opens and closes the menu.
+@author example
+@license MIT License
+
+@help
+Changes the SE that opens and closes the menu.
+
+There are no plugin commands.
+
+# Terms of Use
+MIT License.
+http://opensource.org/licenses/mit-license.php
+You may modify and redistribute this without permission from the author, and
+there are no restrictions on its use (commercial, R18+, etc.).
+
+@param callMenuSe
+@text Open Menu SE
+@desc Open MenuSE Parameters
+@type struct<seParam>
+@default {"name":"Damage3","volume":"90","pitch":"100","pan":"0"}
+
+@param closeMenuSe
+@text Close Menu
+@desc Close MenuSE Parameters
+@type struct<seParam>
+@default {"name":"Dog","volume":"90","pitch":"100","pan":"0"}
+*/
 
 /*~struct~seParam:
- * @param name
- * @text ファイル名
- * @default
- * @require 1
- * @dir audio/se/
- * @type file
- * @desc SEのファイル名
- *
- * @param volume
- * @text 音量
- * @default 90
- * @type number
- * @max 100
- * @desc SEの音量
- *
- * @param pitch
- * @text ピッチ
- * @default 100
- * @type number
- * @min 50
- * @max 150
- * @desc SEのピッチ
- *
- * @param pan
- * @text 位相
- * @default 0
- * @type number
- * @min -100
- * @max 100
- * @desc SEの位相
- */
+@param name
+@text File name
+@desc SE file name
+@type file
+@require 1
+@dir audio/se/
+
+@param volume
+@text volume
+@desc SE volume
+@type number
+@default 90
+@max 100
+
+@param pitch
+@text pitch
+@desc SE pitch
+@type number
+@default 100
+@min 50
+@max 150
+
+@param pan
+@text phase
+@desc SE phase
+@type number
+@default 0
+@min -100
+@max 100
+*/
+
+/*:ja
+@target MZ MV
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_ChangeMenuSe.js
+@plugindesc メニューを開閉するSEを変更します。
+@author munokura
+
+@help
+メニューを開閉するSEを変更します。
+
+
+プラグインコマンドはありません。
+
+
+# 利用規約
+MITライセンスです。
+http://opensource.org/licenses/mit-license.php
+作者に無断で改変、再配布が可能で、
+利用形態（商用、18禁利用等）についても制限はありません。
+
+
+@param callMenuSe
+@text メニューを開くSE
+@desc メニューを開くSEのパラメータ
+初期値: {"name":"Damage3","volume":"90","pitch":"100","pan":"0"}
+@default {"name":"Damage3","volume":"90","pitch":"100","pan":"0"}
+@type struct<seParam>
+
+@param closeMenuSe
+@text メニューを閉じるSE
+@desc メニューを閉じるSEのパラメータ
+初期値: {"name":"Dog","volume":"90","pitch":"100","pan":"0"}
+@default {"name":"Dog","volume":"90","pitch":"100","pan":"0"}
+@type struct<seParam>
+*/
+
+/*~struct~seParam:ja
+@param name
+@text ファイル名
+@default
+@require 1
+@dir audio/se/
+@type file
+@desc SEのファイル名
+
+@param volume
+@text 音量
+@default 90
+@type number
+@max 100
+@desc SEの音量
+
+@param pitch
+@text ピッチ
+@default 100
+@type number
+@min 50
+@max 150
+@desc SEのピッチ
+
+@param pan
+@text 位相
+@default 0
+@type number
+@min -100
+@max 100
+@desc SEの位相
+*/
 
 (() => {
     "use strict";

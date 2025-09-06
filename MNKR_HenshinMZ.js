@@ -9,51 +9,94 @@
  */
 
 /*:
- * @target MZ
- * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_HenshinMZ.js
- * @plugindesc プラグインコマンドでアクターを入れ替えられます。
- * @author munokura
- *
- * @help
- * プラグインコマンドでアクターを入れ替えられます。
- * パーティの並び順がそのままで入れ替わります。
- * 
- * マップでも戦闘中でも入れ替えられます。
- * 主人公の入換や変身を表現する等への使用を想定しています。
- * 
- * 
- * プラグインコマンド
- * ・アクター入れ替え
- * 
- * 注意点
- * 下記の状況では、何も起こりません。
- * - パーティに変身前のアクターがいない場合
- * - パーティに変身後のアクターがいる場合
- * 
- * 
- * 利用規約:
- *   MITライセンスです。
- *   https://licenses.opensource.jp/MIT/MIT.html
- *   作者に無断で改変、再配布が可能で、
- *   利用形態（商用、18禁利用等）についても制限はありません。
- * 
- * 
- * @command henshin
- * @text アクター入れ替え
- * @desc アクターを並び順を変えずに入れ替えます。
- *
- * @arg ActorId1
- * @text 入換前のアクターID
- * @desc 入換前のアクターIDを指定します。
- * @type actor
- * @default
- *
- * @arg ActorId2
- * @text 入換後のアクターID
- * @desc 入換後のアクターIDを指定します。
- * @type actor
- * @default
- */
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_HenshinMZ.js
+@plugindesc You can swap actors using plugin commands.
+@author example
+@license MIT License
+
+@help
+You can swap actors using plugin commands.
+The party order remains the same.
+
+You can swap actors both on the map and during battle.
+This is intended for use in situations such as swapping protagonists or
+transforming.
+
+Plugin Commands
+- Actor Swap
+
+Notes
+Nothing will happen in the following situations:
+- If the pre-transformation actor is not in the party
+- If the post-transformation actor is in the party
+
+# Terms of Use
+MIT License.
+http://opensource.org/licenses/mit-license.php
+Modification and redistribution are permitted without permission from the
+author,
+and there are no restrictions on usage (commercial, R18+, etc.).
+
+@command henshin
+@text Actor replacement
+@desc Swaps actors without changing their order.
+@arg ActorId1
+@text Actor ID before swapping
+@desc Specify the actor ID before swapping.
+@type actor
+@arg ActorId2
+@text Actor ID after swapping
+@desc Specify the actor ID after swapping.
+@type actor
+*/
+
+/*:ja
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_HenshinMZ.js
+@plugindesc プラグインコマンドでアクターを入れ替えられます。
+@author munokura
+
+@help
+プラグインコマンドでアクターを入れ替えられます。
+パーティの並び順がそのままで入れ替わります。
+
+マップでも戦闘中でも入れ替えられます。
+主人公の入換や変身を表現する等への使用を想定しています。
+
+
+プラグインコマンド
+・アクター入れ替え
+
+注意点
+下記の状況では、何も起こりません。
+- パーティに変身前のアクターがいない場合
+- パーティに変身後のアクターがいる場合
+
+
+# 利用規約
+MITライセンスです。
+http://opensource.org/licenses/mit-license.php
+作者に無断で改変、再配布が可能で、
+利用形態（商用、18禁利用等）についても制限はありません。
+
+
+@command henshin
+@text アクター入れ替え
+@desc アクターを並び順を変えずに入れ替えます。
+
+@arg ActorId1
+@text 入換前のアクターID
+@desc 入換前のアクターIDを指定します。
+@type actor
+@default
+
+@arg ActorId2
+@text 入換後のアクターID
+@desc 入換後のアクターIDを指定します。
+@type actor
+@default
+*/
 
 (() => {
 

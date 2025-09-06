@@ -8,6 +8,251 @@
  * --------------------------------------------------
  */
 
+/*:
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_HzInputCommandMZ.js
+@plugindesc Enter commands using the arrow keys and buttons.
+@author example
+@license MIT License
+
+@help
+You can use plugin commands that execute commands using directional keys and
+buttons.
+
+-- Input Command [Required]--
+Specify the command content.
+
+2: ↓ 4: ← 6: → 8: ↑ z: Z key x: X key
+
+Example: 2486z
+↓←↑→Z key
+
+You can also set commands randomly by writing them as follows.
+(Multiple commands can be chained.)
+<[Keys to include in command],[Number of inputs]>
+
+Example: <2468,2>
+Two random "↓←↑→" keys are set in the command, such as ↓←, ↑↑, and →←.
+
+<2468,4><zx,1>
+Four random "↓←↑→" keys are set in the command, such as ↓←↑→Z key and ↑↑→←X
+key, followed by one Z or X key.
+
+Example of incorrect commands:
+<2468,4>z
+Random and direct commands cannot be mixed.
+Please write it as follows: <2468,4><z,1>.
+
+* Setting a Time Limit
+If you want to set a time limit, please start the Maker timer beforehand.
+When the timer reaches 0 seconds, the command input will be terminated and the
+execution will fail.
+
+# Contact Information
+This is a plugin originally created for RPG Maker MV that has been ported to
+MZ.
+Please contact the modifier for any inquiries.
+
+# Terms of Use
+MIT License.
+http://opensource.org/licenses/mit-license.php
+You may modify and redistribute this without permission from the author, and
+there are no restrictions on its use (commercial, R18+, etc.).
+
+@param success SE
+@text Input success SE
+@desc SE when input (success)
+@type file
+@default Decision2
+@require 1
+@dir audio/se/
+
+@param miss SE
+@text Input failure SE
+@desc SE when inputting (failed)
+@type file
+@default Buzzer1
+@require 1
+@dir audio/se/
+
+@param penalty
+@text Input error disable time
+@desc Time (frames) when input is disabled due to input error
+@type file
+@default 10
+@require 1
+@dir audio/se/
+
+@command HzCommand
+@text Start command input
+@desc Enter commands using the arrow keys and buttons.
+@arg mode
+@text Continue if input error occurs
+@desc true: Continue input even if you make a mistake / false: Fail immediately if you make a mistake
+@type boolean
+@on Continue typing
+@off Failed at that point
+@default true
+@arg switch_no
+@text Result Switch ID
+@desc Specify the switch number to set the input result
+@type switch
+@default 0
+@arg command_input
+@text Input command (required)
+@desc Specify the command content. See the help text for details.
+@default <2468,2>
+@arg command_x
+@text Command display position X
+@desc Specifies the display position of the command (-1 is the center of the screen).
+@type number
+@default -1
+@min -1
+@arg command_y
+@text Command display position Y
+@desc Specifies the display position of the command (-1 is the center of the screen).
+@type number
+@default -1
+@min -1
+@arg command_align
+@text Command display criteria
+@desc Specify the criteria for displaying commands
+@type select
+@default center
+@option center
+@value center
+@option left
+@value left
+@option right
+@value right
+*/
+
+/*:ja
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_HzInputCommandMZ.js
+@plugindesc 方向キーとボタンでのコマンド入力を実行します。
+@author hiz (改変:munokura)
+
+@help
+方向キーとボタンでのコマンド入力を実行するプラグインコマンドが使えます。
+
+--- 入力コマンド【必須】 ---
+コマンドの内容を指定します。
+
+2:↓ 4:← 6:→ 8:↑ z:Zキー x:Xキー
+
+例） 2486z
+↓←↑→Zキー
+
+また、以下のように記述することでコマンドをランダムで設定できます。
+（複数繋げて設定可）
+<[コマンドに含めるキー],[入力数]>
+
+例） <2468,2>
+↓←、↑↑、→←等、コマンドに「↓←↑→」のキーがランダムで2個セットされる
+
+<2468,4><zx,1>
+↓←↑→Zキー、↑↑→←Xキー等、コマンドに「↓←↑→」のキーが
+ランダムで4個セットされた後にZキー又はXキーが1個セットされる
+
+NG例）
+<2468,4>z
+ランダム指定と直接指定を混ぜる事はできません。
+<2468,4><z,1>のように記述して下さい。
+
+
+※ 時間制限を設ける場合
+  時間制限を設ける場合は、予めツクールのタイマーを起動して下さい。
+  タイマーが0秒になった際にコマンド入力が強制終了され、失敗となります。
+
+
+# 問い合わせ先
+これはRPGツクールMV用に作成されたプラグインをMZ用に移植したものです。
+お問い合わせは改変者へお願いいたします。
+
+
+# 利用規約
+MITライセンスです。
+http://opensource.org/licenses/mit-license.php
+作者に無断で改変、再配布が可能で、
+利用形態（商用、18禁利用等）についても制限はありません。
+
+
+@param success SE
+@text 入力成功SE
+@desc 入力時（成功）のSE
+@default Decision2
+@require 1
+@dir audio/se/
+@type file
+
+@param miss SE
+@text 入力失敗SE
+@desc 入力時（失敗）のSE
+@default Buzzer1
+@require 1
+@dir audio/se/
+@type file
+
+@param penalty
+@text 入力ミス時不能時間
+@desc 入力ミス時の入力不能時間（フレーム）
+@default 10
+@require 1
+@dir audio/se/
+@type file
+
+
+@command HzCommand
+@text コマンド入力開始
+@desc 方向キーとボタンでのコマンド入力を実行します。
+
+@arg mode
+@text 入力ミス時継続
+@desc true:入力ミスしても入力を継続 / false:入力ミスしたらその時点で失敗
+@default true
+@type boolean
+@on 入力を継続
+@off その時点で失敗
+
+@arg switch_no
+@text 結果スイッチID
+@desc 入力結果をセットするスイッチ番号を指定
+@default 0
+@type switch
+
+@arg command_input
+@text 入力コマンド(必須)
+@desc コマンドの内容を指定します。詳細はヘルプ文章参照
+@default <2468,2>
+
+@arg command_x
+@text コマンド表示位置X
+@desc コマンドの表示位置を指定します。（-1で画面中央）
+@default -1
+@type number
+@min -1
+
+@arg command_y
+@text コマンド表示位置Y
+@desc コマンドの表示位置を指定します。（-1で画面中央）
+@default -1
+@type number
+@min -1
+
+@arg command_align
+@text コマンド表示基準
+@desc コマンドの表示の基準を指定
+@type select
+@option 中央
+@value center
+@option 左
+@value left
+@option 右
+@value right
+@default center
+*/
+
 /*
 Copyright (c) <2016> <hiz>
 MITライセンスの下で公開されています。
@@ -16,14 +261,14 @@ MITライセンスの下で公開されています。
 /*
  *  プラグインコマンド:
  *   HzCommand [mode] [switch_no] [command] [x] [y] [align]  # コマンド入力起動
- *   
- *   [mode] 
+ *
+ *   [mode]
  *    【必須】入力モード。
  *        1:入力ミスしても入力を継続　2:入力ミスしたらその時点で失敗
  *   [switch_no]
  *    【必須】入力結果をセットするスイッチ番号を指定します。
- * 
- * 
+ *
+ *
  *   [x]
  *     【任意】コマンドの表示位置を指定します。（デフォルトでは画面中央）
  *   [y]
@@ -31,140 +276,17 @@ MITライセンスの下で公開されています。
  *   [align]
  *     【任意】コマンドの表示の基準を指定します。（デフォルトでは"center"）
  *       left:左端基準 center:中央基準 right:右端基準
- *   
+ *
  *  コマンド例）
  *    HzCommand 1 1 2486          # コマンド「↓←↑→」。入力ミスしても処理継続。失敗/成功はスイッチ番号１にセットされる。
  *    HzCommand 2 1 <2486,4>      # コマンドには「↓←↑→」のキーがランダムで4個セットされる。
  *                                # 入力ミスしたらその場で失敗。失敗/成功はスイッチ番号１にセットされる。
  *   HzCommand 1 1 2486 0 40 left # コマンド「↓←↑→」。入力ミスしても処理継続。失敗/成功はスイッチ番号１にセットされる。
  *                                # コマンドの表示位置は画面左上端。
- *                                
+ *
 */
 
-/*:
- * @target MZ
- * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_HzInputCommandMZ.js
- * @plugindesc 方向キーとボタンでのコマンド入力を実行します。
- * @author hiz (改変 munokura)
- * 
- * @help
- * 方向キーとボタンでのコマンド入力を実行するプラグインコマンドが使えます。
- * 
- * --- 入力コマンド【必須】 ---
- * コマンドの内容を指定します。
- * 
- * 2:↓ 4:← 6:→ 8:↑ z:Zキー x:Xキー
- * 
- * 例） 2486z
- * ↓←↑→Zキー
- * 
- * また、以下のように記述することでコマンドをランダムで設定できます。
- * （複数繋げて設定可）
- * <[コマンドに含めるキー],[入力数]>
- * 
- * 例） <2468,2>
- * ↓←、↑↑、→←等、コマンドに「↓←↑→」のキーがランダムで2個セットされる
- * 
- * <2468,4><zx,1>
- * ↓←↑→Zキー、↑↑→←Xキー等、コマンドに「↓←↑→」のキーが
- * ランダムで4個セットされた後にZキー又はXキーが1個セットされる
- * 
- * NG例）
- * <2468,4>z
- * ランダム指定と直接指定を混ぜる事はできません。
- * <2468,4><z,1>のように記述して下さい。
- * 
- * 
- * ※ 時間制限を設ける場合
- *   時間制限を設ける場合は、予めツクールのタイマーを起動して下さい。
- *   タイマーが0秒になった際にコマンド入力が強制終了され、失敗となります。
- * 
- * 
- * このプラグインについて
- *   RPGツクールMV用に作成されたプラグインをMZ用に移植したものです。
- *   お問い合わせは改変者へお願いいたします。
- * 
- * 
- * 利用規約:
- *   MITライセンスです。
- *   https://licenses.opensource.jp/MIT/MIT.html
- *   作者に無断で改変、再配布が可能で、
- *   利用形態（商用、18禁利用等）についても制限はありません。
- * 
- * @param success SE
- * @text 入力成功SE
- * @desc 入力時（成功）のSE
- * @default Decision2
- * @require 1
- * @dir audio/se/
- * @type file
- *
- * @param miss SE
- * @text 入力失敗SE
- * @desc 入力時（失敗）のSE
- * @default Buzzer1
- * @require 1
- * @dir audio/se/
- * @type file
- * 
- * @param penalty
- * @text 入力ミス時不能時間
- * @desc 入力ミス時の入力不能時間（フレーム）
- * @default 10
- * @require 1
- * @dir audio/se/
- * @type file
- * 
- * 
- * @command HzCommand
- * @text コマンド入力開始
- * @desc 方向キーとボタンでのコマンド入力を実行します。
- *
- * @arg mode
- * @text 入力ミス時継続
- * @desc true:入力ミスしても入力を継続 / false:入力ミスしたらその時点で失敗
- * @default true
- * @type boolean
- * @on 入力を継続
- * @off その時点で失敗
- *
- * @arg switch_no
- * @text 結果スイッチID
- * @desc 入力結果をセットするスイッチ番号を指定
- * @default 0
- * @type switch
- *
- * @arg command_input
- * @text 入力コマンド(必須)
- * @desc コマンドの内容を指定します。詳細はヘルプ文章参照
- * @default <2468,2>
- *
- * @arg command_x
- * @text コマンド表示位置X
- * @desc コマンドの表示位置を指定します。（-1で画面中央）
- * @default -1
- * @type number
- * @min -1
- *
- * @arg command_y
- * @text コマンド表示位置Y
- * @desc コマンドの表示位置を指定します。（-1で画面中央）
- * @default -1
- * @type number
- * @min -1
- *
- * @arg command_align
- * @text コマンド表示基準
- * @desc コマンドの表示の基準を指定
- * @type select
- * @option 中央
- * @value center
- * @option 左
- * @value left
- * @option 右
- * @value right
- * @default center
- */
+
 
 (function () {
 

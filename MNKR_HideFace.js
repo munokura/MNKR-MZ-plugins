@@ -9,42 +9,82 @@
  */
 
 /*:
- * @target MZ
- * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_HideFace.js
- * @plugindesc 顔画像を非表示にし、メニューの表示ゲージ幅を指定できます。
- * @author munokura
- *
- * @help
- * 顔画像を非表示にし、メニューの表示ゲージ幅を指定できます。
- * 
- * 
- * 利用規約:
- *   MITライセンスです。
- *   https://licenses.opensource.jp/MIT/MIT.html
- *   作者に無断で改変、再配布が可能で、
- *   利用形態（商用、18禁利用等）についても制限はありません。
- * 
-  * @param gaugeInMenu
-  * @text メニューのゲージ幅
-  * @desc メニューシーンで表示されるゲージを指定
-  * ツクールデフォルト:128
-  * @default 320
-  * @type number
-  *
-  * @param gaugeInSkill
-  * @text スキルのゲージ幅
-  * @desc スキルシーンで表示されるゲージを指定
-  * ツクールデフォルト:128
-  * @default 320
-  * @type number
-  *
-  * @param gaugeInStatus
-  * @text ステータスのゲージ幅
-  * @desc メニューで表示されるゲージを指定
-  * ツクールデフォルト:128
-  * @default 320
-  * @type number
-  */
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_HideFace.js
+@plugindesc You can hide the face image and specify the display gauge width of the menu.
+@author example
+@license MIT License
+
+@help
+You can hide face images and specify the width of the menu display gauge.
+
+There are no plugin commands.
+
+# Terms of Use
+MIT License.
+http://opensource.org/licenses/mit-license.php
+You may modify and redistribute this without permission from the author, and
+there are no restrictions on its use (commercial, R18+, etc.).
+
+@param gaugeInMenu
+@text Menu Gauge Width
+@desc Specify the gauge to be displayed in the menu scene
+@type number
+@default 320
+
+@param gaugeInSkill
+@text Skill Gauge Width
+@desc Specify the gauge to be displayed during the skill scene
+@type number
+@default 320
+
+@param gaugeInStatus
+@text Status Gauge Width
+@desc Specify the gauge to be displayed in the menu
+@type number
+@default 320
+*/
+
+/*:ja
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_HideFace.js
+@plugindesc 顔画像を非表示にし、メニューの表示ゲージ幅を指定できます。
+@author munokura
+
+@help
+顔画像を非表示にし、メニューの表示ゲージ幅を指定できます。
+
+
+プラグインコマンドはありません。
+
+
+# 利用規約
+MITライセンスです。
+http://opensource.org/licenses/mit-license.php
+作者に無断で改変、再配布が可能で、
+利用形態（商用、18禁利用等）についても制限はありません。
+
+@param gaugeInMenu
+@text メニューのゲージ幅
+@desc メニューシーンで表示されるゲージを指定
+ツクールデフォルト:128
+@default 320
+@type number
+
+@param gaugeInSkill
+@text スキルのゲージ幅
+@desc スキルシーンで表示されるゲージを指定
+ツクールデフォルト:128
+@default 320
+@type number
+
+@param gaugeInStatus
+@text ステータスのゲージ幅
+@desc メニューで表示されるゲージを指定
+ツクールデフォルト:128
+@default 320
+@type number
+*/
 
 (() => {
 

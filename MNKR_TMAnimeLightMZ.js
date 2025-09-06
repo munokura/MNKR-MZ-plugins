@@ -8,6 +8,312 @@
  * --------------------------------------------------
  */
 
+/*:
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMAnimeLightMZ.js
+@plugindesc v1.0.2 Displays animated lights at events.
+@author example
+@license MIT License
+
+@help
+Preparation:
+Save the light image in the img/system folder.
+You can freely change the file name.
+You can also display a different image for each event.
+
+How to Use:
+By adding the tag <animeLight:filename> to the event's memo field,
+the light will be displayed.
+
+You can also adjust the light's position using tags.
+
+Memo Field (Event) Tag:
+<animeLight:TMAnimeLight1 192 24 -44 4>
+Displays the image TMAnimeLight1.png with an opacity of 192, 24 dots to the
+right and 44 dots up from the base of the event, with a Z coordinate of 4.
+The maximum opacity is 255.
+
+In addition to the event's memo field, you can also set the name using the
+same tag in the annotation command at the top of the execution content.
+If there is a tag in both the memo field and the annotation, the annotation
+takes priority.
+
+In memo tags and annotations, you can display an image without animation by
+adding the number 1 after the Z coordinate.
+Example: <animeLight:TMAnimeLight1 192 0 0 4 1>
+In this case, the Z coordinate cannot be omitted.
+
+Plugin Parameter Notes:
+defaultZ
+Sets the drawing order of the light, determining whether it will be displayed
+below or above events.
+0 ... Lower priority than "Below normal characters"
+2 ... Lower priority than "Same as normal characters"
+4 ... Higher priority than "Same as normal characters"
+6 ... Higher priority than "Above normal characters"
+
+Plugin Command:
+
+The event number (the first number) specifies the target according to the
+following rules:
+-1 ... Targets the player
+0 ... Targets the event executing the command
+1 or greater ... Targets the event with that number
+
+# Contact Information
+This is a plugin originally created for RPG Maker MV that has been adapted for
+MZ.
+Please contact the modifier for any inquiries.
+
+# Terms of Use
+MIT License.
+http://opensource.org/licenses/mit-license.php
+You may modify and redistribute this without permission from the author, and
+there are no restrictions on its use (commercial, R18, etc.).
+
+@param range
+@text The size of the animation
+@desc The size of the animation
+@default 0.10
+
+@param defaultZ
+@text Animation Z coordinate
+@desc Animation Z coordinate
+@type number
+@default 4
+
+@param frames
+@text Number of frames in the animation
+@desc Number of frames for the animation
+@type number
+@default 30
+
+@command animeLight
+@text Drawing lights
+@desc Performs the drawing of the light.
+@arg eventId
+@text Event ID
+@desc Specifies the event ID for which the light will be drawn.
+@type number
+@default 0
+@min -1
+@arg file
+@text Image files
+@desc Illuminating image files
+@type file
+@dir img/system
+@arg opacity
+@text Opacity
+@desc Specify opacity. 0: Transparent
+@type number
+@default 255
+@min 0
+@max 255
+@arg offsetX
+@text X-correction
+@desc X coordinate correction. Positive value: right direction / Negative value: left direction
+@type number
+@default 0
+@min -9007
+@max 9007
+@arg offsetY
+@text Y correction
+@desc Y coordinate correction. Positive value: downward / Negative value: upward
+@type number
+@default 0
+@min -9007
+@max 9007
+@arg priority
+@text priority
+@desc 0: Lower than [below normal characters] / 2: Lower than [same as normal characters] /
+@type number
+@default 6
+@arg animation
+@text Animation behavior
+@desc Animate (zoom, shrink, repeat).
+@type boolean
+@on It works
+@off Doesn't work
+@default true
+
+@command animeLightRemove
+@text Turning off the lights
+@desc Erase the light drawing.
+@arg eventId
+@text Event ID
+@desc Specifies the event ID to turn off the light.
+@type number
+@default 0
+@min -1
+*/
+
+/*:ja
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMAnimeLightMZ.js
+@plugindesc v1.0.2 イベントにアニメーション付きの明かりを表示します。
+
+@author tomoaky (改変:munokura)
+
+@help
+準備:
+  明かり画像を img/system フォルダに保存してください。
+  ファイル名は自由に変更可能です。
+  イベント毎に違う画像を表示することもできます。
+
+
+使い方:
+  イベントのメモ欄に <animeLight:ファイル名> というタグを書き込めば、
+  明かりが表示されるようになります。
+
+  明かりの位置もタグを使って調整することができます。
+
+
+メモ欄(イベント)タグ:
+  <animeLight:TMAnimeLight1 192 24 -44 4>
+    画像 TMAnimeLight1.png を不透明度 192 で、イベントの足元から右に 24、
+    上に 44 ドットずらした位置にZ座標 4 で表示します。
+    不透明度の最大値は 255 です。
+
+  イベントのメモ欄以外に、実行内容の一番上にある注釈コマンド内でも
+  同様のタグで名前を設定することができます。
+  メモ欄と注釈の両方にタグがある場合は注釈が優先されます。
+
+  メモ欄タグ、注釈で、Z座標の後に
+  1 という数値を付与することでアニメーションのない画像を表示できます。
+  例: <animeLight:TMAnimeLight1 192 0 0 4 1>
+  この場合Z座標を省略することはできません。
+
+
+プラグインパラメータ補足:
+  defaultZ
+    明かりの描画順を設定します、これによりイベントよりも下に表示するか
+    上に表示するかが決まります。
+    0 … プライオリティ『通常キャラの下』より下
+    2 … プライオリティ『通常キャラと同じ』より下
+    4 … プライオリティ『通常キャラと同じ』より上
+    6 … プライオリティ『通常キャラの上』より上
+
+
+プラグインコマンド:
+
+  イベント番号(ひとつ目の数値)は以下の規則にしたがって対象を指定します。
+    -1     … プレイヤーを対象にする
+    0      … コマンドを実行しているイベントを対象にする
+    1 以上 … その番号のイベントを対象にする
+
+
+# 問い合わせ先
+これはRPGツクールMV用に作成されたプラグインをMZ用に移植したものです。
+お問い合わせは改変者へお願いいたします。
+
+
+# 利用規約
+MITライセンスです。
+http://opensource.org/licenses/mit-license.php
+作者に無断で改変、再配布が可能で、
+利用形態（商用、18禁利用等）についても制限はありません。
+
+
+@param range
+@text アニメーションの大きさ
+@desc アニメーションの大きさ
+初期値: 0.10 ( 0.10 でプラスマイナス 10% の拡大縮小アニメ)
+@default 0.10
+
+@param defaultZ
+@text アニメーションのZ座標
+@type number
+@desc アニメーションのZ座標
+初期値: 4
+@default 4
+
+@param frames
+@text アニメーションのフレーム数
+@type number
+@desc アニメーションにかけるフレーム数
+初期値: 30
+@default 30
+
+
+@noteParam animeLight
+@noteRequire 1
+@noteDir img/system/
+@noteType file
+@noteData events
+
+
+@command animeLight
+@text 明かりの描画
+@desc 明かりの描画を実行します。
+
+@arg eventId
+@text イベントID
+@desc 明かりを描画するイベントIDを指定。
+-1:プレイヤー / 0:実行イベント / 1以上:番号のイベント
+@type number
+@min -1
+@default 0
+
+@arg file
+@text 画像ファイル
+@desc 明かりになる画像ファイル
+@type file
+@dir img/system
+@default
+
+@arg opacity
+@text 不透明度
+@desc 不透明度を指定。0:透明
+@type number
+@min 0
+@max 255
+@default 255
+
+@arg offsetX
+@text X補正
+@desc X座標補正。正の値:右方向 / 負の値:左方向
+@type number
+@min -9007
+@max 9007
+@default 0
+
+@arg offsetY
+@text Y補正
+@desc Y座標補正。正の値:下方向 / 負の値:上方向
+@type number
+@min -9007
+@max 9007
+@default 0
+
+@arg priority
+@text プライオリティ
+@desc 0:[通常キャラの下]より下 / 2:[通常キャラと同じ]より下 /
+4:[通常キャラと同じ]より上 / 6:[通常キャラの上]より上
+@type number
+@default 6
+
+@arg animation
+@text アニメーション動作
+@desc アニメーション動作(拡大縮小リピート)させます。
+@type boolean
+@on 動作する
+@off 動作しない
+@default true
+
+
+@command animeLightRemove
+@text 明かりの消去
+@desc 明かりの描画を消去します。
+
+@arg eventId
+@text イベントID
+@desc 明かりを消去するイベントIDを指定。
+-1:プレイヤー / 0:実行イベント / 1以上:番号のイベント
+@type number
+@min -1
+@default 0
+*/
+
 //=============================================================================
 // TMPlugin - アニメ付き明かり
 // バージョン: 2.0.1
@@ -19,167 +325,7 @@
 // http://opensource.org/licenses/mit-license.php
 //=============================================================================
 
-/*:
- * @target MZ
- * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMAnimeLightMZ.js
- * @plugindesc v1.0.2 イベントにアニメーション付きの明かりを表示します。
- *
- * @author tomoaky (改変 munokura)
- *
- * @help
- * 準備:
- *   明かり画像を img/system フォルダに保存してください。
- *   ファイル名は自由に変更可能です。
- *   イベント毎に違う画像を表示することもできます。
- *
- *
- * 使い方:
- *   イベントのメモ欄に <animeLight:ファイル名> というタグを書き込めば、
- *   明かりが表示されるようになります。
- *
- *   明かりの位置もタグを使って調整することができます。
- *
- *
- * メモ欄(イベント)タグ:
- *   <animeLight:TMAnimeLight1 192 24 -44 4>
- *     画像 TMAnimeLight1.png を不透明度 192 で、イベントの足元から右に 24、
- *     上に 44 ドットずらした位置にZ座標 4 で表示します。
- *     不透明度の最大値は 255 です。
- *
- *   イベントのメモ欄以外に、実行内容の一番上にある注釈コマンド内でも
- *   同様のタグで名前を設定することができます。
- *   メモ欄と注釈の両方にタグがある場合は注釈が優先されます。
- *
- *   メモ欄タグ、注釈で、Z座標の後に
- *   1 という数値を付与することでアニメーションのない画像を表示できます。
- *   例: <animeLight:TMAnimeLight1 192 0 0 4 1>
- *   この場合Z座標を省略することはできません。
- *
- * 
- * プラグインパラメータ補足:
- *   defaultZ
- *     明かりの描画順を設定します、これによりイベントよりも下に表示するか
- *     上に表示するかが決まります。
- *     0 … プライオリティ『通常キャラの下』より下
- *     2 … プライオリティ『通常キャラと同じ』より下
- *     4 … プライオリティ『通常キャラと同じ』より上
- *     6 … プライオリティ『通常キャラの上』より上
- *
- * 
- * プラグインコマンド:
- *
- *   イベント番号(ひとつ目の数値)は以下の規則にしたがって対象を指定します。
- *     -1     … プレイヤーを対象にする
- *     0      … コマンドを実行しているイベントを対象にする
- *     1 以上 … その番号のイベントを対象にする
- *
- *
- * 利用規約:
- *   MITライセンスです。
- *   https://licenses.opensource.jp/MIT/MIT.html
- *   作者に無断で改変、再配布が可能で、
- *   利用形態（商用、18禁利用等）についても制限はありません。
- * 
- * 
- * @param range
- * @text アニメーションの大きさ
- * @desc アニメーションの大きさ
- * 初期値: 0.10 ( 0.10 でプラスマイナス 10% の拡大縮小アニメ)
- * @default 0.10
- *
- * @param defaultZ
- * @text アニメーションのZ座標
- * @type number
- * @desc アニメーションのZ座標
- * 初期値: 4
- * @default 4
- *
- * @param frames
- * @text アニメーションのフレーム数
- * @type number
- * @desc アニメーションにかけるフレーム数
- * 初期値: 30
- * @default 30
- *
- * 
- * @noteParam animeLight
- * @noteRequire 1
- * @noteDir img/system/
- * @noteType file
- * @noteData events
- * 
- * 
- * @command animeLight
- * @text 明かりの描画
- * @desc 明かりの描画を実行します。
- *
- * @arg eventId
- * @text イベントID
- * @desc 明かりを描画するイベントIDを指定。
- * -1:プレイヤー / 0:実行イベント / 1以上:番号のイベント
- * @type number
- * @min -1
- * @default 0
- * 
- * @arg file
- * @text 画像ファイル
- * @desc 明かりになる画像ファイル
- * @type file
- * @dir img/system
- * @default
- * 
- * @arg opacity
- * @text 不透明度
- * @desc 不透明度を指定。0:透明
- * @type number
- * @min 0
- * @max 255
- * @default 255
- * 
- * @arg offsetX
- * @text X補正
- * @desc X座標補正。正の値:右方向 / 負の値:左方向
- * @type number
- * @min -9007
- * @max 9007
- * @default 0
- * 
- * @arg offsetY
- * @text Y補正
- * @desc Y座標補正。正の値:下方向 / 負の値:上方向
- * @type number
- * @min -9007
- * @max 9007
- * @default 0
- * 
- * @arg priority
- * @text プライオリティ
- * @desc 0:[通常キャラの下]より下 / 2:[通常キャラと同じ]より下 / 
- * 4:[通常キャラと同じ]より上 / 6:[通常キャラの上]より上
- * @type number
- * @default 6
- * 
- * @arg animation
- * @text アニメーション動作
- * @desc アニメーション動作(拡大縮小リピート)させます。
- * @type boolean
- * @on 動作する
- * @off 動作しない
- * @default true
- * 
- * 
- * @command animeLightRemove
- * @text 明かりの消去
- * @desc 明かりの描画を消去します。
- *
- * @arg eventId
- * @text イベントID
- * @desc 明かりを消去するイベントIDを指定。
- * -1:プレイヤー / 0:実行イベント / 1以上:番号のイベント
- * @type number
- * @min -1
- * @default 0
- */
+
 
 var Imported = Imported || {};
 Imported.TMAnimeLight = true;

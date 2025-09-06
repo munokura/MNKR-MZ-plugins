@@ -8,6 +8,410 @@
  * --------------------------------------------------
  */
 
+/*:
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMCharacterExMZ.js
+@plugindesc Adds the ability to adjust the display position, rotate, and zoom to events.
+@author example
+@license MIT License
+
+@help
+How to Use:
+
+You can set the display position, magnification, and rotation angle by writing
+tags in the event's memo field.
+
+The default position of the event image's origin is [0.5,1.0].
+([x:+24,y:-48] pixels from the top left.)
+
+To rotate the event image around its center, use the angle tag along with
+<anchorY:0.5>.
+
+When the event page changes, parameters without tags on the next page will
+retain their previous settings.
+
+Memo (Event) Tags:
+
+<chrShift:0 0> # Change the display position offset
+<chrAngle:0> # Change the rotation angle (0 to 359)
+<chrScale:1.0 1.0> # Change the magnification (1.0 is full magnification)
+<chrAnchor:0.5 1.0> # Change the origin position
+
+For tags with two values, specify the X and Y settings separately.
+
+In addition to the event memo field, you can also set parameters using the
+same tags in the annotation command at the top of the action.
+If there are tags in both the memo field and the annotation, the annotation
+takes priority.
+
+Script Commands:
+
+Use the following script with the event command "Set Movement Route."
+Please note that using this with a normal event will result in an error.
+
+this.setChrShift(-10, 5);
+Shift the display position 10 to the left and 5 down from the original image
+of this event.
+
+this.setChrAngle(180);
+Rotate this event 180 degrees from its original image.
+
+this.setChrScale(2, 1);
+Scale this event's original image by doubling its width.
+
+this.setChrScaleRate(1, 1.5);
+Scale this event's original image by 1.5 times its height, leaving its width
+unchanged.
+
+Plugin Command:
+
+The event number (the first number) specifies the target according to the
+following rules:
+-1 ... Player
+0 ... Event executing the command
+1 or higher ... Event with the specified number
+
+chrShift 1 5 -3
+Shifts event 1 5 dots to the right and 3 dots up.
+
+chrAngle 1 90
+Rotates event 1 90 degrees to the right.
+
+chrScale 2 1.5 0.5
+Enlarges event 2 by 50% in width and reduces its height by half.
+
+chrScaleRate 3 1.3 0.7
+Sets the scaling correction rate for Event 3 to 1.3x width and 0.7x height.
+The scaling correction rate is multiplied separately from the scaling rate set
+by setChrScale,
+and returns to normal size over time.
+
+chrClear 1
+Removes all effects of chrShift, chrAngle, and chrScale applied to Event 1.
+
+# Contact
+This is a plugin originally created for RPG Maker MV ported for MZ.
+Please contact the modifier for any inquiries.
+
+# Terms of Use
+MIT License.
+http://opensource.org/licenses/mit-license.php
+You may modify and redistribute this without permission, and there are no
+restrictions on its use (commercial, 18+, etc.).
+
+@param landingAnimation
+@text Post-jump enlargement correction
+@desc Automatically applies magnification correction rate when landing after a jump.
+@type boolean
+@on valid
+@off invalid
+@default true
+
+@command chrShift
+@text Event position adjustment
+@desc Stagger the event.
+@arg eventId
+@text Event ID
+@desc The event ID for which the display position is to be changed.
+@type number
+@default 0
+@min -1
+@arg offsetX
+@text Horizontal dot amount
+@desc The amount of dots to shift the event horizontally.
+@type number
+@default 0
+@min -9007
+@max 9007
+@arg offsetY
+@text Vertical dot amount
+@desc The amount of dots to shift the event vertically.
+@type number
+@default 0
+@min -9007
+@max 9007
+
+@command chrAngle
+@text Event rotation
+@desc Rotate the event to the right.
+@arg eventId
+@text Event ID
+@desc The event ID for which the display position is to be changed.
+@type number
+@default 0
+@min -1
+@arg angle
+@text Rotation Degrees
+@desc The number of degrees to rotate the event to the right.
+@type number
+@default 0
+@min 0
+@max 359
+
+@command chrScale
+@text Event Scaling
+@desc Scale the event.
+@arg eventId
+@text Event ID
+@desc The event ID for which the display position is to be changed.
+@type number
+@default 0
+@min -1
+@arg scaleX
+@text Horizontal magnification
+@desc The percentage by which to expand the event horizontally.
+@default 1.00
+@arg scaleY
+@text Vertical magnification
+@desc The percentage by which to expand the event vertically.
+@default 1.00
+
+@command chrScaleRate
+@text Event expansion correction rate
+@desc Specifies the magnification correction rate for the event. This is multiplied separately from the magnification rate, and will return to normal size over time.
+@arg eventId
+@text Event ID
+@desc The event ID for which the display position is to be changed.
+@type number
+@default 0
+@min -1
+@arg scaleX
+@text Horizontal expansion correction rate
+@desc Event horizontal expansion correction factor.
+@default 1.00
+@arg scaleY
+@text Vertical expansion correction rate
+@desc Event vertical expansion correction factor.
+@default 1.00
+
+@command chrClear
+@text Cancel event settings
+@desc Cancels the effects specified by other plug-in commands.
+@arg eventId
+@text Event ID
+@desc The event ID for which the display position is to be changed.
+@type number
+@default 0
+@min -1
+*/
+
+/*:ja
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMCharacterExMZ.js
+@plugindesc イベントに表示位置補正、回転、拡大の機能を追加します。
+@author tomoaky (改変:munokura)
+
+@help
+使い方:
+
+  イベントのメモ欄にタグを書き込むことで、表示位置や拡大率、回転角度の
+  設定ができます。
+
+  イベント画像の原点のデフォルト位置は、[0.5,1.0]です。
+  （左上から[x:+24,y:-48]ピクセル）
+
+  イベント画像の中心を軸に回転させたい場合は angle タグと一緒に
+  <anchorY:0.5> を設定してください。
+
+  イベントページが変化した際、次のページでタグ設定がないパラメータは
+  変化前の状態がそのまま引き継がれます。
+
+
+メモ欄(イベント)タグ:
+
+  <chrShift:0 0>         # 表示位置補正値を変更
+  <chrAngle:0>           # 回転角度を変更 ( 0 ～ 359 )
+  <chrScale:1.0 1.0>     # 拡大率を変更 ( 1.0 で等倍)
+  <chrAnchor:0.5 1.0>    # 原点位置を変更
+
+  数値が 2 つあるタグはX方向とY方向の設定をそれぞれ指定してください。
+
+  イベントのメモ欄以外に、実行内容の一番上にある注釈コマンド内でも
+  同様のタグでパラメータを設定することができます。
+  メモ欄と注釈の両方にタグがある場合は注釈が優先されます。
+
+
+スクリプトコマンド:
+
+  イベントコマンド『移動ルートの設定』で
+  下記のスクリプトを使用してください。
+  通常のイベントで使用するとエラーになるのでご注意ください。
+
+  this.setChrShift(-10, 5);
+    このイベントの元画像から表示位置を左に10、下に5ずらす。
+
+  this.setChrAngle(180);
+    このイベントを元画像から180度回転して表示。
+
+  this.setChrScale(2, 1);
+    このイベントの元画像から幅だけを2倍に拡大表示。
+
+  this.setChrScaleRate(1, 1.5);
+    このイベントの元画像から拡大補正率を幅はそのまま、高さ1.5倍で表示。
+
+
+プラグインコマンド:
+
+  イベント番号(ひとつ目の数値)は以下の規則にしたがって対象を指定します。
+    -1     … プレイヤー
+    0      … コマンドを実行しているイベント
+    1 以上 … 番号のイベント
+
+  chrShift 1 5 -3
+    イベント 1 番を右に 5、上に 3 ドットずらします。
+
+  chrAngle 1 90
+    イベント 1 番を右に 90 度回転させます。
+
+  chrScale 2 1.5 0.5
+    イベント 2 番の幅を 50% 拡大し、高さを半分に縮小します。
+
+  chrScaleRate 3 1.3 0.7
+    イベント 3 番の拡大補正率を幅 1.3 倍、高さ 0.7 倍に設定します。
+    拡大補正率は setChrScale による拡大率とは別に乗算され、
+    時間経過で等倍に戻ります。
+
+  chrClear 1
+    イベント 1 番に適用されている chrShift、chrAngle、chrScale の効果を
+    すべて解除します。
+
+
+# 問い合わせ先
+これはRPGツクールMV用に作成されたプラグインをMZ用に移植したものです。
+お問い合わせは改変者へお願いいたします。
+
+
+# 利用規約
+MITライセンスです。
+http://opensource.org/licenses/mit-license.php
+作者に無断で改変、再配布が可能で、
+利用形態（商用、18禁利用等）についても制限はありません。
+
+
+@param landingAnimation
+@text ジャンプ後拡大補正
+@desc ジャンプ後の着地時に拡大補正率を自動的に適用する。
+初期値: true (有効:true / 無効:false)
+@type boolean
+@on 有効
+@off 無効
+@default true
+
+
+@command chrShift
+@text イベント位置調整
+@desc イベントをずらします。
+
+@arg eventId
+@text イベントID
+@desc 表示位置を変更するイベントID。
+-1:プレイヤー / 0:実行イベント / 1以上:番号のイベント
+@type number
+@min -1
+@default 0
+
+@arg offsetX
+@text 横方向ドット量
+@desc イベントを横方向にずらすドット量。
+基本位置から正の値で右、負の値で左にずれます。
+@type number
+@min -9007
+@max 9007
+@default 0
+
+@arg offsetY
+@text 縦方向ドット量
+@desc イベントを縦方向にずらすドット量。
+基本位置から正の値で下、負の値で上にずれます。
+@type number
+@min -9007
+@max 9007
+@default 0
+
+
+@command chrAngle
+@text イベント回転
+@desc イベントを右に回転します。
+
+@arg eventId
+@text イベントID
+@desc 表示位置を変更するイベントID。
+-1:プレイヤー / 0:実行イベント / 1以上:番号のイベント
+@type number
+@min -1
+@default 0
+
+@arg angle
+@text 回転度数
+@desc イベントを右方向に回転させる度数。
+基本位置から右方向に回転します。
+@type number
+@min 0
+@max 359
+@default 0
+
+
+@command chrScale
+@text イベント拡大縮小
+@desc イベントを拡大縮小します。
+
+@arg eventId
+@text イベントID
+@desc 表示位置を変更するイベントID。
+-1:プレイヤー / 0:実行イベント / 1以上:番号のイベント
+@type number
+@min -1
+@default 0
+
+@arg scaleX
+@text 横方向拡大率
+@desc イベントを横方向に拡大する百分率。
+基本位置から絶対値が大きいと大きく、負の値で左右反転します。
+@default 1.00
+
+@arg scaleY
+@text 縦方向拡大率
+@desc イベントを縦方向に拡大する百分率。
+基本位置から絶対値が大きいと大きく、負の値で上下反転します。
+@default 1.00
+
+
+@command chrScaleRate
+@text イベント拡大補正率
+@desc イベントを拡大補正率を指定します。拡大率とは別に乗算され、時間経過で等倍に戻ります。
+
+@arg eventId
+@text イベントID
+@desc 表示位置を変更するイベントID。
+-1:プレイヤー / 0:実行イベント / 1以上:番号のイベント
+@type number
+@min -1
+@default 0
+
+@arg scaleX
+@text 横方向拡大補正率
+@desc イベント横方向の拡大補正率。
+@default 1.00
+
+@arg scaleY
+@text 縦方向拡大補正率
+@desc イベント縦方向の拡大補正率。
+@default 1.00
+
+
+@command chrClear
+@text イベント設定解除
+@desc 他のプラグインコマンドで指定した効果を解除します。
+
+@arg eventId
+@text イベントID
+@desc 表示位置を変更するイベントID。
+-1:プレイヤー / 0:実行イベント / 1以上:番号のイベント
+@type number
+@min -1
+@default 0
+*/
+
 //=============================================================================
 // TMPlugin - キャラクター表示拡張
 // バージョン: 2.0.2
@@ -19,217 +423,7 @@
 // http://opensource.org/licenses/mit-license.php
 //=============================================================================
 
-/*:
- * @target MZ
- * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMCharacterExMZ.js
- * @plugindesc イベントに表示位置補正、回転、拡大の機能を追加します。
- * @author tomoaky (改変 munokura)
- *
- * @help
- * 使い方:
- *
- *   イベントのメモ欄にタグを書き込むことで、表示位置や拡大率、回転角度の
- *   設定ができます。
- *
- *   イベント画像の原点のデフォルト位置は、[0.5,1.0]です。
- *   （左上から[x:+24,y:-48]ピクセル）
- * 
- *   イベント画像の中心を軸に回転させたい場合は angle タグと一緒に
- *   <anchorY:0.5> を設定してください。
- *
- *   イベントページが変化した際、次のページでタグ設定がないパラメータは
- *   変化前の状態がそのまま引き継がれます。
- *
- *
- * メモ欄(イベント)タグ:
- *
- *   <chrShift:0 0>         # 表示位置補正値を変更
- *   <chrAngle:0>           # 回転角度を変更 ( 0 ～ 359 )
- *   <chrScale:1.0 1.0>     # 拡大率を変更 ( 1.0 で等倍)
- *   <chrAnchor:0.5 1.0>    # 原点位置を変更
- *
- *   数値が 2 つあるタグはX方向とY方向の設定をそれぞれ指定してください。
- * 
- *   イベントのメモ欄以外に、実行内容の一番上にある注釈コマンド内でも
- *   同様のタグでパラメータを設定することができます。
- *   メモ欄と注釈の両方にタグがある場合は注釈が優先されます。
- *
- *
- * スクリプトコマンド:
- * 
- *   イベントコマンド『移動ルートの設定』で
- *   下記のスクリプトを使用してください。
- *   通常のイベントで使用するとエラーになるのでご注意ください。
- *
- *   this.setChrShift(-10, 5);
- *     このイベントの元画像から表示位置を左に10、下に5ずらす。
- *
- *   this.setChrAngle(180);
- *     このイベントを元画像から180度回転して表示。
- *
- *   this.setChrScale(2, 1);
- *     このイベントの元画像から幅だけを2倍に拡大表示。
- *
- *   this.setChrScaleRate(1, 1.5);
- *     このイベントの元画像から拡大補正率を幅はそのまま、高さ1.5倍で表示。
- *
- *
- * プラグインコマンド:
- *
- *   イベント番号(ひとつ目の数値)は以下の規則にしたがって対象を指定します。
- *     -1     … プレイヤー
- *     0      … コマンドを実行しているイベント
- *     1 以上 … 番号のイベント
- *
- *   chrShift 1 5 -3
- *     イベント 1 番を右に 5、上に 3 ドットずらします。
- *
- *   chrAngle 1 90
- *     イベント 1 番を右に 90 度回転させます。
- *
- *   chrScale 2 1.5 0.5
- *     イベント 2 番の幅を 50% 拡大し、高さを半分に縮小します。
- *
- *   chrScaleRate 3 1.3 0.7
- *     イベント 3 番の拡大補正率を幅 1.3 倍、高さ 0.7 倍に設定します。
- *     拡大補正率は setChrScale による拡大率とは別に乗算され、
- *     時間経過で等倍に戻ります。
- *
- *   chrClear 1
- *     イベント 1 番に適用されている chrShift、chrAngle、chrScale の効果を
- *     すべて解除します。
- *
- * 
- * 利用規約:
- *   MITライセンスです。
- *   https://licenses.opensource.jp/MIT/MIT.html
- *   作者に無断で改変、再配布が可能で、
- *   利用形態（商用、18禁利用等）についても制限はありません。
- * 
- *
- * @param landingAnimation
- * @text ジャンプ後拡大補正
- * @desc ジャンプ後の着地時に拡大補正率を自動的に適用する。
- * 初期値: true (有効:true / 無効:false)
- * @type boolean
- * @on 有効
- * @off 無効
- * @default true
- * 
- * 
- * @command chrShift
- * @text イベント位置調整
- * @desc イベントをずらします。
- *
- * @arg eventId
- * @text イベントID
- * @desc 表示位置を変更するイベントID。
- * -1:プレイヤー / 0:実行イベント / 1以上:番号のイベント
- * @type number
- * @min -1
- * @default 0
- * 
- * @arg offsetX
- * @text 横方向ドット量
- * @desc イベントを横方向にずらすドット量。
- * 基本位置から正の値で右、負の値で左にずれます。
- * @type number
- * @min -9007
- * @max 9007
- * @default 0
- * 
- * @arg offsetY
- * @text 縦方向ドット量
- * @desc イベントを縦方向にずらすドット量。
- * 基本位置から正の値で下、負の値で上にずれます。
- * @type number
- * @min -9007
- * @max 9007
- * @default 0
- * 
- * 
- * @command chrAngle
- * @text イベント回転
- * @desc イベントを右に回転します。
- *
- * @arg eventId
- * @text イベントID
- * @desc 表示位置を変更するイベントID。
- * -1:プレイヤー / 0:実行イベント / 1以上:番号のイベント
- * @type number
- * @min -1
- * @default 0
- * 
- * @arg angle
- * @text 回転度数
- * @desc イベントを右方向に回転させる度数。
- * 基本位置から右方向に回転します。
- * @type number
- * @min 0
- * @max 359
- * @default 0
- * 
- * 
- * @command chrScale
- * @text イベント拡大縮小
- * @desc イベントを拡大縮小します。
- *
- * @arg eventId
- * @text イベントID
- * @desc 表示位置を変更するイベントID。
- * -1:プレイヤー / 0:実行イベント / 1以上:番号のイベント
- * @type number
- * @min -1
- * @default 0
- * 
- * @arg scaleX
- * @text 横方向拡大率
- * @desc イベントを横方向に拡大する百分率。
- * 基本位置から絶対値が大きいと大きく、負の値で左右反転します。
- * @default 1.00
- * 
- * @arg scaleY
- * @text 縦方向拡大率
- * @desc イベントを縦方向に拡大する百分率。
- * 基本位置から絶対値が大きいと大きく、負の値で上下反転します。
- * @default 1.00
- * 
- * 
- * @command chrScaleRate
- * @text イベント拡大補正率
- * @desc イベントを拡大補正率を指定します。拡大率とは別に乗算され、時間経過で等倍に戻ります。
- *
- * @arg eventId
- * @text イベントID
- * @desc 表示位置を変更するイベントID。
- * -1:プレイヤー / 0:実行イベント / 1以上:番号のイベント
- * @type number
- * @min -1
- * @default 0
- * 
- * @arg scaleX
- * @text 横方向拡大補正率
- * @desc イベント横方向の拡大補正率。
- * @default 1.00
- * 
- * @arg scaleY
- * @text 縦方向拡大補正率
- * @desc イベント縦方向の拡大補正率。
- * @default 1.00
- * 
- * 
- * @command chrClear
- * @text イベント設定解除
- * @desc 他のプラグインコマンドで指定した効果を解除します。
- *
- * @arg eventId
- * @text イベントID
- * @desc 表示位置を変更するイベントID。
- * -1:プレイヤー / 0:実行イベント / 1以上:番号のイベント
- * @type number
- * @min -1
- * @default 0
- */
+
 
 var Imported = Imported || {};
 Imported.TMCharacterEx = true;

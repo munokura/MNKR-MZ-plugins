@@ -9,103 +9,205 @@
  */
 
 /*:
- * @target MZ
- * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_HideParamMZ.js
- * @plugindesc 各シーンで指定項目を非表示にします。
- * @author munokura
- *
- * @help
- * 各シーン（アイテム・スキル・装備・ステータス・並び替え・戦闘）で
- * 指定項目を非表示にします。
- * 
- * 
- * 利用規約:
- *   MITライセンスです。
- *   https://licenses.opensource.jp/MIT/MIT.html
- *   作者に無断で改変、再配布が可能で、
- *   利用形態（商用、18禁利用等）についても制限はありません。
- * 
- * @param level
- * @text レベル
- * @type boolean
- * @on 表示
- * @off 非表示
- * @default false
- * @desc レベルを表示するか指定します。
- * 
- * @param exp
- * @text 経験値
- * @type boolean
- * @on 表示
- * @off 非表示
- * @default false
- * @desc 経験値関係情報を表示するか指定します。
- * 
- * @param gauge
- * @text ゲージ一式
- * @type boolean
- * @on 表示
- * @off 非表示
- * @default false
- * @desc ゲージ一式(HP/MP/TP)を表示するか指定します。
- * 
- * @param cost
- * @text 消費MP/TP
- * @type boolean
- * @on 表示
- * @off 非表示
- * @default false
- * @desc スキルメニューの消費MP/TPを表示するか指定します。
- * 
- * @param atk
- * @text 攻撃力
- * @type boolean
- * @on 表示
- * @off 非表示
- * @default false
- * @desc 攻撃力を表示するか指定します。
- * 
- * @param def
- * @text 防御力
- * @type boolean
- * @on 表示
- * @off 非表示
- * @default false
- * @desc 防御力を表示するか指定します。
- * 
- * @param mat
- * @text 魔法力
- * @type boolean
- * @on 表示
- * @off 非表示
- * @default false
- * @desc 魔法力を表示するか指定します。
- * 
- * @param mdf
- * @text 魔法防御
- * @type boolean
- * @on 表示
- * @off 非表示
- * @default false
- * @desc 魔法防御を表示するか指定します。
- * 
- * @param agi
- * @text 敏捷性
- * @type boolean
- * @on 表示
- * @off 非表示
- * @default false
- * @desc 敏捷性を表示するか指定します。
- * 
- * @param luk
- * @text 運
- * @type boolean
- * @on 表示
- * @off 非表示
- * @default false
- * @desc 運を表示するか指定します。
- *
- */
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_HideParamMZ.js
+@plugindesc Hides the specified items in each scene.
+@author example
+@license MIT License
+
+@help
+Hides specified items in each scene (items, skills, equipment, stats, sorting,
+and battle).
+
+No plugin commands.
+
+# Terms of Use
+MIT License.
+http://opensource.org/licenses/mit-license.php
+You may modify and redistribute this without permission, and there are no
+restrictions on its use (commercial, 18+, etc.).
+
+@param level
+@text level
+@desc Specifies whether to display the level.
+@type boolean
+@on display
+@off hidden
+@default false
+
+@param exp
+@text Experience points
+@desc Specify whether to display experience-related information.
+@type boolean
+@on display
+@off hidden
+@default false
+
+@param gauge
+@text Gauge set
+@desc Specify whether to display the full set of gauges (HP/MP/TP).
+@type boolean
+@on display
+@off hidden
+@default false
+
+@param cost
+@text MP/TP consumption
+@desc Specifies whether to display MP/TP consumption in the skill menu.
+@type boolean
+@on display
+@off hidden
+@default false
+
+@param atk
+@text Attack Power
+@desc Specify whether to display attack power.
+@type boolean
+@on display
+@off hidden
+@default false
+
+@param def
+@text Defense power
+@desc Specify whether to display defensive power.
+@type boolean
+@on display
+@off hidden
+@default false
+
+@param mat
+@text magic power
+@desc Specify whether to display magic power.
+@type boolean
+@on display
+@off hidden
+@default false
+
+@param mdf
+@text magic defense
+@desc Specifies whether to display magic defense.
+@type boolean
+@on display
+@off hidden
+@default false
+
+@param agi
+@text agility
+@desc Specifies whether to display agility.
+@type boolean
+@on display
+@off hidden
+@default false
+
+@param luk
+@text luck
+@desc Specify whether to display luck.
+@type boolean
+@on display
+@off hidden
+@default false
+*/
+
+/*:ja
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_HideParamMZ.js
+@plugindesc 各シーンで指定項目を非表示にします。
+@author munokura
+
+@help
+各シーン（アイテム・スキル・装備・ステータス・並び替え・戦闘）で
+指定項目を非表示にします。
+
+
+プラグインコマンドはありません。
+
+
+# 利用規約
+MITライセンスです。
+http://opensource.org/licenses/mit-license.php
+作者に無断で改変、再配布が可能で、
+利用形態（商用、18禁利用等）についても制限はありません。
+
+@param level
+@text レベル
+@type boolean
+@on 表示
+@off 非表示
+@default false
+@desc レベルを表示するか指定します。
+
+@param exp
+@text 経験値
+@type boolean
+@on 表示
+@off 非表示
+@default false
+@desc 経験値関係情報を表示するか指定します。
+
+@param gauge
+@text ゲージ一式
+@type boolean
+@on 表示
+@off 非表示
+@default false
+@desc ゲージ一式(HP/MP/TP)を表示するか指定します。
+
+@param cost
+@text 消費MP/TP
+@type boolean
+@on 表示
+@off 非表示
+@default false
+@desc スキルメニューの消費MP/TPを表示するか指定します。
+
+@param atk
+@text 攻撃力
+@type boolean
+@on 表示
+@off 非表示
+@default false
+@desc 攻撃力を表示するか指定します。
+
+@param def
+@text 防御力
+@type boolean
+@on 表示
+@off 非表示
+@default false
+@desc 防御力を表示するか指定します。
+
+@param mat
+@text 魔法力
+@type boolean
+@on 表示
+@off 非表示
+@default false
+@desc 魔法力を表示するか指定します。
+
+@param mdf
+@text 魔法防御
+@type boolean
+@on 表示
+@off 非表示
+@default false
+@desc 魔法防御を表示するか指定します。
+
+@param agi
+@text 敏捷性
+@type boolean
+@on 表示
+@off 非表示
+@default false
+@desc 敏捷性を表示するか指定します。
+
+@param luk
+@text 運
+@type boolean
+@on 表示
+@off 非表示
+@default false
+@desc 運を表示するか指定します。
+*/
 
 (() => {
 

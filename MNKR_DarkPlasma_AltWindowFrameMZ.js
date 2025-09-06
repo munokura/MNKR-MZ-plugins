@@ -8,6 +8,296 @@
  * --------------------------------------------------
  */
 
+/*:
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_DarkPlasma_AltWindowFrameMZ.js
+@plugindesc A plugin for using MADO creation materials RPG Maker MZ version
+@author example
+@license MIT
+
+@help
+This is the RPG Maker MZ version of AltWindowFrame.js included with MADO.
+It is a modified version of DarkPlasma_AltWindowFramePatch.js.
+
+The default scene names for RPG Maker MZ can be selected using the plugin
+parameter combo box.
+
+There are a large number of window names, so please copy and use them from the
+link below.
+
+Window_ActorCommand
+Window_BattleActor
+Window_BattleEnemy
+Window_BattleItem
+Window_BattleLog
+Window_BattleSkill
+Window_BattleStatus
+Window_ChoiceList
+Window_Command
+Window_EquipCommand
+Window_EquipItem
+Window_EquipSlot
+Window_EquipStatus
+Window_EventItem
+Window_GameEnd
+Window_Gold
+Window_Help
+Window_HorzCommand
+Window_ItemCategory
+Window_ItemList
+Window_MapName
+Window_MenuActor
+Window_MenuCommand
+Window_MenuStatus
+Win dow_Message
+Window_NameBox
+Window_NameEdit
+Window_NameInput
+Window_NumberInput
+Window_Options
+Window_PartyCommand
+Window_SavefileList
+Window_Scrollable
+Window_ScrollText
+Window_Selectable
+Window_ShopBuy
+Window_ShopCommand
+Window_ShopNumber
+Window_ShopSell
+Window_ShopStatus
+Window_SkillList
+Window_SkillStatus
+Window_SkillType
+Window_Status
+Window_StatusBase
+Window_StatusEquip
+Window_StatusParams
+Window_TitleCommand
+
+# Contact Information
+This is a plugin originally created for RPG Maker MV ported for MZ.
+Please contact the original author for any inquiries.
+
+# Terms of Use
+MIT License.
+http://opensource.org/licenses/mit-license.php
+You may modify and redistribute this plugin without permission from the
+author, and there are no restrictions on its use (commercial, 18+, etc.).
+
+@param Default Windowskin
+@text Basic Window Skin
+@desc Basic Window Skin
+@type select
+@default 0
+@option Window
+@value 0
+@option Window_Talk
+@value 1
+@option Window Battle
+@value 2
+@option Window_Status
+@value 3
+@option Window_Other
+@value 4
+
+@param Custom Windowskins By Window
+@text Per-window skins
+@desc Per-window skin settings
+@type struct<CustomWindowskin>[]
+@default []
+
+@param Custom Windowskins By Scene
+@text Skins for each scene
+@desc Skin settings for each scene
+@type struct<CustomWindowskin>[]
+@default []
+*/
+
+/*~struct~CustomWindowskin:
+@param Class Name
+@text Class Name
+@desc Window or scene class name (e.g. Window_TitleCommand, Scene_Shop)
+@type combo
+@option Scene_Battle
+@option Scene_GameEnd
+@option Scene_Gameover
+@option Scene_Item
+@option Scene_Load
+@option Scene_Map
+@option Scene_Menu
+@option Scene_Name
+@option Scene_Options
+@option Scene_Save
+@option Scene_Shop
+@option Scene_Title
+@option Window_Message
+
+@param Windowskin
+@text Window Skin
+@desc Window Skin
+@type select
+@default 0
+@option Window
+@value 0
+@option Window_Talk
+@value 1
+@option Window Battle
+@value 2
+@option Window_Status
+@value 3
+@option Window_Other
+@value 4
+*/
+
+/*:ja
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_DarkPlasma_AltWindowFrameMZ.js
+@plugindesc MADO作成素材を使用するためのプラグインRPGツクールMZ版
+@author DarkPlasma (改変:munokura)
+@license MIT
+
+@param Default Windowskin
+@desc 基本ウィンドウスキン
+@text 基本ウィンドウスキン
+@type select
+@option Window
+@value 0
+@option Window_Talk
+@value 1
+@option Window_Battle
+@value 2
+@option Window_Status
+@value 3
+@option Window_Other
+@value 4
+@default 0
+
+@param Custom Windowskins By Window
+@desc ウィンドウごとのスキン設定
+@text ウィンドウごとのスキン
+@type struct<CustomWindowskin>[]
+@default []
+
+@param Custom Windowskins By Scene
+@desc シーンごとのスキン設定
+@text シーンごとのスキン
+@type struct<CustomWindowskin>[]
+@default []
+
+@help
+MADO付属のAltWindowFrame.jsのRPGツクールMZ版です。
+DarkPlasma_AltWindowFramePatch.js を改変したものです。
+
+RPGツクールMZデフォルトにあるシーン名は
+プラグインパラメーターのコンボボックスで選択できます。
+ウィンドウ名は大量なので、下記からコピーして利用してください。
+
+Window_ActorCommand
+Window_BattleActor
+Window_BattleEnemy
+Window_BattleItem
+Window_BattleLog
+Window_BattleSkill
+Window_BattleStatus
+Window_ChoiceList
+Window_Command
+Window_EquipCommand
+Window_EquipItem
+Window_EquipSlot
+Window_EquipStatus
+Window_EventItem
+Window_GameEnd
+Window_Gold
+Window_Help
+Window_HorzCommand
+Window_ItemCategory
+Window_ItemList
+Window_MapName
+Window_MenuActor
+Window_MenuCommand
+Window_MenuStatus
+Window_Message
+Window_NameBox
+Window_NameEdit
+Window_NameInput
+Window_NumberInput
+Window_Options
+Window_PartyCommand
+Window_SavefileList
+Window_Scrollable
+Window_ScrollText
+Window_Selectable
+Window_ShopBuy
+Window_ShopCommand
+Window_ShopNumber
+Window_ShopSell
+Window_ShopStatus
+Window_SkillList
+Window_SkillStatus
+Window_SkillType
+Window_Status
+Window_StatusBase
+Window_StatusEquip
+Window_StatusParams
+Window_TitleCommand
+
+
+# 問い合わせ先
+これはRPGツクールMV用に作成されたプラグインをMZ用に移植したものです。
+お問い合わせは改変者へお願いいたします。
+
+
+# 利用規約
+MITライセンスです。
+http://opensource.org/licenses/mit-license.php
+作者に無断で改変、再配布が可能で、
+利用形態（商用、18禁利用等）についても制限はありません。
+
+
+@requiredAssets img/system/Window_Talk
+@requiredAssets img/system/Window_Battle
+@requiredAssets img/system/Window_Status
+@requiredAssets img/system/Window_Other
+*/
+
+/*~struct~CustomWindowskin:ja
+
+@param Class Name
+@desc ウィンドウまたはシーンのクラス名（例: Window_TitleCommand, Scene_Shop）
+@text クラス名
+@type combo
+@option Scene_Battle
+@option Scene_GameEnd
+@option Scene_Gameover
+@option Scene_Item
+@option Scene_Load
+@option Scene_Map
+@option Scene_Menu
+@option Scene_Name
+@option Scene_Options
+@option Scene_Save
+@option Scene_Shop
+@option Scene_Title
+@option Window_Message
+@default
+
+@param Windowskin
+@desc ウィンドウスキン
+@text ウィンドウスキン
+@type select
+@option Window
+@value 0
+@option Window_Talk
+@value 1
+@option Window_Battle
+@value 2
+@option Window_Status
+@value 3
+@option Window_Other
+@value 4
+@default 0
+*/
+
 // DarkPlasma_AltWindowFramePatch
 // Copyright (c) 2020 DarkPlasma
 // This software is released under the MIT license.
@@ -17,141 +307,8 @@
  * 2020/04/10 1.0.0 公開
  */
 
-/*:
- * @target MZ
- * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_DarkPlasma_AltWindowFrameMZ.js
- * @plugindesc MADO作成素材を使用するためのプラグインRPGツクールMZ版
- * @author DarkPlasma (改変 munokura)
- * @license MIT
- *
- * @param Default Windowskin
- * @desc 基本ウィンドウスキン
- * @text 基本ウィンドウスキン
- * @type select
- * @option Window
- * @value 0
- * @option Window_Talk
- * @value 1
- * @option Window_Battle
- * @value 2
- * @option Window_Status
- * @value 3
- * @option Window_Other
- * @value 4
- * @default 0
- *
- * @param Custom Windowskins By Window
- * @desc ウィンドウごとのスキン設定
- * @text ウィンドウごとのスキン
- * @type struct<CustomWindowskin>[]
- * @default []
- *
- * @param Custom Windowskins By Scene
- * @desc シーンごとのスキン設定
- * @text シーンごとのスキン
- * @type struct<CustomWindowskin>[]
- * @default []
- *
- * @help
- * MADO付属のAltWindowFrame.jsのRPGツクールMZ版です。
- * DarkPlasma_AltWindowFramePatch.js を改変したものです。
- * 
- * RPGツクールMZデフォルトにあるシーン名は
- * プラグインパラメーターのコンボボックスで選択できます。
- * ウィンドウ名は大量なので、下記からコピーして利用してください。
- * 
- * Window_ActorCommand
- * Window_BattleActor
- * Window_BattleEnemy
- * Window_BattleItem
- * Window_BattleLog
- * Window_BattleSkill
- * Window_BattleStatus
- * Window_ChoiceList
- * Window_Command
- * Window_EquipCommand
- * Window_EquipItem
- * Window_EquipSlot
- * Window_EquipStatus
- * Window_EventItem
- * Window_GameEnd
- * Window_Gold
- * Window_Help
- * Window_HorzCommand
- * Window_ItemCategory
- * Window_ItemList
- * Window_MapName
- * Window_MenuActor
- * Window_MenuCommand
- * Window_MenuStatus
- * Window_Message
- * Window_NameBox
- * Window_NameEdit
- * Window_NameInput
- * Window_NumberInput
- * Window_Options
- * Window_PartyCommand
- * Window_SavefileList
- * Window_Scrollable
- * Window_ScrollText
- * Window_Selectable
- * Window_ShopBuy
- * Window_ShopCommand
- * Window_ShopNumber
- * Window_ShopSell
- * Window_ShopStatus
- * Window_SkillList
- * Window_SkillStatus
- * Window_SkillType
- * Window_Status
- * Window_StatusBase
- * Window_StatusEquip
- * Window_StatusParams
- * Window_TitleCommand
- * 
- * 
- * @requiredAssets img/system/Window_Talk
- * @requiredAssets img/system/Window_Battle
- * @requiredAssets img/system/Window_Status
- * @requiredAssets img/system/Window_Other
- */
-/*~struct~CustomWindowskin:
- *
- * @param Class Name
- * @desc ウィンドウまたはシーンのクラス名（例: Window_TitleCommand, Scene_Shop）
- * @text クラス名
- * @type combo
- * @option Scene_Battle
- * @option Scene_GameEnd
- * @option Scene_Gameover
- * @option Scene_Item
- * @option Scene_Load
- * @option Scene_Map
- * @option Scene_Menu
- * @option Scene_Name
- * @option Scene_Options
- * @option Scene_Save
- * @option Scene_Shop
- * @option Scene_Title
- * @option Window_Message
- * @default
- *
- * @param Windowskin
- * @desc ウィンドウスキン
- * @text ウィンドウスキン
- * @type select
- * @option Window
- * @value 0
- * @option Window_Talk
- * @value 1
- * @option Window_Battle
- * @value 2
- * @option Window_Status
- * @value 3
- * @option Window_Other
- * @value 4
- * @default 0
- */
+
+
 
 (function () {
   'use strict';

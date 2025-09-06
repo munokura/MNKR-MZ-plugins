@@ -9,44 +9,94 @@
  */
 
 /*:
- * @target MZ
- * @plugindesc 戦闘勝利時のMEをループ再生します。
- * @author munokura
- * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_VictoryMeLoop.js
- * @help
- * # 機能
- * 戦闘勝利時のMEをループ再生し、シーン遷移まで継続させます。
- * データベース＞システム1＞音楽＞勝利で設定されたMEを使用します。
- * 
- * ループ開始・終了地点を秒単位で指定できます。
- * -1を指定した場合、音声ファイルのループタグに従います。
- * 
- * # 注意
- * このプラグインは BattleManager.playVictoryMe をオーバーライドします。
- * 勝利画面に関係するプラグインを併用する場合、競合に注意してください。
- * 
- * # 利用規約
- * MITライセンスです。
- * https://licenses.opensource.jp/MIT/MIT.html
- * 作者に無断で改変、再配布が可能で、
- * 利用形態（商用、18禁利用等）についても制限はありません。
- * 
- * @param loopStart
- * @text ループ開始地点（秒）
- * @desc ループの開始地点を秒で指定します。-1でファイルのループタグに従います。
- * @type number
- * @min -1
- * @decimals 2
- * @default -1
- * 
- * @param loopEnd
- * @text ループ終了地点（秒）
- * @desc ループの終了地点を秒で指定します。-1でファイルのループタグに従います。
- * @type number
- * @min -1
- * @decimals 2
- * @default -1
- */
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_VictoryMeLoop.js
+@plugindesc Loops ME when winning a battle.
+@author example
+@license MIT License
+
+@help
+# Function
+Loops the victory animation played when a battle is won, continuing until the
+scene transition.
+Uses the animation set in Database > System 1 > Music > Victory.
+
+You can specify the loop start and end points in seconds.
+If you specify -1, the loop tag in the audio file will be used.
+
+# Note
+This plugin overrides BattleManager.playVictoryMe.
+Please be aware of conflicts when using other victory screen plugins.
+
+There are no plugin commands.
+
+# Terms of Use
+MIT License.
+http://opensource.org/licenses/mit-license.php
+You may modify and redistribute this without permission, and there are no
+restrictions on its use (commercial, 18+, etc.).
+
+@param loopStart
+@text Loop start point (seconds)
+@desc Specifies the start point of the loop in seconds. -1 follows the loop tag in the file.
+@type number
+@default -1
+@min -1
+@decimals 2
+
+@param loopEnd
+@text Loop end point (seconds)
+@desc Specifies the end point of the loop in seconds. -1 follows the loop tag in the file.
+@type number
+@default -1
+@min -1
+@decimals 2
+*/
+
+/*:ja
+@target MZ
+@plugindesc 戦闘勝利時のMEをループ再生します。
+@author munokura
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_VictoryMeLoop.js
+@help
+# 機能
+戦闘勝利時のMEをループ再生し、シーン遷移まで継続させます。
+データベース＞システム1＞音楽＞勝利で設定されたMEを使用します。
+
+ループ開始・終了地点を秒単位で指定できます。
+-1を指定した場合、音声ファイルのループタグに従います。
+
+# 注意
+このプラグインは BattleManager.playVictoryMe をオーバーライドします。
+勝利画面に関係するプラグインを併用する場合、競合に注意してください。
+
+
+プラグインコマンドはありません。
+
+
+# 利用規約
+MITライセンスです。
+http://opensource.org/licenses/mit-license.php
+作者に無断で改変、再配布が可能で、
+利用形態（商用、18禁利用等）についても制限はありません。
+
+
+@param loopStart
+@text ループ開始地点（秒）
+@desc ループの開始地点を秒で指定します。-1でファイルのループタグに従います。
+@type number
+@min -1
+@decimals 2
+@default -1
+
+@param loopEnd
+@text ループ終了地点（秒）
+@desc ループの終了地点を秒で指定します。-1でファイルのループタグに従います。
+@type number
+@min -1
+@decimals 2
+@default -1
+*/
 
 (() => {
     'use strict';

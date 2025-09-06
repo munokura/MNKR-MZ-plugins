@@ -9,56 +9,99 @@
  */
 
 /*:
- * @target MZ
- * @base BeforeCommon
- * @orderAfter BeforeCommon
- * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_BeforeCommonPatchMZ.js
- * @plugindesc 発動前コモン(BeforeCommon.js)のパッチ。バトルログに使用を表示してからコモンイベントを実行するプラグインコマンドを追加します。
- * @author ecf5DTTzl6h6lJj02 (改変:ムノクラ)
- *
- * @help
- * 発動前コモン(BeforeCommon.js)のパッチプラグインです。
- * 
- * 発動前コモンを使用したスキル・アイテムでの動作は、
- * スキル・アイテム使用->コモンイベント->使用メッセージ->ダメージ表示
- * となります。
- * 
- * 追加されたプラグインコマンドをコモンイベントに使用すると、
- * スキル・アイテム使用->使用メッセージ->コモンイベント->ダメージ表示
- * に変化します。
- * 
- * ▼使い方：
- * スキル・アイテムを実行する前のコモンイベントの最初で、
- * このプラグインコマンドを実行してください。
- * プラグインコマンドを実行しない場合、
- * このパッチは動作しない通常のプラグイン動作となります。
- * 
- * 
- * 利用規約:
- *   MITライセンスです。
- *   https://licenses.opensource.jp/MIT/MIT.html
- *   作者に無断で改変、再配布が可能で、
- *   利用形態（商用、18禁利用等）についても制限はありません。
- * 
- * 
- * ▼謝辞：
- * ツクマテでいつもご指導いただいているecf5DTTzl6h6lJj02氏の
- * 投稿コードを参考に作成しました。
- * この件のみならず、いつも的確なご助言をいただいていることに感謝いたします。
- * 今回のコードは下記の投稿を参考にしています。
- * https://tm.lucky-duet.com/viewtopic.php?f=99&t=14992#p54077
- * 
- * 
- * @command messageBeforeCommon
- * @text 実行メッセージ表示をコモン実行前に変更
- * @desc コモンイベントを実行する前にスキル・アイテム使用メッセージを表示します。
- *
- * @arg beforeCommonWait
- * @text コモンイベント前ウェイト
- * @type number
- * @desc バトルログに使用メッセージを表示した後のウェイト値です。
- * @default 60
- */
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_BeforeCommonPatchMZ.js
+@plugindesc A patch for BeforeCommon (BeforeCommon.js) that adds a plugin command to display the usage in the battle log and then execute the common event.
+@author example
+@license MIT License
+
+@help
+This is a patch plugin for the pre-activation common (BeforeCommon.js).
+
+The behavior of skills and items using the pre-activation common is as
+follows:
+Skill/Item Use -> Common Event -> Usage Message -> Damage Display
+
+When the added plugin command is used in a common event,
+it will change to:
+Skill/Item Use -> Usage Message -> Common Event -> Damage Display
+
+# Usage
+Execute this plugin command at the beginning of the common event before
+executing the skill or item.
+If the plugin command is not executed,
+this patch will not function and the plugin will operate normally.
+
+# Terms of Use
+MIT License.
+http://opensource.org/licenses/mit-license.php
+You may modify and redistribute this without permission from the author,
+and there are no restrictions on its use (commercial, 18+ use, etc.).
+
+# Acknowledgments
+This was created based on code posted by ecf5DTTzl6h6lJj02, who regularly
+provides guidance on Tsukumate.
+Thank you for your advice not only on this matter but also on all occasions.
+
+@command messageBeforeCommon
+@text Changed the execution message display before common execution
+@desc A message will be displayed when using a skill or item before executing a common event.
+@arg beforeCommonWait
+@text Wait before common event
+@desc This is the weight value after displaying the usage message in the battle log.
+@type number
+@default 60
+*/
+
+/*:ja
+@target MZ
+@base BeforeCommon
+@orderAfter BeforeCommon
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_BeforeCommonPatchMZ.js
+@plugindesc 発動前コモン(BeforeCommon.js)のパッチ。バトルログに使用を表示してからコモンイベントを実行するプラグインコマンドを追加します。
+@author ecf5DTTzl6h6lJj02 (改変:munokura)
+
+@help
+発動前コモン(BeforeCommon.js)のパッチプラグインです。
+
+発動前コモンを使用したスキル・アイテムでの動作は、
+スキル・アイテム使用->コモンイベント->使用メッセージ->ダメージ表示
+となります。
+
+追加されたプラグインコマンドをコモンイベントに使用すると、
+スキル・アイテム使用->使用メッセージ->コモンイベント->ダメージ表示
+に変化します。
+
+# 使い方
+スキル・アイテムを実行する前のコモンイベントの最初で、
+このプラグインコマンドを実行してください。
+プラグインコマンドを実行しない場合、
+このパッチは動作しない通常のプラグイン動作となります。
+
+
+# 利用規約
+MITライセンスです。
+http://opensource.org/licenses/mit-license.php
+作者に無断で改変、再配布が可能で、
+利用形態（商用、18禁利用等）についても制限はありません。
+
+
+# 謝辞
+ツクマテでいつもご指導いただいているecf5DTTzl6h6lJj02氏の
+投稿コードを参考に作成しました。
+この件のみならず、いつも的確なご助言をいただいていることに感謝いたします。
+
+
+@command messageBeforeCommon
+@text 実行メッセージ表示をコモン実行前に変更
+@desc コモンイベントを実行する前にスキル・アイテム使用メッセージを表示します。
+
+@arg beforeCommonWait
+@text コモンイベント前ウェイト
+@type number
+@desc バトルログに使用メッセージを表示した後のウェイト値です。
+@default 60
+*/
 
 (() => {
     "use strict";

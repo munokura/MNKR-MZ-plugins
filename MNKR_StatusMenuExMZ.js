@@ -9,148 +9,273 @@
  */
 
 /*:
- * @target MZ
- * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_StatusMenuExMZ.js
- * @plugindesc ステータスシーンに表示するパラメータを追加します。
- * @author ムノクラ
- *
- * @help
- * ステータスシーンに表示するパラメータを追加します。
- *
- * プラグインコマンドはありません。
- * 
- * 
- * 利用規約:
- *   MITライセンスです。
- *   https://licenses.opensource.jp/MIT/MIT.html
- *   作者に無断で改変、再配布が可能で、
- *   利用形態（商用、18禁利用等）についても制限はありません。
- *
- * 
- * @param statusParamsWindowWidth
- * @text 能力値ウィンドウ幅
- * @desc 能力値を表示するウィンドウの幅
- * 初期値: 384
- * @type number
- * @default 384
- * 
- * @param paramFontSize
- * @text 能力値フォントサイズ
- * @desc 能力値を表示するフォントサイズ
- * 初期値: 18
- * @type number
- * @default 18
- * 
- * @param paramLineHeight
- * @text 能力値改行高
- * @desc 能力値を表示する行間高
- * 初期値: 21
- * @type number
- * @default 21
- * 
- * @param paramList
- * @text 表示通常能力値
- * @type string
- * @desc 表示する表示通常番号(カンマ区切りで10項目)
- * 初期値: 2,3,4,5,6,7
- * @default 2,3,4,5,6,7
- *
- * @param xparamText
- * @text 追加能力値の項目名
- * @desc 追加能力値の項目名(カンマ区切りで10項目)
- * 初期値: 命中,回避,会心,会心回避,魔法回避,魔法反射,反撃,…
- * @default 命中,回避,会心,会心回避,魔法回避,魔法反射,反撃,HP再生,MP再生,TP再生
- * 
- * @param sparamText
- * @text 特殊能力値の項目名
- * @desc 特殊能力値の項目名(カンマ区切りで10項目)
- * 初期値: 狙われ率,防御効果,回復効果,薬の知識,MP消費,…
- * @default 狙われ率,防御効果,回復効果,薬の知識,MP消費,TPチャージ,,,床ダメージ,経験値獲得
- * 
- * @param paramNameX
- * @text 通常能力名X座標
- * @desc 通常能力名の表示X座標
- * 初期値: 0
- * @type number
- * @default 0
- * 
- * @param paramNameWidth
- * @text 通常能力名の幅
- * @desc 通常能力名の表示幅
- * 初期値: 70
- * @type number
- * @default 70
- * 
- * @param paramX
- * @text 通常能力値X座標
- * @desc 通常能力値の表示X座標
- * 初期値: 60
- * @type number
- * @default 60
- * 
- * @param paramWidth
- * @text 通常能力値の幅
- * @desc 通常能力値の表示幅
- * 初期値: 50
- * @type number
- * @default 50
- * 
- * @param xparamNameX
- * @text 追加能力値名X座標
- * @desc 追加能力値名の表示X座標
- * 初期値: 120
- * @type number
- * @default 120
- * 
- * @param xparamNameWidth
- * @text 追加能力値名の幅
- * @desc 追加能力値名の表示幅
- * 初期値: 70
- * @type number
- * @default 70
- * 
- * @param xparamX
- * @text 追加能力値X座標
- * @desc 追加能力値の表示X座標
- * 初期値: 180
- * @type number
- * @default 180
- * 
- * @param xparamWidth
- * @text 追加能力値の幅
- * @desc 追加能力値の表示幅
- * 初期値: 50
- * @type number
- * @default 50
- * 
- * @param sparamNameX
- * @text 特殊能力値名X座標
- * @desc 特殊能力値名の表示X座標
- * 初期値: 240
- * @type number
- * @default 240
- * 
- * @param sparamNameWidth
- * @text 特殊能力値名の幅
- * @desc 特殊能力値名の表示幅
- * 初期値: 70
- * @type number
- * @default 70
- * 
- * @param sparamX
- * @text 特殊能力値X座標
- * @desc 特殊能力値の表示X座標
- * 初期値: 300
- * @type number
- * @default 300
- * 
- * @param sparamWidth
- * @text 特殊能力値の幅
- * @desc 特殊能力値の表示幅
- * 初期値: 50
- * @type number
- * @default 50
- */
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_StatusMenuExMZ.js
+@plugindesc Add parameters to display in the status scene.
+@author example
+@license MIT License
+
+@help
+Adds parameters to display in the status scene.
+
+There are no plugin commands.
+
+# Terms of Use
+MIT License.
+http://opensource.org/licenses/mit-license.php
+You may modify and redistribute this without permission from the author, and
+there are no restrictions on its use (commercial, R18+, etc.).
+
+@param statusParamsWindowWidth
+@text Ability score window width
+@desc Window width for displaying ability scores
+@type number
+@default 384
+
+@param paramFontSize
+@text Ability score font size
+@desc Font size for displaying ability scores
+@type number
+@default 18
+
+@param paramLineHeight
+@text Ability score line break
+@desc Line spacing for displaying ability values
+@type number
+@default 21
+
+@param paramList
+@text Display normal ability value
+@desc Display normal number to display (10 items separated by commas)
+@type string
+@default 2,3,4,5,6,7
+
+@param xparamText
+@text Additional Ability Item Name
+@desc Additional ability value item names (10 items separated by commas)
+@default 命中,回避,会心,会心回避,魔法回避,魔法反射,反撃,HP再生,MP再生,TP再生
+
+@param sparamText
+@text Special Ability Item Name
+@desc Special ability value item name (10 items separated by commas)
+@default 狙われ率,防御効果,回復効果,薬の知識,MP消費,TPチャージ,,,床ダメージ,経験値獲得
+
+@param paramNameX
+@text Normal ability name X coordinate
+@desc Normal ability name display X coordinate
+@type number
+@default 0
+
+@param paramNameWidth
+@text Normal Ability Name Range
+@desc Normal ability name display width
+@type number
+@default 70
+
+@param paramX
+@text Normal ability value X coordinate
+@desc Normal ability value display X coordinate
+@type number
+@default 60
+
+@param paramWidth
+@text Normal Ability Score Range
+@desc Normal ability value display width
+@type number
+@default 50
+
+@param xparamNameX
+@text Additional Ability Score Name X Coordinate
+@desc Display X coordinate of additional ability score name
+@type number
+@default 120
+
+@param xparamNameWidth
+@text Additional Ability Score Name Range
+@desc Display width of additional ability score name
+@type number
+@default 70
+
+@param xparamX
+@text Additional ability value X coordinate
+@desc Display X coordinate of additional ability value
+@type number
+@default 180
+
+@param xparamWidth
+@text Range of additional ability scores
+@desc Display width of additional ability scores
+@type number
+@default 50
+
+@param sparamNameX
+@text Special ability value name X coordinate
+@desc Display X coordinate of special ability name
+@type number
+@default 240
+
+@param sparamNameWidth
+@text Special Ability Score Name Range
+@desc Special ability name display width
+@type number
+@default 70
+
+@param sparamX
+@text Special ability value X coordinate
+@desc Special ability value display X coordinate
+@type number
+@default 300
+
+@param sparamWidth
+@text Special Ability Score Range
+@desc Special ability value display width
+@type number
+@default 50
+*/
+
+/*:ja
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_StatusMenuExMZ.js
+@plugindesc ステータスシーンに表示するパラメータを追加します。
+@author munokura
+
+@help
+ステータスシーンに表示するパラメータを追加します。
+
+プラグインコマンドはありません。
+
+
+# 利用規約
+MITライセンスです。
+http://opensource.org/licenses/mit-license.php
+作者に無断で改変、再配布が可能で、
+利用形態（商用、18禁利用等）についても制限はありません。
+
+
+@param statusParamsWindowWidth
+@text 能力値ウィンドウ幅
+@desc 能力値を表示するウィンドウの幅
+初期値: 384
+@type number
+@default 384
+
+@param paramFontSize
+@text 能力値フォントサイズ
+@desc 能力値を表示するフォントサイズ
+初期値: 18
+@type number
+@default 18
+
+@param paramLineHeight
+@text 能力値改行高
+@desc 能力値を表示する行間高
+初期値: 21
+@type number
+@default 21
+
+@param paramList
+@text 表示通常能力値
+@type string
+@desc 表示する表示通常番号(カンマ区切りで10項目)
+初期値: 2,3,4,5,6,7
+@default 2,3,4,5,6,7
+
+@param xparamText
+@text 追加能力値の項目名
+@desc 追加能力値の項目名(カンマ区切りで10項目)
+初期値: 命中,回避,会心,会心回避,魔法回避,魔法反射,反撃,…
+@default 命中,回避,会心,会心回避,魔法回避,魔法反射,反撃,HP再生,MP再生,TP再生
+
+@param sparamText
+@text 特殊能力値の項目名
+@desc 特殊能力値の項目名(カンマ区切りで10項目)
+初期値: 狙われ率,防御効果,回復効果,薬の知識,MP消費,…
+@default 狙われ率,防御効果,回復効果,薬の知識,MP消費,TPチャージ,,,床ダメージ,経験値獲得
+
+@param paramNameX
+@text 通常能力名X座標
+@desc 通常能力名の表示X座標
+初期値: 0
+@type number
+@default 0
+
+@param paramNameWidth
+@text 通常能力名の幅
+@desc 通常能力名の表示幅
+初期値: 70
+@type number
+@default 70
+
+@param paramX
+@text 通常能力値X座標
+@desc 通常能力値の表示X座標
+初期値: 60
+@type number
+@default 60
+
+@param paramWidth
+@text 通常能力値の幅
+@desc 通常能力値の表示幅
+初期値: 50
+@type number
+@default 50
+
+@param xparamNameX
+@text 追加能力値名X座標
+@desc 追加能力値名の表示X座標
+初期値: 120
+@type number
+@default 120
+
+@param xparamNameWidth
+@text 追加能力値名の幅
+@desc 追加能力値名の表示幅
+初期値: 70
+@type number
+@default 70
+
+@param xparamX
+@text 追加能力値X座標
+@desc 追加能力値の表示X座標
+初期値: 180
+@type number
+@default 180
+
+@param xparamWidth
+@text 追加能力値の幅
+@desc 追加能力値の表示幅
+初期値: 50
+@type number
+@default 50
+
+@param sparamNameX
+@text 特殊能力値名X座標
+@desc 特殊能力値名の表示X座標
+初期値: 240
+@type number
+@default 240
+
+@param sparamNameWidth
+@text 特殊能力値名の幅
+@desc 特殊能力値名の表示幅
+初期値: 70
+@type number
+@default 70
+
+@param sparamX
+@text 特殊能力値X座標
+@desc 特殊能力値の表示X座標
+初期値: 300
+@type number
+@default 300
+
+@param sparamWidth
+@text 特殊能力値の幅
+@desc 特殊能力値の表示幅
+初期値: 50
+@type number
+@default 50
+*/
 
 (() => {
   "use strict";

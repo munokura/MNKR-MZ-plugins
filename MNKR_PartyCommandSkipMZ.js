@@ -9,27 +9,52 @@
  */
 
 /*:
- * @target MZ
- * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_PartyCommandSkipMZ.js
- * @plugindesc 戦闘開始時にパーティコマンドを飛ばし、アクターコマンドから開始します。
- * @author munokura
- *
- * @help
- * 戦闘開始時にパーティコマンドを飛ばします。
- * 
- * ターン制では、先頭のアクターでキャンセルすると、パーティコマンドに戻ります。
- * 
- * パーティコマンドウィンドウでキャンセルすると、戦うを選んだ状態になります。
- *
- * プラグインコマンドはありません。
- *
- *
- * 利用規約:
- *   MITライセンスです。
- *   https://licenses.opensource.jp/MIT/MIT.html
- *   作者に無断で改変、再配布が可能で、
- *   利用形態（商用、18禁利用等）についても制限はありません。
- */
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_PartyCommandSkipMZ.js
+@plugindesc At the start of battle, party commands will be skipped and you will start with actor commands.
+@author example
+@license MIT License
+
+@help
+Skips party commands at the start of battle and starts with actor commands.
+
+In turn-based mode, canceling with the leading actor will return to party
+commands.
+
+Cancelling in the party command window will result in choosing "Fight."
+
+There are no plugin commands.
+
+# Terms of Use
+MIT License.
+http://opensource.org/licenses/mit-license.php
+Modifications and redistribution are permitted without permission from the
+author, and there are no restrictions on use (commercial, R18, etc.).
+*/
+
+/*:ja
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_PartyCommandSkipMZ.js
+@plugindesc 戦闘開始時にパーティコマンドをスキップし、アクターコマンドから開始します。
+@author munokura
+
+@help
+戦闘開始時にパーティコマンドをスキップし、アクターコマンドから開始します。
+
+ターン制では、先頭のアクターでキャンセルすると、パーティコマンドに戻ります。
+
+パーティコマンドウィンドウでキャンセルすると、戦うを選んだ状態になります。
+
+
+プラグインコマンドはありません。
+
+
+# 利用規約
+MITライセンスです。
+http://opensource.org/licenses/mit-license.php
+作者に無断で改変、再配布が可能で、
+利用形態（商用、18禁利用等）についても制限はありません。
+*/
 
 (() => {
 

@@ -8,6 +8,506 @@
  * --------------------------------------------------
  */
 
+/*:
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_Vitsuno_DifficultyMZ.js
+@plugindesc You will be able to change ability scores and reward multipliers depending on the difficulty level.
+@author example
+@license MIT License
+
+@help
+# Function
+Allows you to change stats and reward multipliers based on difficulty level.
+
+# Plugin Commands
+- Difficulty SetID Difficulty ID
+- Change Difficulty ID
+- Difficulty Next
+- Increase Difficulty ID
+- Difficulty Previous
+- Decrease Difficulty ID
+
+There are no plugin commands.
+
+# Contact Information
+This is a plugin originally created for RPG Maker MV ported for MZ.
+Please contact the modifier for any inquiries.
+
+# Terms of Use
+MIT License.
+http://opensource.org/licenses/mit-license.php
+Modifications and redistribution are permitted without permission from the
+author, and there are no restrictions on use (commercial, 18+, etc.).
+
+@param Init Difficulty ID
+@text Difficulty ID initial value
+@desc The initial difficulty ID.
+@type number
+@default 2
+
+@param Use Option
+@text Options can be changed
+@desc You can change the difficulty level during the game using the options.
+@type boolean
+@on Changeable
+@off Immutable
+@default true
+
+@param Option Name
+@text Optional Display Name
+@desc An optional display name.
+@default 難易度
+
+@param Difficulty ID:1
+@text Difficulty ID: 1
+
+@param 1 : Name
+@text Difficulty name
+@desc Difficulty level name. (Leave blank if not in use.)
+@default イージー
+@parent Difficulty ID:1
+
+@param 1 : Param Rate
+@text Status Multiplier
+@desc Status multiplier based on difficulty level.
+@default 0.7,0.7,0.7,0.7,0.7,0.7,0.7,0.7
+@parent Difficulty ID:1
+
+@param 1 : Drop Rate
+@text Reward multiplier
+@desc Reward multiplier based on difficulty.
+@default 1.0,1.0,1.0,1.0,1.0
+@parent Difficulty ID:1
+
+@param Difficulty ID:2
+@text Difficulty ID: 2
+
+@param 2 : Name
+@text Difficulty name
+@desc Difficulty level name. (Leave blank if not in use.)
+@default ノーマル
+@parent Difficulty ID:2
+
+@param 2 : Param Rate
+@text Status Multiplier
+@desc Status multiplier based on difficulty level.
+@default 1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
+@parent Difficulty ID:2
+
+@param 2 : Drop Rate
+@text Reward multiplier
+@desc Reward multiplier based on difficulty.
+@default 1.0,1.0,1.0,1.0,1.0
+@parent Difficulty ID:2
+
+@param Difficulty ID:3
+@text Difficulty ID: 3
+
+@param 3 : Name
+@text Difficulty name
+@desc Difficulty level name. (Leave blank if not in use.)
+@default ハード
+@parent Difficulty ID:3
+
+@param 3 : Param Rate
+@text Status Multiplier
+@desc Status multiplier based on difficulty level.
+@default 1.3,1.3,1.3,1.3,1.3,1.3,1.3,1.3
+@parent Difficulty ID:3
+
+@param 3 : Drop Rate
+@text Reward multiplier
+@desc Reward multiplier based on difficulty.
+@default 1.2,1.2,1.2,1.2,1.2
+@parent Difficulty ID:3
+
+@param Difficulty ID:4
+@text Difficulty ID: 4
+
+@param 4 : Name
+@text Difficulty name
+@desc Difficulty level name. (Leave blank if not in use.)
+@default ベリーハード
+@parent Difficulty ID:4
+
+@param 4 : Param Rate
+@text Status Multiplier
+@desc Status multiplier based on difficulty level.
+@default 1.6,1.6,1.6,1.6,1.6,1.6,1.6,1.6
+@parent Difficulty ID:4
+
+@param 4 : Drop Rate
+@text Reward multiplier
+@desc Reward multiplier based on difficulty.
+@default 1.4,1.4,1.4,1.4,1.4
+@parent Difficulty ID:4
+
+@param Difficulty ID:5
+@text Difficulty ID: 5
+
+@param 5 : Name
+@text Difficulty name
+@desc Difficulty level name. (Leave blank if not in use.)
+@default マニア
+@parent Difficulty ID:5
+
+@param 5 : Param Rate
+@text Status Multiplier
+@desc Status multiplier based on difficulty level.
+@default 1.9,1.9,1.9,1.9,1.9,1.9,1.9,1.9
+@parent Difficulty ID:5
+
+@param 5 : Drop Rate
+@text Reward multiplier
+@desc Reward multiplier based on difficulty.
+@default 1.6,1.6,1.6,1.6,1.6
+@parent Difficulty ID:5
+
+@param Difficulty ID:6
+@text Difficulty ID: 6
+
+@param 6 : Name
+@text Difficulty name
+@desc Difficulty level name. (Leave blank if not in use.)
+@parent Difficulty ID:6
+
+@param 6 : Param Rate
+@text Status Multiplier
+@desc Status multiplier based on difficulty level.
+@default 1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
+@parent Difficulty ID:6
+
+@param 6 : Drop Rate
+@text Reward multiplier
+@desc Reward multiplier based on difficulty.
+@default 1.0,1.0,1.0,1.0,1.0
+@parent Difficulty ID:6
+
+@param Difficulty ID:7
+@text Difficulty ID: 7
+
+@param 7 : Name
+@text Difficulty name
+@desc Difficulty level name. (Leave blank if not in use.)
+@parent Difficulty ID:7
+
+@param 7 : Param Rate
+@text status
+@desc Status multiplier based on difficulty level.
+@default 1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
+@parent Difficulty ID:7
+
+@param 7 : Drop Rate
+@text Reward multiplier
+@desc Reward multiplier based on difficulty.
+@default 1.0,1.0,1.0,1.0,1.0
+@parent Difficulty ID:7
+
+@param Difficulty ID:8
+@text Difficulty ID: 8
+
+@param 8 : Name
+@text Difficulty name
+@desc Difficulty level name. (Leave blank if not in use.)
+@parent Difficulty ID:8
+
+@param 8 : Param Rate
+@text status
+@desc Status multiplier based on difficulty level.
+@default 1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
+@parent Difficulty ID:8
+
+@param 8 : Drop Rate
+@text Reward multiplier
+@desc Reward multiplier based on difficulty.
+@default 1.0,1.0,1.0,1.0,1.0
+@parent Difficulty ID:8
+
+@command SetId
+@text Change Difficulty ID
+@desc Change the difficulty ID.
+@arg DifficultyIdConst
+@text Difficulty ID constant
+@desc Please specify the difficulty ID.
+@type number
+@default 0
+@arg DifficultyIdVariableId
+@text Numerical variables
+@desc Executes the value of the variable as a number, ignoring constants.
+@type variable
+@default 0
+
+@command Next
+@text Increase difficulty ID
+@desc Increase the difficulty ID.
+
+@command Previous
+@text Decreased difficulty ID
+@desc Lower the difficulty ID.
+*/
+
+/*:ja
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_Vitsuno_DifficultyMZ.js
+@plugindesc 難易度により能力値や報酬倍率を変更できるようになります。
+@author 尾角 つの (改変：munokura)
+
+@param Init Difficulty ID
+@text 難易度IDの初期値
+@desc 難易度IDの初期値です。
+@type number
+@default 2
+
+@param Use Option
+@text オプション変更可能
+@desc ゲーム中にオプションで難易度変更可能にします。
+@type boolean
+@on 変更可能
+@off 変更不可能
+@default true
+
+@param Option Name
+@text オプション表示名
+@desc オプションでの表示名です。
+@default 難易度
+
+@param Difficulty ID:1
+@text 難易度ID:1
+
+@param 1 : Name
+@text 難易度名
+@desc 難易度名です。（使用しない場合は無記入にしてください。）
+@default イージー
+@parent Difficulty ID:1
+
+@param 1 : Param Rate
+@text ステータス倍率
+@desc 難易度によるステータス倍率です。
+最大HP,最大MP,攻撃力,防御力,魔法力,魔法防御,敏捷性,運
+@default 0.7,0.7,0.7,0.7,0.7,0.7,0.7,0.7
+@parent Difficulty ID:1
+
+@param 1 : Drop Rate
+@text 報酬倍率
+@desc 難易度による報酬倍率です。
+経験値,お金,アイテム1,アイテム2,アイテム3
+@default 1.0,1.0,1.0,1.0,1.0
+@parent Difficulty ID:1
+
+@param Difficulty ID:2
+@text 難易度ID:2
+
+@param 2 : Name
+@text 難易度名
+@desc 難易度名です。（使用しない場合は無記入にしてください。）
+@default ノーマル
+@parent Difficulty ID:2
+
+@param 2 : Param Rate
+@text ステータス倍率
+@desc 難易度によるステータス倍率です。
+最大HP,最大MP,攻撃力,防御力,魔法力,魔法防御,敏捷性,運
+@default 1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
+@parent Difficulty ID:2
+
+@param 2 : Drop Rate
+@text 報酬倍率
+@desc 難易度による報酬倍率です。
+経験値,お金,アイテム1,アイテム2,アイテム3
+@default 1.0,1.0,1.0,1.0,1.0
+@parent Difficulty ID:2
+
+@param Difficulty ID:3
+@text 難易度ID:3
+
+@param 3 : Name
+@text 難易度名
+@desc 難易度名です。（使用しない場合は無記入にしてください。）
+@default ハード
+@parent Difficulty ID:3
+
+@param 3 : Param Rate
+@text ステータス倍率
+@desc 難易度によるステータス倍率です。
+最大HP,最大MP,攻撃力,防御力,魔法力,魔法防御,敏捷性,運
+@default 1.3,1.3,1.3,1.3,1.3,1.3,1.3,1.3
+@parent Difficulty ID:3
+
+@param 3 : Drop Rate
+@text 報酬倍率
+@desc 難易度による報酬倍率です。
+経験値,お金,アイテム1,アイテム2,アイテム3
+@default 1.2,1.2,1.2,1.2,1.2
+@parent Difficulty ID:3
+
+@param Difficulty ID:4
+@text 難易度ID:4
+
+@param 4 : Name
+@text 難易度名
+@desc 難易度名です。（使用しない場合は無記入にしてください。）
+@default ベリーハード
+@parent Difficulty ID:4
+
+@param 4 : Param Rate
+@text ステータス倍率
+@desc 難易度によるステータス倍率です。
+最大HP,最大MP,攻撃力,防御力,魔法力,魔法防御,敏捷性,運
+@default 1.6,1.6,1.6,1.6,1.6,1.6,1.6,1.6
+@parent Difficulty ID:4
+
+@param 4 : Drop Rate
+@text 報酬倍率
+@desc 難易度による報酬倍率です。
+経験値,お金,アイテム1,アイテム2,アイテム3
+@default 1.4,1.4,1.4,1.4,1.4
+@parent Difficulty ID:4
+
+@param Difficulty ID:5
+@text 難易度ID:5
+
+@param 5 : Name
+@text 難易度名
+@desc 難易度名です。（使用しない場合は無記入にしてください。）
+@default マニア
+@parent Difficulty ID:5
+
+@param 5 : Param Rate
+@text ステータス倍率
+@desc 難易度によるステータス倍率です。
+最大HP,最大MP,攻撃力,防御力,魔法力,魔法防御,敏捷性,運
+@default 1.9,1.9,1.9,1.9,1.9,1.9,1.9,1.9
+@parent Difficulty ID:5
+
+@param 5 : Drop Rate
+@text 報酬倍率
+@desc 難易度による報酬倍率です。
+経験値,お金,アイテム1,アイテム2,アイテム3
+@default 1.6,1.6,1.6,1.6,1.6
+@parent Difficulty ID:5
+
+@param Difficulty ID:6
+@text 難易度ID:6
+
+@param 6 : Name
+@text 難易度名
+@desc 難易度名です。（使用しない場合は無記入にしてください。）
+@parent Difficulty ID:6
+
+@param 6 : Param Rate
+@text ステータス倍率
+@desc 難易度によるステータス倍率です。
+最大HP,最大MP,攻撃力,防御力,魔法力,魔法防御,敏捷性,運
+@default 1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
+@parent Difficulty ID:6
+
+@param 6 : Drop Rate
+@text 報酬倍率
+@desc 難易度による報酬倍率です。
+経験値,お金,アイテム1,アイテム2,アイテム3
+@default 1.0,1.0,1.0,1.0,1.0
+@parent Difficulty ID:6
+
+@param Difficulty ID:7
+@text 難易度ID:7
+
+@param 7 : Name
+@text 難易度名
+@desc 難易度名です。（使用しない場合は無記入にしてください。）
+@parent Difficulty ID:7
+
+@param 7 : Param Rate
+@text ステータス
+@desc 難易度によるステータス倍率です。
+最大HP,最大MP,攻撃力,防御力,魔法力,魔法防御,敏捷性,運
+@default 1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
+@parent Difficulty ID:7
+
+@param 7 : Drop Rate
+@text 報酬倍率
+@desc 難易度による報酬倍率です。
+経験値,お金,アイテム1,アイテム2,アイテム3
+@default 1.0,1.0,1.0,1.0,1.0
+@parent Difficulty ID:7
+
+@param Difficulty ID:8
+@text 難易度ID:8
+
+@param 8 : Name
+@text 難易度名
+@desc 難易度名です。（使用しない場合は無記入にしてください。）
+@parent Difficulty ID:8
+
+@param 8 : Param Rate
+@text ステータス
+@desc 難易度によるステータス倍率です。
+最大HP,最大MP,攻撃力,防御力,魔法力,魔法防御,敏捷性,運
+@default 1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
+@parent Difficulty ID:8
+
+@param 8 : Drop Rate
+@text 報酬倍率
+@desc 難易度による報酬倍率です。
+経験値,お金,アイテム1,アイテム2,アイテム3
+@default 1.0,1.0,1.0,1.0,1.0
+@parent Difficulty ID:8
+
+@help
+# 機能
+難易度により能力値や報酬倍率を変更できるようになります。
+
+
+# プラグインコマンド
+- Difficulty SetID 難易度ID
+ - 難易度IDを変更する
+- Difficulty Next
+ - 難易度IDを上げる
+- Difficulty Previous
+ - 難易度IDを下げる
+
+
+プラグインコマンドはありません。
+
+
+# 問い合わせ先
+これはRPGツクールMV用に作成されたプラグインをMZ用に移植したものです。
+お問い合わせは改変者へお願いいたします。
+
+
+# 利用規約
+MITライセンスです。
+http://opensource.org/licenses/mit-license.php
+作者に無断で改変、再配布が可能で、
+利用形態（商用、18禁利用等）についても制限はありません。
+
+
+@command SetId
+@text 難易度IDを変更
+@desc 難易度IDを変更します。
+
+@arg DifficultyIdConst
+@text 難易度ID定数
+@desc 難易度IDを指定してください。
+@type number
+@default 0
+
+@arg DifficultyIdVariableId
+@text 数指定変数
+@desc 変数の値を数として実行します。これを指定すると定数は無視されます。
+@type variable
+@default 0
+
+
+@command Next
+@text 難易度IDを上昇
+@desc 難易度IDを上げます。
+
+
+@command Previous
+@text 難易度IDを下降
+@desc 難易度IDを下げます。
+*/
+
 //=============================================================================
 // Vitsuno_Difficulty.js
 //-----------------------------------------------------------------------------
@@ -16,265 +516,7 @@
 // http://opensource.org/licenses/mit-license.php
 //=============================================================================
 
-/*:
- * @target MZ
- * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_Vitsuno_DifficultyMZ.js
- * @plugindesc 難易度により能力値や報酬倍率を変更できるようになります。
- * @author 尾角 つの (改変：ムノクラ)
- *
- * @param Init Difficulty ID
- * @text 難易度IDの初期値
- * @desc 難易度IDの初期値です。
- * @type number
- * @default 2
- *
- * @param Use Option
- * @text オプション変更可能
- * @desc ゲーム中にオプションで難易度変更可能にします。
- * @type boolean
- * @on 変更可能
- * @off 変更不可能
- * @default true
- * 
- * @param Option Name
- * @text オプション表示名
- * @desc オプションでの表示名です。
- * @default 難易度
- * 
- * @param Difficulty ID:1
- * @text 難易度ID:1
- *
- * @param 1 : Name
- * @text 難易度名
- * @desc 難易度名です。（使用しない場合は無記入にしてください。）
- * @default イージー
- * @parent Difficulty ID:1
- * 
- * @param 1 : Param Rate
- * @text ステータス倍率
- * @desc 難易度によるステータス倍率です。
- * 最大HP,最大MP,攻撃力,防御力,魔法力,魔法防御,敏捷性,運
- * @default 0.7,0.7,0.7,0.7,0.7,0.7,0.7,0.7
- * @parent Difficulty ID:1
- * 
- * @param 1 : Drop Rate
- * @text 報酬倍率
- * @desc 難易度による報酬倍率です。
- * 経験値,お金,アイテム1,アイテム2,アイテム3
- * @default 1.0,1.0,1.0,1.0,1.0
- * @parent Difficulty ID:1
- * 
- * @param Difficulty ID:2
- * @text 難易度ID:2
- *
- * @param 2 : Name
- * @text 難易度名
- * @desc 難易度名です。（使用しない場合は無記入にしてください。）
- * @default ノーマル
- * @parent Difficulty ID:2
- * 
- * @param 2 : Param Rate
- * @text ステータス倍率
- * @desc 難易度によるステータス倍率です。
- * 最大HP,最大MP,攻撃力,防御力,魔法力,魔法防御,敏捷性,運
- * @default 1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
- * @parent Difficulty ID:2
- * 
- * @param 2 : Drop Rate
- * @text 報酬倍率
- * @desc 難易度による報酬倍率です。
- * 経験値,お金,アイテム1,アイテム2,アイテム3
- * @default 1.0,1.0,1.0,1.0,1.0
- * @parent Difficulty ID:2
- * 
- * @param Difficulty ID:3
- * @text 難易度ID:3
- *
- * @param 3 : Name
- * @text 難易度名
- * @desc 難易度名です。（使用しない場合は無記入にしてください。）
- * @default ハード
- * @parent Difficulty ID:3
- * 
- * @param 3 : Param Rate
- * @text ステータス倍率
- * @desc 難易度によるステータス倍率です。
- * 最大HP,最大MP,攻撃力,防御力,魔法力,魔法防御,敏捷性,運
- * @default 1.3,1.3,1.3,1.3,1.3,1.3,1.3,1.3
- * @parent Difficulty ID:3
- * 
- * @param 3 : Drop Rate
- * @text 報酬倍率
- * @desc 難易度による報酬倍率です。
- * 経験値,お金,アイテム1,アイテム2,アイテム3
- * @default 1.2,1.2,1.2,1.2,1.2
- * @parent Difficulty ID:3
- * 
- * @param Difficulty ID:4
- * @text 難易度ID:4
- *
- * @param 4 : Name
- * @text 難易度名
- * @desc 難易度名です。（使用しない場合は無記入にしてください。）
- * @default ベリーハード
- * @parent Difficulty ID:4
- * 
- * @param 4 : Param Rate
- * @text ステータス倍率
- * @desc 難易度によるステータス倍率です。
- * 最大HP,最大MP,攻撃力,防御力,魔法力,魔法防御,敏捷性,運
- * @default 1.6,1.6,1.6,1.6,1.6,1.6,1.6,1.6
- * @parent Difficulty ID:4
- * 
- * @param 4 : Drop Rate
- * @text 報酬倍率
- * @desc 難易度による報酬倍率です。
- * 経験値,お金,アイテム1,アイテム2,アイテム3
- * @default 1.4,1.4,1.4,1.4,1.4
- * @parent Difficulty ID:4
- * 
- * @param Difficulty ID:5
- * @text 難易度ID:5
- *
- * @param 5 : Name
- * @text 難易度名
- * @desc 難易度名です。（使用しない場合は無記入にしてください。）
- * @default マニア
- * @parent Difficulty ID:5
- * 
- * @param 5 : Param Rate
- * @text ステータス倍率
- * @desc 難易度によるステータス倍率です。
- * 最大HP,最大MP,攻撃力,防御力,魔法力,魔法防御,敏捷性,運
- * @default 1.9,1.9,1.9,1.9,1.9,1.9,1.9,1.9
- * @parent Difficulty ID:5
- * 
- * @param 5 : Drop Rate
- * @text 報酬倍率
- * @desc 難易度による報酬倍率です。
- * 経験値,お金,アイテム1,アイテム2,アイテム3
- * @default 1.6,1.6,1.6,1.6,1.6
- * @parent Difficulty ID:5
- * 
- * @param Difficulty ID:6
- * @text 難易度ID:6
- *
- * @param 6 : Name
- * @text 難易度名
- * @desc 難易度名です。（使用しない場合は無記入にしてください。）
- * @parent Difficulty ID:6
- * 
- * @param 6 : Param Rate
- * @text ステータス倍率
- * @desc 難易度によるステータス倍率です。
- * 最大HP,最大MP,攻撃力,防御力,魔法力,魔法防御,敏捷性,運
- * @default 1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
- * @parent Difficulty ID:6
- * 
- * @param 6 : Drop Rate
- * @text 報酬倍率
- * @desc 難易度による報酬倍率です。
- * 経験値,お金,アイテム1,アイテム2,アイテム3
- * @default 1.0,1.0,1.0,1.0,1.0
- * @parent Difficulty ID:6
- * 
- * @param Difficulty ID:7
- * @text 難易度ID:7
- *
- * @param 7 : Name
- * @text 難易度名
- * @desc 難易度名です。（使用しない場合は無記入にしてください。）
- * @parent Difficulty ID:7
- * 
- * @param 7 : Param Rate
- * @text ステータス
- * @desc 難易度によるステータス倍率です。
- * 最大HP,最大MP,攻撃力,防御力,魔法力,魔法防御,敏捷性,運
- * @default 1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
- * @parent Difficulty ID:7
- * 
- * @param 7 : Drop Rate
- * @text 報酬倍率
- * @desc 難易度による報酬倍率です。
- * 経験値,お金,アイテム1,アイテム2,アイテム3
- * @default 1.0,1.0,1.0,1.0,1.0
- * @parent Difficulty ID:7
- * 
- * @param Difficulty ID:8
- * @text 難易度ID:8
- *
- * @param 8 : Name
- * @text 難易度名
- * @desc 難易度名です。（使用しない場合は無記入にしてください。）
- * @parent Difficulty ID:8
- * 
- * @param 8 : Param Rate
- * @text ステータス
- * @desc 難易度によるステータス倍率です。
- * 最大HP,最大MP,攻撃力,防御力,魔法力,魔法防御,敏捷性,運
- * @default 1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
- * @parent Difficulty ID:8
- * 
- * @param 8 : Drop Rate
- * @text 報酬倍率
- * @desc 難易度による報酬倍率です。
- * 経験値,お金,アイテム1,アイテム2,アイテム3
- * @default 1.0,1.0,1.0,1.0,1.0
- * @parent Difficulty ID:8
- * 
- * @help
- * # 機能
- * 難易度により能力値や報酬倍率を変更できるようになります。
- * 
- * 
- * # プラグインコマンド
- * - Difficulty SetID 難易度ID
- *  - 難易度IDを変更する
- * - Difficulty Next
- *  - 難易度IDを上げる
- * - Difficulty Previous
- *  - 難易度IDを下げる
- * 
- * 
- * # 注意
- * このプラグインは難易度選択（尾角 つの様作 Vitsuno_Difficulty.js）を
- * ムノクラが改変したものです。
- * このプラグインの質問はムノクラへお願いいたします。
- * https://x.com/munokura/
- * 
- * # 利用規約:
- * MITライセンスです。
- * https://licenses.opensource.jp/MIT/MIT.html
- * 作者に無断で改変、再配布が可能で、
- * 利用形態（商用、18禁利用等）についても制限はありません。
- * 
- * 
- * @command SetId
- * @text 難易度IDを変更
- * @desc 難易度IDを変更します。
- *
- * @arg DifficultyIdConst
- * @text 難易度ID定数
- * @desc 難易度IDを指定してください。
- * @type number
- * @default 0
- * 
- * @arg DifficultyIdVariableId
- * @text 数指定変数
- * @desc 変数の値を数として実行します。これを指定すると定数は無視されます。
- * @type variable
- * @default 0
- * 
- * 
- * @command Next
- * @text 難易度IDを上昇
- * @desc 難易度IDを上げます。
- * 
- * 
- * @command Previous
- * @text 難易度IDを下降
- * @desc 難易度IDを下げます。
- */
+
 
 var Vitsuno = Vitsuno || {};
 Vitsuno.Difficulty = {};

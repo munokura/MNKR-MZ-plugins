@@ -8,6 +8,297 @@
  * --------------------------------------------------
  */
 
+/*:
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_SAN_MapGenerator.js
+@plugindesc v2.0.1 Automatically generate random maps.
+@author example
+@license MIT License
+
+@help
+■ Overview
+Executing the map generation plugin command will automatically generate a map
+and
+transit the player to the entrance event location.
+This is useful for creating random dungeons.
+
+■ Settings
+Place tiles and events at the following coordinates on the base map in the RPG
+Maker MV editor.
+
+- Tiles
+Blank: {x:0, y:0}
+Room: {x:0, y:1}
+Corridor: {x:0, y:2}
+Ceiling: {x:0, y:3}
+Wall: {x:0, y:4}
+Rubbish: {x:0, y:5}
+
+- Events
+Entrance: {x:1, y:0}
+Exit: {x:1, y:1}
+Other: Coordinates other than those listed above
+
+- Event Appearance Rate
+You can set an appearance rate for events other than entrances and exits.
+Please enter the following in the event's memo field.
+Events without an appearance rate setting will not be generated.
+
+Spawn rate per map: <RateMap: [Positive decimal less than or equal to 1.0]>
+Spawn rate per room: <RateRoom: [Positive decimal less than or equal to 1.0]>
+
+■Plugin Commands
+・MapGenerator RoomAndPass
+Generates a map consisting of rooms and hallways.
+
+・MapGenerator FillRoom
+Generates a single room that spans the entire map.
+
+■Script Commands
+・Game_Character.prototype.isSameRoomWithPlayer()
+Determines whether a character is in the same room as the player.
+Example: Writing "this.character().isSameRoomWithPlayer()" in the script field
+of a conditional event command will determine whether the event is in the same
+room as the player.
+
+・Game_Map.prototype.pickel()
+Pickaxe command.
+Converts non-ground tiles in front of the player into hallway tiles.
+This command is only valid in auto-generated maps.
+Example: Write "$gameMap.pickel()"
+in the common event script command and execute it to dig through the wall in
+front of you.
+
+・Game_Map.prototype.bomb(x, y)
+This is a bomb command.
+It converts the specified coordinates and the surrounding nine non-ground
+tiles into passage tiles.
+This command is only valid in procedurally generated maps.
+Example: Write "$gameMap.bomb($gamePlayer.x, $gamePlayer.y)"
+in the common event script command and execute it to remove the wall around
+the player.
+
+・Game_Map.prototype.makeWall(x, y)
+This is a wall generation command.
+It converts the ground tile at the specified coordinates into a wall (rubble)
+tile.
+This command is only valid in procedurally generated maps.
+Example: By adding the following to the common event script command and
+executing it, you can place a wall in front of the player.
+
+・Game_Map.prototype.bigRoom()
+This is a large room command.
+It generates a single room that spans the entire map.
+This command is only valid in auto-generated maps.
+Example: By adding the following to the common event script command, you can
+create a large room.
+
+# Contact Information
+This is a plugin originally created for RPG Maker MV that has been adapted for
+use with MZ.
+Please contact the original developer for any inquiries.
+
+# Terms of Use
+MIT License.
+http://opensource.org/licenses/mit-license.php
+You may modify and redistribute this without permission from the author, and
+there are no restrictions on its use (commercial, R18, etc.).
+
+@param WallHight
+@text Wall height
+@desc Specify the wall height (1 to 3).
+@type number
+@default 1
+@min 1
+@max 3
+
+@param MinRoomSize
+@text Minimum room size
+@desc Specify the minimum room size (3 or more).
+@type number
+@default 5
+@min 3
+@max 9007
+
+@param MaxRoomSize
+@text Maximum room size
+@desc Specify the maximum room size (3 or more).
+@type number
+@default 10
+@min 3
+@max 9007
+
+@param ShowOuterWall
+@text Display on the outer wall of the room
+@desc Shows the outer wall of the room.
+@type boolean
+@on display
+@off hidden
+@default true
+
+@command MapGenerator
+@text Map Generation
+@desc Generates a random map.
+@arg mapType
+@desc The type of map to generate
+@type select
+@default RoomAndPass
+@option A map consisting of rooms and corridors
+@value RoomAndPass
+@option One room spanning the entire map
+@value FillRoom
+*/
+
+/*:ja
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_SAN_MapGenerator.js
+@plugindesc v2.0.1 自動的にランダムマップを生成します。
+@author サンシロ (改変:munokura)
+
+@help
+■概要
+マップ生成プラグインコマンドを実行するとマップが自動生成され
+プレイヤーが入口イベントの地点に移動します。
+ランダムダンジョンを作るのに役立つと思います。
+
+■設定
+RPGツクールMVのエディタ上でベースとなるマップの下記の座標に
+タイルとイベントを配置して下さい。
+
+・タイル
+ 空白:{x:0, y:0}
+ 部屋:{x:0, y:1}
+ 通路:{x:0, y:2}
+ 天井:{x:0, y:3}
+ 壁  :{x:0, y:4}
+ 瓦礫:{x:0, y:5}
+
+・イベント
+ 入口:{x:1, y:0}
+ 出口:{x:1, y:1}
+ 他  :上記以外の座標
+
+・イベント出現率
+入口と出口以外のイベントには出現率を設定できます。
+イベントのメモ欄に下記を記載して下さい。
+出現率設定がないイベント生成されません。
+
+ マップ毎の出現率:<RateMap: [1.0以下の正の小数]>
+ 部屋毎の出現率  :<RateRoom:[1.0以下の正の小数]>
+
+■プラグインコマンド
+・MapGenerator RoomAndPass
+ 部屋と通路から構成されるマップを生成します。
+
+・MapGenerator FillRoom
+ マップ全体に及ぶ一つの部屋を生成します。
+
+■スクリプトコマンド
+・Game_Character.prototype.isSameRoomWithPlayer()
+ キャラクターのプレイヤーとの同部屋判定です。
+ 例：条件分岐イベントコマンドのスクリプト欄に
+     「this.character().isSameRoomWithPlayer()」
+     と記述するとそのイベントがプレイヤーと同じ部屋に
+     存在するか判定します。
+
+・Game_Map.prototype.pickel()
+ ツルハシコマンドです。
+ プレイヤーの正面の非地面タイルを通路タイルに変換します。
+ このコマンドは自動生成マップ内のみ有効です。
+ 例：コモンイベントのスクリプトコマンドに
+    「$gameMap.pickel()」
+     と記述して実行すると正面の壁を掘ることができます。
+
+・Game_Map.prototype.bomb(x, y)
+ バクダンコマンドです。
+ 指定した座標と周囲の9タイルの非地面タイルを通路タイルに変換します。
+ このコマンドは自動生成マップ内のみ有効です。
+ 例：コモンイベントのスクリプトコマンドに
+     「$gameMap.bomb($gamePlayer.x, $gamePlayer.y)」
+     と記述して実行するとプレイヤーの周囲の壁を取り除くことができます。
+
+・Game_Map.prototype.makeWall(x, y)
+ 壁生成コマンドです。
+ 指定した座標の地面タイルを壁(瓦礫)タイルに変換します。
+ このコマンドは自動生成マップ内のみ有効です。
+ 例：コモンイベントのスクリプトコマンドに
+     「var x = $gamePlayer.x;
+       var y = $gamePlayer.y;
+       var d = $gamePlayer.direction();
+       $gameMap.makeWall(
+           $gameMap.xWithDirection(x, d),
+           $gameMap.yWithDirection(y, d)
+       );」
+     と記述して実行するとプレイヤーの正面に壁を設置することができます。
+
+・Game_Map.prototype.bigRoom()
+ 大部屋コマンドです。
+ マップ全体に及ぶ一つの部屋を生成します。
+ このコマンドは自動生成マップ内のみ有効です。
+ 例：コモンイベントのスクリプトコマンドに
+    「$gameMap.bigRoom()」
+     と記述して実行すると大部屋を生成します。
+
+
+# 問い合わせ先
+これはRPGツクールMV用に作成されたプラグインをMZ用に移植したものです。
+お問い合わせは改変者へお願いいたします。
+
+
+# 利用規約
+MITライセンスです。
+http://opensource.org/licenses/mit-license.php
+作者に無断で改変、再配布が可能で、
+利用形態（商用、18禁利用等）についても制限はありません。
+
+
+@param WallHight
+@text 壁の高さ
+@type number
+@min 1
+@max 3
+@desc 壁の高さを指定します。（1～3）
+@default 1
+
+@param MinRoomSize
+@text 部屋サイズ最小
+@type number
+@min 3
+@max 9007
+@desc 部屋の大きさの最小値を指定します。（3～）
+@default 5
+
+@param MaxRoomSize
+@text 部屋サイズ最大
+@type number
+@min 3
+@max 9007
+@desc 部屋の大きさの最大値を指定します。（3～）
+MaxRoomSizeがMinRoomSizeより小さい場合、MinRoomSizeと同じ値に補正されます。
+@default 10
+
+@param ShowOuterWall
+@text 部屋外側の壁の表示
+@type boolean
+@on 表示
+@off 非表示
+@desc 部屋の外側の壁を表示します。
+@default true
+
+@command MapGenerator
+@text マップ生成
+@desc ランダムなマップを生成します。
+
+@arg mapType
+@type select
+@option 部屋と通路から構成されるマップ
+@value RoomAndPass
+@option マップ全体に及ぶ一つの部屋
+@value FillRoom
+@default RoomAndPass
+@desc 生成するマップのタイプ
+*/
+
 //=============================================================================
 // SAN_MapGeneratorMZ.js
 //=============================================================================
@@ -19,151 +310,7 @@
 // v2.0.0 プラグインパラメーターを変更。MZ専用に変更。
 // v1.2.0 MZに移植。通路脇にイベントを配置しないように改変。
 
-/*:
- * @target MZ
- * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_SAN_MapGenerator.js
- * @plugindesc v2.0.1 自動的にランダムマップを生成します。
- * @author サンシロ (改変:munokura)
- * 
- * @help
- * ■概要
- * マップ生成プラグインコマンドを実行するとマップが自動生成され
- * プレイヤーが入口イベントの地点に移動します。
- * ランダムダンジョンを作るのに役立つと思います。
- * 
- * ■設定
- * RPGツクールMVのエディタ上でベースとなるマップの下記の座標に
- * タイルとイベントを配置して下さい。
- * 
- * ・タイル
- *  空白:{x:0, y:0}
- *  部屋:{x:0, y:1}
- *  通路:{x:0, y:2}
- *  天井:{x:0, y:3}
- *  壁  :{x:0, y:4}
- *  瓦礫:{x:0, y:5}
- * 
- * ・イベント
- *  入口:{x:1, y:0}
- *  出口:{x:1, y:1}
- *  他  :上記以外の座標
- * 
- * ・イベント出現率
- * 入口と出口以外のイベントには出現率を設定できます。
- * イベントのメモ欄に下記を記載して下さい。
- * 出現率設定がないイベント生成されません。
- * 
- *  マップ毎の出現率:<RateMap: [1.0以下の正の小数]>
- *  部屋毎の出現率  :<RateRoom:[1.0以下の正の小数]>
- * 
- * ■プラグインコマンド
- * ・MapGenerator RoomAndPass
- *  部屋と通路から構成されるマップを生成します。
- * 
- * ・MapGenerator FillRoom
- *  マップ全体に及ぶ一つの部屋を生成します。
- * 
- * ■スクリプトコマンド
- * ・Game_Character.prototype.isSameRoomWithPlayer()
- *  キャラクターのプレイヤーとの同部屋判定です。
- *  例：条件分岐イベントコマンドのスクリプト欄に
- *      「this.character().isSameRoomWithPlayer()」
- *      と記述するとそのイベントがプレイヤーと同じ部屋に
- *      存在するか判定します。
- * 
- * ・Game_Map.prototype.pickel()
- *  ツルハシコマンドです。
- *  プレイヤーの正面の非地面タイルを通路タイルに変換します。
- *  このコマンドは自動生成マップ内のみ有効です。
- *  例：コモンイベントのスクリプトコマンドに
- *     「$gameMap.pickel()」
- *      と記述して実行すると正面の壁を掘ることができます。
- * 
- * ・Game_Map.prototype.bomb(x, y)
- *  バクダンコマンドです。
- *  指定した座標と周囲の9タイルの非地面タイルを通路タイルに変換します。
- *  このコマンドは自動生成マップ内のみ有効です。
- *  例：コモンイベントのスクリプトコマンドに
- *      「$gameMap.bomb($gamePlayer.x, $gamePlayer.y)」
- *      と記述して実行するとプレイヤーの周囲の壁を取り除くことができます。
- * 
- * ・Game_Map.prototype.makeWall(x, y)
- *  壁生成コマンドです。
- *  指定した座標の地面タイルを壁(瓦礫)タイルに変換します。
- *  このコマンドは自動生成マップ内のみ有効です。
- *  例：コモンイベントのスクリプトコマンドに
- *      「var x = $gamePlayer.x;
- *        var y = $gamePlayer.y;
- *        var d = $gamePlayer.direction();
- *        $gameMap.makeWall(
- *            $gameMap.xWithDirection(x, d),
- *            $gameMap.yWithDirection(y, d)
- *        );」
- *      と記述して実行するとプレイヤーの正面に壁を設置することができます。
- * 
- * ・Game_Map.prototype.bigRoom()
- *  大部屋コマンドです。
- *  マップ全体に及ぶ一つの部屋を生成します。
- *  このコマンドは自動生成マップ内のみ有効です。
- *  例：コモンイベントのスクリプトコマンドに
- *     「$gameMap.bigRoom()」
- *      と記述して実行すると大部屋を生成します。
- * 
- * ■利用規約
- * MITライセンスのもと、商用利用、改変、再配布が可能です。
- * ただし冒頭のコメントは削除や改変をしないでください。
- * よかったらクレジットに作者名を記載してください。
- * 
- * これを利用したことによるいかなる損害にも作者は責任を負いません。
- * サポートは期待しないでください＞＜。
- * 
- * 
- * @param WallHight
- * @text 壁の高さ
- * @type number
- * @min 1
- * @max 3
- * @desc 壁の高さを指定します。（1～3）
- * @default 1
- * 
- * @param MinRoomSize
- * @text 部屋サイズ最小
- * @type number
- * @min 3
- * @max 9007
- * @desc 部屋の大きさの最小値を指定します。（3～）
- * @default 5
- * 
- * @param MaxRoomSize
- * @text 部屋サイズ最大
- * @type number
- * @min 3
- * @max 9007
- * @desc 部屋の大きさの最大値を指定します。（3～）
- * MaxRoomSizeがMinRoomSizeより小さい場合、MinRoomSizeと同じ値に補正されます。
- * @default 10
- * 
- * @param ShowOuterWall
- * @text 部屋外側の壁の表示
- * @type boolean
- * @on 表示
- * @off 非表示
- * @desc 部屋の外側の壁を表示します。
- * @default true
- * 
- * @command MapGenerator
- * @text マップ生成
- * @desc ランダムなマップを生成します。
- *
- * @arg mapType
- * @type select
- * @option 部屋と通路から構成されるマップ
- * @value RoomAndPass
- * @option マップ全体に及ぶ一つの部屋
- * @value FillRoom
- * @default RoomAndPass
- * @desc 生成するマップのタイプ
- */
+
 
 var Imported = Imported || {};
 Imported.MNKR_SAN_MapGenerator = true;
@@ -184,7 +331,7 @@ function Game_MapGenerator() {
 // オートタイル解析タイルidリスト
 //   tileIdsFloor : 床
 //   tileIdsWall  : 壁
-//   candidate    : 候補タイル ID 
+//   candidate    : 候補タイル ID
 //   connect      : 接続タイル ID
 //   noConnect    : 非接続タイル ID
 Game_MapGenerator.tileIdsFloor = {};
@@ -305,8 +452,8 @@ Game_MapGenerator.prototype.setup = function () {
 Game_MapGenerator.prototype.initSymbolTable = function () {
     // シンボル定義
     //  refXY      : シンボルに対応するタイルのツクールのマップ上の座標
-    //  baseTileId : シンボルに対応するタイル ID 
-    //  dispChar   : 生成したマップを文字列として表示する際の文字 
+    //  baseTileId : シンボルに対応するタイル ID
+    //  dispChar   : 生成したマップを文字列として表示する際の文字
     this._symbolTable = {
         player: { refXY: { x: 0, y: 0 }, baseTileId: [], dispChar: '＠', passable: ['room', 'pass'] },
         space: { refXY: { x: 0, y: 0 }, baseTileId: [], dispChar: '　', passable: ['space'] },
@@ -334,7 +481,7 @@ Game_MapGenerator.prototype.initSymbolTable = function () {
     }
 };
 
-// オートタイルタイルの基点タイルID 
+// オートタイルタイルの基点タイルID
 Game_MapGenerator.prototype.baseAutoTileId = function (x, y, z) {
     if ($gameMap.tileId(x, y, z) >= Tilemap.TILE_ID_A1) {
         return (Math.floor(($gameMap.tileId(x, y, z) - Tilemap.TILE_ID_A1) / 48)) * 48 + Tilemap.TILE_ID_A1;

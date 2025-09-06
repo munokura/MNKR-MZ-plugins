@@ -9,36 +9,75 @@
  */
 
 /*:
- * @target MZ MV
- * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_AddSkillWtype.js
- * @plugindesc 装備に、スキルの必要武器タイプを追加できます。
- * @author munokura
- *
- * @help
- * 装備に、スキル＞必要武器＞必要武器タイプ1・2を追加できます。
- * 装備で追加した場合、
- * スキルで必要とされる武器タイプの武器を装備していなくても、
- * スキル使用可能になります。
- * 
- * 武器・防具のメモ欄に下記のタグを入れてください。
- * 
- * <MNKR_AddSkillWtype:武器タイプID>
- * 
- * 例
- * デフォルトで武器タイプID1は短剣
- * 短剣が必要なスキルを使用可能になります。
- * <MNKR_AddSkillWtype:1>
- * 
- * 複数のタイプを指定する場合、下記のように記述します。
- * <MNKR_AddSkillWtype:1,2>
- * 
- *
- * 利用規約:
- *   MITライセンスです。
- *   https://licenses.opensource.jp/MIT/MIT.html
- *   作者に無断で改変、再配布が可能で、
- *   利用形態（商用、18禁利用等）についても制限はありません。
- */
+@target MZ MV
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_AddSkillWtype.js
+@plugindesc You can add required weapon types for skills to your equipment.
+@author example
+@license MIT License
+
+@help
+You can add required weapon types 1 and 2 to equipment under Skills > Required
+Weapons.
+
+Adding required weapon types to equipment allows you to use skills even if you
+are not equipped with the required weapon type.
+
+Enter the following tag in the weapon/armor memo field:
+
+<MNKR_AddSkillWtype:WeaponTypeID>
+
+Example
+By default, weapon type ID 1 is a dagger.
+This allows you to use skills that require a dagger.
+
+<MNKR_AddSkillWtype:1>
+
+To specify multiple types, use the following:
+<MNKR_AddSkillWtype:1,2>
+
+There is no plugin command.
+
+# Terms of Use
+MIT License.
+http://opensource.org/licenses/mit-license.php
+Modification and redistribution are permitted without permission from the
+author, and there are no restrictions on use (commercial, R18+, etc.).
+*/
+
+/*:ja
+@target MZ MV
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_AddSkillWtype.js
+@plugindesc 装備に、スキルの必要武器タイプを追加できます。
+@author munokura
+
+@help
+装備に、スキル＞必要武器＞必要武器タイプ1・2を追加できます。
+装備で追加した場合、
+スキルで必要とされる武器タイプの武器を装備していなくても、
+スキル使用可能になります。
+
+武器・防具のメモ欄に下記のタグを入れてください。
+
+<MNKR_AddSkillWtype:武器タイプID>
+
+例
+デフォルトで武器タイプID1は短剣
+短剣が必要なスキルを使用可能になります。
+<MNKR_AddSkillWtype:1>
+
+複数のタイプを指定する場合、下記のように記述します。
+<MNKR_AddSkillWtype:1,2>
+
+
+プラグインコマンドはありません。
+
+
+# 利用規約
+MITライセンスです。
+http://opensource.org/licenses/mit-license.php
+作者に無断で改変、再配布が可能で、
+利用形態（商用、18禁利用等）についても制限はありません。
+*/
 
 (() => {
   "use strict";

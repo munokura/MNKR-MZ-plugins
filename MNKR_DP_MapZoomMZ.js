@@ -8,11 +8,432 @@
  * --------------------------------------------------
  */
 
+/*:
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_DP_MapZoomMZ.js
+@plugindesc Controls the magnification of the map.
+@author example
+@license MIT License
+
+@help
+============================================================================
+About
+========================================================================
+This controls the map scene's magnification by reflecting the magnification
+calculations in various coordinate processing.
+It also specifies that the camera should follow specified events.
+The default focus target is the leading player.
+
+============================================================================
+Knowing issue
+==========================================================================================
+When zooming in too small on a large map,
+processing slows down in canvas mode and causes map clipping issues in WebGL
+mode.
+This is a limitation of the PIXI library, and we are currently investigating a
+solution.
+
+==================================================================================
+How To Use
+= ... ◆ Plugin Commands
+
+(1) Zoom Function
+dpZoom {Zoom factor} {Number of frames to change} {Target event ID / this /
+player}
+Changes the screen magnification while focusing on the specified event.
+If the third argument is empty, the zoom will be centered on the screen.
+
+Example:
+In the plugin command, specifying "this" or "this event" in the target event
+section
+specifies the object currently executing the event.
+dpZoom 2 360 this
+For example, the above command doubles the zoom factor over 6 seconds,
+centering the event.
+<Deprecated> mapSetZoom is supported but deprecated.
+
+(2) Focus Function
+dpFocus {Target event ID / this / player} {Number of frames to change}
+Focus on the specified event without changing the screen magnification.
+
+==============================================================================
+Settings
+========================================================================
+Base Scale
+Specifies the initial zoom level at the start of the game.
+Set a zoom level of 0 or higher.
+
+Encount Effect
+Specifies whether to replace the encounter effect.
+Set this to false if you are replacing it with the original effect.
+In that case, you will need to adjust the screen zoom level accordingly.
+
+Camera Control
+If false, camera control during zoom, including event-specific zoom, will not
+function.
+Use this when controlling the camera with another plugin.
+
+Weather Patch
+If true, this will correct the weather sprite generation range,
+distributing weather sprites evenly even after changing the zoom ratio.
+Set this to false if you are controlling weather effects with another plugin.
+
+Picture Size Fixation
+If true, the picture will be excluded from the zoom process.
+
+Old Focus
+If true, this will perform focus processing similar to the old DP_MapZoom.js.
+This focus processing is based on the coordinate deviation to the target
+event,
+so it does not track the movement of the event.
+
+Easing Function
+You can set an expression that returns the easing effect when zooming, mainly
+between 0 and 1.
+The argument t represents the zoom progress, between 0 and 1. JavaScript.
+
+==============================================================================
+Technical information
+======================================================================================
+The current screen zoom ratio can be obtained using $gameScreen.zoomScale().
+This is a built-in function regardless of whether a plugin is used.
+If the "screenX" or "screenY" used by another plugin is incorrect,
+multiply "screenX" and "screenY" by $gameScreen.zoomScale() respectively.
+
+This plugin controls $gameScreen.
+
+The specified zoom setting is stored in $gameMap._dp_scale.
+The scroll amount when leaving a scene is stored in $gameMap._dp_pan.
+Map focus events are stored in $gameMap._dp_target.
+
+# Contact Information
+This is a plugin originally created for RPG Maker MV ported for MZ.
+Please contact the modifier for any inquiries.
+
+# Terms of Use
+MIT License.
+http://opensource.org/licenses/mit-license.php
+You may modify and redistribute this without permission from the author, and
+there are no restrictions on its use (commercial, 18+, etc.).
+
+@param Base Scale
+@text Basic Magnification
+@desc Set the basic magnification ratio (0 or more).
+@default 1
+
+@param Encount Effect
+@text Encounter effect reflected
+@desc Encounter effects now reflect magnification
+@type boolean
+@default true
+
+@param Camera Controll
+@text Centering control during enlargement processing
+@desc This plugin controls centering during enlargement processing.
+@type select
+@default true
+@option ON
+@value true
+@option OFF
+@value false
+@option Minimum
+@value minimum
+
+@param Weather Patch
+@text Weather sprite generation range
+@desc Applies a fix to increase the range of weather sprite generation.
+@type boolean
+@default true
+
+@param Picture Size Fixation
+@text Picture Exclusion
+@desc Select pictures to exclude from map zoom processing.
+@type select
+@default true
+@option Enlarge all pictures
+@value false
+@option Exclude All Pictures
+@value true
+@option $ excludes pictures at the beginning of the file name
+@value $
+@option Exclude pictures with screen_ at the beginning of the file name
+@value screen_
+@option fix_ excludes pictures at the beginning of filenames
+@value fix_
+
+@param Old Focus
+@text Use focus without tracking
+@desc Uses the older version of focus without tracking.
+@type boolean
+@default false
+
+@param Easing Function
+@text Animation Easing Formula
+@desc The easing formula for the animation.
+@type string
+@default t
+
+@command dpZoom
+@text Change the screen magnification
+@desc You can change the screen magnification while keeping the focus on the specified event.
+@arg focusScale
+@text magnification
+@desc Screen magnification
+@default 1
+@arg focusFlame
+@text Number of frames
+@desc Number of frames to change
+@default 1
+@arg focusTarget
+@text subject
+@desc Zoom target
+@type combo
+@default this
+@option this
+@option player
+
+@command dpFocus
+@text Focus on the subject
+@desc Focuses on the specified event without changing the screen magnification.
+@arg focusTarget
+@text subject
+@desc Focus target
+@type combo
+@default this
+@option this
+@option player
+@arg focusFlame
+@text Number of frames
+@desc Number of frames to change
+@default 1
+*/
+
+/*:ja
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_DP_MapZoomMZ.js
+@plugindesc マップの拡大率を制御します。
+@author drowsepost (改変:munokura)
+
+@help
+=========================================================================
+About
+=========================================================================
+各種座標処理に拡大率の計算を反映し
+マップシーンの拡大率を制御します。
+また、指定したイベントをカメラが追うように指定します。
+標準のフォーカス対象は先頭のプレイヤーとなります。
+
+=========================================================================
+Knowing issue
+=========================================================================
+巨大なマップにおいて拡大率をあまりに小さくすると
+canvasモードで処理落ち、webglモードでマップ欠けの問題が発生します。
+これはPIXIライブラリの限界であり、解決方法は調査中です
+
+=========================================================================
+How To Use
+=========================================================================
+◆ マップメモ欄
+
+<zoomScale:0.5>
+などと記述すると、マップごとに基準になる拡大率を指定することが出来ます。
+
+<camTarget: 3>
+等と記述すると、イベントID n番のイベントが画面中央になった状態にできます。
+フォーカスはイベントの移動に画面が追従します。
+
+◆ プラグインコマンド
+
+(1)ズーム機能
+dpZoom {倍率} {変更にかけるフレーム数} {対象イベントID / this / player}
+指定したイベントにフォーカスを合わせつつ画面の拡大率を変更できます。
+第3引数に何も指定しない場合、画面中央に向かって拡大します。
+
+例:
+プラグインコマンドにおいて対象イベントの部分に
+「this」もしくは「このイベント」と指定すると、
+イベント実行中のオブジェクトを指定します。
+dpZoom 2 360 this
+例えば上記はそのイベントが中心になるように6秒かけて2倍の拡大率に変化します。
+<非推奨> mapSetZoom は利用できますが、非推奨とします。
+
+(2)フォーカス機能
+dpFocus {対象イベントID / this / player} {変更にかけるフレーム数}
+画面の拡大率を変更せずに指定したイベントにフォーカスを合わせます。
+
+=========================================================================
+Settings
+=========================================================================
+Base Scale
+ゲーム開始時の拡大倍率を指定します。
+倍率には0以上を指定してください。
+
+Encount Effect
+エンカウントエフェクトを置き換えるかどうかを指定します。
+オリジナルのエフェクトで置き換えている場合はこちらをfalseにしてください。
+その場合、画面の拡大率をそれぞれ反映できるように調整する必要があります。
+
+Camera Controll
+falseの場合はイベントを指定した拡大を含む
+拡大中のカメラ制御は動作しません。
+別プラグインでカメラ制御を行う場合にご利用ください。
+
+Weather Patch
+trueの場合、天候スプライトの生成範囲に関する修正を行い、
+拡大率変更後も天候スプライトをまんべんなく分布させます
+別プラグインで天候演出の制御を行っている場合等はfalseにしてください。
+
+Picture Size Fixation
+trueの場合、ピクチャを拡大処理から除外します。
+
+Old Focus
+trueの場合、古いDP_MapZoom.jsと同様のフォーカス処理を行います。
+このフォーカス処理は対象イベントまでの座標のずれを基準にしているため、
+イベントの移動を追尾しません。
+
+Easing Function
+ズーム時のイージングを主に0から1の間で戻す式を設定できます。
+引数 t にズームの進捗が0から1で入ります。JavaScript。
+
+=========================================================================
+Technical information
+=========================================================================
+現在の画面の拡大率は$gameScreen.zoomScale()で取得できます。
+これはプラグインの利用に関わらず元から存在する関数です。
+他のプラグインで利用する「screenX」や「screenY」がずれる場合は、
+「screenX」や「screenY」にそれぞれ$gameScreen.zoomScale()を掛けて下さい。
+
+このプラグインは$gameScreenを制御します。
+
+指定された拡大率設定は$gameMap._dp_scaleが保持します。
+シーン離脱時のスクロール量は$gameMap._dp_panが保持します。
+マップのフォーカスイベントは$gameMap._dp_targetが保持します。
+
+
+# 問い合わせ先
+これはRPGツクールMV用に作成されたプラグインをMZ用に移植したものです。
+お問い合わせは改変者へお願いいたします。
+
+
+# 利用規約
+MITライセンスです。
+http://opensource.org/licenses/mit-license.php
+作者に無断で改変、再配布が可能で、
+利用形態（商用、18禁利用等）についても制限はありません。
+
+
+@param Base Scale
+@text 基本拡大率
+@desc 基本の拡大率を設定します。(0以上)
+Default: 1
+@default 1
+
+@param Encount Effect
+@text エンカウントエフェクト反映
+@desc エンカウントエフェクトに拡大率を反映
+Default: true (ON: true / OFF: false)
+@default true
+@type boolean
+
+@param Camera Controll
+@text 拡大処理中センタリング制御
+@desc 拡大処理中のセンタリング制御をこのプラグインが行う
+Default: true (ON: true / OFF: false / 最小: minimum)
+@default true
+@type select
+@option ON
+@value true
+@option OFF
+@value false
+@option Minimum
+@value minimum
+
+@param Weather Patch
+@text 天候スプライト生成範囲
+@desc 天候スプライトの生成範囲を広げる修正を適用します。
+Default: true (ON: true / OFF: false)
+@default true
+@type boolean
+
+@param Picture Size Fixation
+@text ピクチャ除外
+@desc マップの拡大処理から除外するピクチャを選択します。
+@default true
+@type select
+@option 全ピクチャを拡大
+@value false
+@option 全ピクチャを除外
+@value true
+@option $がファイル名先頭のピクチャを除外
+@value $
+@option screen_がファイル名先頭のピクチャを除外
+@value screen_
+@option fix_がファイル名先頭のピクチャを除外
+@value fix_
+
+@param Old Focus
+@text 追跡なしフォーカス使用
+@desc 古いバージョンの追跡なしのフォーカスを使用します。
+Default: false (ON: true / OFF: false)
+@default false
+@type boolean
+
+@param Easing Function
+@text アニメーションのイージング式
+@desc アニメーションのイージング式。
+引数 t (0.00～1.00) 戻り値 数値(0.00～1.00) Default: t
+@default t
+@type string
+
+
+@command dpZoom
+@text 画面の拡大率を変更
+@desc 指定したイベントにフォーカスを合わせつつ画面の拡大率を変更できます。
+
+@arg focusScale
+@text 倍率
+@desc 画面の拡大率
+@default 1
+
+@arg focusFlame
+@text フレーム数
+@desc 変更にかけるフレーム数
+@default 1
+
+@arg focusTarget
+@text 対象
+@desc ズーム対象
+(数字:イベントID / this:実行イベント / player:プレイヤー)
+@type combo
+@option this
+@option player
+@default this
+
+
+@command dpFocus
+@text 対象にフォーカス
+@desc 画面の拡大率を変更せずに指定したイベント等にフォーカスを合わせます。
+
+@arg focusTarget
+@text 対象
+@desc フォーカス対象
+(数字:イベントID / this:実行イベント / player:プレイヤー)
+@type combo
+@option this
+@option player
+@default this
+
+@arg focusFlame
+@text フレーム数
+@desc 変更にかけるフレーム数
+@default 1
+*/
+
 //=============================================================================
 // 🏤drowsepost Plugins - Map Camera Controller
 // DP_MapZoom.js
 // Version: 0.87
-// 
+//
 // Copyright (c) 2016 - 2019 canotun
 // Released under the MIT license.
 // http://opensource.org/licenses/mit-license.php
@@ -25,226 +446,7 @@ var drowsepost = drowsepost || {};
 
 //=============================================================================
 
-/*:ja
- * @target MZ
- * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_DP_MapZoomMZ.js
- * @plugindesc マップの拡大率を制御します。
- * @author drowsepost (改変 munokura)
- *
- * @help
- * =========================================================================
- * About
- * =========================================================================
- * 各種座標処理に拡大率の計算を反映し
- * マップシーンの拡大率を制御します。
- * また、指定したイベントをカメラが追うように指定します。
- * 標準のフォーカス対象は先頭のプレイヤーとなります。
- * 
- * =========================================================================
- * Knowing issue
- * =========================================================================
- * 巨大なマップにおいて拡大率をあまりに小さくすると
- * canvasモードで処理落ち、webglモードでマップ欠けの問題が発生します。
- * これはPIXIライブラリの限界であり、解決方法は調査中です
- * 
- * =========================================================================
- * How To Use
- * =========================================================================
- * ◆ マップメモ欄
- * 
- * <zoomScale:0.5>
- * などと記述すると、マップごとに基準になる拡大率を指定することが出来ます。
- * 
- * <camTarget: 3>
- * 等と記述すると、イベントID n番のイベントが画面中央になった状態にできます。
- * フォーカスはイベントの移動に画面が追従します。
- * 
- * ◆ プラグインコマンド
- * 
- * (1)ズーム機能
- * dpZoom {倍率} {変更にかけるフレーム数} {対象イベントID / this / player}
- * 指定したイベントにフォーカスを合わせつつ画面の拡大率を変更できます。
- * 第3引数に何も指定しない場合、画面中央に向かって拡大します。
- * 
- * 例:
- * プラグインコマンドにおいて対象イベントの部分に
- * 「this」もしくは「このイベント」と指定すると、
- * イベント実行中のオブジェクトを指定します。
- * dpZoom 2 360 this
- * 例えば上記はそのイベントが中心になるように6秒かけて2倍の拡大率に変化します。
- * <非推奨> mapSetZoom は利用できますが、非推奨とします。
- * 
- * (2)フォーカス機能
- * dpFocus {対象イベントID / this / player} {変更にかけるフレーム数}
- * 画面の拡大率を変更せずに指定したイベントにフォーカスを合わせます。
- * 
- * =========================================================================
- * Settings
- * =========================================================================
- * Base Scale
- * ゲーム開始時の拡大倍率を指定します。
- * 倍率には0以上を指定してください。
- * 
- * Encount Effect
- * エンカウントエフェクトを置き換えるかどうかを指定します。
- * オリジナルのエフェクトで置き換えている場合はこちらをfalseにしてください。
- * その場合、画面の拡大率をそれぞれ反映できるように調整する必要があります。
- * 
- * Camera Controll
- * falseの場合はイベントを指定した拡大を含む
- * 拡大中のカメラ制御は動作しません。
- * 別プラグインでカメラ制御を行う場合にご利用ください。
- * 
- * Weather Patch
- * trueの場合、天候スプライトの生成範囲に関する修正を行い、
- * 拡大率変更後も天候スプライトをまんべんなく分布させます
- * 別プラグインで天候演出の制御を行っている場合等はfalseにしてください。
- * 
- * Picture Size Fixation
- * trueの場合、ピクチャを拡大処理から除外します。
- * 
- * Old Focus
- * trueの場合、古いDP_MapZoom.jsと同様のフォーカス処理を行います。
- * このフォーカス処理は対象イベントまでの座標のずれを基準にしているため、
- * イベントの移動を追尾しません。
- *
- * Easing Function
- * ズーム時のイージングを主に0から1の間で戻す式を設定できます。
- * 引数 t にズームの進捗が0から1で入ります。JavaScript。
- * 
- * =========================================================================
- * Technical information
- * =========================================================================
- * 現在の画面の拡大率は$gameScreen.zoomScale()で取得できます。
- * これはプラグインの利用に関わらず元から存在する関数です。
- * 他のプラグインで利用する「screenX」や「screenY」がずれる場合は、
- * 「screenX」や「screenY」にそれぞれ$gameScreen.zoomScale()を掛けて下さい。
- * 
- * このプラグインは$gameScreenを制御します。
- * 
- * 指定された拡大率設定は$gameMap._dp_scaleが保持します。
- * シーン離脱時のスクロール量は$gameMap._dp_panが保持します。
- * マップのフォーカスイベントは$gameMap._dp_targetが保持します。
- * 
- * 
- * このプラグインについて
- *   RPGツクールMV用に作成されたプラグインをMZ用に移植したものです。
- *   お問い合わせは改変者へお願いいたします。
- *
- * 
- * 利用規約:
- *   MITライセンスです。
- *   https://licenses.opensource.jp/MIT/MIT.html
- *   作者に無断で改変、再配布が可能で、
- *   利用形態（商用、18禁利用等）についても制限はありません。
- * 
- * 
- * @param Base Scale
- * @text 基本拡大率
- * @desc 基本の拡大率を設定します。(0以上)
- * Default: 1
- * @default 1
- * 
- * @param Encount Effect
- * @text エンカウントエフェクト反映
- * @desc エンカウントエフェクトに拡大率を反映
- * Default: true (ON: true / OFF: false)
- * @default true
- * @type boolean
- * 
- * @param Camera Controll
- * @text 拡大処理中センタリング制御
- * @desc 拡大処理中のセンタリング制御をこのプラグインが行う
- * Default: true (ON: true / OFF: false / 最小: minimum)
- * @default true
- * @type select
- * @option ON
- * @value true
- * @option OFF
- * @value false
- * @option Minimum
- * @value minimum
- * 
- * @param Weather Patch
- * @text 天候スプライト生成範囲
- * @desc 天候スプライトの生成範囲を広げる修正を適用します。
- * Default: true (ON: true / OFF: false)
- * @default true
- * @type boolean
- * 
- * @param Picture Size Fixation
- * @text ピクチャ除外
- * @desc マップの拡大処理から除外するピクチャを選択します。
- * @default true
- * @type select
- * @option 全ピクチャを拡大
- * @value false
- * @option 全ピクチャを除外
- * @value true
- * @option $がファイル名先頭のピクチャを除外
- * @value $
- * @option screen_がファイル名先頭のピクチャを除外
- * @value screen_
- * @option fix_がファイル名先頭のピクチャを除外
- * @value fix_
- * 
- * @param Old Focus
- * @text 追跡なしフォーカス使用
- * @desc 古いバージョンの追跡なしのフォーカスを使用します。
- * Default: false (ON: true / OFF: false)
- * @default false
- * @type boolean
- * 
- * @param Easing Function
- * @text アニメーションのイージング式
- * @desc アニメーションのイージング式。
- * 引数 t (0.00～1.00) 戻り値 数値(0.00～1.00) Default: t
- * @default t
- * @type string
- * 
- * 
- * @command dpZoom
- * @text 画面の拡大率を変更
- * @desc 指定したイベントにフォーカスを合わせつつ画面の拡大率を変更できます。
- *
- * @arg focusScale
- * @text 倍率
- * @desc 画面の拡大率
- * @default 1
- *
- * @arg focusFlame
- * @text フレーム数
- * @desc 変更にかけるフレーム数
- * @default 1
- *
- * @arg focusTarget
- * @text 対象
- * @desc ズーム対象
- * (数字:イベントID / this:実行イベント / player:プレイヤー)
- * @type combo
- * @option this
- * @option player
- * @default this
- * 
- * 
- * @command dpFocus
- * @text 対象にフォーカス
- * @desc 画面の拡大率を変更せずに指定したイベント等にフォーカスを合わせます。
- *
- * @arg focusTarget
- * @text 対象
- * @desc フォーカス対象
- * (数字:イベントID / this:実行イベント / player:プレイヤー)
- * @type combo
- * @option this
- * @option player
- * @default this
- *
- * @arg focusFlame
- * @text フレーム数
- * @desc 変更にかけるフレーム数
- * @default 1
- */
+
 
 (function () {
     "use strict";
@@ -280,7 +482,7 @@ var drowsepost = drowsepost || {};
 
         /**
          * 拡大率からレンダリングするべきオブジェクトのサイズを設定します。
-         * @param {number} scale 
+         * @param {number} scale
          */
         onChange: (function (_scale) {
             if (!('_scene' in SceneManager)) return;
@@ -372,7 +574,7 @@ var drowsepost = drowsepost || {};
 
     /**
      * 画面の拡大率を設定します。
-     * @param {number} scale 
+     * @param {number} scale
      */
     var dp_setZoom = function (scale) {
         dp_renderSize.scale = scale;

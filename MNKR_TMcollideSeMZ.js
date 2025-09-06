@@ -8,6 +8,121 @@
  * --------------------------------------------------
  */
 
+/*:
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMcollideSeMZ.js
+@plugindesc Adds wall collision sounds for players.
+@author example
+@license MIT License
+
+@help
+A sound effect will be played when the player collides with an impassable
+tile.
+
+# Contact Information
+This is a plugin originally created for RPG Maker MV that has been adapted for
+MZ.
+Please contact the modifier for any inquiries.
+
+# Terms of Use
+MIT License.
+http://opensource.org/licenses/mit-license.php
+You may modify and redistribute this without permission from the author, and
+there are no restrictions on its use (commercial, 18+, etc.).
+
+@param knockWallSeFile
+@text Wall collision SE
+@desc File name of the sound effect that sounds when hitting a wall
+@type file
+@default Blow1
+@require 1
+@dir audio/se/
+
+@param knockWallSeVolume
+@text Wall collision sound effect volume
+@desc Volume of the sound effect played when hitting a wall
+@type number
+@default 90
+
+@param knockWallSePitch
+@text Wall Collision SE Pitch
+@desc Pitch of the wall collision sound effect
+@type number
+@default 100
+
+@param knockWallPan
+@text Wall collision SE phase
+@desc Left/right balance of wall collision sound effects
+@type number
+@default 0
+
+@param knockWallInterval
+@text Wall collision SE playback interval
+@desc Wall collision sound effect playback interval (number of frames)
+@type number
+@default 30
+*/
+
+/*:ja
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMcollideSeMZ.js
+@author tomoaky (改変:munokura)
+@plugindesc プレイヤーに壁衝突音を追加します。
+
+@help
+プレイヤーが通行不可のタイルに衝突すると効果音が鳴るようになります。
+
+
+# 問い合わせ先
+これはRPGツクールMV用に作成されたプラグインをMZ用に移植したものです。
+お問い合わせは改変者へお願いいたします。
+
+
+# 利用規約
+MITライセンスです。
+http://opensource.org/licenses/mit-license.php
+作者に無断で改変、再配布が可能で、
+利用形態（商用、18禁利用等）についても制限はありません。
+
+
+@param knockWallSeFile
+@text 壁衝突SE
+@desc 壁衝突に鳴らす効果音のファイル名
+初期値: Blow1
+@default Blow1
+@require 1
+@dir audio/se/
+@type file
+
+@param knockWallSeVolume
+@text 壁衝突SE音量
+@desc 壁衝突に鳴らす効果音の音量
+初期値: 90
+@default 90
+@type number
+
+@param knockWallSePitch
+@text 壁衝突SEピッチ
+@desc 壁衝突に鳴らす効果音のピッチ
+初期値: 100
+@default 100
+@type number
+
+@param knockWallPan
+@text 壁衝突SE位相
+@desc 壁衝突効果音の左右バランス
+初期値: 0
+@default 0
+@type number
+
+@param knockWallInterval
+@text 壁衝突SE再生間隔
+@desc 壁衝突効果音の再生間隔（フレーム数）
+初期値: 30
+@default 30
+@type number
+*/
+
 //=============================================================================
 // TMPlugin - 移動機能拡張
 // バージョン: 1.3.1
@@ -19,60 +134,7 @@
 // http://opensource.org/licenses/mit-license.php
 //=============================================================================
 
-/*:
- * @target MZ
- * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMcollideSeMZ.js
- * @author tomoaky (改変 munokura)
- * @plugindesc プレイヤーに壁衝突音を追加します。
- * 
- * @help
- * プレイヤーが通行不可のタイルに衝突すると効果音が鳴るようになります。
- * 
- * 
- * 利用規約:
- *   MITライセンスです。
- *   https://licenses.opensource.jp/MIT/MIT.html
- *   作者に無断で改変、再配布が可能で、
- *   利用形態(商用、18禁利用等)についても制限はありません。
- * 
- * 
- * @param knockWallSeFile
- * @text 壁衝突SE
- * @desc 壁衝突に鳴らす効果音のファイル名
- * 初期値: Blow1
- * @default Blow1
- * @require 1
- * @dir audio/se/
- * @type file
- * 
- * @param knockWallSeVolume
- * @text 壁衝突SE音量
- * @desc 壁衝突に鳴らす効果音の音量
- * 初期値: 90
- * @default 90
- * @type number
- * 
- * @param knockWallSePitch
- * @text 壁衝突SEピッチ
- * @desc 壁衝突に鳴らす効果音のピッチ
- * 初期値: 100
- * @default 100
- * @type number
- * 
- * @param knockWallPan
- * @text 壁衝突SE位相
- * @desc 壁衝突効果音の左右バランス
- * 初期値: 0
- * @default 0
- * @type number
- *
- * @param knockWallInterval
- * @text 壁衝突SE再生間隔
- * @desc 壁衝突効果音の再生間隔（フレーム数）
- * 初期値: 30
- * @default 30
- * @type number
- */
+
 
 (() => {
     'use strict';

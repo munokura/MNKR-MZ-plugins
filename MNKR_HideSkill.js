@@ -9,28 +9,57 @@
  */
 
 /*:
- * @target MZ MV
- * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_HideSkill.js
- * @plugindesc スキル一覧に表示しないスキルを指定できます。
- * @author munokura
- *
- * @help
- * スキル一覧に表示しないスキルを指定できます。
- * メモ欄に各タグを入れたスキルは一覧に表示されなくなります。
- * 
- * マップでの非表示
- * <MNKR_HideSkillMenu>
- * 
- * 戦闘中の非表示
- * <MNKR_HideSkillBattle>
- *
- * 
- * 利用規約:
- *   MITライセンスです。
- *   https://licenses.opensource.jp/MIT/MIT.html
- *   作者に無断で改変、再配布が可能で、
- *   利用形態（商用、18禁利用等）についても制限はありません。
- */
+@target MZ MV
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_HideSkill.js
+@plugindesc You can specify skills that you do not want to display in the skill list.
+@author example
+@license MIT License
+
+@help
+You can specify skills to hide in the skill list.
+Skills tagged in the memo field will not appear in the list.
+
+Hide on the map
+<MNKR_HideSkillMenu>
+
+Hide during battle
+<MNKR_HideSkillBattle>
+
+There are no plugin commands.
+
+# Terms of Use
+MIT License.
+http://opensource.org/licenses/mit-license.php
+Modifications and redistribution are permitted without permission from the
+author, and there are no restrictions on use (commercial, 18+, etc.).
+*/
+
+/*:ja
+@target MZ MV
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_HideSkill.js
+@plugindesc スキル一覧に表示しないスキルを指定できます。
+@author munokura
+
+@help
+スキル一覧に表示しないスキルを指定できます。
+メモ欄に各タグを入れたスキルは一覧に表示されなくなります。
+
+マップでの非表示
+<MNKR_HideSkillMenu>
+
+戦闘中の非表示
+<MNKR_HideSkillBattle>
+
+
+プラグインコマンドはありません。
+
+
+# 利用規約
+MITライセンスです。
+http://opensource.org/licenses/mit-license.php
+作者に無断で改変、再配布が可能で、
+利用形態（商用、18禁利用等）についても制限はありません。
+*/
 
 (() => {
   "use strict";

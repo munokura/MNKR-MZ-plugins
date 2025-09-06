@@ -9,82 +9,164 @@
  */
 
 /*:
- * @target MZ
- * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_ChangeCommandHeightMZ.js
- * @plugindesc スマートフォン向けにコマンド類の高さを調節します。
- * @author munokura
- *
- * @help
- * スマートフォン向けにコマンド類の高さを調節します。
- * 
- * 
- * 利用規約:
- *   MITライセンスです。
- *   https://licenses.opensource.jp/MIT/MIT.html
- *   作者に無断で改変、再配布が可能で、
- *   利用形態（商用、18禁利用等）についても制限はありません。
- *
- *
- * @param titleHeight
- * @text タイトル
- * @type number
- * @default 48
- * @desc タイトル画面のコマンド高。0にすると、デフォルト動作になります。ツクールデフォルト:36
- *
- * @param optionsHeight
- * @text オプション
- * @type number
- * @default 48
- * @desc オプション画面のコマンド高。0にすると、デフォルト動作になります。ツクールデフォルト:36
- *
- * @param gameEndHeight
- * @text ゲーム終了
- * @type number
- * @default 48
- * @desc ゲーム終了画面のコマンド高。0にすると、デフォルト動作になります。ツクールデフォルト:36
- *
- * @param menuCommandHeight
- * @text メニュー
- * @type number
- * @default 48
- * @desc メニュー画面のコマンド高。0にすると、デフォルト動作になります。ツクールデフォルト:36
- *
- * @param itemListHeight
- * @text アイテム
- * @type number
- * @default 48
- * @desc アイテム画面のコマンド高。0にすると、デフォルト動作になります。ツクールデフォルト:36
- *
- * @param itemListHeight
- * @text スキル
- * @type number
- * @default 48
- * @desc スキル画面のコマンド高。0にすると、デフォルト動作になります。ツクールデフォルト:36
- *
- * @param equipCommandHeight
- * @text 装備
- * @type number
- * @default 48
- * @desc 装備画面のコマンド高。0にすると、デフォルト動作になります。ツクールデフォルト:36
- *
- * @param shopCommandHeight
- * @text ショップ
- * @type number
- * @default 48
- * @desc ショップ画面のコマンド高。0にすると、デフォルト動作になります。ツクールデフォルト:36
- *
- * @param battleCommandHeight
- * @text 戦闘
- * @type number
- * @default 48
- * @desc 戦闘画面のコマンド高。0にすると、デフォルト動作になります。ツクールデフォルト:36
- *
- * @param choiceListHeight
- * @text 選択肢
- * @type number
- * @default 48
- * @desc 選択肢・アイテム選択のコマンド高。0にすると、デフォルト動作になります。ツクールデフォルト:36
- */
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_ChangeCommandHeightMZ.js
+@plugindesc Adjust the height of the commands for smartphones.
+@author example
+@license MIT License
+
+@help
+Adjusts the height of commands for smartphones.
+
+No plugin commands.
+
+# Terms of Use
+MIT License.
+http://opensource.org/licenses/mit-license.php
+You may modify and redistribute this without permission, and there are no
+restrictions on its use (commercial, R18+, etc.).
+
+@param titleHeight
+@text title
+@desc Command height of the title screen. If set to 0, it will be the default behavior. Maker default: 36
+@type number
+@default 48
+
+@param optionsHeight
+@text option
+@desc Command height in the options screen. If set to 0, it will be the default behavior. Maker default: 36
+@type number
+@default 48
+
+@param gameEndHeight
+@text Game End
+@desc Command height of the game end screen. If set to 0, it will be the default behavior. Maker default: 36
+@type number
+@default 48
+
+@param menuCommandHeight
+@text menu
+@desc Command height of the menu screen. If set to 0, it will be the default behavior. Maker default: 36
+@type number
+@default 48
+
+@param itemListHeight
+@text item
+@desc Command height of the item screen. If set to 0, it will be the default behavior. Maker default: 36
+@type number
+@default 48
+
+@param itemListHeight
+@text skill
+@desc Command height on the skill screen. If set to 0, it will be the default behavior. Maker default: 36
+@type number
+@default 48
+
+@param equipCommandHeight
+@text Equipment
+@desc Command height of equipment screen. If set to 0, it will be the default behavior. Maker default: 36
+@type number
+@default 48
+
+@param shopCommandHeight
+@text shop
+@desc Command height of the shop screen. If set to 0, it will be the default behavior. Maker default: 36
+@type number
+@default 48
+
+@param battleCommandHeight
+@text battle
+@desc Command height of the battle screen. If set to 0, it will be the default behavior. Maker default: 36
+@type number
+@default 48
+
+@param choiceListHeight
+@text Choices
+@desc Command height for selecting options and items. If set to 0, it will be the default behavior. Maker default: 36
+@type number
+@default 48
+*/
+
+/*:ja
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_ChangeCommandHeightMZ.js
+@plugindesc スマートフォン向けにコマンド類の高さを調節します。
+@author munokura
+
+@help
+スマートフォン向けにコマンド類の高さを調節します。
+
+
+プラグインコマンドはありません。
+
+
+# 利用規約
+MITライセンスです。
+http://opensource.org/licenses/mit-license.php
+作者に無断で改変、再配布が可能で、
+利用形態（商用、18禁利用等）についても制限はありません。
+
+
+@param titleHeight
+@text タイトル
+@type number
+@default 48
+@desc タイトル画面のコマンド高。0にすると、デフォルト動作になります。ツクールデフォルト:36
+
+@param optionsHeight
+@text オプション
+@type number
+@default 48
+@desc オプション画面のコマンド高。0にすると、デフォルト動作になります。ツクールデフォルト:36
+
+@param gameEndHeight
+@text ゲーム終了
+@type number
+@default 48
+@desc ゲーム終了画面のコマンド高。0にすると、デフォルト動作になります。ツクールデフォルト:36
+
+@param menuCommandHeight
+@text メニュー
+@type number
+@default 48
+@desc メニュー画面のコマンド高。0にすると、デフォルト動作になります。ツクールデフォルト:36
+
+@param itemListHeight
+@text アイテム
+@type number
+@default 48
+@desc アイテム画面のコマンド高。0にすると、デフォルト動作になります。ツクールデフォルト:36
+
+@param itemListHeight
+@text スキル
+@type number
+@default 48
+@desc スキル画面のコマンド高。0にすると、デフォルト動作になります。ツクールデフォルト:36
+
+@param equipCommandHeight
+@text 装備
+@type number
+@default 48
+@desc 装備画面のコマンド高。0にすると、デフォルト動作になります。ツクールデフォルト:36
+
+@param shopCommandHeight
+@text ショップ
+@type number
+@default 48
+@desc ショップ画面のコマンド高。0にすると、デフォルト動作になります。ツクールデフォルト:36
+
+@param battleCommandHeight
+@text 戦闘
+@type number
+@default 48
+@desc 戦闘画面のコマンド高。0にすると、デフォルト動作になります。ツクールデフォルト:36
+
+@param choiceListHeight
+@text 選択肢
+@type number
+@default 48
+@desc 選択肢・アイテム選択のコマンド高。0にすると、デフォルト動作になります。ツクールデフォルト:36
+*/
 
 (() => {
     "use strict";

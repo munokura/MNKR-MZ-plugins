@@ -9,32 +9,62 @@
  */
 
 /*:
- * @target MZ
- * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_AltBattleStatusMZ.js
- * @plugindesc 戦闘中のステータスウィンドウをシンプルにします。
- * @author munokura
- * 
- * @help
- * # 機能
- * 戦闘中のステータスウィンドウをシンプルにします。
- * 
- * プラグインコマンドはありません。
- * 
- * 
- * # 利用規約
- * MITライセンスです。
- * https://licenses.opensource.jp/MIT/MIT.html
- * 作者に無断で改変、再配布が可能で、
- * 利用形態（商用、18禁利用等）についても制限はありません。
- * 
- * @param actorAutoCols
- * @text アクター数自動調整
- * @desc アクターウィンドウ幅を戦闘参加人数で自動調整
- * @type boolean
- * @on 自動調整する
- * @off 自動調整しない
- * @default true
- */
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_AltBattleStatusMZ.js
+@plugindesc Simplify the status window during battle.
+@author example
+@license MIT License
+
+@help
+# Features
+Simplifies the status window during battle.
+
+No plugin commands.
+
+# Terms of Use
+MIT License.
+http://opensource.org/licenses/mit-license.php
+You may modify and redistribute this without permission from the author, and
+there are no restrictions on its use (commercial, R18+, etc.).
+
+@param actorAutoCols
+@text Automatic adjustment of the number of actors
+@desc Actor window width automatically adjusted based on the number of players participating in the battle
+@type boolean
+@on Auto adjust
+@off Do not auto-adjust
+@default true
+*/
+
+/*:ja
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_AltBattleStatusMZ.js
+@plugindesc 戦闘中のステータスウィンドウをシンプルにします。
+@author munokura
+
+@help
+# 機能
+戦闘中のステータスウィンドウをシンプルにします。
+
+
+プラグインコマンドはありません。
+
+
+# 利用規約
+MITライセンスです。
+http://opensource.org/licenses/mit-license.php
+作者に無断で改変、再配布が可能で、
+利用形態（商用、18禁利用等）についても制限はありません。
+
+
+@param actorAutoCols
+@text アクター数自動調整
+@desc アクターウィンドウ幅を戦闘参加人数で自動調整
+@type boolean
+@on 自動調整する
+@off 自動調整しない
+@default true
+*/
 
 (() => {
     "use strict";

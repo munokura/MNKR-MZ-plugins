@@ -8,164 +8,312 @@
  * --------------------------------------------------
  */
 
+/*:
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_HzTimingBarMZ.js
+@plugindesc Execute the timing bar by inputting buttons in time.
+@author example
+@license MIT License
+
+@help
+Executes a timing bar, requiring button presses in time.
+Set and execute the timing bar using a plugin command.
+
+The cursor moves toward the bar's end point.
+The bar will end when an empty area is filled in and a value of 0 is assigned.
+The variable will be assigned the higher of the Hit (1) or Critical (2) points
+entered by the end.
+However, if there is a required input range, 0 will be assigned if that range
+is not filled in.
+
+The variable will be assigned and the bar will end when the bar's end is
+reached or the clear condition (all required, hit, and critical conditions
+have been met).
+
+Command Help Supplement
+[hit_area]
+Sets the minimum and maximum values of the hit area between 0 and 100.
+min-max
+Example:
+70-90
+
+[critical_area]
+Sets the minimum and maximum values of the critical area between 0 and 100.
+min-max
+Example)
+90-95
+
+[require_area]
+Set the minimum and maximum values for the required input range(s) between 0
+and 100.
+min-max,min-max,...
+If you do not enter all required inputs, button presses within the hit and
+critical ranges will result in a miss.
+* Be sure to set the required inputs before the hit and critical ranges.
+Example)
+10-20 # Required area is between 10 and 20
+20-30,50-60 # Required area is between 20 and 30, between 50 and 60
+No input # No required area
+
+# Contact
+This is a plugin originally created for RPG Maker MV that has been ported to
+MZ.
+Please contact the modifier for any inquiries.
+
+# Terms of Use
+MIT License.
+http://opensource.org/licenses/mit-license.php
+Modifications and redistribution are permitted without permission from the
+author, and there are no restrictions on use (commercial, 18+, etc.).
+
+Ver. 0.0.1 by munokura (April 11, 2022)
+Ported to MZ
+Fixed an issue where values were not assigned to variables.
+
+Ver. 0.0.2 by munokura (April 12, 2022)
+Fixed an issue where an infinite loop would occur if no text was displayed
+after a plugin command.
+Fixed an issue where a required area would always result in a miss if it was
+placed after another area.
+
+Ver. 0.0.3 by munokura (May 7, 2023)
+Fixed an issue where the hit value would be obtained when scoring a hit after
+a critical hit.
+
+Ver. 0.0.4 by munokura (May 7, 2023)
+Fixed an issue where the previous score would affect subsequent attempts.
+
+Ver. 0.1.0 by munokura (May 7, 2023)
+Changed the game so that if the clearing conditions are met at the time of a
+hit, the game clears without waiting until the end.
+
+@param bar width
+@text Bar Width
+@desc Bar Width
+@type number
+@default 500
+
+@param required SE
+@text Required area hit sound effect
+@desc Sound effects when hitting a required area
+@type file
+@default Decision2
+@dir audio/se/
+
+@param hit SE
+@text Hit area hit sound effect
+@desc Sound effect when hitting the hit area
+@type file
+@default Attack2
+@dir audio/se/
+
+@param critical SE
+@text Critical area hit sound effect
+@desc Sound effect when hitting a critical area
+@type file
+@default Attack3
+@dir audio/se/
+
+@param miss SE
+@text Input (failure) SE
+@desc SE when inputting (failed)
+@type file
+@default Buzzer1
+@dir audio/se/
+
+@command HzTimingBar
+@text Timing bar execution
+@desc Run the timing bar.
+@arg varNumber
+@text Result assignment variable ID
+@desc The variable number that returns the result. If it's a miss, 0 is returned, if it's a hit, 1 is returned, and if it's a critical hit, 2 is returned.
+@type variable
+@default 0
+@arg hitArea
+@text Hit Range
+@desc Set the minimum and maximum values of the hit range between 0 and 100. min-max
+@default 70-90
+@arg criticalArea
+@text Critical Range
+@desc Set the minimum and maximum values of the critical range between 0 and 100. min-max
+@default 10-20
+@arg requireArea
+@text Required input range
+@desc Set the minimum and maximum values of the required input range (multiple values allowed) between 0 and 100. min-max,min-max. If not used, leave blank.
+@arg x
+@text Command Position X
+@desc Specify the display position of the command. -1 is the center of the screen.
+@type number
+@default -1
+@min -1
+@arg y
+@text Command position Y
+@desc Specify the display position of the command. -1 is the center of the screen.
+@type number
+@default -1
+@min -1
+*/
+
+/*:ja
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_HzTimingBarMZ.js
+@plugindesc タイミングを合わせてボタン入力するタイミングバーを実行します。
+@author hiz (改変:munokura)
+
+@help
+タイミングを合わせてボタン入力するタイミングバーを実行します。
+プラグインコマンドでタイミングバーを設定・実行します。
+
+カーソルがバー終了地点に向かって動きます。
+何もない範囲で入力した時点で終了し、0が代入されます。
+終了までに、ヒット(1)・クリティカル(2)のどちらかを入力したポイントの高い方が
+変数に代入されます。
+ただし、入力必須範囲がある場合、それを入力していないと0が代入されます。
+
+バー末端に来るか、クリア条件（必須、ヒット、クリティカルの全てをヒット済）
+を満たした時点で変数が代入され終了します。
+
+
+コマンドヘルプ補足
+[hit_area]
+ヒット範囲の最小値・最大値を0から100の間で設定。
+min-max
+例）
+70-90
+
+[critical_area]
+クリティカル範囲の最小値・最大値を0から100の間で設定。
+min-max
+例）
+90-95
+
+[require_area]
+入力必須範囲（複数可）の最小値・最大値を0から100の間で設定。
+min-max,min-max,...
+入力必須範囲で全てボタン入力しないとヒット範囲・クリティカル範囲で
+ボタン入力してもミスになります。
+   ※ 必ずヒット範囲・クリティカル範囲より前になるように設定して下さい。
+例）
+10-20        # 必須エリアは10から20の範囲
+20-30,50-60  # 必須エリアは20から30・50から60の範囲
+無入力        # 必須エリア無し
+
+
+# 問い合わせ先
+これはRPGツクールMV用に作成されたプラグインをMZ用に移植したものです。
+お問い合わせは改変者へお願いいたします。
+
+
+# 利用規約
+MITライセンスです。
+http://opensource.org/licenses/mit-license.php
+作者に無断で改変、再配布が可能で、
+利用形態（商用、18禁利用等）についても制限はありません。
+
+
+Ver.0.0.1 by munokura (2022/4/11)
+MZへ移植
+変数に値が代入されない不具合を修正
+
+Ver.0.0.2 by munokura (2022/4/12)
+プラグインコマンド後に文章の表示がない場合、無限ループになる不具合を修正
+必須エリアが他エリアの後ろにある場合、必ずミスになる不具合を修正
+
+Ver.0.0.3 by munokura (2023/5/7)
+クリティカルの後にヒットを取ると、ヒットの値を取得する不具合を修正
+
+Ver.0.0.4 by munokura (2023/5/7)
+2回目以降に前回のスコアが影響してしまう不具合を修正
+
+Ver.0.1.0 by munokura (2023/5/7)
+ヒット時にクリア条件が揃っている場合、末端まで待たずにクリアする仕様変更
+
+@param bar width
+@type number
+@text バーの幅
+@desc バーの幅
+@default 500
+
+@param required SE
+@type file
+@reauire 1
+@dir audio/se/
+@text 必須エリアヒット時SE
+@desc 必須エリアヒット時のSE
+@default Decision2
+
+@param hit SE
+@type file
+@reauire 1
+@dir audio/se/
+@text ヒットエリアヒット時SE
+@desc ヒットエリアヒット時のSE
+@default Attack2
+
+@param critical SE
+@type file
+@reauire 1
+@dir audio/se/
+@text クリティカルエリアヒット時SE
+@desc クリティカルエリアヒット時のSE
+@default Attack3
+
+@param miss SE
+@type file
+@reauire 1
+@dir audio/se/
+@text 入力時（失敗）SE
+@desc 入力時（失敗）のSE
+@default Buzzer1
+
+
+@command HzTimingBar
+@text タイミングバー実行
+@desc タイミングバーを実行します。
+
+@arg varNumber
+@text 結果代入変数ID
+@desc 結果を返す変数番号。ミスの場合は0・ヒットの場合は1・クリティカルの場合は2が返される。
+@type variable
+@default 0
+
+@arg hitArea
+@text ヒット範囲
+@desc ヒット範囲の最小値・最大値を0から100の間で設定。min-max
+@default 70-90
+
+@arg criticalArea
+@text クリティカル範囲
+@desc クリティカル範囲の最小値・最大値を0から100の間で設定。min-max
+使用しない場合、無入力
+@default 10-20
+
+@arg requireArea
+@text 入力必須範囲
+@desc 入力必須範囲（複数可）の最小値・最大値を0から100の間で設定。min-max,min-max。使用しない場合、無入力
+@default
+
+@arg x
+@text コマンド位置X
+@desc コマンドの表示位置を指定。-1で画面中央
+@type number
+@min -1
+@default -1
+
+@arg y
+@text コマンド位置Y
+@desc コマンドの表示位置を指定。-1で画面中央
+@type number
+@min -1
+@default -1
+*/
+
 /*
 Copyright (c) <2016> <hiz>
 MITライセンスの下で公開されています。
 */
 
-/*:
- * @target MZ
- * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_HzTimingBarMZ.js
- * @plugindesc タイミングを合わせてボタン入力するタイミングバーを実行します。
- * @author hiz (改変 munokura)
- * 
- * @help
- * タイミングを合わせてボタン入力するタイミングバーを実行します。
- * プラグインコマンドでタイミングバーを設定・実行します。
- * 
- * カーソルがバー終了地点に向かって動きます。
- * 何もない範囲で入力した時点で終了し、0が代入されます。
- * 終了までに、ヒット(1)・クリティカル(2)のどちらかを入力したポイントの高い方が
- * 変数に代入されます。
- * ただし、入力必須範囲がある場合、それを入力していないと0が代入されます。
- * 
- * バー末端に来るか、クリア条件（必須、ヒット、クリティカルの全てをヒット済）
- * を満たした時点で変数が代入され終了します。
- * 
- * 
- * コマンドヘルプ補足
- * [hit_area] 
- * ヒット範囲の最小値・最大値を0から100の間で設定。
- * min-max
- * 例）
- * 70-90
- *        
- * [critical_area]
- * クリティカル範囲の最小値・最大値を0から100の間で設定。
- * min-max
- * 例）
- * 90-95
- * 
- * [require_area]
- * 入力必須範囲（複数可）の最小値・最大値を0から100の間で設定。
- * min-max,min-max,...
- * 入力必須範囲で全てボタン入力しないとヒット範囲・クリティカル範囲で
- * ボタン入力してもミスになります。
- *    ※ 必ずヒット範囲・クリティカル範囲より前になるように設定して下さい。
- * 例）
- * 10-20        # 必須エリアは10から20の範囲
- * 20-30,50-60  # 必須エリアは20から30・50から60の範囲
- * 無入力        # 必須エリア無し
- * 
- * 
- * このプラグインについて
- *   RPGツクールMV用に作成されたプラグインをMZ用に移植したものです。
- *   お問い合わせは改変者へお願いいたします。
- * 
- * 
- * 利用規約:
- *   MITライセンスです。
- *   https://licenses.opensource.jp/MIT/MIT.html
- *   作者に無断で改変、再配布が可能で、
- *   利用形態（商用、18禁利用等）についても制限はありません。
- * 
- * 
- * Ver.0.0.1 by munokura (2022/4/11)
- * MZへ移植
- * 変数に値が代入されない不具合を修正
- * 
- * Ver.0.0.2 by munokura (2022/4/12)
- * プラグインコマンド後に文章の表示がない場合、無限ループになる不具合を修正
- * 必須エリアが他エリアの後ろにある場合、必ずミスになる不具合を修正
- * 
- * Ver.0.0.3 by munokura (2023/5/7)
- * クリティカルの後にヒットを取ると、ヒットの値を取得する不具合を修正
- * 
- * Ver.0.0.4 by munokura (2023/5/7)
- * 2回目以降に前回のスコアが影響してしまう不具合を修正
- * 
- * Ver.0.1.0 by munokura (2023/5/7)
- * ヒット時にクリア条件が揃っている場合、末端まで待たずにクリアする仕様変更
- * 
- * @param bar width
- * @type number
- * @text バーの幅
- * @desc バーの幅
- * @default 500
- *
- * @param required SE
- * @type file
- * @reauire 1
- * @dir audio/se/
- * @text 必須エリアヒット時SE
- * @desc 必須エリアヒット時のSE
- * @default Decision2
- *
- * @param hit SE
- * @type file
- * @reauire 1
- * @dir audio/se/
- * @text ヒットエリアヒット時SE
- * @desc ヒットエリアヒット時のSE
- * @default Attack2
- * 
- * @param critical SE
- * @type file
- * @reauire 1
- * @dir audio/se/
- * @text クリティカルエリアヒット時SE
- * @desc クリティカルエリアヒット時のSE
- * @default Attack3
- *
- * @param miss SE
- * @type file
- * @reauire 1
- * @dir audio/se/
- * @text 入力時（失敗）SE
- * @desc 入力時（失敗）のSE
- * @default Buzzer1
- * 
- * 
- * @command HzTimingBar
- * @text タイミングバー実行
- * @desc タイミングバーを実行します。
- *
- * @arg varNumber
- * @text 結果代入変数ID
- * @desc 結果を返す変数番号。ミスの場合は0・ヒットの場合は1・クリティカルの場合は2が返される。
- * @type variable
- * @default 0
- *
- * @arg hitArea
- * @text ヒット範囲
- * @desc ヒット範囲の最小値・最大値を0から100の間で設定。min-max
- * @default 70-90
- *
- * @arg criticalArea
- * @text クリティカル範囲
- * @desc クリティカル範囲の最小値・最大値を0から100の間で設定。min-max
- * 使用しない場合、無入力
- * @default 10-20
- *
- * @arg requireArea
- * @text 入力必須範囲
- * @desc 入力必須範囲（複数可）の最小値・最大値を0から100の間で設定。min-max,min-max。使用しない場合、無入力
- * @default 
- *
- * @arg x
- * @text コマンド位置X
- * @desc コマンドの表示位置を指定。-1で画面中央
- * @type number
- * @min -1
- * @default -1
- *
- * @arg y
- * @text コマンド位置Y
- * @desc コマンドの表示位置を指定。-1で画面中央
- * @type number
- * @min -1
- * @default -1
- */
+
 
 // 必須エリア追加
 // 必須エリアヒット時、効果音を出す
@@ -265,7 +413,7 @@ MITライセンスの下で公開されています。
     // HzTimingBar.prototype.initialize = function (x, y, hitArea, criticalArea, requiredAreas) {
     //     this._varNo = 1;
     // 変数が代入されないバグ修正
-    // 
+    //
 
     HzTimingBar.prototype.initialize = function (x, y, hitArea, criticalArea, requiredAreas, varNo) {
         this._hitArea = hitArea;

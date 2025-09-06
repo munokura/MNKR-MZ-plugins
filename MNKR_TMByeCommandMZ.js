@@ -8,6 +8,209 @@
  * --------------------------------------------------
  */
 
+/*:
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMByeCommandMZ.js
+@plugindesc Added the ability to separate from companions to the menu commands.
+@author example
+@license MIT License
+
+@help
+How to Use:
+
+This plugin adds the "Bye" menu command.
+This command cannot be executed if there is one or fewer party members.
+
+Memo Tag (Actor):
+
+<disableBye>
+Actors with this tag in the memo field cannot be bidden.
+
+Plugin Commands:
+
+disableBye
+Disables the "Bye" command from the menu.
+
+enableBye
+Restores a disabled "Bye" command.
+
+# Contact Information
+This is a plugin originally created for RPG Maker MV that has been ported to
+MZ.
+Please contact the modifier for any inquiries.
+
+# Terms of Use
+MIT License.
+http://opensource.org/licenses/mit-license.php
+Modifications and redistribution are permitted without permission from the
+author, and there are no restrictions on use (commercial, R18+, etc.).
+
+@param byeCommand
+@text Command Display
+@desc Command name for the goodbye command.
+@default 別れる
+
+@param byeSe
+@text sound effect files
+@desc The file name of the sound effect to be played when the goodbye command is executed.
+@type file
+@default Decision1
+@require 1
+@dir audio/se/
+
+@param byeSeParam
+@text Sound effect parameters
+@desc Goodbye command sound effect parameters
+@type struct<seParam>
+@default {"volume":"90","pitch":"100","pan":"0"}
+
+@param clearEquipments
+@text Remove equipment
+@desc Should I remove my equipment just before we split up?
+@type boolean
+@on remove
+@off Do not remove
+@default false
+
+@command disableBye
+@text Disable Goodbye Command
+@desc Disables the Goodbye command from the menu commands.
+
+@command enableBye
+@text Enable Goodbye Command
+@desc Reverts the disabled goodbye command.
+*/
+
+/*~struct~seParam:
+@param volume
+@text volume
+@desc Goodbye command sound effect volume
+@type number
+@default 90
+@max 100
+
+@param pitch
+@text pitch
+@desc Goodbye command sound effect pitch
+@type number
+@default 100
+@min 50
+@max 150
+
+@param pan
+@text phase
+@desc Goodbye command sound effect phase
+@type number
+@default 0
+@min -100
+@max 100
+*/
+
+/*:ja
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMByeCommandMZ.js
+@author tomoaky (改変:munokura)
+@plugindesc メニューコマンドに仲間と別れる機能を追加します。
+
+@help
+使い方:
+
+  このプラグインを導入するとメニューコマンドに『別れる』が追加されます。
+  パーティメンバーが 1 名以下の場合、コマンドを実行することはできません。
+
+
+メモ欄タグ（アクター）:
+
+  <disableBye>
+    メモ欄にこのタグがついているアクターは別れることができません。
+
+
+プラグインコマンド:
+
+  disableBye
+    さよならコマンドをメニューコマンドから使用不可にします。
+
+  enableBye
+    使用不可にしたさよならコマンドを元に戻します。
+
+
+# 問い合わせ先
+これはRPGツクールMV用に作成されたプラグインをMZ用に移植したものです。
+お問い合わせは改変者へお願いいたします。
+
+
+# 利用規約
+MITライセンスです。
+http://opensource.org/licenses/mit-license.php
+作者に無断で改変、再配布が可能で、
+利用形態（商用、18禁利用等）についても制限はありません。
+
+
+@param byeCommand
+@text コマンド表示
+@desc さよならコマンドのコマンド名。
+初期値: 別れる
+@default 別れる
+
+@param byeSe
+@text 効果音ファイル
+@desc さよならコマンド実行時に鳴らす効果音のファイル名
+初期値: Decision1
+@default Decision1
+@require 1
+@dir audio/se/
+@type file
+
+@param byeSeParam
+@text 効果音パラメータ
+@desc さよならコマンド効果音のパラメータ
+初期値: {"volume":"90","pitch":"100","pan":"0"}
+@default {"volume":"90","pitch":"100","pan":"0"}
+@type struct<seParam>
+
+@param clearEquipments
+@text 装備を外す
+@desc 分かれる直前に装備を外すか？
+@type boolean
+@on 外す
+@off 外さない
+@default false
+
+@command disableBye
+@text さよならコマンド無効化
+@desc さよならコマンドをメニューコマンドから使用不可にします。
+
+
+@command enableBye
+@text さよならコマンド有効化
+@desc 使用不可にしたさよならコマンドを元に戻します。
+*/
+
+/*~struct~seParam:ja
+@param volume
+@text 音量
+@default 90
+@type number
+@max 100
+@desc さよならコマンド効果音の音量
+
+@param pitch
+@text ピッチ
+@default 100
+@type number
+@min 50
+@max 150
+@desc さよならコマンド効果音のピッチ
+
+@param pan
+@text 位相
+@default 0
+@type number
+@min -100
+@max 100
+@desc さよならコマンド効果音の位相
+*/
+
 //=============================================================================
 // TMPlugin - さよならコマンド
 // バージョン: 1.0.0
@@ -19,104 +222,9 @@
 // http://opensource.org/licenses/mit-license.php
 //=============================================================================
 
-/*:
- * @target MZ
- * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMByeCommandMZ.js
- * @author tomoaky (改変 munokura)
- * @plugindesc メニューコマンドに仲間と別れる機能を追加します。
- * 
- * @help
- * 使い方:
- *
- *   このプラグインを導入するとメニューコマンドに『別れる』が追加されます。
- *   パーティメンバーが 1 名以下の場合、コマンドを実行することはできません。
- *
- *
- * メモ欄タグ（アクター）:
- * 
- *   <disableBye>
- *     メモ欄にこのタグがついているアクターは別れることができません。
- *
- *
- * プラグインコマンド:
- * 
- *   disableBye
- *     さよならコマンドをメニューコマンドから使用不可にします。
- *
- *   enableBye
- *     使用不可にしたさよならコマンドを元に戻します。
- *
- *
- * 利用規約:
- *   MITライセンスです。
- *   https://licenses.opensource.jp/MIT/MIT.html
- *   作者に無断で改変、再配布が可能で、
- *   利用形態（商用、18禁利用等）についても制限はありません。
- * 
- * @param byeCommand
- * @text コマンド表示
- * @desc さよならコマンドのコマンド名。
- * 初期値: 別れる
- * @default 別れる
- *
- * @param byeSe
- * @text 効果音ファイル
- * @desc さよならコマンド実行時に鳴らす効果音のファイル名
- * 初期値: Decision1
- * @default Decision1
- * @require 1
- * @dir audio/se/
- * @type file
- * 
- * @param byeSeParam
- * @text 効果音パラメータ
- * @desc さよならコマンド効果音のパラメータ
- * 初期値: {"volume":"90","pitch":"100","pan":"0"}
- * @default {"volume":"90","pitch":"100","pan":"0"}
- * @type struct<seParam>
- * 
- * @param clearEquipments
- * @text 装備を外す
- * @desc 分かれる直前に装備を外すか？
- * @type boolean
- * @on 外す
- * @off 外さない
- * @default false
- *
- * @command disableBye
- * @text さよならコマンド無効化
- * @desc さよならコマンドをメニューコマンドから使用不可にします。
- *
- * 
- * @command enableBye
- * @text さよならコマンド有効化
- * @desc 使用不可にしたさよならコマンドを元に戻します。
- */
 
-/*~struct~seParam:
- * @param volume
- * @text 音量
- * @default 90
- * @type number
- * @max 100
- * @desc さよならコマンド効果音の音量
- *
- * @param pitch
- * @text ピッチ
- * @default 100
- * @type number
- * @min 50
- * @max 150
- * @desc さよならコマンド効果音のピッチ
- *
- * @param pan
- * @text 位相
- * @default 0
- * @type number
- * @min -100
- * @max 100
- * @desc さよならコマンド効果音の位相
- */
+
+
 
 var Imported = Imported || {};
 Imported.TMByeCommand = true;

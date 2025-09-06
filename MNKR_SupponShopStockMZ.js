@@ -8,316 +8,580 @@
  * --------------------------------------------------
  */
 
+/*:
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_SupponShopStockMZ.js
+@plugindesc Set up a store with an inventory system.
+@author example
+@license MIT License
+
+@help
+Use the following functions with plugin commands.
+
+- Create a shop
+- Add items
+- Add weapons
+- Add armor
+- Delete items
+- Delete weapons
+- Delete armor
+- Start a shop
+- Delete a shop
+- Specify the inventory quantity of an item not managed by a variable and
+assign it to a variable.
+
+# Plugin inquiries
+This is a plugin originally created for RPG Maker MV that has been ported to
+MZ.
+Please contact the modifier with any inquiries.
+
+# Terms of Use
+MIT License.
+http://opensource.org/licenses/mit-license.php
+You may modify and redistribute this without permission, and there are no
+restrictions on its use (commercial, 18+, etc.).
+
+@param Label of stock Number
+@text Stock quantity notation
+@desc Set the display of stock quantity
+@default 在庫数
+
+@param Label of sold out
+@text Sold out sign
+@desc Set sold out indication
+@default 売り切れ
+
+@param Display option
+@text Display stock quantity
+@desc If true, the stock quantity will be displayed next to the number of items you have.
+@type boolean
+@on Display stock quantity
+@off Hide stock quantity
+@default false
+
+@param Display option space
+@text Option display space
+@desc This is the display space for the number of items you have and the number of items in stock.
+@default 12
+
+@command makeShop
+@text Shop Creation
+@desc Create a shop.
+@arg shopName
+@text Shop name
+@desc The name of the shop. Can be a number.
+@default shop1
+@arg shopType
+@text Shop Type
+@desc Specify the shop type.
+@type select
+@default 2
+@option Purchase only (cannot sell)
+@value 0
+@option Available for purchase and sale
+@value 1
+@option Buy, sell and sell items added to products
+@value 2
+
+@command addItem
+@text Adding items
+@desc Add items to the shop.
+@arg shopName
+@text Shop name
+@desc The name of the shop. Can be a number.
+@default shop1
+@arg itemId
+@text Additional items
+@desc The ID of the item to add.
+@type item
+@default 1
+@arg variableId
+@text Inventory variable ID
+@desc This is the ID of the variable to assign the inventory quantity to. If you set it to -1 (Text tab), the variable will not be used and inventory will be handled using internal data.
+@type variable
+@default -1
+@arg stock
+@text Quantity in stock
+@desc The set value for the stock quantity.
+@default 1
+
+@command addWeapon
+@text Add weapon
+@desc Add weapons to the shop.
+@arg shopName
+@text Shop name
+@desc The name of the shop. Can be a number.
+@default shop1
+@arg weaponId
+@text additional weapons
+@desc The ID of the weapon to add.
+@type weapon
+@default 1
+@arg variableId
+@text Inventory variable ID
+@desc This is the ID of the variable to assign the inventory quantity to. If you set it to -1 (Text tab), the variable will not be used and inventory will be handled using internal data.
+@type variable
+@default -1
+@arg stock
+@text Quantity in stock
+@desc The set value for the stock quantity.
+@default 1
+
+@command addArmor
+@text Added armor
+@desc Add armor to the shop.
+@arg shopName
+@text Shop name
+@desc The name of the shop. Can be a number.
+@default shop1
+@arg armorId
+@text Additional Armor
+@desc The ID of the armor to add.
+@type armor
+@default 1
+@arg variableId
+@text Inventory variable ID
+@desc This is the ID of the variable to assign the inventory quantity to. If you set it to -1 (Text tab), the variable will not be used and inventory will be handled using internal data.
+@type variable
+@default -1
+@arg stock
+@text Quantity in stock
+@desc The set value for the stock quantity.
+@default 1
+
+@command removeItem
+@text Item deletion
+@desc Remove the item from the shop.
+@arg shopName
+@text Shop name
+@desc The name of the shop. Can be a number.
+@default shop1
+@arg itemId
+@text Deleted Items
+@desc The ID of the item to delete.
+@type item
+@default 1
+
+@command removeWeapon
+@text Weapon removal
+@desc Removes weapons from the shop.
+@arg shopName
+@text Shop name
+@desc The name of the shop. Can be a number.
+@default shop1
+@arg weaponId
+@text Removed Weapons
+@desc The ID of the weapon to remove.
+@type weapon
+@default 1
+
+@command removeArmor
+@text Delete Armor
+@desc Removes armor from the shop.
+@arg shopName
+@text Shop name
+@desc The name of the shop. Can be a number.
+@default shop1
+@arg armorId
+@text Removed Armor
+@desc The ID of the armor to delete.
+@type armor
+@default 1
+
+@command openShop
+@text Open a shop
+@desc Open a shop.
+@arg shopName
+@text Shop name
+@desc The name of the shop. Can be a number.
+@default shop1
+@arg sort
+@text Sorting Options
+@desc Sorting options when purchasing.
+@type select
+@default 2
+@option Added order
+@value 0
+@option Item ID order, weapon ID order, armor ID order
+@value 1
+@option Sort by ID in selected category
+@value 2
+
+@command deleteShop
+@text Delete Shop
+@desc Delete the shop.
+@arg shopName
+@text Shop name
+@desc The name of the shop. Can be a number.
+@default shop1
+
+@command getNumItem
+@text Get inventory item count
+@desc Assign the number of items in stock to a variable.
+@arg shopName
+@text Shop name
+@desc The name of the shop. Can be a number.
+@default shop1
+@arg itemId
+@text Item ID
+@desc The ID of the item to retrieve.
+@type item
+@default 1
+@arg variableId
+@text Variable ID
+@desc The ID of the variable to which the number of items in stock will be assigned.
+@type variable
+@default 1
+
+@command getNumWeapon
+@text Get number of weapons in stock
+@desc Assign the number of weapons in stock to a variable.
+@arg shopName
+@text Shop name
+@desc The name of the shop. Can be a number.
+@default shop1
+@arg weaponId
+@text Weapon ID
+@desc The ID of the weapon to retrieve.
+@type weapon
+@default 1
+@arg variableId
+@text Variable ID
+@desc The ID of the variable to which the number of items in stock will be assigned.
+@type variable
+@default 1
+
+@command getNumArmor
+@text Get the number of armor in stock
+@desc Assign the number of armor pieces in stock to a variable.
+@arg shopName
+@text Shop name
+@desc The name of the shop. Can be a number.
+@default shop1
+@arg armorId
+@text Armor ID
+@desc The ID of the armor to retrieve.
+@type armor
+@default 1
+@arg variableId
+@text Variable ID
+@desc The ID of the variable to which the number of items in stock will be assigned.
+@type variable
+@default 1
+*/
+
+/*:ja
+@target MZ
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_SupponShopStockMZ.js
+
+@plugindesc 在庫システムを有するお店を設定します。
+@author Suppon (改変 munokura)
+
+@help
+以下の機能をプラグインコマンドで使用してください。
+
+- ショップの作成
+- アイテムの追加
+- 武器の追加
+- 防具の追加
+- アイテムの削除
+- 武器の削除
+- 防具の削除
+- ショップの起動
+- ショップの削除
+- 変数管理しないアイテムの在庫数を、指定して変数に代入
+
+
+# プラグインの問い合わせについて
+これはRPGツクールMV用に作成されたプラグインをMZ用に移植したものです。
+問い合わせは改変者へお願いいたします。
+
+
+# 利用規約
+MITライセンスです。
+http://opensource.org/licenses/mit-license.php
+作者に無断で改変、再配布が可能で、
+利用形態（商用、18禁利用等）についても制限はありません。
+
+
+@param Label of stock Number
+@text 在庫数の表記
+@desc 在庫数の表記を設定します
+@default 在庫数
+
+@param Label of sold out
+@text 売り切れの表記
+@desc 売り切れの表記を設定します
+@default 売り切れ
+
+@param Display option
+@text 在庫数を表示
+@type boolean
+@on 在庫数を表示
+@off 在庫数を非表示
+@desc true にすると在庫数が、持っている数の横に表示されます。
+@default false
+
+@param Display option space
+@text オプション表示スペース
+@desc 持っている数と在庫数の表示スペースです。
+@default 12
+
+
+@command makeShop
+@text ショップ作成
+@desc ショップを作成します。
+
+@arg shopName
+@text ショップの名前
+@desc ショップの名前です。数値でも構いません。
+@default shop1
+
+@arg shopType
+@text ショップタイプ
+@desc ショップタイプの指定。
+@type select
+@option 購買専門（売却不可）
+@value 0
+@option 購買、売却可能
+@value 1
+@option 購買、売却可能、売却品が商品に追加
+@value 2
+@default 2
+
+
+@command addItem
+@text アイテム追加
+@desc ショップにアイテムを追加します。
+
+@arg shopName
+@text ショップの名前
+@desc ショップの名前です。数値でも構いません。
+@default shop1
+
+@arg itemId
+@text 追加アイテム
+@desc 追加するアイテムのIDです。
+@type item
+@default 1
+
+@arg variableId
+@text 在庫の変数ID
+@desc 在庫の個数を割り当てる変数のIDです。-1にする（テキストタブ指定）と変数は使わず、在庫は内部のデータで処理されます。
+@type variable
+@default -1
+
+@arg stock
+@text 在庫数
+@desc 在庫数の設定値です。
+@default 1
+
+
+@command addWeapon
+@text 武器追加
+@desc ショップに武器を追加します。
+
+@arg shopName
+@text ショップの名前
+@desc ショップの名前です。数値でも構いません。
+@default shop1
+
+@arg weaponId
+@text 追加武器
+@desc 追加する武器のIDです。
+@type weapon
+@default 1
+
+@arg variableId
+@text 在庫の変数ID
+@desc 在庫の個数を割り当てる変数のIDです。-1にする（テキストタブ指定）と変数は使わず、在庫は内部のデータで処理されます。
+@type variable
+@default -1
+
+@arg stock
+@text 在庫数
+@desc 在庫数の設定値です。
+@default 1
+
+
+@command addArmor
+@text 防具追加
+@desc ショップに防具を追加します。
+
+@arg shopName
+@text ショップの名前
+@desc ショップの名前です。数値でも構いません。
+@default shop1
+
+@arg armorId
+@text 追加防具
+@desc 追加する防具のIDです。
+@type armor
+@default 1
+
+@arg variableId
+@text 在庫の変数ID
+@desc 在庫の個数を割り当てる変数のIDです。-1にする（テキストタブ指定）と変数は使わず、在庫は内部のデータで処理されます。
+@type variable
+@default -1
+
+@arg stock
+@text 在庫数
+@desc 在庫数の設定値です。
+@default 1
+
+
+@command removeItem
+@text アイテム削除
+@desc ショップからアイテムを削除します。
+
+@arg shopName
+@text ショップの名前
+@desc ショップの名前です。数値でも構いません。
+@default shop1
+
+@arg itemId
+@text 削除アイテム
+@desc 削除するアイテムのIDです。
+@type item
+@default 1
+
+
+@command removeWeapon
+@text 武器削除
+@desc ショップから武器を削除します。
+
+@arg shopName
+@text ショップの名前
+@desc ショップの名前です。数値でも構いません。
+@default shop1
+
+@arg weaponId
+@text 削除武器
+@desc 削除する武器のIDです。
+@type weapon
+@default 1
+
+
+@command removeArmor
+@text 防具削除
+@desc ショップから防具を削除します。
+
+@arg shopName
+@text ショップの名前
+@desc ショップの名前です。数値でも構いません。
+@default shop1
+
+@arg armorId
+@text 削除防具
+@desc 削除する防具のIDです。
+@type armor
+@default 1
+
+
+@command openShop
+@text ショップを開く
+@desc ショップを開きます。
+
+@arg shopName
+@text ショップの名前
+@desc ショップの名前です。数値でも構いません。
+@default shop1
+
+@arg sort
+@text ソートオプション
+@desc 購買時のソートオプションです。
+@type select
+@option 追加した順
+@value 0
+@option アイテムID順、武器ID順、防具ID順
+@value 1
+@option カテゴリー選択中でID順
+@value 2
+@default 2
+
+
+@command deleteShop
+@text ショップを削除
+@desc ショップを削除します。
+
+@arg shopName
+@text ショップの名前
+@desc ショップの名前です。数値でも構いません。
+@default shop1
+
+
+@command getNumItem
+@text 在庫アイテム数取得
+@desc 在庫アイテム数を変数に代入します。
+
+@arg shopName
+@text ショップの名前
+@desc ショップの名前です。数値でも構いません。
+@default shop1
+
+@arg itemId
+@text アイテムID
+@desc 取得するアイテムのIDです。
+@type item
+@default 1
+
+@arg variableId
+@text 変数ID
+@desc 在庫の個数を代入する変数のIDです。
+@type variable
+@default 1
+
+
+@command getNumWeapon
+@text 在庫武器数取得
+@desc 在庫武器数を変数に代入します。
+
+@arg shopName
+@text ショップの名前
+@desc ショップの名前です。数値でも構いません。
+@default shop1
+
+@arg weaponId
+@text 武器ID
+@desc 取得する武器のIDです。
+@type weapon
+@default 1
+
+@arg variableId
+@text 変数ID
+@desc 在庫の個数を代入する変数のIDです。
+@type variable
+@default 1
+
+
+@command getNumArmor
+@text 在庫防具数取得
+@desc 在庫防具数を変数に代入します。
+
+@arg shopName
+@text ショップの名前
+@desc ショップの名前です。数値でも構いません。
+@default shop1
+
+@arg armorId
+@text 防具ID
+@desc 取得する防具のIDです。
+@type armor
+@default 1
+
+@arg variableId
+@text 変数ID
+@desc 在庫の個数を代入する変数のIDです。
+@type variable
+@default 1
+*/
+
 //============================================================================
 // SupponShopStock.js
 //============================================================================
 
-/*:
- * @target MZ
- * @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_SupponShopStockMZ.js
- * 
- * @plugindesc 在庫システムを有するお店を設定します。
- * @author Suppon (改変 munokura)
- *
- * @help
- * 以下の機能をプラグインコマンドで使用してください。
- *
- * - ショップの作成
- * - アイテムの追加
- * - 武器の追加
- * - 防具の追加
- * - アイテムの削除
- * - 武器の削除
- * - 防具の削除
- * - ショップの起動
- * - ショップの削除
- * - 変数管理しないアイテムの在庫数を、指定して変数に代入
- *
- * 
- * このプラグインについて
- *   RPGツクールMV用に作成されたプラグインをMZ用に移植したものです。
- *   お問い合わせは改変者へお願いいたします。
- * 
- * 利用規約:
- *   MITライセンスです。
- *   https://licenses.opensource.jp/MIT/MIT.html
- *   作者に無断で改変、再配布が可能で、
- *   利用形態（商用、18禁利用等）についても制限はありません。
- * 
- *
- * @param Label of stock Number
- * @text 在庫数の表記
- * @desc 在庫数の表記を設定します
- * @default 在庫数
- *
- * @param Label of sold out
- * @text 売り切れの表記
- * @desc 売り切れの表記を設定します
- * @default 売り切れ
- *
- * @param Display option
- * @text 在庫数を表示
- * @type boolean
- * @on 在庫数を表示
- * @off 在庫数を非表示
- * @desc true にすると在庫数が、持っている数の横に表示されます。
- * @default false
- *
- * @param Display option space
- * @text オプション表示スペース
- * @desc 持っている数と在庫数の表示スペースです。
- * @default 12
- * 
- * 
- * @command makeShop
- * @text ショップ作成
- * @desc ショップを作成します。
- *
- * @arg shopName
- * @text ショップの名前
- * @desc ショップの名前です。数値でも構いません。
- * @default shop1
- * 
- * @arg shopType
- * @text ショップタイプ
- * @desc ショップタイプの指定。
- * @type select
- * @option 購買専門（売却不可）
- * @value 0
- * @option 購買、売却可能
- * @value 1
- * @option 購買、売却可能、売却品が商品に追加
- * @value 2
- * @default 2
- *
- * 
- * @command addItem
- * @text アイテム追加
- * @desc ショップにアイテムを追加します。
- *
- * @arg shopName
- * @text ショップの名前
- * @desc ショップの名前です。数値でも構いません。
- * @default shop1
- *
- * @arg itemId
- * @text 追加アイテム
- * @desc 追加するアイテムのIDです。
- * @type item
- * @default 1
- *
- * @arg variableId
- * @text 在庫の変数ID
- * @desc 在庫の個数を割り当てる変数のIDです。-1にする（テキストタブ指定）と変数は使わず、在庫は内部のデータで処理されます。
- * @type variable
- * @default -1
- *
- * @arg stock
- * @text 在庫数
- * @desc 在庫数の設定値です。
- * @default 1
- *
- * 
- * @command addWeapon
- * @text 武器追加
- * @desc ショップに武器を追加します。
- *
- * @arg shopName
- * @text ショップの名前
- * @desc ショップの名前です。数値でも構いません。
- * @default shop1
- *
- * @arg weaponId
- * @text 追加武器
- * @desc 追加する武器のIDです。
- * @type weapon
- * @default 1
- *
- * @arg variableId
- * @text 在庫の変数ID
- * @desc 在庫の個数を割り当てる変数のIDです。-1にする（テキストタブ指定）と変数は使わず、在庫は内部のデータで処理されます。
- * @type variable
- * @default -1
- *
- * @arg stock
- * @text 在庫数
- * @desc 在庫数の設定値です。
- * @default 1
- *
- * 
- * @command addArmor
- * @text 防具追加
- * @desc ショップに防具を追加します。
- *
- * @arg shopName
- * @text ショップの名前
- * @desc ショップの名前です。数値でも構いません。
- * @default shop1
- *
- * @arg armorId
- * @text 追加防具
- * @desc 追加する防具のIDです。
- * @type armor
- * @default 1
- *
- * @arg variableId
- * @text 在庫の変数ID
- * @desc 在庫の個数を割り当てる変数のIDです。-1にする（テキストタブ指定）と変数は使わず、在庫は内部のデータで処理されます。
- * @type variable
- * @default -1
- *
- * @arg stock
- * @text 在庫数
- * @desc 在庫数の設定値です。
- * @default 1
- *
- * 
- * @command removeItem
- * @text アイテム削除
- * @desc ショップからアイテムを削除します。
- *
- * @arg shopName
- * @text ショップの名前
- * @desc ショップの名前です。数値でも構いません。
- * @default shop1
- *
- * @arg itemId
- * @text 削除アイテム
- * @desc 削除するアイテムのIDです。
- * @type item
- * @default 1
- *
- * 
- * @command removeWeapon
- * @text 武器削除
- * @desc ショップから武器を削除します。
- *
- * @arg shopName
- * @text ショップの名前
- * @desc ショップの名前です。数値でも構いません。
- * @default shop1
- *
- * @arg weaponId
- * @text 削除武器
- * @desc 削除する武器のIDです。
- * @type weapon
- * @default 1
- *
- * 
- * @command removeArmor
- * @text 防具削除
- * @desc ショップから防具を削除します。
- *
- * @arg shopName
- * @text ショップの名前
- * @desc ショップの名前です。数値でも構いません。
- * @default shop1
- *
- * @arg armorId
- * @text 削除防具
- * @desc 削除する防具のIDです。
- * @type armor
- * @default 1
- *
- * 
- * @command openShop
- * @text ショップを開く
- * @desc ショップを開きます。
- *
- * @arg shopName
- * @text ショップの名前
- * @desc ショップの名前です。数値でも構いません。
- * @default shop1
- *
- * @arg sort
- * @text ソートオプション
- * @desc 購買時のソートオプションです。
- * @type select
- * @option 追加した順
- * @value 0
- * @option アイテムID順、武器ID順、防具ID順
- * @value 1
- * @option カテゴリー選択中でID順
- * @value 2
- * @default 2
- *
- * 
- * @command deleteShop
- * @text ショップを削除
- * @desc ショップを削除します。
- *
- * @arg shopName
- * @text ショップの名前
- * @desc ショップの名前です。数値でも構いません。
- * @default shop1
- *
- * 
- * @command getNumItem
- * @text 在庫アイテム数取得
- * @desc 在庫アイテム数を変数に代入します。
- *
- * @arg shopName
- * @text ショップの名前
- * @desc ショップの名前です。数値でも構いません。
- * @default shop1
- *
- * @arg itemId
- * @text アイテムID
- * @desc 取得するアイテムのIDです。
- * @type item
- * @default 1
- *
- * @arg variableId
- * @text 変数ID
- * @desc 在庫の個数を代入する変数のIDです。
- * @type variable
- * @default 1
- *
- * 
- * @command getNumWeapon
- * @text 在庫武器数取得
- * @desc 在庫武器数を変数に代入します。
- *
- * @arg shopName
- * @text ショップの名前
- * @desc ショップの名前です。数値でも構いません。
- * @default shop1
- *
- * @arg weaponId
- * @text 武器ID
- * @desc 取得する武器のIDです。
- * @type weapon
- * @default 1
- *
- * @arg variableId
- * @text 変数ID
- * @desc 在庫の個数を代入する変数のIDです。
- * @type variable
- * @default 1
- *
- * 
- * @command getNumArmor
- * @text 在庫防具数取得
- * @desc 在庫防具数を変数に代入します。
- *
- * @arg shopName
- * @text ショップの名前
- * @desc ショップの名前です。数値でも構いません。
- * @default shop1
- *
- * @arg armorId
- * @text 防具ID
- * @desc 取得する防具のIDです。
- * @type armor
- * @default 1
- *
- * @arg variableId
- * @text 変数ID
- * @desc 在庫の個数を代入する変数のIDです。
- * @type variable
- * @default 1
- * 
- */
+
 
 (function () {
 
