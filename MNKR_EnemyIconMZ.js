@@ -10,7 +10,7 @@
 
 /*:
 @target MZ
-@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_MNKR_EnemyIcon.js
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_EnemyIconMZ.js
 @plugindesc An icon will be displayed in front of the enemy character's name on the battle screen.
 @author munokura
 @license MIT License
@@ -55,7 +55,7 @@ Added the ability to display multiple icons.
 
 /*:ja
 @target MZ
-@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_MNKR_EnemyIcon.js
+@url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_EnemyIconMZ.js
 @plugindesc 戦闘画面で敵キャラの名前の前にアイコンを表示します。
 @author munokura
 
