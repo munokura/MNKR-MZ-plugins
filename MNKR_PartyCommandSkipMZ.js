@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_PartyCommandSkipMZ.js
 @plugindesc At the start of battle, party commands will be skipped and you will start with actor commands.
-@author example
+@author munokura
 @license MIT License
 
 @help

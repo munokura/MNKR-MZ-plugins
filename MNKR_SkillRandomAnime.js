@@ -12,7 +12,7 @@
 @target MZ MV
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_SkillRandomAnime.js
 @plugindesc Randomly selects and plays animations for skills and items. Only works during battle.
-@author example
+@author munokura
 @license MIT License
 
 @help

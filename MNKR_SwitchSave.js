@@ -12,7 +12,7 @@
 @target MZ MV
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_SwitchSave.js
 @plugindesc If you open the save screen while the designated switch is ON, you will not be able to cancel.
-@author example
+@author munokura
 @license MIT License
 
 @help

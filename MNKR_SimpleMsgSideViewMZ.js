@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_SimpleMsgSideViewMZ.js
 @plugindesc Only the names of skills/items are displayed in side view battles.
-@author example
+@author munokura
 @license MIT License
 
 @help

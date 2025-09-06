@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMTopFixMZ.js
 @plugindesc Prevents rearrangement of the actor at the head of the party.
-@author example
+@author munokura
 @license MIT License
 
 @help

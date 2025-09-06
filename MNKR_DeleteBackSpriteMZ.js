@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_DeleteBackSpriteMZ.js
 @plugindesc Hide the black background of the command individually.
-@author example
+@author munokura
 @license MIT License
 
 @help

@@ -12,7 +12,7 @@
 @target MZ MV
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_HideBattleHelp.js
 @plugindesc Hides the help window after selecting a skill or item in battle.
-@author example
+@author munokura
 @license MIT License
 
 @help

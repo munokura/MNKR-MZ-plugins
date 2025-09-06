@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_OpenWindowLinks.js
 @plugindesc Adds a plugin command that opens the specified URL in a new window.
-@author example
+@author munokura
 @license MIT License
 
 @help

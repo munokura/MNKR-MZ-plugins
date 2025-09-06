@@ -12,7 +12,7 @@
 @target MZ MV
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_ShowEventsTransition.js
 @plugindesc Map events will remain visible during encounters.
-@author example
+@author munokura
 @license MIT License
 
 @help

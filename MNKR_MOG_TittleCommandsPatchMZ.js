@@ -2,7 +2,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_MOG_TittleCommandsPatchMZ.js
 @plugindesc If there is no saved data, MOG_TitleCommands can change the hue of the image or replace it.
-@author example
+@author munokura
 @license MIT License
 
 @help

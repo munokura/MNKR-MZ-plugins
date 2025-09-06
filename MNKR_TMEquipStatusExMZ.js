@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMEquipStatusExMZ.js
 @plugindesc Edit the equipment status display items.
-@author example
+@author munokura
 @license MIT License
 
 @help

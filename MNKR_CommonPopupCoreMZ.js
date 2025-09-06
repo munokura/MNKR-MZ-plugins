@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_CommonPopupCoreMZ.js
 @plugindesc This is a base plugin that provides a general-purpose popup mechanism.
-@author example
+@author munokura
 @license MIT License
 
 @help

@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_MKR_EventGaugeMZ.js
 @plugindesc Event gauge display
-@author example
+@author munokura
 @license MIT License
 
 @help

@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMMoveExMZ.js
 @plugindesc Adds features such as wall collision sounds and region-based passage settings.
-@author example
+@author munokura
 @license MIT License
 
 @help

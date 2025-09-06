@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMByeCommandMZ.js
 @plugindesc Added the ability to separate from companions to the menu commands.
-@author example
+@author munokura
 @license MIT License
 
 @help

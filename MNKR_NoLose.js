@@ -12,7 +12,7 @@
 @target MZ MV
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_NoLose.js
 @plugindesc Even if you are wiped out in battle, it won't be a game over.
-@author example
+@author munokura
 @license MIT License
 
 @help

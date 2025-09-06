@@ -12,7 +12,7 @@
 @target MZ MV
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_GoldNoWindow.js
 @plugindesc Hides the money window in the main menu.
-@author example
+@author munokura
 @license MIT License
 
 @help

@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMEquipSlotExMZ.js
 @plugindesc Allows you to freely change body part settings for each actor.
-@author example
+@author munokura
 @license MIT License
 
 @help

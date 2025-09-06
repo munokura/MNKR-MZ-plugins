@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMBattleMistMZ.js
 @plugindesc Displays fog-like effects in battle scenes.
-@author example
+@author munokura
 @license MIT License
 
 @help

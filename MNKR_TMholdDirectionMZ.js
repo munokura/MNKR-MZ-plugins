@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMholdDirectionMZ.js
 @plugindesc Adds the ability to change the player's orientation without moving.
-@author example
+@author munokura
 @license MIT License
 
 @help

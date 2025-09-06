@@ -12,7 +12,7 @@
 @target MZ MV
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_SwitchGameoverMusic.js
 @plugindesc When the specified switch is ON, the previous BGM will continue when the game ends.
-@author example
+@author munokura
 @license MIT License
 
 @help

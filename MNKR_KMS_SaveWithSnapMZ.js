@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_KMS_SaveWithSnapMZ.js
 @plugindesc Add screenshots to the save/load screen.
-@author example
+@author munokura
 @license MIT License
 
 @help

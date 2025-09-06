@@ -12,7 +12,7 @@
 @target MZ MV
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_DeadPenalty.js
 @plugindesc If you are incapacitated, your TP will be reduced to 0.
-@author example
+@author munokura
 @license MIT License
 
 @help

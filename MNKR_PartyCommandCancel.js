@@ -12,7 +12,7 @@
 @target MZ MV
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_PartyCommandCancel.js
 @plugindesc If you cancel in the party command window, you will be in the state where you chose to fight.
-@author example
+@author munokura
 @license MIT License
 
 @help

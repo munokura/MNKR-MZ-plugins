@@ -12,7 +12,7 @@
 @target MZ MV
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_GoldIcon.js
 @plugindesc Replace currency unit display with icons
-@author example
+@author munokura
 @license MIT License
 
 @help

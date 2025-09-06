@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_DarkPlasma_AltWindowFrameMZ.js
 @plugindesc A plugin for using MADO creation materials RPG Maker MZ version
-@author example
+@author munokura
 @license MIT
 
 @help

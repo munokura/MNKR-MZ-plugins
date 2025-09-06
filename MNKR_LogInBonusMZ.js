@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_LogInBonusMZ.js
 @plugindesc We provide a plugin command that simplifies login bonus implementation.
-@author example
+@author munokura
 @license MIT License
 
 @help

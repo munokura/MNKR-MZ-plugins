@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_AltSkillMenuMZ.js
 @plugindesc Simplify the skills screen in the main menu.
-@author example
+@author munokura
 @license MIT License
 
 @help

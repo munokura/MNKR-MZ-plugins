@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_HideFace.js
 @plugindesc You can hide the face image and specify the display gauge width of the menu.
-@author example
+@author munokura
 @license MIT License
 
 @help

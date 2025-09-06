@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_HideParamMZ.js
 @plugindesc Hides the specified items in each scene.
-@author example
+@author munokura
 @license MIT License
 
 @help

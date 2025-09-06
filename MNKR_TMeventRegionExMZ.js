@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMeventRegionExMZ.js
 @plugindesc You can specify whether or not events are allowed to pass through in the region, and you can control the self-switch when passing through an event.
-@author example
+@author munokura
 @license MIT License
 
 @help

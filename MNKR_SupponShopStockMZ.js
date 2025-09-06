@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_SupponShopStockMZ.js
 @plugindesc Set up a store with an inventory system.
-@author example
+@author munokura
 @license MIT License
 
 @help

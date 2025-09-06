@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_MoveEventPointMZ.js
 @plugindesc Adds a plugin command that moves the specified event to the specified coordinates on the map.
-@author example
+@author munokura
 @license MIT License
 
 @help

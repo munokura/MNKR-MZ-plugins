@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_OnlyBattleTpMZ.js
 @plugindesc Turns off the TP display outside of the battle screen.
-@author example
+@author munokura
 @license MIT License
 
 @help

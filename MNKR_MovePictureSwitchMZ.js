@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_MovePictureSwitchMZ.js
 @plugindesc The switch allows you to switch the picture movement coordinates between absolute and relative values.
-@author example
+@author munokura
 @license MIT License
 
 @help

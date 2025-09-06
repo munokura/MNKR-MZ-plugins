@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_BeforeCommonPatchMZ.js
 @plugindesc A patch for BeforeCommon (BeforeCommon.js) that adds a plugin command to display the usage in the battle log and then execute the common event.
-@author example
+@author munokura
 @license MIT License
 
 @help

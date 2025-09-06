@@ -12,7 +12,7 @@
 @target MZ MV
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_BackItemCommon.js
 @plugindesc After the common event of using an item or skill, you can automatically return to the original selection.
-@author example
+@author munokura
 @license MIT License
 
 @help

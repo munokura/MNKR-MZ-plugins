@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_RandomActorNameMZ.js
 @plugindesc Randomly renames the actors.
-@author example
+@author munokura
 @license MIT License
 
 @help

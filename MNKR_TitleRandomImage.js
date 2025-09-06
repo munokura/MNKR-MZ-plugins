@@ -12,7 +12,7 @@
 @target MZ MV
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TitleRandomImage.js
 @plugindesc The title image will change randomly.
-@author example
+@author munokura
 @license MIT License
 
 @help

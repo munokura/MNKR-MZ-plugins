@@ -12,7 +12,7 @@
 @target MZ MV
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_SelectWinAction.js
 @plugindesc Depending on the value of the specified variable, you can specify the SV actor's behavior when the battle is won.
-@author example
+@author munokura
 @license MIT License
 
 @help

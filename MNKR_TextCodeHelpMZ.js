@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TextCodeHelpMZ.js
 @plugindesc Displays help to make it easier to copy control character codes when entering text.
-@author example
+@author munokura
 @license MIT License
 
 @help

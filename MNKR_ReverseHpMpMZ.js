@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_ReverseHpMpMZ.js
 @plugindesc You can invert the HP and MP display.
-@author example
+@author munokura
 @license MIT License
 
 @help

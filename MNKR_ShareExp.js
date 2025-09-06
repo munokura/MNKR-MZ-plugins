@@ -12,7 +12,7 @@
 @target MZ MV
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_ShareExp.js
 @plugindesc Experience points earned at the end of battle will now be divided equally among all surviving members.
-@author example
+@author munokura
 @license MIT License
 
 @help

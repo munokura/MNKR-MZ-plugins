@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_BattleStatusMaxColsMZ.js
 @plugindesc You can specify the number of actors in the battle status window.
-@author example
+@author munokura
 @license MIT License
 
 @help

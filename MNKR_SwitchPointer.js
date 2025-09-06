@@ -12,7 +12,7 @@
 @target MZ MV
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_SwitchPointer.js
 @plugindesc When the specified switch is ON, the flashing (pointer) display of the destination by tapping will stop.
-@author example
+@author munokura
 @license MIT License
 
 @help

@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_FixEscapeMoveDistance.js
 @plugindesc Fixes actor movement and behavior during escape.
-@author example
+@author munokura
 @license MIT License
 
 @help

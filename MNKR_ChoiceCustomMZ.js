@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_ChoiceCustomMZ.js
 @plugindesc Adds a plugin command to change the number of columns, rows, and Y-axis position of the options.
-@author example
+@author munokura
 @license MIT License
 
 @help

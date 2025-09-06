@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_HzTimingBarMZ.js
 @plugindesc Execute the timing bar by inputting buttons in time.
-@author example
+@author munokura
 @license MIT License
 
 @help

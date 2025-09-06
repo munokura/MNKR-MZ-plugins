@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TitleCommandRows.js
 @plugindesc Specifies the number of window lines for the title menu.
-@author example
+@author munokura
 @license MIT License
 
 @help

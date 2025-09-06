@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_Vitsuno_DifficultyMZ.js
 @plugindesc You will be able to change ability scores and reward multipliers depending on the difficulty level.
-@author example
+@author munokura
 @license MIT License
 
 @help

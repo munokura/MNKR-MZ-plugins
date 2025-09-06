@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_SAN_MapGenerator.js
 @plugindesc v2.0.1 Automatically generate random maps.
-@author example
+@author munokura
 @license MIT License
 
 @help

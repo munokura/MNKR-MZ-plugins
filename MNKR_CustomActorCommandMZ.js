@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_CustomActorCommandMZ.js
 @plugindesc Changed the display of the combat actor command window
-@author example
+@author munokura
 @license MIT License
 
 @help

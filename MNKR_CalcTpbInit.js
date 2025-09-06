@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_CalcTpbInit.js
 @plugindesc You can specify the charge value at the start of a TPB battle.
-@author example
+@author munokura
 @license MIT License
 
 @help

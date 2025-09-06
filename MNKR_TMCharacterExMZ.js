@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMCharacterExMZ.js
 @plugindesc Adds the ability to adjust the display position, rotate, and zoom to events.
-@author example
+@author munokura
 @license MIT License
 
 @help

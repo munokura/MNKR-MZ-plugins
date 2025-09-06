@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_HenshinMZ.js
 @plugindesc You can swap actors using plugin commands.
-@author example
+@author munokura
 @license MIT License
 
 @help

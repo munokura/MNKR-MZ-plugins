@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_RandomActorMZ.js
 @plugindesc This is a plugin that allows you to create gachas of social game-style characters.
-@author example
+@author munokura
 @license MIT License
 
 @help

@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMMaxLevelMZ.js
 @plugindesc You can increase the level cap during the game.
-@author example
+@author munokura
 @license MIT License
 
 @help

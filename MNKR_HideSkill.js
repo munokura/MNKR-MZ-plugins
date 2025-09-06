@@ -12,7 +12,7 @@
 @target MZ MV
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_HideSkill.js
 @plugindesc You can specify skills that you do not want to display in the skill list.
-@author example
+@author munokura
 @license MIT License
 
 @help

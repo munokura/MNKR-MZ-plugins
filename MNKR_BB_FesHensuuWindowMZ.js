@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_BB_FesHensuuWindowMZ.js
 @plugindesc A plugin that adds a window that displays variable names and values.
-@author example
+@author munokura
 @license MIT License
 
 @help

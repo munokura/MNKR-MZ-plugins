@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_ChangeEnemyHueMZ.js
 @plugindesc You can change the hue of enemy characters that have been given a state.
-@author example
+@author munokura
 @license MIT License
 
 @help

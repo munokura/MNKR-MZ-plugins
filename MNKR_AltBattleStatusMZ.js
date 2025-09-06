@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_AltBattleStatusMZ.js
 @plugindesc Simplify the status window during battle.
-@author example
+@author munokura
 @license MIT License
 
 @help

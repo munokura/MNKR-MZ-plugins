@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMCloudDustMZ.js
 @plugindesc Adds dust effects to jumps and dashes.
-@author example
+@author munokura
 @license MIT License
 
 @help

@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_ChangeActorImagesMZ.js
 @plugindesc Changes the behavior of the specified actor in "Change actor image" to the variable value.
-@author example
+@author munokura
 @license MIT License
 
 @help

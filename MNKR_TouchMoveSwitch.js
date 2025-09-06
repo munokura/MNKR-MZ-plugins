@@ -12,7 +12,7 @@
 @target MZ MV
 @url https://raw.githubusercontent.com/munokura/MNKR-MV-plugins/master/MNKR_TouchMoveSwitch.js
 @plugindesc Stops touch movement and triggers on the map screen.
-@author example
+@author munokura
 @license MIT License
 
 @help

@@ -12,7 +12,7 @@
 @target MZ MV
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_LearnRandomSkill.js
 @plugindesc We will change the system so that only one skill will be randomly acquired from those with the same skill level as the job.
-@author example
+@author munokura
 @license MIT License
 
 @help

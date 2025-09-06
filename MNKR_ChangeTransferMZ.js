@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_ChangeTransferMZ.js
 @plugindesc Changed the fade behavior of the event command "Move Location."
-@author example
+@author munokura
 @license MIT License
 
 @help

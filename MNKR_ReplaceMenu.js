@@ -12,7 +12,7 @@
 @target MZ MV
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_ReplaceMenu.js
 @plugindesc Temporarily replaces the menu opening action with a common event.
-@author example
+@author munokura
 @license MIT License
 
 @help

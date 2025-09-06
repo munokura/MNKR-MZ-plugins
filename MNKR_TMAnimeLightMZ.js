@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMAnimeLightMZ.js
 @plugindesc v1.0.2 Displays animated lights at events.
-@author example
+@author munokura
 @license MIT License
 
 @help

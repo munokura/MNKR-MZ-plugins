@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_KZR_ElementChainStateMZ.js
 @plugindesc Create a state that responds to an ally's attack and performs a follow-up attack.
-@author example
+@author munokura
 @license MIT License
 
 @help

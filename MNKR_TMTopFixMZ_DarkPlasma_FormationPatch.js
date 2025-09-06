@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMTopFixMZ_DarkPlasma_FormationPatch.js
 @plugindesc Patch to apply the function of MNKR_TMTopFixMZ to DarkPlasma_Formation
-@author example
+@author munokura
 @license MIT License
 
 @help

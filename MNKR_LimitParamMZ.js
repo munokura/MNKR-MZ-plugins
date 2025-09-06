@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_LimitParamMZ.js
 @plugindesc Specify the upper and lower limits of basic ability scores.
-@author example
+@author munokura
 @license MIT License
 
 @help

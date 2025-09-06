@@ -12,7 +12,7 @@
 @target MZ MV
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_BattleBackgroundMask.js
 @plugindesc You can mask the background of battle scenes to make them appear more windowed.
-@author example
+@author munokura
 @license MIT License
 
 @help

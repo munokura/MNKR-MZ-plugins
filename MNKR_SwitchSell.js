@@ -12,7 +12,7 @@
 @target MZ MV
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_SwitchSell.js
 @plugindesc When the specified switch is ON, it will create an item that cannot be sold.
-@author example
+@author munokura
 @license MIT License
 
 @help

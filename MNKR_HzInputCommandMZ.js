@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_HzInputCommandMZ.js
 @plugindesc Enter commands using the arrow keys and buttons.
-@author example
+@author munokura
 @license MIT License
 
 @help

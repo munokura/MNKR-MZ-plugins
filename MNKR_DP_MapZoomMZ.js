@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_DP_MapZoomMZ.js
 @plugindesc Controls the magnification of the map.
-@author example
+@author munokura
 @license MIT License
 
 @help

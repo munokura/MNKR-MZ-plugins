@@ -12,7 +12,7 @@
 @target MZ MV
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TimerEX.js
 @plugindesc You can count up/down the timer and toggle its visibility.
-@author example
+@author munokura
 @license MIT License
 
 @help

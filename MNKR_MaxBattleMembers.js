@@ -12,7 +12,7 @@
 @target MZ MV
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_MaxBattleMembers.js
 @plugindesc You can specify the maximum number of people who can participate in a battle.
-@author example
+@author munokura
 @license MIT License
 
 @help

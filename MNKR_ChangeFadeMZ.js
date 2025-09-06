@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_ChangeFadeMZ.js
 @plugindesc Changes the behavior of the event command "Fade out/in".
-@author example
+@author munokura
 @license MIT License
 
 @help

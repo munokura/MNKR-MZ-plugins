@@ -12,7 +12,7 @@
 @target MZ MV
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_SwitchMessageSpeed.js
 @plugindesc Use the switch to disable the speed-up of "Text display" and "Text scrolling display."
-@author example
+@author munokura
 @license MIT License
 
 @help

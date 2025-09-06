@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMcollideSeMZ.js
 @plugindesc Adds wall collision sounds for players.
-@author example
+@author munokura
 @license MIT License
 
 @help

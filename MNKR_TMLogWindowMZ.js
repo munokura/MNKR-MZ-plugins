@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMLogWindowMZ.js
 @plugindesc Displays the log window in the map scene.
-@author example
+@author munokura
 @license MIT License
 
 @help

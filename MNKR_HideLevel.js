@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_HideLevel.js
 @plugindesc Hides level-related items (level and experience points).
-@author example
+@author munokura
 @license MIT License
 
 @help

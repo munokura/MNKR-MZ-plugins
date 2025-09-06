@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_WeaponSlotNameMZ.js
 @plugindesc Change the weapon item name in the equipment scene.
-@author example
+@author munokura
 @license MIT License
 
 @help

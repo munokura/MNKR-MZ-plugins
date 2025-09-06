@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMItemRestrictionMZ.js
 @plugindesc Adds constraints on the target actors for the item.
-@author example
+@author munokura
 @license MIT License
 
 @help

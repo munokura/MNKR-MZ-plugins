@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_VariableCommand.js
 @plugindesc Adds a plug-in command that enables combinations of variables that cannot be selected with event commands.
-@author example
+@author munokura
 @license MIT License
 
 @help

@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_RandomSeMvAnimation.js
 @plugindesc Randomizes the sound effects of animations in MV compatible data.
-@author example
+@author munokura
 @license MIT License
 
 @help

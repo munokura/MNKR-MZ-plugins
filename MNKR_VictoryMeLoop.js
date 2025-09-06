@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_VictoryMeLoop.js
 @plugindesc Loops ME when winning a battle.
-@author example
+@author munokura
 @license MIT License
 
 @help

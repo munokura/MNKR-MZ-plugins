@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMBattlerExMZ.js
 @plugindesc v2.0.0 Adds perspective and breathing to enemy characters.
-@author example
+@author munokura
 @license MIT License
 
 @help

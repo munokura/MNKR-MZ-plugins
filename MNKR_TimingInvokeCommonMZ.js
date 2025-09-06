@@ -12,7 +12,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TimingInvokeCommonMZ.js
 @plugindesc Common events are executed when moving between locations or when a battle begins or ends.
-@author example
+@author munokura
 @license MIT License
 
 @help

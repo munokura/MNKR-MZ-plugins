@@ -13,7 +13,7 @@
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_RandomTreasure.js
 @plugindesc v1.0.1 Random Treasure Chest Plugin
-@author example
+@author munokura
 @license MIT License
 
 @help

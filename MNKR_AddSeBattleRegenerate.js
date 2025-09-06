@@ -12,7 +12,7 @@
 @target MZ MV
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_AddSeBattleRegenerate.js
 @plugindesc You can add sound effects to slip damage and HP regeneration during battle.
-@author example
+@author munokura
 @license MIT License
 
 @help
