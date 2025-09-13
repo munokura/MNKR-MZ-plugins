@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_BackItemCommon.js
- *   Ver.0.0.1
+ *   Ver.0.0.2
  * Copyright (c) 2025 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -56,7 +56,8 @@ and there are no restrictions on usage (commercial, 18+, etc.).
 メニューを閉じ、マップ画面でコモンイベントが実行されて完了します。
 
 このプラグインの機能を使用すると、
-アイテム・スキルのコモンイベント完了後、元の選択に戻れるアイテム・スキルが作れます。
+アイテム・スキルのコモンイベント完了後、
+元の選択に戻れるアイテム・スキルが作れます。
 
 # 使用方法
 機能を動作させたいアイテム・スキルのメモ欄に下記のタグを記入してください。
@@ -89,6 +90,7 @@ http://opensource.org/licenses/mit-license.php
     let _lastSkillActorId = null;
     let _lastSkillTypeId = null;
     let _lastSkillIndex = null;
+    let _pluginReturnMode = false;
 
     function convertItemSymbol(itemTypeId) {
         if (itemTypeId === 1) return 'item';
@@ -103,6 +105,7 @@ http://opensource.org/licenses/mit-license.php
         if (item && item.meta[pluginName] && item.effects.some(e => e.code === Game_Action.EFFECT_COMMON_EVENT)) {
             _itemReturnFlag = true;
             _skillReturnFlag = false;
+            _pluginReturnMode = true;
             _lastItemSymbol = convertItemSymbol(item.itypeId);
             const list = this._itemWindow._data;
             _lastItemIndex = list.indexOf(item);
@@ -131,6 +134,16 @@ http://opensource.org/licenses/mit-license.php
         }
     };
 
+    const _Scene_Item_popScene = Scene_Item.prototype.popScene;
+    Scene_Item.prototype.popScene = function() {
+        if (_pluginReturnMode) {
+            _pluginReturnMode = false;
+            SceneManager.goto(Scene_Menu);
+        } else {
+            _Scene_Item_popScene.call(this);
+        }
+    };
+
     const _Scene_Skill_useItem = Scene_Skill.prototype.useItem;
     Scene_Skill.prototype.useItem = function () {
         const skill = this.item();
@@ -138,6 +151,7 @@ http://opensource.org/licenses/mit-license.php
         if (skill && skill.meta[pluginName] && skill.effects.some(e => e.code === Game_Action.EFFECT_COMMON_EVENT)) {
             _skillReturnFlag = true;
             _itemReturnFlag = false;
+            _pluginReturnMode = true;
             _lastSkillActorId = this._actor.actorId();
             _lastSkillTypeId = skill.stypeId;
             const list = this._itemWindow._data;
@@ -183,6 +197,16 @@ http://opensource.org/licenses/mit-license.php
             _lastSkillActorId = null;
             _lastSkillTypeId = null;
             _lastSkillIndex = null;
+        }
+    };
+
+    const _Scene_Skill_popScene = Scene_Skill.prototype.popScene;
+    Scene_Skill.prototype.popScene = function() {
+        if (_pluginReturnMode) {
+            _pluginReturnMode = false;
+            SceneManager.goto(Scene_Menu);
+        } else {
+            _Scene_Skill_popScene.call(this);
         }
     };
 
