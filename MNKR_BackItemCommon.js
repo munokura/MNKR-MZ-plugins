@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
  * MNKR_BackItemCommon.js
- *   Ver.0.0.2
+ *   Ver.0.0.3
  * Copyright (c) 2025 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -91,6 +91,9 @@ http://opensource.org/licenses/mit-license.php
     let _lastSkillTypeId = null;
     let _lastSkillIndex = null;
     let _pluginReturnMode = false;
+    let _commonEventId = null;
+    let _waitingForCommonEvent = false;
+    let _interpreterDepthWhenStarted = 0;
 
     function convertItemSymbol(itemTypeId) {
         if (itemTypeId === 1) return 'item';
@@ -109,6 +112,14 @@ http://opensource.org/licenses/mit-license.php
             _lastItemSymbol = convertItemSymbol(item.itypeId);
             const list = this._itemWindow._data;
             _lastItemIndex = list.indexOf(item);
+
+            // コモンイベントIDを取得し、実行開始時の状態を記録
+            const commonEventEffect = item.effects.find(e => e.code === Game_Action.EFFECT_COMMON_EVENT);
+            if (commonEventEffect) {
+                _commonEventId = commonEventEffect.dataId;
+                _waitingForCommonEvent = true;
+                _interpreterDepthWhenStarted = $gameMap._interpreter._depth;
+            }
         }
 
         _Scene_Item_useItem.call(this);
@@ -135,7 +146,7 @@ http://opensource.org/licenses/mit-license.php
     };
 
     const _Scene_Item_popScene = Scene_Item.prototype.popScene;
-    Scene_Item.prototype.popScene = function() {
+    Scene_Item.prototype.popScene = function () {
         if (_pluginReturnMode) {
             _pluginReturnMode = false;
             SceneManager.goto(Scene_Menu);
@@ -156,6 +167,14 @@ http://opensource.org/licenses/mit-license.php
             _lastSkillTypeId = skill.stypeId;
             const list = this._itemWindow._data;
             _lastSkillIndex = list.indexOf(skill);
+
+            // コモンイベントIDを取得し、実行開始時の状態を記録
+            const commonEventEffect = skill.effects.find(e => e.code === Game_Action.EFFECT_COMMON_EVENT);
+            if (commonEventEffect) {
+                _commonEventId = commonEventEffect.dataId;
+                _waitingForCommonEvent = true;
+                _interpreterDepthWhenStarted = $gameMap._interpreter._depth;
+            }
         }
 
         _Scene_Skill_useItem.call(this);
@@ -201,7 +220,7 @@ http://opensource.org/licenses/mit-license.php
     };
 
     const _Scene_Skill_popScene = Scene_Skill.prototype.popScene;
-    Scene_Skill.prototype.popScene = function() {
+    Scene_Skill.prototype.popScene = function () {
         if (_pluginReturnMode) {
             _pluginReturnMode = false;
             SceneManager.goto(Scene_Menu);
@@ -210,16 +229,44 @@ http://opensource.org/licenses/mit-license.php
         }
     };
 
+    // コモンイベントの完了を確認する関数
+    function isCommonEventCompleted() {
+        // メッセージウィンドウが表示中の場合は待機
+        if ($gameMessage.isBusy()) {
+            return false;
+        }
+
+        // インタープリターの深度が元に戻り、実行が完了しているかを確認
+        const currentDepth = $gameMap._interpreter._depth;
+        const isRunning = $gameMap._interpreter.isRunning();
+
+        // 深度が元に戻っているか、またはインタープリターが停止している
+        return currentDepth <= _interpreterDepthWhenStarted && !isRunning;
+    }
+
     const _Scene_Map_updateScene = Scene_Map.prototype.updateScene;
     Scene_Map.prototype.updateScene = function () {
 
-        if (!$gameMessage.isBusy() && !$gameTemp.isCommonEventReserved()) {
-            if (_itemReturnFlag) {
+        // コモンイベントの完了を待つ
+        if (_waitingForCommonEvent) {
+            if (!isCommonEventCompleted()) {
+                _Scene_Map_updateScene.call(this);
+                return;
+            } else {
+                // 対象のコモンイベントが完了した
+                _waitingForCommonEvent = false;
+                _commonEventId = null;
+                _interpreterDepthWhenStarted = 0;
+            }
+        }
+
+        if (!$gameMessage.isBusy()) {
+            if (_itemReturnFlag && !_waitingForCommonEvent) {
                 _itemReturnFlag = false;
                 SceneManager.push(Scene_Item);
                 return;
             }
-            if (_skillReturnFlag) {
+            if (_skillReturnFlag && !_waitingForCommonEvent) {
                 _skillReturnFlag = false;
                 const actor = $gameActors.actor(_lastSkillActorId);
                 if (actor) {
