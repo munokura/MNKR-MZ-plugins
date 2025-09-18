@@ -1,1 +1,0 @@
-https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_OnceAnimation.js
