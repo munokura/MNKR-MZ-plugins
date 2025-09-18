@@ -44,12 +44,12 @@ restrictions on its use (commercial, 18+, etc.).
 @param Label of stock Number
 @text Stock quantity notation
 @desc Set the display of stock quantity
-@default 在庫数
+@default Stocks
 
 @param Label of sold out
 @text Sold out sign
 @desc Set sold out indication
-@default 売り切れ
+@default Sold out
 
 @param Display option
 @text Display stock quantity

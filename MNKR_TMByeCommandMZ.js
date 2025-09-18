@@ -7,12 +7,22 @@
  * http://opensource.org/licenses/mit-license.php
  * --------------------------------------------------
  */
+//=============================================================================
+// TMPlugin - さよならコマンド
+// バージョン: 1.0.0
+// 最終更新日: 2017/01/12
+// 配布元    : http://hikimoki.sakura.ne.jp/
+//-----------------------------------------------------------------------------
+// Copyright (c) 2017 tomoaky
+// Released under the MIT license.
+// http://opensource.org/licenses/mit-license.php
+//=============================================================================
 
 /*:
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMByeCommandMZ.js
 @plugindesc Added the ability to separate from companions to the menu commands.
-@author munokura
+@author tomoaky,munokura
 @license MIT License
 
 @help
@@ -210,20 +220,6 @@ http://opensource.org/licenses/mit-license.php
 @max 100
 @desc さよならコマンド効果音の位相
 */
-
-//=============================================================================
-// TMPlugin - さよならコマンド
-// バージョン: 1.0.0
-// 最終更新日: 2017/01/12
-// 配布元    : http://hikimoki.sakura.ne.jp/
-//-----------------------------------------------------------------------------
-// Copyright (c) 2017 tomoaky
-// Released under the MIT license.
-// http://opensource.org/licenses/mit-license.php
-//=============================================================================
-
-
-
 
 
 var Imported = Imported || {};

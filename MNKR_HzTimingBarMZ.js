@@ -7,12 +7,22 @@
  * http://opensource.org/licenses/mit-license.php
  * --------------------------------------------------
  */
+/*
+Copyright (c) <2016> <hiz>
+MITライセンスの下で公開されています。
+*/
+
+// 必須エリア追加
+// 必須エリアヒット時、効果音を出す
+// プラグインコマンド
+// TODO:アイテム・スキル使用時の実行
+// TODO:状態異常の効果追加（エリア非表示・高速/低速）
 
 /*:
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_HzTimingBarMZ.js
 @plugindesc Execute the timing bar by inputting buttons in time.
-@author munokura
+@author hiz,munokura
 @license MIT License
 
 @help
@@ -307,19 +317,6 @@ Ver.0.1.0 by munokura (2023/5/7)
 @min -1
 @default -1
 */
-
-/*
-Copyright (c) <2016> <hiz>
-MITライセンスの下で公開されています。
-*/
-
-
-
-// 必須エリア追加
-// 必須エリアヒット時、効果音を出す
-// プラグインコマンド
-// TODO:アイテム・スキル使用時の実行
-// TODO:状態異常の効果追加（エリア非表示・高速/低速）
 
 (function () {
     var pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");

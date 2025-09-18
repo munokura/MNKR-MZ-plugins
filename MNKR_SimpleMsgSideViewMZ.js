@@ -7,12 +7,18 @@
  * http://opensource.org/licenses/mit-license.php
  * --------------------------------------------------
  */
+//=============================================================================
+// Plugin for RPG Maker MZ
+// SimpleMsgSideViewMZ.js
+//=============================================================================
+// [Update History]
+// This is the MZ version of SimpleMsgSideView the RMMV official plugin.
 
 /*:
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_SimpleMsgSideViewMZ.js
 @plugindesc Only the names of skills/items are displayed in side view battles.
-@author munokura
+@author Sasuke KANNAZUKI,munokura
 @license MIT License
 
 @help
@@ -109,15 +115,6 @@ http://opensource.org/licenses/mit-license.php
 作者に無断で改変、再配布が可能で、
 利用形態（商用、18禁利用等）についても制限はありません。
 */
-
-//=============================================================================
-// Plugin for RPG Maker MZ
-// SimpleMsgSideViewMZ.js
-//=============================================================================
-// [Update History]
-// This is the MZ version of SimpleMsgSideView the RMMV official plugin.
-
-
 
 (() => {
   "use strict";

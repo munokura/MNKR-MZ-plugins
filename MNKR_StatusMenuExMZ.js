@@ -53,12 +53,12 @@ there are no restrictions on its use (commercial, R18+, etc.).
 @param xparamText
 @text Additional Ability Item Name
 @desc Additional ability value item names (10 items separated by commas)
-@default 命中,回避,会心,会心回避,魔法回避,魔法反射,反撃,HP再生,MP再生,TP再生
+@default Hit,Evade,Critical Hit,Critical Hit Evade,Magic Evade,Magic Reflect,Counterattack,HP Regeneration,MP Regeneration,TP Regeneration
 
 @param sparamText
 @text Special Ability Item Name
 @desc Special ability value item name (10 items separated by commas)
-@default 狙われ率,防御効果,回復効果,薬の知識,MP消費,TPチャージ,,,床ダメージ,経験値獲得
+@default Target rate,defensive effect,recovery effect,medicine knowledge,MP consumption,TP charge,floor damage,experience point gain
 
 @param paramNameX
 @text Normal ability name X coordinate

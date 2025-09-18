@@ -8,11 +8,21 @@
  * --------------------------------------------------
  */
 
+//=============================================================================
+// 🏤drowsepost Plugins - Map Camera Controller
+// DP_MapZoom.js
+// Version: 0.87
+//
+// Copyright (c) 2016 - 2019 canotun
+// Released under the MIT license.
+// http://opensource.org/licenses/mit-license.php
+//=============================================================================
+
 /*:
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_DP_MapZoomMZ.js
 @plugindesc Controls the magnification of the map.
-@author munokura
+@author drowsepost,munokura
 @license MIT License
 
 @help
@@ -428,16 +438,6 @@ Default: false (ON: true / OFF: false)
 @desc 変更にかけるフレーム数
 @default 1
 */
-
-//=============================================================================
-// 🏤drowsepost Plugins - Map Camera Controller
-// DP_MapZoom.js
-// Version: 0.87
-//
-// Copyright (c) 2016 - 2019 canotun
-// Released under the MIT license.
-// http://opensource.org/licenses/mit-license.php
-//=============================================================================
 
 var Imported = Imported || {};
 Imported.DP_MapZoom = true;

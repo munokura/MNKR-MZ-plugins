@@ -7,12 +7,22 @@
  * http://opensource.org/licenses/mit-license.php
  * --------------------------------------------------
  */
+//=============================================================================
+// TMPlugin - 別マップでニューゲーム
+// バージョン: 2.0.0
+// 最終更新日: 2017/10/04
+// 配布元    : http://hikimoki.sakura.ne.jp/
+//-----------------------------------------------------------------------------
+// Copyright (c) 2016 tomoaky
+// Released under the MIT license.
+// http://opensource.org/licenses/mit-license.php
+//=============================================================================
 
 /*:
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMNewGameExMZ.js
 @plugindesc Add a command to start the game on a different map to the title command.
-@author munokura
+@author tomoaky,munokura
 @license MIT License
 
 @help
@@ -239,18 +249,6 @@ http://opensource.org/licenses/mit-license.php
 マップID X座標 Y座標 プレイヤーの向き
 @default
 */
-
-//=============================================================================
-// TMPlugin - 別マップでニューゲーム
-// バージョン: 2.0.0
-// 最終更新日: 2017/10/04
-// 配布元    : http://hikimoki.sakura.ne.jp/
-//-----------------------------------------------------------------------------
-// Copyright (c) 2016 tomoaky
-// Released under the MIT license.
-// http://opensource.org/licenses/mit-license.php
-//=============================================================================
-
 
 
 var Imported = Imported || {};

@@ -29,7 +29,7 @@ there are no restrictions on its use (commercial, R18+, etc.).
 @param commandText
 @text Command Display Name
 @desc Command name to display in the title menu
-@default サイトリンク
+@default Website
 
 @param url
 @text URL

@@ -7,12 +7,19 @@
  * http://opensource.org/licenses/mit-license.php
  * --------------------------------------------------
  */
+//=============================================================================
+// Vitsuno_Difficulty.js
+//-----------------------------------------------------------------------------
+// Copyright (c) 2016 Tsuno Ozumi
+// Released under the MIT license
+// http://opensource.org/licenses/mit-license.php
+//=============================================================================
 
 /*:
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_Vitsuno_DifficultyMZ.js
 @plugindesc You will be able to change ability scores and reward multipliers depending on the difficulty level.
-@author munokura
+@author Tsuno Ozumi,munokura
 @license MIT License
 
 @help
@@ -507,15 +514,6 @@ http://opensource.org/licenses/mit-license.php
 @text 難易度IDを下降
 @desc 難易度IDを下げます。
 */
-
-//=============================================================================
-// Vitsuno_Difficulty.js
-//-----------------------------------------------------------------------------
-// Copyright (c) 2016 Tsuno Ozumi
-// Released under the MIT license
-// http://opensource.org/licenses/mit-license.php
-//=============================================================================
-
 
 
 var Vitsuno = Vitsuno || {};

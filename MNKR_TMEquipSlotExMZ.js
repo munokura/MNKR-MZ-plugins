@@ -7,12 +7,22 @@
  * http://opensource.org/licenses/mit-license.php
  * --------------------------------------------------
  */
+//=============================================================================
+// TMPlugin - 装備スロット拡張
+// バージョン: 1.0.0
+// 最終更新日: 2017/02/09
+// 配布元    : http://hikimoki.sakura.ne.jp/
+//-----------------------------------------------------------------------------
+// Copyright (c) 2016 tomoaky
+// Released under the MIT license.
+// http://opensource.org/licenses/mit-license.php
+//=============================================================================
 
 /*:
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMEquipSlotExMZ.js
 @plugindesc Allows you to freely change body part settings for each actor.
-@author munokura
+@author tomoaky,munokura
 @license MIT License
 
 @help
@@ -224,18 +234,6 @@ http://opensource.org/licenses/mit-license.php
 @type actor
 @default 0
 */
-
-//=============================================================================
-// TMPlugin - 装備スロット拡張
-// バージョン: 1.0.0
-// 最終更新日: 2017/02/09
-// 配布元    : http://hikimoki.sakura.ne.jp/
-//-----------------------------------------------------------------------------
-// Copyright (c) 2016 tomoaky
-// Released under the MIT license.
-// http://opensource.org/licenses/mit-license.php
-//=============================================================================
-
 
 
 var Imported = Imported || {};

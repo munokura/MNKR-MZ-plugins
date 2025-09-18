@@ -7,12 +7,22 @@
  * http://opensource.org/licenses/mit-license.php
  * --------------------------------------------------
  */
+//=============================================================================
+// TMPlugin - 移動機能拡張
+// バージョン: 1.3.1
+// 最終更新日: 2017/06/16
+// 配布元    : http://hikimoki.sakura.ne.jp/
+//-----------------------------------------------------------------------------
+// Copyright (c) 2015 tomoaky
+// Released under the MIT license.
+// http://opensource.org/licenses/mit-license.php
+//=============================================================================
 
 /*:
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMeventRegionExMZ.js
 @plugindesc You can specify whether or not events are allowed to pass through in the region, and you can control the self-switch when passing through an event.
-@author munokura
+@author tomoaky,munokura
 @license MIT License
 
 @help
@@ -280,18 +290,6 @@ http://opensource.org/licenses/mit-license.php
 @max 255
 @default 1
 */
-
-//=============================================================================
-// TMPlugin - 移動機能拡張
-// バージョン: 1.3.1
-// 最終更新日: 2017/06/16
-// 配布元    : http://hikimoki.sakura.ne.jp/
-//-----------------------------------------------------------------------------
-// Copyright (c) 2015 tomoaky
-// Released under the MIT license.
-// http://opensource.org/licenses/mit-license.php
-//=============================================================================
-
 
 
 var TMPlugin = TMPlugin || {};

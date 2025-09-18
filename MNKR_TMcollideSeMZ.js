@@ -7,12 +7,22 @@
  * http://opensource.org/licenses/mit-license.php
  * --------------------------------------------------
  */
+//=============================================================================
+// TMPlugin - 移動機能拡張
+// バージョン: 1.3.1
+// 最終更新日: 2017/06/16
+// 配布元    : http://hikimoki.sakura.ne.jp/
+//-----------------------------------------------------------------------------
+// Copyright (c) 2015 tomoaky
+// Released under the MIT license.
+// http://opensource.org/licenses/mit-license.php
+//=============================================================================
 
 /*:
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMcollideSeMZ.js
 @plugindesc Adds wall collision sounds for players.
-@author munokura
+@author tomoaky,munokura
 @license MIT License
 
 @help
@@ -122,18 +132,6 @@ http://opensource.org/licenses/mit-license.php
 @default 30
 @type number
 */
-
-//=============================================================================
-// TMPlugin - 移動機能拡張
-// バージョン: 1.3.1
-// 最終更新日: 2017/06/16
-// 配布元    : http://hikimoki.sakura.ne.jp/
-//-----------------------------------------------------------------------------
-// Copyright (c) 2015 tomoaky
-// Released under the MIT license.
-// http://opensource.org/licenses/mit-license.php
-//=============================================================================
-
 
 
 (() => {

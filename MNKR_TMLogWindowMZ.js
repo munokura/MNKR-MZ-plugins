@@ -7,12 +7,22 @@
  * http://opensource.org/licenses/mit-license.php
  * --------------------------------------------------
  */
+//=============================================================================
+// TMPlugin - ログウィンドウ
+// バージョン: 1.1.1
+// 最終更新日: 2019/03/11
+// 配布元    : https://hikimoki.sakura.ne.jp/
+//-----------------------------------------------------------------------------
+// Copyright (c) 2017 tomoaky
+// Released under the MIT license.
+// http://opensource.org/licenses/mit-license.php
+//=============================================================================
 
 /*:
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMLogWindowMZ.js
 @plugindesc Displays the log window in the map scene.
-@author munokura
+@author tomoaky,munokura
 @license MIT License
 
 @help
@@ -444,18 +454,6 @@ http://opensource.org/licenses/mit-license.php
 @text 報酬情報自動追記を無効化
 @desc 報酬情報自動追記を無効化
 */
-
-//=============================================================================
-// TMPlugin - ログウィンドウ
-// バージョン: 1.1.1
-// 最終更新日: 2019/03/11
-// 配布元    : https://hikimoki.sakura.ne.jp/
-//-----------------------------------------------------------------------------
-// Copyright (c) 2017 tomoaky
-// Released under the MIT license.
-// http://opensource.org/licenses/mit-license.php
-//=============================================================================
-
 
 
 var Imported = Imported || {};

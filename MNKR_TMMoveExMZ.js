@@ -7,12 +7,22 @@
  * http://opensource.org/licenses/mit-license.php
  * --------------------------------------------------
  */
+//=============================================================================
+// TMPlugin - 移動機能拡張
+// バージョン: 1.3.1
+// 最終更新日: 2017/06/16
+// 配布元    : http://hikimoki.sakura.ne.jp/
+//-----------------------------------------------------------------------------
+// Copyright (c) 2015 tomoaky
+// Released under the MIT license.
+// http://opensource.org/licenses/mit-license.php
+//=============================================================================
 
 /*:
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMMoveExMZ.js
 @plugindesc Adds features such as wall collision sounds and region-based passage settings.
-@author munokura
+@author tomoaky,munokura
 @license MIT License
 
 @help
@@ -384,18 +394,6 @@ http://opensource.org/licenses/mit-license.php
 @max 255
 @default 1
 */
-
-//=============================================================================
-// TMPlugin - 移動機能拡張
-// バージョン: 1.3.1
-// 最終更新日: 2017/06/16
-// 配布元    : http://hikimoki.sakura.ne.jp/
-//-----------------------------------------------------------------------------
-// Copyright (c) 2015 tomoaky
-// Released under the MIT license.
-// http://opensource.org/licenses/mit-license.php
-//=============================================================================
-
 
 
 var Imported = Imported || {};

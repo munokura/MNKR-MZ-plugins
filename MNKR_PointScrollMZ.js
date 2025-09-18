@@ -8,11 +8,23 @@
  * --------------------------------------------------
  */
 
+//
+// ポイントスクロール ver1.00
+//
+// ------------------------------------------------------
+// Copyright (c) 2017 Yana
+// Released under the MIT license
+// http://opensource.org/licenses/mit-license.php
+// ------------------------------------------------------
+//
+// author yana
+//
+
 /*:
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_PointScrollMZ.js
 @plugindesc You can scroll the screen by specifying a position or event.
-@author munokura
+@author yana,munokura
 @license MIT License
 
 @help
@@ -172,20 +184,6 @@ http://opensource.org/licenses/mit-license.php
 @type number
 @default 60
 */
-
-//
-// ポイントスクロール ver1.00
-//
-// ------------------------------------------------------
-// Copyright (c) 2017 Yana
-// Released under the MIT license
-// http://opensource.org/licenses/mit-license.php
-// ------------------------------------------------------
-//
-// author yana
-//
-
-
 
 
 (() => {

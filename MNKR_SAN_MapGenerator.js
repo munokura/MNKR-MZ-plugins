@@ -7,12 +7,23 @@
  * http://opensource.org/licenses/mit-license.php
  * --------------------------------------------------
  */
+//=============================================================================
+// SAN_MapGeneratorMZ.js
+//=============================================================================
+// Copyright (c) 2015-2018 Sanshiro
+// Released under the MIT license
+// http://opensource.org/licenses/mit-license.php
+//=============================================================================
+
+// v2.0.0 プラグインパラメーターを変更。MZ専用に変更。
+// v1.2.0 MZに移植。通路脇にイベントを配置しないように改変。
+
 
 /*:
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_SAN_MapGenerator.js
 @plugindesc v2.0.1 Automatically generate random maps.
-@author munokura
+@author Sanshiro,munokura
 @license MIT License
 
 @help
@@ -298,18 +309,6 @@ MaxRoomSizeがMinRoomSizeより小さい場合、MinRoomSizeと同じ値に補�
 @default RoomAndPass
 @desc 生成するマップのタイプ
 */
-
-//=============================================================================
-// SAN_MapGeneratorMZ.js
-//=============================================================================
-// Copyright (c) 2015-2018 Sanshiro
-// Released under the MIT license
-// http://opensource.org/licenses/mit-license.php
-//=============================================================================
-
-// v2.0.0 プラグインパラメーターを変更。MZ専用に変更。
-// v1.2.0 MZに移植。通路脇にイベントを配置しないように改変。
-
 
 
 var Imported = Imported || {};

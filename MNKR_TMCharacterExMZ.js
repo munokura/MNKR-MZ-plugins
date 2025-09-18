@@ -7,12 +7,22 @@
  * http://opensource.org/licenses/mit-license.php
  * --------------------------------------------------
  */
+//=============================================================================
+// TMPlugin - キャラクター表示拡張
+// バージョン: 2.0.2
+// 最終更新日: 2016/12/03
+// 配布元    : http://hikimoki.sakura.ne.jp/
+//-----------------------------------------------------------------------------
+// Copyright (c) 2016 tomoaky
+// Released under the MIT license.
+// http://opensource.org/licenses/mit-license.php
+//=============================================================================
 
 /*:
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMCharacterExMZ.js
 @plugindesc Adds the ability to adjust the display position, rotate, and zoom to events.
-@author munokura
+@author tomoaky,munokura
 @license MIT License
 
 @help
@@ -411,18 +421,6 @@ http://opensource.org/licenses/mit-license.php
 @min -1
 @default 0
 */
-
-//=============================================================================
-// TMPlugin - キャラクター表示拡張
-// バージョン: 2.0.2
-// 最終更新日: 2016/12/03
-// 配布元    : http://hikimoki.sakura.ne.jp/
-//-----------------------------------------------------------------------------
-// Copyright (c) 2016 tomoaky
-// Released under the MIT license.
-// http://opensource.org/licenses/mit-license.php
-//=============================================================================
-
 
 
 var Imported = Imported || {};

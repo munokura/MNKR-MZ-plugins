@@ -44,7 +44,7 @@ there are no restrictions on its use (commercial, R18, etc.).
 @target MZ MV
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_SurviveState.js
 @plugindesc くいしばりステートを作成できます。
-@author ムノクラ
+@author munokura
 
 @help
 くいしばりステートを作成できます。

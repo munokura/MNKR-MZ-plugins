@@ -8,11 +8,16 @@
  * --------------------------------------------------
  */
 
+/*
+Copyright (c) <2016> <hiz>
+MITライセンスの下で公開されています。
+*/
+
 /*:
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_HzInputCommandMZ.js
 @plugindesc Enter commands using the arrow keys and buttons.
-@author munokura
+@author hiz,munokura
 @license MIT License
 
 @help
@@ -251,11 +256,6 @@ http://opensource.org/licenses/mit-license.php
 @option 右
 @value right
 @default center
-*/
-
-/*
-Copyright (c) <2016> <hiz>
-MITライセンスの下で公開されています。
 */
 
 /*

@@ -7,249 +7,463 @@
  * http://opensource.org/licenses/mit-license.php
  * --------------------------------------------------
  */
+//=============================================================================
+// MKR_EventGauge.js
+//=============================================================================
+// Copyright (c) 2021 マンカインド
+// This software is released under the MIT License.
+// http://opensource.org/licenses/mit-license.php
+// ----------------------------------------------------------------------------
+// Version
+// 2.0.0 2021/05/26 ・セーブデータにゲージ情報を保存しないよう修正。
+//                  ・マップ初期化時、ゲージ情報も初期化するように修正。
+//
+// 1.2.3 2020/04/10 ・イベントの一時消去後、
+//                    メニュー開閉を行うとエラーとなる問題を修正。
+//
+// 1.2.2 2020/02/13 ・イベントの一時消去を行った際にエラーとなる問題を修正。
+//
+// 1.2.1 2018/10/22 ・ニューゲーム開始時点マップにゲージ設定された
+//                    イベントがいた場合、エラーになる問題を修正。
+//
+// 1.2.0 2018/10/20 ・一部イベントにゲージが表示されなくなっていた問題を修正。
+//
+// 1.1.9 2018/09/26 ・イベント画像にタイルセットを選択時、
+//                    イベントゲージを表示するかどうかを
+//                    プラグインパラメータで切替可能にした。
+//
+// 1.1.8 2018/05/29 ・一部プラグインとの競合を修正。
+//
+// 1.1.7 2018/03/18 ・ゲージ不透明度をイベントごとに設定可能に。
+//                  ・ゲージ量設定を残量、最大値で分離させた。
+//
+// 1.1.6 2017/07/16 ・余計なコードを削除
+//                  ・バージョンを変更し忘れていたため修正
+//
+// 1.1.5 2017/07/16 古いバージョンで作成されたツクールMVプロジェクトにおいて
+//                  プラグインが正常に動作しなかったため修正
+//
+// 1.1.4 2017/05/27 ・イベントゲージを表示するマップで
+//                    セーブが出来なかった問題を修正。
+//                  ・スクリプトによるコマンド記述方法を一部変更
+//                  ・ゲージの色をプラグイン/スクリプトコマンドで変更可能に
+//
+// 1.1.3 2017/03/11 ・ゲージのoffsetX/Yをプラグイン/スクリプトコマンドで
+//                    変更可能に。
+//                  ・ゲージをピクチャーの上に描画可能に。
+//                    (プラグインパラメーターの追加)
+//
+// 1.1.2 2017/03/05 ・メモ欄の記述にオプション設定を追加
+//                  ・ゲージをメモリキャッシュへと登録するように
+//                    (一部のメモリ解放系プラグインへの対応)
+//
+// 1.1.1 2017/02/17 ・ゲージ設定に変数ではなく数字を使う方式を追加。
+//                  ・メモ欄の記述にオプション設定を追加
+//
+// 1.1.0 2017/02/14 ・プラグインコマンドの対象を実行したイベントのみに変更。
+//                  ・スクリプトコマンドの[イベントID]に
+//                    実行したイベント自身を表す0を指定可能に。
+//                  ・プラグイン/スクリプトコマンドの一部に変数を使用可能に。
+//                  ・プラグインパラメーターでゲージの不透明度を指定可能に。
+//                  ・上記修正に合わせてプラグイン説明文を修正。
+//
+// 1.0.2 2017/02/14 メニューの開閉でゲージが非表示になることがある問題を修正。
+//
+// 1.0.1 2017/02/14 スクリプトによるコマンドが一部動作していなかったため修正。
+//
+// 1.0.0 2017/02/13 初版公開。
+// ----------------------------------------------------------------------------
+// [Twitter] https://twitter.com/mankind_games/
+//  [GitHub] https://github.com/mankindGames/
+//    [Blog] http://mankind-games.blogspot.jp/
+//=============================================================================
 
 /*:
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_MKR_EventGaugeMZ.js
 @plugindesc Event gauge display
-@author munokura
+@author mankind,munokura
 @license MIT License
 
 @help
-  Displays a gauge at the base of the specified event. (The display position
-is adjustable.) The gauge's maximum value/remaining value is set by the value
-(variables can be used) specified in the Event_Memo field when the event is
-created (moving across the map). (If a variable is used for the gauge's
-maximum value/remaining value,) the gauge's maximum value/remaining value
-corresponds to the variable's value, and the variable value and the gauge's
-remaining value are synchronized. (However, the gauge's remaining value will
-never exceed the maximum value or fall below 0.) The gauge is hidden by making
-the event transparent, and reappears when transparency is turned off. For
-events (pages) without an event image, the gauge is not displayed. For events
-using tileset images, you can set the gauge to display or not using plugin
-parameters. (The top-left corner of tileset B is treated as an empty square,
-and the gauge is not displayed.) However, if you hide the gauge using the
-plugin/script command described below, you must also display the gauge using
-the plugin/script command, regardless of whether transparency or an image is
-set. When the event command [Temporarily Clear Event] is executed, the gauge
-associated with that event will also be cleared. [Examples for copying and
-pasting, memo field settings and commands] *The meaning of each item is
-explained below. The content is on one line, so please copy and use the
-example part of the line you need. Event_Memo field: <Egauge:vr10>
-<Egauge:mvr11> <Egauge:vr10 mvr11> <Egauge:15> <Egauge:3 Wh20 Ht6>
-<Egauge:vr12 Wh100 Ht10 Fx3 Vs0> <Egauge:5 Ys-50> <Egauge:vr5 Xs10 Ys10 Fx1
-Fc3 Sc11 Bc7> <Egauge:50 op80>Plugin command (affects the gauges of the
-executed event): Show gauge Hide gauge Increase/decrease remaining gauge A
-specified amount of remaining gauge A specified maximum value of gauge Gauge X
-coordinate offset Gauge Y coordinate offset Gauge background setting Specify
-gauge display color 1 Specify gauge display color 2 Specify gauge opacity
-Script command (affects the gauges of the event with the specified ID):
-$gameMap.showGaugeWindow(1); $gameMap.hideGaugeWindow(1);
-$gameMap.isHideGaugeWindow(1); $gameMap.addGaugeValue(1, 3);
-$gameMap.addGaugeValue(this._eventId, 3); $gameMap.setGaugeValue(1, 5);
-$gameMap.setGaugeValue(this._eventId, 5); $gameMap.setGaugeMaxValue(1, 5);
-$gameMap.setGaugeOffsetX(1, 20); $gameMap.setGaugeOffsetY(1, 40);
-$gameMap.setGaugeBackColor(1, 16); $gameMap.setGaugeColor1(1, 17);
-$gameMap.setGaugeColor2(1, 17); $gameMap.addGaugeValue(1,
-$gameVariables.value(10)); $gameMap.addGaugeValue(this._eventId,
-$gameVariables.value(10)); $gameMap.setGaugeValue(1,
-$gameVariables.value(15)); $gameMap.setGaugeMaxValue(1,
-$gameVariables.value(20)); $gameMap.setOpacity(1, 255);About gauge colors:
-This plugin requires that the gauge color number be specified in the plugin
-parameters or memo field. (This can be changed later using script/plugin
-commands.) The color numbers correspond to the colorful square frames in the
-lower right corner of system/Window.png. The top left square frame (the white
-square by default) is number 0, and numbers are counted to the right. The
-bottom right is 31. The default color numbers 20 and 21 specified in the
-plugin parameters Gauge_Color_1 and Gauge_Color_2 are the same colors as the
-HP gauge displayed in menus, etc. (By default, a square frame is painted
-reddish-yellow.) Similarly, the default color number 19 specified in the
-plugin parameter Gauge_Back_Color is the same as the background color of the
-gauge displayed in menus, etc. (By default, a square frame is painted navy
-blue.) Event_Memo_Basic Settings: <Egauge:vr[Variable Number]> ・Displays a
-gauge in the event. A variable is used for the remaining amount of the gauge.
-Specify the variable number in the [Variable Number] part. ・Enter a value
-greater than 0 for the variable used for the remaining amount of the gauge.
-・If no maximum value for the gauge is specified, the value of the variable at
-the time the event is generated will be used as the maximum value. (After
-setting, the variable value will function as the remaining amount of the
-gauge.) <Egauge:mvr[Variable Number]> ・Displays a gauge in the event. A
-variable is used for the maximum value of the gauge. Specify the variable
-number in the [Variable Number] part. ・Enter a value greater than 0 for the
-variable used for the maximum value of the gauge. ・If no remaining amount of
-the gauge is specified, the value of the variable at the time the event is
-generated will be used as the remaining amount. (After setting, the variable
-value will function as the gauge's maximum value) <Egauge:vr[variable number
-1] mvr[variable number 2]> - Displays a gauge in an event. The gauge's
-remaining amount/maximum value uses a variable. Specify the variable number in
-the [variable number 1], [variable number 2] parts. - [Variable number 1] is
-the variable used for the gauge remaining amount, and [Variable number 2] is
-the variable used for the gauge's maximum value. - Enter a value greater than
-0 for the variable used for the gauge remaining amount/maximum value. - If the
-value of the variable set for the gauge remaining amount is greater than the
-value of the variable set for the gauge's maximum value, the gauge's maximum
-value will automatically be set as the remaining amount. <Egauge:[number]> -
-Displays a gauge in an event. [number] becomes the gauge's maximum/remaining
-amount. You can also set the gauge remaining amount and maximum value using
-the commands described below. Use this if you do not want to use variables. -
-Enter a value greater than 0 for the [number] used for the gauge's maximum
-value. * Two patterns are provided for specifying the gauge value: using
-variables and numbers. However, if both are specified, the variable setting
-takes precedence. It is possible to change the value specification method for
-each event, so please use either one or the other when setting up. Memo
-field_options (separate each option with a space): Wh[number] - Specify the
-length of the gauge using a number. Ht[number] - Specify the height of the
-gauge using a number. Xs[number] - Shifts the X coordinate of the gauge by
-[number]. (Positive value moves to the right, negative value moves to the
-left) Ys[number] - Shifts the Y coordinate of the gauge by [number]. (Positive
-value moves down, negative value moves up) Vs[number from 0 to 1] - Specifies
-the initial display state of the gauge. 0: The gauge is hidden when the event
-is created. 1: The gauge is displayed when the event is created. Fx[number
-from 1 to 3] - Fixed the gauge to the bottom of the screen. (The default
-setting is a 20px margin between the bottom of the gauge and the screen.) -
-The gauge's X coordinate varies depending on [a number from 1 to 3]. 1: The
-gauge is positioned so that there is a 20px margin on the left side of the
-screen and on the left side of the gauge. 2: The gauge is displayed in the
-center of the screen, taking into account its length. 3: The gauge is
-positioned so that there is a 20px margin on the right side of the screen and
-on the right side of the gauge. The margin value varies depending on the gauge
-offset. Fc[number] - Specifies gauge color 1 using a number. (This takes
-precedence over the Gauge_Color_1 plugin parameter setting.) Sc[number] -
-Specifies gauge color 2 using a number. - If you do not need a gauge gradient,
-specify the same number as Gauge Color 1. (This takes precedence over the
-Gauge_Color_2 plugin parameter setting.) Bc[number] - Specifies the gauge
-background color using a number. (This takes precedence over the
-Gauge_Back_Color plugin parameter setting.) Op[number] - Specifies the gauge
-opacity using a number. (This takes precedence over the Gauge_Opacity setting
-in the plugin parameters.) Examples of settings in the Event_Memo field:
-<Egauge:vr10> - Displays a gauge in the event. The value of variable 10 is
-reflected for both the maximum value and remaining amount of the gauge. (The
-remaining amount of the gauge changes depending on fluctuations in the
-variables.) <Egauge:mvr11> - Displays a gauge in the event. The value of
-variable 11 is reflected for both the maximum value and remaining amount of
-the gauge. (The maximum value of the gauge changes depending on fluctuations
-in the variables.) <Egauge:vr10 mvr11> - Displays a gauge in the event. The
-maximum value of the gauge is reflected by the value of variable 11, and the
-remaining amount is reflected by the value of variable 10. (The maximum value
-of the gauge changes depending on fluctuations in variable 11, and the
-remaining amount changes depending on fluctuations in variable 10.)
-<Egauge:15> - Displays a gauge in the event. The gauge display is set to a
-maximum value of 15 and a remaining amount of 15. <Egauge:3 Wh20 Ht6> -
-Displays a gauge in the event. The gauge display is set to a maximum value of
-3 and a remaining amount of 3. - The gauge length is 20px and the height is
-6px. <Egauge:vr20 Xs30 Ys-40> - Displays a gauge in an event. The value of
-variable 20 is reflected in the gauge display for both maximum value and
-remaining amount. (The remaining amount of the gauge will change when the
-variable changes.) - The gauge's X coordinate is displayed as +30px by
-default, and its Y coordinate is displayed as -40px by default. <Egauge:200
-Wh300 Ht10 Xs-10 Ys-10 Fx1> - The gauge is displayed fixedly at the bottom,
-left side of the screen. The gauge display is set to a maximum value of 200
-and a remaining amount of 200. - The gauge length is displayed as 300px, the
-height is 10px, the X coordinate is displayed as -10px by default, and the Y
-coordinate is displayed as -10px by default. <Egauge:vr5 Xs10 Ys10 Fx1 Fc3
-Sc11 Bc7> - Displays a gauge fixed at the bottom right of the screen. The
-gauge's maximum value and remaining amount are reflected by variable 5. (The
-remaining amount of the gauge changes when the variable fluctuates.) - The
-gauge length and height are default, with the X coordinate set to default
-+10px and the Y coordinate set to default +10px. - The gauge's color 1 is
-drawn using color 3, color 2 using color 11, and the gauge background using
-color 7. Script Command: *When using this command, replace [] with the actual
-value or script. $gameMap.showGaugeWindow([Event ID]); - Sets the gauge for
-the specified [Event ID] to visible. - By setting [Event ID] to this._eventId,
-the event that executed the command will be targeted. - If the event is
-transparent and the event image is not set, the gauge will not be displayed
-even when the command is executed. - If the gauge is hidden, you can use this
-command to set it to visible.・If gauge display is not set in the event_memo
-field, nothing will change. $gameMap.hideGaugeWindow([event ID]); ・Hides the
-gauge for the specified [event ID]. ・By setting [event ID] to this._eventId,
-the event that executed the command will be targeted. ・If the event is not
-transparent and an event image is set, the gauge will be hidden by executing
-the command. ・If gauge display is not set in the event_memo field, nothing
-will change. $gameMap.isHideGaugeWindow([event ID]); ・Returns true if the
-gauge for the specified [event ID] is hidden, false if it is displayed. ・By
-setting [event ID] to this._eventId, the event that executed the command will
-be targeted. ・If gauge display is not set in the event_memo field, false will
-be returned. $gameMap.addGaugeValue([event ID], [number]);
-・Increases/decreases the remaining gauge value for the specified [event ID] by
-the specified [number]. (If [Number] is a negative value, it will
-decrease.)・By setting [Event ID] to this._eventId, the event that executed the
-command will be the target.・By using the script $gameVariables.value(n)
-instead of [Number], you can increase/decrease the value of variable n.・If the
-gauge remaining amount is determined by a variable, this command will change
-the variable's value.・The gauge remaining amount will never exceed the maximum
-value, nor will it fall below 0.・If gauge display is not set in the event_memo
-field, no change will occur. $gameMap.setGaugeValue([Event ID],
-[Number]);・Sets the gauge remaining amount of the specified [Event ID] to the
-specified [Number]. ([Number] must be a value greater than or equal to 0.
-Also, the gauge remaining amount will never exceed the maximum value.)・By
-setting [Event ID] to this._eventId, the event that executed the command will
-be the target.・By using the script $gameVariables.value(n) instead of
-[Number], you can set the gauge remaining amount to the value of variable
-n.・If the gauge remaining amount is determined by a variable, this command
-will change the variable's value. ・If gauge display is not set in the
-event_memo field, nothing will change. $gameMap.setGaugeMaxValue([Event ID],
-[Number]); ・Sets the maximum gauge value for the specified [Event ID] to the
-specified [Number]. ([Number] must be a value greater than 0.) ・By setting
-[Event ID] to this._eventId, the event that executed the command will be
-targeted. ・By using the script $gameVariables.value(n) instead of [Number],
-you can set the value of variable n to the maximum gauge value. ・If the
-maximum gauge value is lower than the gauge remaining amount, this command
-will make the gauge remaining amount the same as the maximum gauge value. ・If
-the gauge maximum value/remaining amount is determined by a variable, this
-command will change the variable's value. ・If gauge display is not set in the
-event_memo field, nothing will change. $gameMap.getGaugeValue([Event ID]);
-・Returns the remaining gauge value for the specified [Event ID]. ・By setting
-[Event ID] to this._eventId, the event that executed the command will be
-targeted.・If the gauge remaining amount is determined by a variable, the
-returned value is the same as the variable value. ・If gauge display is not set
-in the event_memo field, it returns -1. $gameMap.getGaugeMaxValue([Event ID]);
-・Returns the maximum gauge value for the specified [Event ID]. ・If [Event ID]
-is set to 0, it will target the event that executed the command. ・If gauge
-display is not set in the event_memo field, it will return -1.
-$gameMap.setGaugeOffsetX([Event ID], [Number]); ・Sets the gauge X coordinate
-offset for the specified [Event ID] to the specified [Number]. ・Gauges with an
-offset specified will be displayed shifted horizontally from their original
-drawing position by the specified [Number]. ・By setting [Event ID] to
-this._eventId, it will target the event that executed the command. ・By using
-the script $gameVariables.value(n) instead of [Number], you can set the value
-of variable n to the gauge offset. $gameMap.setGaugeOffsetY([Event ID],
-[Number]); - Sets the gauge Y coordinate offset for the specified [Event ID]
-to the specified [Number]. ・Gauges with an offset specified will be displayed
-vertically offset from their original drawing position by the specified
-[number]. ・By setting [Event ID] to this._eventId, the event that executed the
-command will be targeted. ・By using the script $gameVariables.value(n) instead
-of [number], you can set the value of variable n to the gauge offset.
-$gameMap.setGaugeBackColor([Event ID], [number]); ・Sets the gauge background
-color number of the specified [Event ID] to the specified [number]. ・By
-setting [Event ID] to this._eventId, the event that executed the command will
-be targeted. ・By using the script $gameVariables.value(n) instead of [number],
-you can set the value of variable n to the gauge background color number.
-$gameMap.setGaugeColor1([Event ID], [number]); ・Sets the gauge display color
-number of the specified [Event ID] to the specified [number]. ・By setting
-[Event ID] to this._eventId, the event that executed the command will be
-targeted.・By using the script $gameVariables.value(n) instead of [number], you
-can set the value of variable n to the gauge display color number.
-$gameMap.setGaugeColor2([Event ID], [Number]); ・Sets the gauge display color
-number of the specified [Event ID] to the specified [Number]. ・If you don't
-need a gauge gradient, specify the same number as Gauge Color 1. ・By setting
-[Event ID] to this._eventId, the event that executed the command will be the
-target. ・By using the script $gameVariables.value(n) instead of [number], you
-can set the value of variable n to the gauge display color number.
-$gameMap.setGaugeOpacity([Event ID], [Number]); ・Sets the gauge opacity of the
-specified [Event ID] to the specified [Number]. ([Number] must be a value
-between 0 and 255.) ・By setting [Event ID] to this._eventId, the event that
-executed the command will be the target.・By using the script
-$gameVariables.value(n) instead of [number], you can set the value of variable
-n to the gauge opacity. Note: ・The settings in the memo field and plugin
-commands for this plugin are not case-sensitive. ・Plugin parameter
-descriptions marked [Default value] can be set individually in the event memo
-field. Please note that if set, the memo field setting will take precedence
-over the [Default value]. # Contact Information This is a plugin originally
-created for RPG Maker MV ported for MZ. Please contact the modifier for any
-inquiries. # Terms of Use MIT License.
-http://opensource.org/licenses/mit-license.php Modifications and
-redistribution are permitted without permission from the author, and there are
-no restrictions on usage (commercial, 18+ use, etc.).
+# Event Gauge Plugin Help
+
+Displays a gauge at the feet of specified events.
+(Display position can be adjusted)
+The gauge's maximum value/remaining value is set by values specified in the
+event's note box (variables can also be used) when the event is generated
+(map transfer).
+
+(When variables are used for gauge maximum/remaining values,)
+The gauge maximum/remaining values correspond to the variable values, and the
+variable values sync with the gauge remaining value.
+(However, the gauge remaining value never exceeds the maximum value, and
+never becomes less than 0)
+
+The gauge is hidden when the event becomes transparent, and reappears when
+transparency is removed.
+
+For events (pages) without an event graphic set, the gauge will not be
+displayed.
+For events using tileset graphics, you can configure whether to display the
+gauge via plugin parameters.
+(The top-left tile of Tileset B is treated as an [empty] tile and will not
+display a gauge)
+
+However, if the gauge is set to hidden via plugin/script commands described
+later, regardless of transparency or graphic settings, you need to set the
+gauge to visible via plugin/script commands.
+
+When the event command [Erase Event] is executed, the gauge associated with
+that event is also erased.
+
+## Copy-Paste Usage Examples, Note Box Settings & Commands
+※ The meaning of each item is described later.
+The content is organized line by line,
+so please copy the usage example portion of the needed lines for use.
+
+### Event Note Box:
+```
+<Egauge:vr10>
+<Egauge:mvr11>
+<Egauge:vr10 mvr11>
+<Egauge:15>
+<Egauge:3 Wh20 Ht6>
+<Egauge:vr12 Wh100 Ht10 Fx3 Vs0>
+<Egauge:5 Ys-50>
+<Egauge:vr5 Xs10 Ys10 Fx1 Fc3 Sc11 Bc7>
+<Egauge:50 op80>
+```
+
+### Plugin Commands (affects gauge of the executing event):
+- Show Gauge
+- Hide Gauge
+- Increase/Decrease Gauge Remaining
+- Set Gauge Remaining to Specified Value
+- Set Gauge Maximum to Specified Value
+- Gauge X Coordinate Offset
+- Gauge Y Coordinate Offset
+- Gauge Background Setting
+- Specify Gauge Display Color 1
+- Specify Gauge Display Color 2
+- Specify Gauge Opacity
+
+### Script Commands (affects gauge of event with specified ID):
+```javascript
+$gameMap.showGaugeWindow(1);
+$gameMap.hideGaugeWindow(1);
+$gameMap.isHideGaugeWindow(1);
+$gameMap.addGaugeValue(1, 3);
+$gameMap.addGaugeValue(this._eventId, 3);
+$gameMap.setGaugeValue(1, 5);
+$gameMap.setGaugeValue(this._eventId, 5);
+$gameMap.setGaugeMaxValue(1, 5);
+$gameMap.setGaugeOffsetX(1, 20);
+$gameMap.setGaugeOffsetY(1, 40);
+$gameMap.setGaugeBackColor(1, 16);
+$gameMap.setGaugeColor1(1, 17);
+$gameMap.setGaugeColor2(1, 17);
+$gameMap.addGaugeValue(1, $gameVariables.value(10));
+$gameMap.addGaugeValue(this._eventId, $gameVariables.value(10));
+$gameMap.setGaugeValue(1, $gameVariables.value(15));
+$gameMap.setGaugeMaxValue(1, $gameVariables.value(20));
+$gameMap.setOpacity(1, 255);
+```
+
+## About Gauge Colors:
+This plugin requires you to specify gauge color numbers via plugin
+parameters or note box.
+(Can also be changed later via script/plugin commands)
+
+Color numbers correspond to the colorful square frames on the lower right
+side of system/Window.png.
+
+Starting from the top-left square frame (white by default) as number 0,
+count rightward. The bottom-right is number 31.
+
+The default values specified in plugin parameters
+- Gauge_Color_1
+- Gauge_Color_2
+
+Color numbers 20 and 21 are the same as HP gauge colors displayed in menus.
+(Square frames painted with reddish yellow by default)
+
+Similarly, the default value specified in plugin parameter
+- Gauge_Back_Color
+
+Color number 19 is the same as gauge background colors displayed in menus.
+(Square frame painted with navy blue by default)
+
+## Event Note Box Basic Settings:
+
+### `<Egauge:vr[Variable Number]>`
+- Displays a gauge on the event. The gauge remaining value uses a variable.
+  Specify the variable number in the [Variable Number] part.
+- Please set values greater than 0 for variables used for gauge remaining.
+- If gauge maximum value is not specified, the variable's value at event
+  generation time is set as the maximum value.
+  (After setting, the variable value functions as gauge remaining)
+
+### `<Egauge:mvr[Variable Number]>`
+- Displays a gauge on the event. The gauge maximum value uses a variable.
+  Specify the variable number in the [Variable Number] part.
+- Please set values greater than 0 for variables used for gauge maximum.
+- If gauge remaining is not specified, the variable's value at event
+  generation time is set as remaining.
+  (After setting, the variable value functions as gauge maximum)
+
+### `<Egauge:vr[Variable Number1] mvr[Variable Number2]>`
+- Displays a gauge on the event. Gauge remaining/maximum uses variables.
+  Specify variable numbers in [Variable Number1],[Variable Number2] parts.
+- [Variable Number1] becomes the variable used for gauge remaining,
+  [Variable Number2] becomes the variable used for gauge maximum.
+- Please set values greater than 0 for variables used for gauge
+  remaining/maximum.
+- If the variable value set for gauge remaining is greater than the variable
+  value set for gauge maximum, the maximum value is automatically set as
+  the remaining value.
+
+### `<Egauge:[Number]>`
+- Displays a gauge on the event. [Number] becomes the gauge maximum and
+  remaining value.
+  Gauge remaining and maximum value settings are also possible with commands
+  described later.
+  Use this if you don't want to use variables.
+- Please set values greater than 0 for [Number] used for gauge maximum.
+
+※ Two patterns are prepared for specifying gauge values: variables and
+  numbers. If both are specified, variable settings take priority.
+  It's possible to change the value specification method for each event,
+  so please use one or the other for configuration.
+
+## Note Box Options (separate each option with spaces):
+
+### `Wh[Number]`
+- Specifies gauge length with a number.
+
+### `Ht[Number]`
+- Specifies gauge height with a number.
+
+### `Xs[Number]`
+- Shifts gauge X coordinate by [Number] pixels.
+  (Positive values shift right, negative values shift left)
+
+### `Ys[Number]`
+- Shifts gauge Y coordinate by [Number] pixels.
+  (Positive values shift down, negative values shift up)
+
+### `Vs[Number 0-1]`
+- Specifies initial gauge display state.
+  - 0: Gauge is set to hidden when event is generated.
+  - 1: Gauge is set to visible when event is generated.
+
+### `Fx[Number 1-3]`
+- Fixes gauge display to bottom of screen.
+  (Default setting creates 20px margin between gauge bottom and screen)
+- Gauge X coordinate changes based on [Number 1-3]:
+  - 1: Positioned with 20px margin between screen left and gauge left edge.
+  - 2: Displayed at screen center considering gauge length.
+  - 3: Positioned with 20px margin between screen right and gauge right edge.
+  Margin values change based on gauge offset.
+
+### `Fc[Number]`
+- Specifies gauge color 1 with a number.
+  (Takes priority over plugin parameter Gauge_Color_1 setting)
+
+### `Sc[Number]`
+- Specifies gauge color 2 with a number.
+- If gauge gradation is not needed, specify the same number as gauge color 1.
+  (Takes priority over plugin parameter Gauge_Color_2 setting)
+
+### `Bc[Number]`
+- Specifies gauge background color with a number.
+  (Takes priority over plugin parameter Gauge_Back_Color setting)
+
+### `Op[Number]`
+- Specifies gauge opacity with a number.
+  (Takes priority over plugin parameter Gauge_Opacity setting)
+
+## Event Note Box Setting Examples:
+
+### `<Egauge:vr10>`
+- Displays a gauge on the event.
+  Gauge display reflects variable 10's value for both maximum and remaining.
+  (Gauge remaining changes as variable fluctuates)
+
+### `<Egauge:mvr11>`
+- Displays a gauge on the event.
+  Gauge display reflects variable 11's value for both maximum and remaining.
+  (Gauge maximum changes as variable fluctuates)
+
+### `<Egauge:vr10 mvr11>`
+- Displays a gauge on the event.
+  Gauge display reflects variable 11 for maximum, variable 10 for remaining.
+  (Variable 11 changes gauge maximum,
+   variable 10 changes remaining)
+
+### `<Egauge:15>`
+- Displays a gauge on the event.
+  Gauge display is set with maximum 15, remaining 15.
+
+### `<Egauge:3 Wh20 Ht6>`
+- Displays a gauge on the event.
+  Gauge display is set with maximum 3, remaining 3.
+- Displays gauge with length 20px, height 6px.
+
+### `<Egauge:vr20 Xs30 Ys-40>`
+- Displays a gauge on the event.
+  Gauge display reflects variable 20's value for both maximum and remaining.
+  (Gauge remaining changes as variable fluctuates)
+- Displays gauge with X coordinate default+30px, Y coordinate default-40px.
+
+### `<Egauge:200 Wh300 Ht10 Xs-10 Ys-10 Fx1>`
+- Displays gauge fixed at bottom-left of screen.
+  Gauge display is set with maximum 200, remaining 200.
+- Displays gauge with length 300px, height 10px,
+  X coordinate default-10px, Y coordinate default-10px.
+
+### `<Egauge:vr5 Xs10 Ys10 Fx1 Fc3 Sc11 Bc7>`
+- Displays gauge fixed at bottom-right of screen.
+  Gauge display reflects variable 5's value for both maximum and remaining.
+  (Gauge remaining changes as variable fluctuates)
+- Gauge length and height are default,
+  X coordinate default+10px, Y coordinate default+10px.
+- Draws gauge with color 1 as #3, color 2 as #11, background as #7.
+
+## Script Commands:
+※ When using, replace [] with actual values or scripts.
+
+### `$gameMap.showGaugeWindow([Event ID]);`
+- Sets the gauge of specified [Event ID] to visible.
+- Setting [Event ID] to this._eventId targets the event executing the command.
+- When event is transparent or event graphic is unset, gauge won't display
+  even if command is executed.
+- If gauge is set to hidden, this command can set it to visible.
+- If event note box doesn't have gauge display settings, nothing changes.
+
+### `$gameMap.hideGaugeWindow([Event ID]);`
+- Sets the gauge of specified [Event ID] to hidden.
+- Setting [Event ID] to this._eventId targets the event executing the command.
+- When event is not transparent and event graphic is set, gauge becomes
+  hidden by executing the command.
+- If event note box doesn't have gauge display settings, nothing changes.
+
+### `$gameMap.isHideGaugeWindow([Event ID]);`
+- Returns true if gauge of specified [Event ID] is set to hidden,
+  false if set to visible.
+- Setting [Event ID] to this._eventId targets the event executing the command.
+- If event note box doesn't have gauge display settings, returns false.
+
+### `$gameMap.addGaugeValue([Event ID], [Number]);`
+- Increases/decreases gauge remaining of specified [Event ID] by specified
+  [Number]. (Decreases if [Number] is negative)
+- Setting [Event ID] to this._eventId targets the event executing the command.
+- Using script $gameVariables.value(n) instead of [Number] allows
+  increasing/decreasing by variable n's value.
+- If gauge remaining is determined by variable, this command changes the
+  variable's value.
+- Gauge remaining never exceeds maximum value and never becomes less than 0.
+- If event note box doesn't have gauge display settings, nothing changes.
+
+### `$gameMap.setGaugeValue([Event ID], [Number]);`
+- Sets gauge remaining of specified [Event ID] to specified [Number].
+  (Specify values 0 or greater for [Number].
+   Remaining never exceeds gauge maximum)
+- Setting [Event ID] to this._eventId targets the event executing the command.
+- Using script $gameVariables.value(n) instead of [Number] allows setting
+  variable n's value as gauge remaining.
+- If gauge remaining is determined by variable, this command changes the
+  variable's value.
+- If event note box doesn't have gauge display settings, nothing changes.
+
+### `$gameMap.setGaugeMaxValue([Event ID], [Number]);`
+- Sets gauge maximum of specified [Event ID] to specified [Number].
+  (Please specify values greater than 0 for [Number])
+- Setting [Event ID] to this._eventId targets the event executing the command.
+- Using script $gameVariables.value(n) instead of [Number] allows setting
+  variable n's value as gauge maximum.
+- If gauge maximum falls below gauge remaining, this command makes gauge
+  remaining equal to gauge maximum.
+- If gauge maximum/remaining is determined by variables, this command changes
+  variable values.
+- If event note box doesn't have gauge display settings, nothing changes.
+
+### `$gameMap.getGaugeValue([Event ID]);`
+- Returns gauge remaining of specified [Event ID].
+- Setting [Event ID] to this._eventId targets the event executing the command.
+- If gauge remaining is determined by variable, returned value equals the
+  variable's value.
+- If event note box doesn't have gauge display settings, returns -1.
+
+### `$gameMap.getGaugeMaxValue([Event ID]);`
+- Returns gauge maximum of specified [Event ID].
+- Setting [Event ID] to 0 targets the event executing the command.
+- If event note box doesn't have gauge display settings, returns -1.
+
+### `$gameMap.setGaugeOffsetX([Event ID], [Number]);`
+- Sets gauge X coordinate offset of specified [Event ID] to specified
+  [Number].
+- Gauges with offset specified are displayed shifted horizontally by the
+  specified [Number] from their original drawing position.
+- Setting [Event ID] to this._eventId targets the event executing the command.
+- Using script $gameVariables.value(n) instead of [Number] allows setting
+  variable n's value as gauge offset.
+
+### `$gameMap.setGaugeOffsetY([Event ID], [Number]);`
+- Sets gauge Y coordinate offset of specified [Event ID] to specified
+  [Number].
+- Gauges with offset specified are displayed shifted vertically by the
+  specified [Number] from their original drawing position.
+- Setting [Event ID] to this._eventId targets the event executing the command.
+- Using script $gameVariables.value(n) instead of [Number] allows setting
+  variable n's value as gauge offset.
+
+### `$gameMap.setGaugeBackColor([Event ID], [Number]);`
+- Sets gauge background color number of specified [Event ID] to specified
+  [Number].
+- Setting [Event ID] to this._eventId targets the event executing the command.
+- Using script $gameVariables.value(n) instead of [Number] allows setting
+  variable n's value as gauge background color number.
+
+### `$gameMap.setGaugeColor1([Event ID], [Number]);`
+- Sets gauge display color number of specified [Event ID] to specified
+  [Number].
+- Setting [Event ID] to this._eventId targets the event executing the command.
+- Using script $gameVariables.value(n) instead of [Number] allows setting
+  variable n's value as gauge display color number.
+
+### `$gameMap.setGaugeColor2([Event ID], [Number]);`
+- Sets gauge display color number of specified [Event ID] to specified
+  [Number].
+- If gauge gradation is not needed, specify the same number as gauge color 1.
+- Setting [Event ID] to this._eventId targets the event executing the command.
+- Using script $gameVariables.value(n) instead of [Number] allows setting
+  variable n's value as gauge display color number.
+
+### `$gameMap.setGaugeOpacity([Event ID], [Number]);`
+- Sets gauge opacity of specified [Event ID] to specified [Number].
+  (Specify values between 0-255 for [Number])
+- Setting [Event ID] to this._eventId targets the event executing the command.
+- Using script $gameVariables.value(n) instead of [Number] allows setting
+  variable n's value as gauge opacity.
+
+## Additional Notes:
+
+- Note box settings and plugin commands for this plugin are case-insensitive.
+- Items marked with [Default Value] in plugin parameter descriptions can be
+  individually set in event note boxes.
+  When set, note box settings take priority over [Default Values].
+
+## Contact Information
+This is a plugin created for RPG Maker MV and ported for MZ use.
+Please direct inquiries to the modifier.
+
+## Terms of Use
+MIT License.
+http://opensource.org/licenses/mit-license.php
+Modification and redistribution without author permission is allowed,
+with no restrictions on usage forms (commercial, adult content, etc.).
+
 
 @param Gauge_Width
 @text Gauge Width
@@ -401,33 +615,34 @@ no restrictions on usage (commercial, 18+ use, etc.).
 @author マンカインド (改変:munokura)
 
 @help
-指定したイベントの足元にゲージを表示します。(表示位置は調節が可能)
+指定したイベントの足元にゲージを表示します。
+(表示位置は調節が可能)
 ゲージの最大値/残量はイベント生成(マップ移動)時に
 イベント_メモ欄で指定した値(変数も使用可能)で設定されます。
 
 (ゲージ最大値/残量に変数を使用した場合、)
 ゲージ最大値/残量は変数の値に対応し、変数の値とゲージ残量が同期します。
-(ただし、ゲージ残量は最大値より上になることは無く、
- 0より小さくなることもありません)
+(ただし、ゲージ残量は最大値より上になることは無く、 
+0より小さくなることもありません)
 
 ゲージはイベントの透明化によって非表示になり、
 透明化を解除すると再表示されます。
 
-イベント画像が設定されていないイベント(ページ)の場合、
-ゲージは表示されません。
+イベント画像が設定されていないイベント(ページ)の場合、ゲージは表示されません。
 タイルセット画像を使ったイベントの場合、
 プラグインパラメータでゲージを表示させるか設定することが可能です。
 (タイルセットBの一番左上は[何もない]マス扱いとなりゲージが表示されません)
 
-ただし、後述するプラグイン/スクリプトコマンドで
-ゲージを非表示設定にした場合は透明化や画像設定の有無に関わらず、
+ただし、後述するプラグイン/スクリプトコマンドでゲージを非表示設定にした場合は
+透明化や画像設定の有無に関わらず、
 プラグイン/スクリプトコマンドでゲージを表示設定にする必要があります。
 
-イベントコマンド[イベントの一時消去]が実行されると、そのイベントに紐づく
-ゲージも一緒に消去されます。
+イベントコマンド[イベントの一時消去]が実行されると、
+そのイベントに紐づくゲージも一緒に消去されます。
 
 
-[コピペ用使用例、メモ欄設定・コマンド]
+[コピペ用使用例、メモ欄設定
+・コマンド]
   ※各項目の意味は後述しています。
     内容は1行毎になっていますので、
     必要な行の使用例部分をコピーしてお使いください。
@@ -478,12 +693,12 @@ no restrictions on usage (commercial, 18+ use, etc.).
 
 
 ゲージの色について:
-  このプラグインでは、ゲージの色番号をプラグインパラメーターまたはメモ欄で
-  指定する必要があります。
+  このプラグインでは、ゲージの色番号をプラグインパラメーター
+  またはメモ欄で指定する必要があります。
   (スクリプト/プラグインコマンドによって後からでも変更可能です)
 
-  色番号はsystem/Window.pngの右下側にある
-  色とりどりの四角い枠群に対応しています。
+  色番号はsystem/Window.pngの右下側にある色とりどりの四角い枠群に
+  対応しています。
 
   四角い枠群の左上(デフォルトだと白く塗られている四角い枠)を0番として
   右に向かって数えていきます。一番右下が31です。
@@ -504,44 +719,57 @@ no restrictions on usage (commercial, 18+ use, etc.).
 
 イベント_メモ欄_基本設定:
   <Egauge:vr[変数番号]>
-    ・イベントにゲージを表示します。ゲージの残量は変数を使用します。
+    
+・イベントにゲージを表示します。ゲージの残量は変数を使用します。
       [変数番号]の部分に変数の番号を指定。
 
-    ・ゲージ残量に使用する変数は0より大きい値を入れてください。
+    
+・ゲージ残量に使用する変数は0より大きい値を入れてください。
 
-    ・ゲージ最大値の指定がされていない場合、
+    
+・ゲージ最大値の指定がされていない場合、
       イベント生成時点の変数の値を最大値として設定します。
       (設定後、変数の値はゲージ残量として機能します)
 
   <Egauge:mvr[変数番号]>
-    ・イベントにゲージを表示します。ゲージの最大値は変数を使用します。
+    
+・イベントにゲージを表示します。ゲージの最大値は変数を使用します。
       [変数番号]の部分に変数の番号を指定。
 
-    ・ゲージ最大値に使用する変数は0より大きい値を入れてください。
+    
+・ゲージ最大値に使用する変数は0より大きい値を入れてください。
 
-    ・ゲージ残量の指定がされていない場合、
+    
+・ゲージ残量の指定がされていない場合、
       イベント生成時点の変数の値を残量として設定します。
       (設定後、変数の値はゲージ最大値として機能します)
 
   <Egauge:vr[変数番号1] mvr[変数番号2]>
-    ・イベントにゲージを表示します。ゲージの残量/最大値は変数を使用します。
+    
+・イベントにゲージを表示します。ゲージの残量/最大値は変数を使用します。
       [変数番号1],[変数番号2]の部分に変数の番号を指定。
 
-    ・[変数番号1]がゲージ残量として使われる変数、
+    
+・[変数番号1]がゲージ残量として使われる変数、
       [変数番号2]がゲージ最大値として使われる変数になります。
 
-    ・ゲージ残量/最大値に使用する変数は0より大きい値を入れてください。
+    
+・ゲージ残量/最大値に使用する変数は0より大きい値を入れてください。
 
-    ・ゲージ残量に設定された変数の値が
+    
+・ゲージ残量に設定された変数の値が
       ゲージ最大値に設定された変数の値より大きい場合、
       自動的にゲージ最大値の値が残量として設定されます。
 
   <Egauge:[数字]>
-    ・イベントにゲージを表示します。[数字]がゲージの最大値・残量になります。
+    
+・イベントにゲージを表示します。[数字]がゲージの最大値
+・残量になります。
       ゲージ残量の設定、最大値の設定は後述するコマンドでも可能です。
       変数を利用したくない場合はこちらをご使用ください。
 
-    ・ゲージ最大値に使用する[数字]は0より大きい値を入れてください。
+    
+・ゲージ最大値に使用する[数字]は0より大きい値を入れてください。
 
   ※ ゲージの値指定に変数と数字を使う2パターンを用意しましたが、
      両方指定した場合は変数設定が優先されます。
@@ -552,279 +780,363 @@ no restrictions on usage (commercial, 18+ use, etc.).
 
 メモ欄_オプション(各オプションはスペースで区切る):
   Wh[数字]
-    ・ゲージの長さを数字で指定します。
+    
+・ゲージの長さを数字で指定します。
 
   Ht[数字]
-    ・ゲージの高さを数字で指定します。
+    
+・ゲージの高さを数字で指定します。
 
   Xs[数字]
-    ・ゲージX座標を[数字]分、ズラして表示します。
+    
+・ゲージX座標を[数字]分、ズラして表示します。
       (プラス値で右へ、マイナス値で左に)
 
   Ys[数字]
-    ・ゲージY座標を[数字]分、ズラして表示します。
+    
+・ゲージY座標を[数字]分、ズラして表示します。
       (プラス値で下へ、マイナス値で上に)
 
   Vs[0～1の数字]
-    ・ゲージの初期表示状態を指定します。
+    
+・ゲージの初期表示状態を指定します。
         0 : イベント生成時、ゲージは非表示設定です。
         1 : イベント生成時、ゲージは表示設定です。
 
   Fx[1～3の数字]
-    ・ゲージを画面下側に固定表示します。
+    
+・ゲージを画面下側に固定表示します。
       (デフォルト設定でゲージ底辺と画面との余白が20pxになります)
 
-    ・ゲージのX座標は[1～3の数字]によって変わり、
+    
+・ゲージのX座標は[1～3の数字]によって変わり、
         1 : 画面左側とゲージ左辺の余白が20pxになるよう配置されます。
         2 : ゲージの長さを考慮して画面中央に表示されます。
         3 : 画面右側とゲージ右辺の余白が20pxになるよう配置されます。
       ゲージオフセットによって余白の数値は変化します。
 
   Fc[数字]
-    ・ゲージカラー1を数字で指定します。
+    
+・ゲージカラー1を数字で指定します。
       (プラグインパラメーターのGauge_Color_1設定より優先されます)
 
   Sc[数字]
-    ・ゲージカラー2を数字で指定します。
+    
+・ゲージカラー2を数字で指定します。
 
-    ・ゲージのグラデーションが必要ない場合は
+    
+・ゲージのグラデーションが必要ない場合は
       ゲージカラー1と同じ数字を指定します。
       (プラグインパラメーターのGauge_Color_2設定より優先されます)
 
   Bc[数字]
-    ・ゲージ背景カラーを数字で指定します。
+    
+・ゲージ背景カラーを数字で指定します。
       (プラグインパラメーターのGauge_Back_Color設定より優先されます)
 
   Op[数字]
-    ・ゲージ不透明度を数字で指定します。
+    
+・ゲージ不透明度を数字で指定します。
       (プラグインパラメーターのGauge_Opacity設定より優先されます)
 
 
 イベント_メモ欄の設定例:
   <Egauge:vr10>
-    ・イベントにゲージを表示します。
+    
+・イベントにゲージを表示します。
       ゲージの表示は最大値/残量ともに変数10番の値が反映されます。
       (変数の変動によりゲージ残量が変化します)
 
   <Egauge:mvr11>
-    ・イベントにゲージを表示します。
+    
+・イベントにゲージを表示します。
       ゲージの表示は最大値/残量ともに変数11番の値が反映されます。
       (変数の変動によりゲージ最大値が変化します)
 
   <Egauge:vr10 mvr11>
-    ・イベントにゲージを表示します。
+    
+・イベントにゲージを表示します。
       ゲージの表示は最大値が変数11番、残量が変数10番の値で反映されます。
       (変数11番の変動によりゲージ最大値が、
        変数10番の変動により残量が変化します)
 
   <Egauge:15>
-    ・イベントにゲージを表示します。
+    
+・イベントにゲージを表示します。
       ゲージの表示は最大値15、残量15で設定されます。
 
   <Egauge:3 Wh20 Ht6>
-    ・イベントにゲージを表示します。
+    
+・イベントにゲージを表示します。
       ゲージの表示は最大値3、残量3で設定されます。
-    ・ゲージの長さを20px、高さを6pxで表示します。
+    
+・ゲージの長さを20px、高さを6pxで表示します。
 
   <Egauge:vr20 Xs30 Ys-40>
-    ・イベントにゲージを表示します。
+    
+・イベントにゲージを表示します。
       ゲージの表示は最大値/残量ともに変数20番の値が反映されます。
       (変数が変動するとゲージ残量が変化します)
-    ・ゲージのX座標をデフォルト+30px、Y座標をデフォルト-40pxで表示します。
+    
+・ゲージのX座標をデフォルト+30px、Y座標をデフォルト-40pxで表示します。
 
   <Egauge:200 Wh300 Ht10 Xs-10 Ys-10 Fx1>
-    ・画面下、左側固定でゲージを表示します。
+    
+・画面下、左側固定でゲージを表示します。
       ゲージの表示は最大値200、残量200で設定されます。
-    ・ゲージの長さを300px、高さを10px、
+    
+・ゲージの長さを300px、高さを10px、
       X座標をデフォルト-10px、Y座標をデフォルト-10pxで表示します。
 
   <Egauge:vr5 Xs10 Ys10 Fx1 Fc3 Sc11 Bc7>
-    ・画面下、右側固定でゲージを表示します。
+    
+・画面下、右側固定でゲージを表示します。
       ゲージの表示は最大値/残量ともに変数5番の値が反映されます。
       (変数が変動するとゲージ残量が変化します)
-    ・ゲージの長さ、高さはデフォルト、
+    
+・ゲージの長さ、高さはデフォルト、
       X座標をデフォルト+10px、Y座標をデフォルト+10pxで表示します。
-    ・ゲージのカラー1を3番、カラー2を11番、ゲージ背景を7番の色で描画します。
+    
+・ゲージのカラー1を3番、カラー2を11番、ゲージ背景を7番の色で描画します。
 
 
 スクリプトコマンド:
     ※使用する際は、[]を実際の値やスクリプトに置き換えてください。
   $gameMap.showGaugeWindow([イベントID]);
-    ・指定した[イベントID]のゲージを表示設定にします。
+    
+・指定した[イベントID]のゲージを表示設定にします。
 
-    ・[イベントID]をthis._eventIdにすることで、
+    
+・[イベントID]をthis._eventIdにすることで、
       コマンドを実行したイベントを対象にします。
 
-    ・イベントが透明、イベント画像が未設定のとき、コマンドを実行しても
+    
+・イベントが透明、イベント画像が未設定のとき、コマンドを実行しても
       ゲージは表示されません。
 
-    ・ゲージが非表示設定になっている場合、
+    
+・ゲージが非表示設定になっている場合、
       このコマンドで表示設定にすることが可能です。
 
-    ・イベント_メモ欄にゲージ表示が設定されていない場合、何も変化しません。
+    
+・イベント_メモ欄にゲージ表示が設定されていない場合、何も変化しません。
 
   $gameMap.hideGaugeWindow([イベントID]);
-    ・指定した[イベントID]のゲージを非表示設定にします。
+    
+・指定した[イベントID]のゲージを非表示設定にします。
 
-    ・[イベントID]をthis._eventIdにすることで、
+    
+・[イベントID]をthis._eventIdにすることで、
       コマンドを実行したイベントを対象にします。
 
-    ・イベントが透明ではない、イベント画像が設定されているとき、
+    
+・イベントが透明ではない、イベント画像が設定されているとき、
       コマンドの実行によりゲージが非表示になります。
 
-    ・イベント_メモ欄にゲージ表示が設定されていない場合、何も変化しません。
+    
+・イベント_メモ欄にゲージ表示が設定されていない場合、何も変化しません。
 
   $gameMap.isHideGaugeWindow([イベントID]);
-    ・指定した[イベントID]のゲージが非表示設定であればtrue、
+    
+・指定した[イベントID]のゲージが非表示設定であればtrue、
       表示設定であればfalseを返します。
 
-    ・[イベントID]をthis._eventIdにすることで、
+    
+・[イベントID]をthis._eventIdにすることで、
       コマンドを実行したイベントを対象にします。
 
-    ・イベント_メモ欄にゲージ表示が設定されていない場合、falseが返ります。
+    
+・イベント_メモ欄にゲージ表示が設定されていない場合、falseが返ります。
 
   $gameMap.addGaugeValue([イベントID], [数字]);
-    ・指定した[イベントID]のゲージ残量を指定した[数字]分、
+    
+・指定した[イベントID]のゲージ残量を指定した[数字]分、
       増加/減少させます。([数字]がマイナス値だと減少します)
 
-    ・[イベントID]をthis._eventIdにすることで、
+    
+・[イベントID]をthis._eventIdにすることで、
       コマンドを実行したイベントを対象にします。
 
-    ・[数字]の代わりにスクリプト$gameVariables.value(n)を使うことで、
+    
+・[数字]の代わりにスクリプト$gameVariables.value(n)を使うことで、
       変数n番の値を増加/減少させることができます。
 
-    ・変数によってゲージ残量が決められている場合、このコマンドによって
+    
+・変数によってゲージ残量が決められている場合、このコマンドによって
       変数の値が変化します。
 
-    ・ゲージ残量は最大値より多くなることはなく、
+    
+・ゲージ残量は最大値より多くなることはなく、
       0より小さくなることもありません。
 
-    ・イベント_メモ欄にゲージ表示が設定されていない場合、何も変化しません。
+    
+・イベント_メモ欄にゲージ表示が設定されていない場合、何も変化しません。
 
   $gameMap.setGaugeValue([イベントID], [数字]);
-    ・指定した[イベントID]のゲージ残量を指定した[数字]に設定します。
+    
+・指定した[イベントID]のゲージ残量を指定した[数字]に設定します。
       ([数字]は0以上の値を指定。
        また、ゲージ最大値より残量が多くなることはありません)
 
-    ・[イベントID]をthis._eventIdにすることで、
+    
+・[イベントID]をthis._eventIdにすることで、
       コマンドを実行したイベントを対象にします。
 
-    ・[数字]の代わりにスクリプト$gameVariables.value(n)を使うことで、
+    
+・[数字]の代わりにスクリプト$gameVariables.value(n)を使うことで、
       変数n番の値をゲージ残量に設定することができます。
 
-    ・変数によってゲージ残量が決められている場合、このコマンドによって
+    
+・変数によってゲージ残量が決められている場合、このコマンドによって
       変数の値が変化します。
 
-    ・イベント_メモ欄にゲージ表示が設定されていない場合、何も変化しません。
+    
+・イベント_メモ欄にゲージ表示が設定されていない場合、何も変化しません。
 
   $gameMap.setGaugeMaxValue([イベントID], [数字]);
-    ・指定した[イベントID]のゲージ最大値を指定した[数字]に設定します。
+    
+・指定した[イベントID]のゲージ最大値を指定した[数字]に設定します。
       ([数字]は0より大きい値を指定してください)
 
-    ・[イベントID]をthis._eventIdにすることで、
+    
+・[イベントID]をthis._eventIdにすることで、
       コマンドを実行したイベントを対象にします。
 
-    ・[数字]の代わりにスクリプト$gameVariables.value(n)を使うことで、
+    
+・[数字]の代わりにスクリプト$gameVariables.value(n)を使うことで、
       変数n番の値をゲージ最大値に設定することができます。
 
-    ・ゲージ最大値がゲージ残量を下回る場合、このコマンドによって
+    
+・ゲージ最大値がゲージ残量を下回る場合、このコマンドによって
       ゲージ残量がゲージ最大値と同じになります。
 
-    ・変数によってゲージ最大値/残量が決められている場合、
+    
+・変数によってゲージ最大値/残量が決められている場合、
       このコマンドによって変数の値が変化します
 
-    ・イベント_メモ欄にゲージ表示が設定されていない場合、何も変化しません。
+    
+・イベント_メモ欄にゲージ表示が設定されていない場合、何も変化しません。
 
   $gameMap.getGaugeValue([イベントID]);
-    ・指定した[イベントID]のゲージ残量を返します。
+    
+・指定した[イベントID]のゲージ残量を返します。
 
-    ・[イベントID]をthis._eventIdにすることで、
+    
+・[イベントID]をthis._eventIdにすることで、
       コマンドを実行したイベントを対象にします。
 
-    ・変数によってゲージ残量が決められている場合、
+    
+・変数によってゲージ残量が決められている場合、
       返ってくる値は変数の値と同じです。
 
-    ・イベント_メモ欄にゲージ表示が設定されていない場合、-1を返します。
+    
+・イベント_メモ欄にゲージ表示が設定されていない場合、-1を返します。
 
   $gameMap.getGaugeMaxValue([イベントID]);
-    ・指定した[イベントID]のゲージ最大値を返します。
+    
+・指定した[イベントID]のゲージ最大値を返します。
 
-    ・[イベントID]を0にすると、コマンドを実行したイベントを対象にします。
+    
+・[イベントID]を0にすると、コマンドを実行したイベントを対象にします。
 
-    ・イベント_メモ欄にゲージ表示が設定されていない場合、-1を返します。
+    
+・イベント_メモ欄にゲージ表示が設定されていない場合、-1を返します。
 
   $gameMap.setGaugeOffsetX([イベントID], [数字]);
-    ・指定した[イベントID]のゲージX座標オフセットを
+    
+・指定した[イベントID]のゲージX座標オフセットを
       指定した[数字]に設定します。
 
-    ・オフセットが指定されたゲージは指定された[数字]分、
+    
+・オフセットが指定されたゲージは指定された[数字]分、
       本来の描画位置から横方向にズレて表示されます。
 
-    ・[イベントID]をthis._eventIdにすることで、
+    
+・[イベントID]をthis._eventIdにすることで、
       コマンドを実行したイベントを対象にします。
 
-    ・[数字]の代わりにスクリプト$gameVariables.value(n)を使うことで、
+    
+・[数字]の代わりにスクリプト$gameVariables.value(n)を使うことで、
       変数n番の値をゲージオフセットに設定することができます。
 
   $gameMap.setGaugeOffsetY([イベントID], [数字]);
-    ・指定した[イベントID]のゲージY座標オフセットを
+    
+・指定した[イベントID]のゲージY座標オフセットを
       指定した[数字]に設定します。
 
-    ・オフセットが指定されたゲージは指定された[数字]分、
+    
+・オフセットが指定されたゲージは指定された[数字]分、
       本来の描画位置から縦方向にズレて表示されます。
 
-    ・[イベントID]をthis._eventIdにすることで、
+    
+・[イベントID]をthis._eventIdにすることで、
       コマンドを実行したイベントを対象にします。
 
-    ・[数字]の代わりにスクリプト$gameVariables.value(n)を使うことで、
+    
+・[数字]の代わりにスクリプト$gameVariables.value(n)を使うことで、
       変数n番の値をゲージオフセットに設定することができます。
 
   $gameMap.setGaugeBackColor([イベントID], [数字]);
-    ・指定した[イベントID]のゲージ背景色番号を指定した[数字]に設定します。
+    
+・指定した[イベントID]のゲージ背景色番号を指定した[数字]に設定します。
 
-    ・[イベントID]をthis._eventIdにすることで、
+    
+・[イベントID]をthis._eventIdにすることで、
       コマンドを実行したイベントを対象にします。
 
-    ・[数字]の代わりにスクリプト$gameVariables.value(n)を使うことで、
+    
+・[数字]の代わりにスクリプト$gameVariables.value(n)を使うことで、
       変数n番の値をゲージ背景色番号に設定することができます。
 
   $gameMap.setGaugeColor1([イベントID], [数字]);
-    ・指定した[イベントID]のゲージ表示色番号を指定した[数字]に設定します。
+    
+・指定した[イベントID]のゲージ表示色番号を指定した[数字]に設定します。
 
-    ・[イベントID]をthis._eventIdにすることで、
+    
+・[イベントID]をthis._eventIdにすることで、
       コマンドを実行したイベントを対象にします。
 
-    ・[数字]の代わりにスクリプト$gameVariables.value(n)を使うことで、
+    
+・[数字]の代わりにスクリプト$gameVariables.value(n)を使うことで、
       変数n番の値をゲージ表示色番号に設定することができます。
 
   $gameMap.setGaugeColor2([イベントID], [数字]);
-    ・指定した[イベントID]のゲージ表示色番号を指定した[数字]に設定します。
+    
+・指定した[イベントID]のゲージ表示色番号を指定した[数字]に設定します。
 
-    ・ゲージのグラデーションが必要ない場合は
+    
+・ゲージのグラデーションが必要ない場合は
       ゲージカラー1と同じ数字を指定します。
 
-    ・[イベントID]をthis._eventIdにすることで、
+    
+・[イベントID]をthis._eventIdにすることで、
       コマンドを実行したイベントを対象にします。
 
-    ・[数字]の代わりにスクリプト$gameVariables.value(n)を使うことで、
+    
+・[数字]の代わりにスクリプト$gameVariables.value(n)を使うことで、
       変数n番の値をゲージ表示色番号に設定することができます。
 
   $gameMap.setGaugeOpacity([イベントID], [数字]);
-    ・指定した[イベントID]のゲージ不透明度を指定した[数字]に設定します。
+    
+・指定した[イベントID]のゲージ不透明度を指定した[数字]に設定します。
       ([数字]は0-255の間の値を指定してください)
 
-    ・[イベントID]をthis._eventIdにすることで、
+    
+・[イベントID]をthis._eventIdにすることで、
       コマンドを実行したイベントを対象にします。
 
-    ・[数字]の代わりにスクリプト$gameVariables.value(n)を使うことで、
+    
+・[数字]の代わりにスクリプト$gameVariables.value(n)を使うことで、
       変数n番の値をゲージ不透明度に設定することができます。
 
 
 補足：
-  ・このプラグインに関するメモ欄の設定、プラグインコマンドは
+  
+・このプラグインに関するメモ欄の設定、プラグインコマンドは
     大文字/小文字を区別していません。
 
-  ・プラグインパラメーターの説明に、[初期値]と書かれているものは
+  
+・プラグインパラメーターの説明に、[初期値]と書かれているものは
     イベントのメモ欄で個別に設定が可能です。
     設定した場合、[初期値]よりメモ欄の設定が
     優先されますのでご注意ください。
@@ -1004,78 +1316,6 @@ http://opensource.org/licenses/mit-license.php
 @default 0
 */
 
-//=============================================================================
-// MKR_EventGauge.js
-//=============================================================================
-// Copyright (c) 2021 マンカインド
-// This software is released under the MIT License.
-// http://opensource.org/licenses/mit-license.php
-// ----------------------------------------------------------------------------
-// Version
-// 2.0.0 2021/05/26 ・セーブデータにゲージ情報を保存しないよう修正。
-//                  ・マップ初期化時、ゲージ情報も初期化するように修正。
-//
-// 1.2.3 2020/04/10 ・イベントの一時消去後、
-//                    メニュー開閉を行うとエラーとなる問題を修正。
-//
-// 1.2.2 2020/02/13 ・イベントの一時消去を行った際にエラーとなる問題を修正。
-//
-// 1.2.1 2018/10/22 ・ニューゲーム開始時点マップにゲージ設定された
-//                    イベントがいた場合、エラーになる問題を修正。
-//
-// 1.2.0 2018/10/20 ・一部イベントにゲージが表示されなくなっていた問題を修正。
-//
-// 1.1.9 2018/09/26 ・イベント画像にタイルセットを選択時、
-//                    イベントゲージを表示するかどうかを
-//                    プラグインパラメータで切替可能にした。
-//
-// 1.1.8 2018/05/29 ・一部プラグインとの競合を修正。
-//
-// 1.1.7 2018/03/18 ・ゲージ不透明度をイベントごとに設定可能に。
-//                  ・ゲージ量設定を残量、最大値で分離させた。
-//
-// 1.1.6 2017/07/16 ・余計なコードを削除
-//                  ・バージョンを変更し忘れていたため修正
-//
-// 1.1.5 2017/07/16 古いバージョンで作成されたツクールMVプロジェクトにおいて
-//                  プラグインが正常に動作しなかったため修正
-//
-// 1.1.4 2017/05/27 ・イベントゲージを表示するマップで
-//                    セーブが出来なかった問題を修正。
-//                  ・スクリプトによるコマンド記述方法を一部変更
-//                  ・ゲージの色をプラグイン/スクリプトコマンドで変更可能に
-//
-// 1.1.3 2017/03/11 ・ゲージのoffsetX/Yをプラグイン/スクリプトコマンドで
-//                    変更可能に。
-//                  ・ゲージをピクチャーの上に描画可能に。
-//                    (プラグインパラメーターの追加)
-//
-// 1.1.2 2017/03/05 ・メモ欄の記述にオプション設定を追加
-//                  ・ゲージをメモリキャッシュへと登録するように
-//                    (一部のメモリ解放系プラグインへの対応)
-//
-// 1.1.1 2017/02/17 ・ゲージ設定に変数ではなく数字を使う方式を追加。
-//                  ・メモ欄の記述にオプション設定を追加
-//
-// 1.1.0 2017/02/14 ・プラグインコマンドの対象を実行したイベントのみに変更。
-//                  ・スクリプトコマンドの[イベントID]に
-//                    実行したイベント自身を表す0を指定可能に。
-//                  ・プラグイン/スクリプトコマンドの一部に変数を使用可能に。
-//                  ・プラグインパラメーターでゲージの不透明度を指定可能に。
-//                  ・上記修正に合わせてプラグイン説明文を修正。
-//
-// 1.0.2 2017/02/14 メニューの開閉でゲージが非表示になることがある問題を修正。
-//
-// 1.0.1 2017/02/14 スクリプトによるコマンドが一部動作していなかったため修正。
-//
-// 1.0.0 2017/02/13 初版公開。
-// ----------------------------------------------------------------------------
-// [Twitter] https://twitter.com/mankind_games/
-//  [GitHub] https://github.com/mankindGames/
-//    [Blog] http://mankind-games.blogspot.jp/
-//=============================================================================
-
-
 
 var Imported = Imported || {};
 Imported.MKR_EventGauge = true;
@@ -1212,7 +1452,8 @@ Imported.MKR_EventGauge = true;
 
     //=========================================================================
     // PluginManager
-    //  ・プラグイン用コマンドを定義します。
+    //  
+・プラグイン用コマンドを定義します。
     //
     //=========================================================================
     PluginManager.registerCommand(pluginName, "show", function (args) {
@@ -1281,7 +1522,8 @@ Imported.MKR_EventGauge = true;
 
     //=========================================================================
     // Window_Gauge
-    //  ・ゲージウィンドウを定義します。
+    //  
+・ゲージウィンドウを定義します。
     //
     //=========================================================================
     function Window_Gauge() {
@@ -1475,7 +1717,8 @@ Imported.MKR_EventGauge = true;
 
     //=========================================================================
     // Spriteset_Map
-    //  ・イベントにゲージウィンドウを追加する処理を定義します。
+    //  
+・イベントにゲージウィンドウを追加する処理を定義します。
     //
     //=========================================================================
     var _Spriteset_Map_createUpperLayer = Spriteset_Map.prototype.createUpperLayer;
@@ -1528,8 +1771,10 @@ Imported.MKR_EventGauge = true;
 
     //=========================================================================
     // Game_Map
-    //  ・ウィンドウゲージ群を保持する処理を定義します。
-    //  ・プラグイン用コマンドを定義します。
+    //  
+・ウィンドウゲージ群を保持する処理を定義します。
+    //  
+・プラグイン用コマンドを定義します。
     //
     //=========================================================================
     var _Game_Map_setup = Game_Map.prototype.setup;
@@ -1867,7 +2112,8 @@ Imported.MKR_EventGauge = true;
 
     //=========================================================================
     // Game_Event
-    //  ・イベントの追加メンバーと関連メソッドを定義します。
+    //  
+・イベントの追加メンバーと関連メソッドを定義します。
     //
     //=========================================================================
     var _Game_Event_initialize = Game_Event.prototype.initialize;

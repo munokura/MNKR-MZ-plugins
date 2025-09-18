@@ -8,11 +8,22 @@
  * --------------------------------------------------
  */
 
+//=============================================================================
+// TMPlugin - アニメ付き明かり
+// バージョン: 2.0.1
+// 最終更新日: 2016/12/02
+// 配布元    : http://hikimoki.sakura.ne.jp/
+//-----------------------------------------------------------------------------
+// Copyright (c) 2016 tomoaky
+// Released under the MIT license.
+// http://opensource.org/licenses/mit-license.php
+//=============================================================================
+
 /*:
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMAnimeLightMZ.js
 @plugindesc v1.0.2 Displays animated lights at events.
-@author munokura
+@author tomoaky,munokura
 @license MIT License
 
 @help
@@ -313,19 +324,6 @@ http://opensource.org/licenses/mit-license.php
 @min -1
 @default 0
 */
-
-//=============================================================================
-// TMPlugin - アニメ付き明かり
-// バージョン: 2.0.1
-// 最終更新日: 2016/12/02
-// 配布元    : http://hikimoki.sakura.ne.jp/
-//-----------------------------------------------------------------------------
-// Copyright (c) 2016 tomoaky
-// Released under the MIT license.
-// http://opensource.org/licenses/mit-license.php
-//=============================================================================
-
-
 
 var Imported = Imported || {};
 Imported.TMAnimeLight = true;

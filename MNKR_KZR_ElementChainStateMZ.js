@@ -7,12 +7,22 @@
  * http://opensource.org/licenses/mit-license.php
  * --------------------------------------------------
  */
+//=============================================================================
+// KZR_ElementChainState.js
+// Version : 1.00
+// -----------------------------------------------------------------------------
+// [Homepage]: かざり - ホームページ名なんて飾りです。偉い人にはそれがわからんのですよ。 -
+//             http://nyannyannyan.bake-neko.net/
+// -----------------------------------------------------------------------------
+// [Version]
+// 1.00 2017/01/28 公開
+//=============================================================================
 
 /*:
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_KZR_ElementChainStateMZ.js
 @plugindesc Create a state that responds to an ally's attack and performs a follow-up attack.
-@author munokura
+@author kazari,munokura
 @license MIT License
 
 @help
@@ -87,18 +97,6 @@ http://opensource.org/licenses/mit-license.php
 作者に無断で改変、再配布が可能で、
 利用形態（商用、18禁利用等）についても制限はありません。
 */
-
-//=============================================================================
-// KZR_ElementChainState.js
-// Version : 1.00
-// -----------------------------------------------------------------------------
-// [Homepage]: かざり - ホームページ名なんて飾りです。偉い人にはそれがわからんのですよ。 -
-//             http://nyannyannyan.bake-neko.net/
-// -----------------------------------------------------------------------------
-// [Version]
-// 1.00 2017/01/28 公開
-//=============================================================================
-
 
 
 (() => {

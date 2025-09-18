@@ -8,12 +8,22 @@
  * http://opensource.org/licenses/mit-license.php
  * --------------------------------------------------
  */
+/*---------------------------------------------------------------------------*
+* 2018/09/05 kido
+* https://kido0617.github.io/
+* Ver.1.3
+* This software is released under the MIT license.
+* http://opensource.org/licenses/mit-license.php
+*---------------------------------------------------------------------------*/
+
+// v1.0.1 DarkPlasma氏にリファクタをいただき、修正。
+// v1.0.0 MZ用に移植。MVとの互換性なし。
 
 /*:
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_RandomTreasure.js
 @plugindesc v1.0.1 Random Treasure Chest Plugin
-@author munokura
+@author kido,munokura
 @license MIT License
 
 @help
@@ -146,18 +156,6 @@ http://opensource.org/licenses/mit-license.php
 @default start
 @desc ガチャ処理準備:以降の「ショップの処理」をガチャの選択肢と数に置換 / アイテム取得:ガチャで引いたアイテムを取得
 */
-
-/*---------------------------------------------------------------------------*
-* 2018/09/05 kido
-* https://kido0617.github.io/
-* Ver.1.3
-* This software is released under the MIT license.
-* http://opensource.org/licenses/mit-license.php
-*---------------------------------------------------------------------------*/
-
-// v1.0.1 DarkPlasma氏にリファクタをいただき、修正。
-// v1.0.0 MZ用に移植。MVとの互換性なし。
-
 
 
 (() => {

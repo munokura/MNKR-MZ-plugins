@@ -7,12 +7,18 @@
  * http://opensource.org/licenses/mit-license.php
  * --------------------------------------------------
  */
+//=============================================================================
+// TMVplugin - タイマー拡張
+// 作者: tomoaky (http://hikimoki.sakura.ne.jp/)
+// Version: 1.0
+// 最終更新日: 2016/07/29
+//=============================================================================
 
 /*:
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMTimerExMZ.js
 @plugindesc Changes the timer display from seconds to milliseconds.
-@author munokura
+@author tomoaky,munokura
 @license MIT License
 
 @help
@@ -163,14 +169,6 @@ http://opensource.org/licenses/mit-license.php
 @type variable
 @default 0
 */
-
-//=============================================================================
-// TMVplugin - タイマー拡張
-// 作者: tomoaky (http://hikimoki.sakura.ne.jp/)
-// Version: 1.0
-// 最終更新日: 2016/07/29
-//=============================================================================
-
 
 
 var Imported = Imported || {};

@@ -7,12 +7,22 @@
  * http://opensource.org/licenses/mit-license.php
  * --------------------------------------------------
  */
+//=============================================================================
+// TMPlugin - つちけむり
+// バージョン: 2.1.0
+// 最終更新日: 2017/08/10
+// 配布元    : http://hikimoki.sakura.ne.jp/
+//-----------------------------------------------------------------------------
+// Copyright (c) 2016 tomoaky
+// Released under the MIT license.
+// http://opensource.org/licenses/mit-license.php
+//=============================================================================
 
 /*:
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMCloudDustMZ.js
 @plugindesc Adds dust effects to jumps and dashes.
-@author munokura
+@author tomoaky,munokura
 @license MIT License
 
 @help
@@ -454,18 +464,6 @@ Ver.1.0.1
 @text 土煙の追加停止の解除
 @desc 新しい土煙を追加表示できるようにします。
 */
-
-//=============================================================================
-// TMPlugin - つちけむり
-// バージョン: 2.1.0
-// 最終更新日: 2017/08/10
-// 配布元    : http://hikimoki.sakura.ne.jp/
-//-----------------------------------------------------------------------------
-// Copyright (c) 2016 tomoaky
-// Released under the MIT license.
-// http://opensource.org/licenses/mit-license.php
-//=============================================================================
-
 
 
 var Imported = Imported || {};

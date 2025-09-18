@@ -53,7 +53,7 @@ restrictions on its use (commercial, 18+, etc.).
 @default true
 
 @param windowMapName
-@text Disable map name background
+@text Map name background disable
 @desc Disable background for map name display
 @type boolean
 @on Disable
@@ -61,7 +61,7 @@ restrictions on its use (commercial, 18+, etc.).
 @default false
 
 @param windowBattleLog
-@text Disable Battlelog Background
+@text Battlelog Background disable
 @desc Disable Battlelog background
 @type boolean
 @on Disable

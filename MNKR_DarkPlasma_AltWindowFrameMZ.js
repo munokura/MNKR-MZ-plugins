@@ -8,11 +8,20 @@
  * --------------------------------------------------
  */
 
+// DarkPlasma_AltWindowFramePatch
+// Copyright (c) 2020 DarkPlasma
+// This software is released under the MIT license.
+// http://opensource.org/licenses/mit-license.php
+
+/**
+ * 2020/04/10 1.0.0 公開
+ */
+
 /*:
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_DarkPlasma_AltWindowFrameMZ.js
 @plugindesc A plugin for using MADO creation materials RPG Maker MZ version
-@author munokura
+@author DarkPlasma, munokura
 @license MIT
 
 @help
@@ -297,17 +306,6 @@ http://opensource.org/licenses/mit-license.php
 @value 4
 @default 0
 */
-
-// DarkPlasma_AltWindowFramePatch
-// Copyright (c) 2020 DarkPlasma
-// This software is released under the MIT license.
-// http://opensource.org/licenses/mit-license.php
-
-/**
- * 2020/04/10 1.0.0 公開
- */
-
-
 
 
 (function () {

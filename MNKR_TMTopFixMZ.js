@@ -7,12 +7,22 @@
  * http://opensource.org/licenses/mit-license.php
  * --------------------------------------------------
  */
+//=============================================================================
+// TMPlugin - 先頭並び替え不可
+// バージョン: 1.0.1
+// 最終更新日: 2017/02/17
+// 配布元    : http://hikimoki.sakura.ne.jp/
+//-----------------------------------------------------------------------------
+// Copyright (c) 2015 tomoaky
+// Released under the MIT license.
+// http://opensource.org/licenses/mit-license.php
+//=============================================================================
 
 /*:
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMTopFixMZ.js
 @plugindesc Prevents rearrangement of the actor at the head of the party.
-@author munokura
+@author tomoaky,munokura
 @license MIT License
 
 @help
@@ -95,18 +105,6 @@ http://opensource.org/licenses/mit-license.php
 @text 先頭並び替え禁止
 @desc 先頭並び替えを禁止します。
 */
-
-//=============================================================================
-// TMPlugin - 先頭並び替え不可
-// バージョン: 1.0.1
-// 最終更新日: 2017/02/17
-// 配布元    : http://hikimoki.sakura.ne.jp/
-//-----------------------------------------------------------------------------
-// Copyright (c) 2015 tomoaky
-// Released under the MIT license.
-// http://opensource.org/licenses/mit-license.php
-//=============================================================================
-
 
 
 var Imported = Imported || {};

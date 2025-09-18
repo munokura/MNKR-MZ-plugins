@@ -7,12 +7,22 @@
  * http://opensource.org/licenses/mit-license.php
  * --------------------------------------------------
  */
+//=============================================================================
+// TMPlugin - アイテム制約拡張
+// バージョン: 1.0.1
+// 最終更新日: 2017/02/14
+// 配布元    : http://hikimoki.sakura.ne.jp/
+//-----------------------------------------------------------------------------
+// Copyright (c) 2017 tomoaky
+// Released under the MIT license.
+// http://opensource.org/licenses/mit-license.php
+//=============================================================================
 
 /*:
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMItemRestrictionMZ.js
 @plugindesc Adds constraints on the target actors for the item.
-@author munokura
+@author tomoaky,munokura
 @license MIT License
 
 @help
@@ -104,18 +114,6 @@ http://opensource.org/licenses/mit-license.php
 @type actor
 @default 0
 */
-
-//=============================================================================
-// TMPlugin - アイテム制約拡張
-// バージョン: 1.0.1
-// 最終更新日: 2017/02/14
-// 配布元    : http://hikimoki.sakura.ne.jp/
-//-----------------------------------------------------------------------------
-// Copyright (c) 2017 tomoaky
-// Released under the MIT license.
-// http://opensource.org/licenses/mit-license.php
-//=============================================================================
-
 
 
 (() => {

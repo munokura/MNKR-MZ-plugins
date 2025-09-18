@@ -7,12 +7,16 @@
  * http://opensource.org/licenses/mit-license.php
  * --------------------------------------------------
  */
+/*
+Copyright (c) <2016> <hiz>
+MITライセンスの下で公開されています。
+*/
 
 /*:
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_HzRandomListMZ.js
 @plugindesc You can create a random list of values without duplicates.
-@author munokura
+@author hiz,munokura
 @license MIT License
 
 @help
@@ -264,12 +268,6 @@ http://opensource.org/licenses/mit-license.php
 @type Number
 @default 1
 */
-
-/*
-Copyright (c) <2016> <hiz>
-MITライセンスの下で公開されています。
-*/
-
 
 
 (() => {

@@ -7,12 +7,18 @@
  * http://opensource.org/licenses/mit-license.php
  * --------------------------------------------------
  */
+//=============================================================================
+// TMVplugin - レベル上限操作
+// 作者: tomoaky (http://hikimoki.sakura.ne.jp/)
+// Version: 1.0
+// 最終更新日: 2015/12/29
+//=============================================================================
 
 /*:
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TMMaxLevelMZ.js
 @plugindesc You can increase the level cap during the game.
-@author munokura
+@author tomoaky,munokura
 @license MIT License
 
 @help
@@ -189,14 +195,6 @@ http://opensource.org/licenses/mit-license.php
 @type variable
 @default 1
 */
-
-//=============================================================================
-// TMVplugin - レベル上限操作
-// 作者: tomoaky (http://hikimoki.sakura.ne.jp/)
-// Version: 1.0
-// 最終更新日: 2015/12/29
-//=============================================================================
-
 
 
 var Imported = Imported || {};

@@ -7,12 +7,23 @@
  * http://opensource.org/licenses/mit-license.php
  * --------------------------------------------------
  */
+//
+//  特定タイミング発動コモン ver1.00
+//
+// ------------------------------------------------------
+// Copyright (c) 2016 Yana
+// Released under the MIT license
+// http://opensource.org/licenses/mit-license.php
+// ------------------------------------------------------
+//
+// author Yana
+//
 
 /*:
 @target MZ
 @url https://raw.githubusercontent.com/munokura/MNKR-MZ-plugins/master/MNKR_TimingInvokeCommonMZ.js
 @plugindesc Common events are executed when moving between locations or when a battle begins or ends.
-@author munokura
+@author Yana,munokura
 @license MIT License
 
 @help
@@ -97,19 +108,6 @@ http://opensource.org/licenses/mit-license.php
 作者に無断で改変、再配布が可能で、
 利用形態（商用、18禁利用等）についても制限はありません。
 */
-
-//
-//  特定タイミング発動コモン ver1.00
-//
-// ------------------------------------------------------
-// Copyright (c) 2016 Yana
-// Released under the MIT license
-// http://opensource.org/licenses/mit-license.php
-// ------------------------------------------------------
-//
-// author Yana
-//
-
 
 
 (() => {
