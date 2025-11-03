@@ -1,7 +1,7 @@
 /**
  * --------------------------------------------------
  * MNKR_PluginConflictDetectorMZ.js
- *   Ver.0.1.0
+ *   Ver.0.2.0
  * Copyright (c) 2025 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -54,19 +54,31 @@
 @type string
 @default
 
+@param pluginSeparator
+@text プラグイン名区切り文字
+@desc 複数プラグインを区切る記号(デフォルト: |)
+@type string
+@default |
+
+@param enableDebugLog
+@text デバッグログを表示
+@desc コンソールに詳細なデバッグログを表示します
+@type boolean
+@default false
+
 @param Header_01_List
 @text [01] リストCSV ヘッダー
-@desc 01_plugin_list.csvのヘッダーをカンマ区切りで指定 (例: Order,File Name)
+@desc 01_plugin_list.csvのヘッダーをカンマ区切りで指定
 @default ロード順序,ファイル名
 
 @param Header_02_Details
 @text [02] 詳細CSV ヘッダー
-@desc 02_override_details.csvのヘッダーをカンマ区切りで指定 (例: Method,Plugin File)
+@desc 02_override_details.csvのヘッダーをカンマ区切りで指定
 @default 対象メソッド,操作プラグインファイル名
 
 @param Header_03_Summary
 @text [03] 集計CSV ヘッダー
-@desc 03_override_summary.csvのヘッダーをカンマ区切りで指定 (例: Method,Count,Plugin List)
+@desc 03_override_summary.csvのヘッダーをカンマ区切りで指定
 @default 対象メソッド,総上書きプラグイン数,対象プラグインファイル名リスト
 
 @help
@@ -74,33 +86,31 @@
 このプラグインは、他のプラグインがコアスクリプトのメソッドを
 どのように上書き・エイリアスしているかを自動検出し、
 CSVレポートとして出力します。
+競合調査の調査時のみにプラグインをONにしてください。
+それ以外の場面ではOFFにすることを推奨します。
 
-どのファイルがどのメソッドを上書きしているかを特定し、
-競合調査資料として出力します。
+## プラグイン管理画面の配置
+このプラグインは、プラグイン管理画面の最下部に配置してください。
+上部に配置すると、それより下のプラグインを検出できません。
 
 # 主な機能
 1. プラグインファイル内のコアメソッド上書き箇所をテキストで直接検出
-2. 検出された全オーバーライドの記録 (ファイル名とメソッド名の関連付け)
-3. ロード順序リストの出力
-4. CSV形式でのレポート出力
+2. ES6 class構文で書かれたメソッドの検出
+3. MixIn関数内のメソッド検出
+4. 検出された全オーバーライドの記録
+5. CSV形式でのレポート出力
 
 # 出力ファイル
-- 01_plugin_list.csv
-プラグインのロード順序リスト
-- 02_override_details.csv
-詳細なオーバーライド情報（ファイル名とメソッドの一覧）
-- 03_override_summary.csv
-オーバーライドされたメソッドの集計と上書きプラグインリスト
+- 01_plugin_list.csv: プラグインのロード順序リスト
+- 02_override_details.csv: 詳細なオーバーライド情報
+- 03_override_summary.csv: オーバーライドの集計とプラグインリスト
 
 # プラグインコマンド
-「レポート出力実行」
-手動で検出を実行します
+レポート出力実行
 
 # 注意事項
-- PC版（Node.js環境）でのみCSVファイルが出力され、
-プラグインファイルの読み込みが可能です。
-- 難読化されたプラグインや動的にメソッドを変更するプラグインは、
-正確に検出できない場合があります。
+- PCバージョン(Node.js環境)でのみCSVファイルが出力されます。
+- 難読化されたプラグインは正確に検出できない場合があります。
 
 # 利用規約
 MITライセンスです。
@@ -112,36 +122,38 @@ http://opensource.org/licenses/mit-license.php
 (() => {
     'use strict';
 
-    // グローバル定数の定義
     const pluginName = document.currentScript.src.split("/").pop().replace(/\.js$/, "");
     const PRMS = PluginManager.parameters(pluginName);
 
-    // パラメータ取得
     const config = {
         outputEnabled: PRMS['outputEnabled'] === 'true',
         outputPath: String(PRMS['outputPath'] || 'data/'),
         outputTiming: String(PRMS['outputTiming'] || 'start'),
         showCompletionDialog: PRMS['showCompletionDialog'] === 'true',
         excludePlugins: String(PRMS['excludePlugins'] || '').split(',').map(s => s.trim()).filter(s => s),
+        pluginSeparator: String(PRMS['pluginSeparator'] || '|'),
+        enableDebugLog: PRMS['enableDebugLog'] === 'true',
         headerList: String(PRMS['Header_01_List'] || 'ロード順序,ファイル名').split(','),
         headerDetails: String(PRMS['Header_02_Details'] || '対象メソッド,操作プラグインファイル名').split(','),
         headerSummary: String(PRMS['Header_03_Summary'] || '対象メソッド,総上書きプラグイン数,対象プラグインファイル名リスト').split(','),
     };
 
-    // プラグインコマンド登録（MZ形式）
+    const OutputTiming = { START: 'start', F8: 'f8', PLUGIN_COMMAND: 'pluginCommand' };
+
+    function debugLog() {
+        if (config.enableDebugLog) {
+            console.log.apply(console, ['[' + pluginName + ']'].concat(Array.from(arguments)));
+        }
+    }
+
     PluginManager.registerCommand(pluginName, 'executeDetection', args => {
-        console.log('[' + pluginName + '] プラグインコマンド実行');
         executeConflictDetection();
     });
 
-    // 定数定義
-    const OutputTiming = { START: 'start', F8: 'f8', PLUGIN_COMMAND: 'pluginCommand' };
-
     //-----------------------------------------------------------------------------
-    // CoreClassList & Regex
+    // Core Classes & Patterns
     //-----------------------------------------------------------------------------
 
-    // 検出対象となるコアクラスのリスト
     const CORE_CLASSES = [
         'Game_Temp', 'Game_System', 'Game_Timer', 'Game_Message', 'Game_Switches',
         'Game_Variables', 'Game_SelfSwitches', 'Game_Screen', 'Game_Picture',
@@ -180,24 +192,30 @@ http://opensource.org/licenses/mit-license.php
     const CLASS_PATTERN_STRING = '(' + CORE_CLASSES.join('|') + ')';
 
     const OVERRIDE_PATTERN = new RegExp(
-        CLASS_PATTERN_STRING +
-        '\\.prototype\\.' +
-        '([a-zA-Z_$][a-zA-Z0-9_$]*)\\s*=' +
-        '[^;]*?(?:function|\\{|=)',
+        CLASS_PATTERN_STRING + '\\.prototype\\.([a-zA-Z_$][a-zA-Z0-9_$]*)\\s*=[^;]*?(?:function|\\{|=)',
         'g'
     );
 
     const ALIAS_PATTERN = new RegExp(
         '(?:var|const|let)\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\s*=\\s*' +
-        CLASS_PATTERN_STRING +
-        '\\.prototype\\.' +
-        '([a-zA-Z_$][a-zA-Z0-9_$]*)',
+        CLASS_PATTERN_STRING + '\\.prototype\\.([a-zA-Z_$][a-zA-Z0-9_$]*)',
         'g'
     );
 
+    const CLASS_DECLARATION_PATTERN_CORE = new RegExp(
+        'class\\s+(' + CLASS_PATTERN_STRING + ')\\s+extends\\s+[a-zA-Z_$][a-zA-Z0-9_$]*\\s*\\{',
+        'g'
+    );
+
+    const CLASS_DECLARATION_PATTERN_ALL = /class\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\s+extends\s+[a-zA-Z_$][a-zA-Z0-9_$]*\s*\{/g;
+
+    const MIXIN_FUNCTION_PATTERN = new RegExp(
+        'function\\s+[a-zA-Z_$][a-zA-Z0-9_$]*_?[Mm]ix[Ii]n\\s*\\(\\s*([a-zA-Z_$][a-zA-Z0-9_$]*)\\s*\\)',
+        'g'
+    );
 
     //-----------------------------------------------------------------------------
-    // ConflictDetector (Static Analysis Version)
+    // ConflictDetector
     //-----------------------------------------------------------------------------
 
     function ConflictDetector() {
@@ -207,49 +225,45 @@ http://opensource.org/licenses/mit-license.php
 
     ConflictDetector.prototype.analyze = function () {
         if (!FileWriter.isNodeJS()) {
-            console.error('[' + pluginName + '] 静的解析はNode.js (PC版) 環境でのみ実行可能です。');
+            console.error('[' + pluginName + '] 静的解析はNode.js環境でのみ実行可能です。');
             return [];
         }
 
-        console.log('[' + pluginName + '] プラグインファイルの静的解析を開始します...');
+        debugLog('プラグインファイルの静的解析を開始');
 
         const plugins = $plugins.filter(p => p.status).map(p => p.name);
 
         for (let i = 0; i < plugins.length; i++) {
             const fileNameWithoutExt = plugins[i];
-
             if (fileNameWithoutExt === pluginName) continue;
 
             try {
                 const fullPath = 'js/plugins/' + fileNameWithoutExt + '.js';
                 const content = FileWriter.readFileContent(fullPath);
-
                 this.detectOverridesInFile(fileNameWithoutExt + '.js', content);
             } catch (e) {
-                console.warn('[' + pluginName + '] ファイル読み込みエラーまたは解析エラー:', fileNameWithoutExt, e.message);
+                console.warn('[' + pluginName + '] ファイル読み込みエラー:', fileNameWithoutExt, e.message);
             }
         }
 
-        console.log('[' + pluginName + '] 静的解析完了: ' + this._conflicts.length + '件の上書き/エイリアスを記録');
+        debugLog('静的解析完了:', Object.keys(this._conflictMap).length, '件のメソッドを検出');
 
         this._conflicts = [];
         for (const methodName in this._conflictMap) {
             const overrides = this._conflictMap[methodName];
-
             const uniquePlugins = {};
+
             overrides.forEach(function (o) {
                 if (!uniquePlugins[o.pluginName]) uniquePlugins[o.pluginName] = [];
                 uniquePlugins[o.pluginName].push(o);
             });
 
-            const conflict = {
+            this._conflicts.push({
                 methodName: methodName,
                 plugins: overrides,
                 pluginCount: Object.keys(uniquePlugins).length,
                 uniquePlugins: Object.keys(uniquePlugins),
-            };
-
-            this._conflicts.push(conflict);
+            });
         }
 
         this._conflicts.sort(function (a, b) {
@@ -274,13 +288,9 @@ http://opensource.org/licenses/mit-license.php
     ConflictDetector.prototype.detectOverridesInFile = function (fileName, content) {
         let match;
 
-        // 1. 直接上書きパターンを検出
         OVERRIDE_PATTERN.lastIndex = 0;
         while ((match = OVERRIDE_PATTERN.exec(content)) !== null) {
-            const className = match[1];
-            const methodName = match[2];
-            const fullMethodName = className + '.prototype.' + methodName;
-
+            const fullMethodName = match[1] + '.prototype.' + match[2];
             this.recordConflict({
                 methodName: fullMethodName,
                 pluginName: fileName,
@@ -289,22 +299,198 @@ http://opensource.org/licenses/mit-license.php
             });
         }
 
-        // 2. エイリアス保存パターンを検出
         ALIAS_PATTERN.lastIndex = 0;
         while ((match = ALIAS_PATTERN.exec(content)) !== null) {
-            const aliasVar = match[1];
-            const className = match[2];
-            const methodName = match[3];
-            const fullMethodName = className + '.prototype.' + methodName;
-
+            const fullMethodName = match[2] + '.prototype.' + match[3];
             this.recordConflict({
                 methodName: fullMethodName,
                 pluginName: fileName,
                 overrideType: 'エイリアス保存',
                 isOverride: false,
-                aliasVariable: aliasVar
+                aliasVariable: match[1]
             });
         }
+
+        this.detectClassMethodsInFile(fileName, content, true);
+        this.detectClassMethodsInFile(fileName, content, false);
+        this.detectMixInMethodsInFile(fileName, content);
+    };
+
+    ConflictDetector.prototype.detectClassMethodsInFile = function (fileName, content, coreOnly) {
+        let classMatch;
+        const pattern = coreOnly ? CLASS_DECLARATION_PATTERN_CORE : CLASS_DECLARATION_PATTERN_ALL;
+        pattern.lastIndex = 0;
+
+        debugLog('class構文検出:', fileName, coreOnly ? 'コアクラス' : '全クラス');
+
+        while ((classMatch = pattern.exec(content)) !== null) {
+            const className = classMatch[1];
+            const classStartIndex = classMatch.index + classMatch[0].length;
+            const classBody = this.extractClassBody(content, classStartIndex);
+
+            if (classBody) {
+                debugLog('クラス検出:', className);
+                this.extractMethodsFromClassBody(fileName, className, classBody);
+            }
+        }
+    };
+
+    ConflictDetector.prototype.detectMixInMethodsInFile = function (fileName, content) {
+        let mixinMatch;
+        MIXIN_FUNCTION_PATTERN.lastIndex = 0;
+
+        while ((mixinMatch = MIXIN_FUNCTION_PATTERN.exec(content)) !== null) {
+            const paramName = mixinMatch[1];
+            const functionBody = this.extractFunctionBody(content, mixinMatch.index + mixinMatch[0].length);
+
+            if (functionBody) {
+                const actualClassName = this.guessClassNameFromMixInCall(content, mixinMatch.index, paramName);
+                if (actualClassName) {
+                    debugLog('MixIn検出:', actualClassName);
+                    this.extractMixInMethods(fileName, actualClassName, paramName, functionBody);
+                }
+            }
+        }
+    };
+
+    ConflictDetector.prototype.guessClassNameFromMixInCall = function (content, functionStart, paramName) {
+        const functionNameMatch = content.substring(functionStart, functionStart + 200)
+            .match(/function\s+([a-zA-Z_$][a-zA-Z0-9_$]*)/);
+
+        if (!functionNameMatch) return null;
+
+        const functionName = functionNameMatch[1];
+        const searchArea = content.substring(functionStart, Math.min(content.length, functionStart + 50000));
+        const callPattern = new RegExp(
+            functionName + '\\s*\\(\\s*(' + CLASS_PATTERN_STRING + ')\\.prototype\\s*\\)',
+            'g'
+        );
+
+        const callMatch = callPattern.exec(searchArea);
+        if (callMatch) return callMatch[1];
+
+        const nameMatch = functionName.match(/^([A-Z][a-zA-Z0-9_]*?)_/);
+        if (nameMatch && CORE_CLASSES.indexOf(nameMatch[1]) !== -1) {
+            return nameMatch[1];
+        }
+
+        return null;
+    };
+
+    ConflictDetector.prototype.extractFunctionBody = function (content, startIndex) {
+        let i = startIndex;
+        while (i < content.length && content[i] !== '{') i++;
+        if (i >= content.length) return null;
+        return this.extractClassBody(content, i + 1);
+    };
+
+    ConflictDetector.prototype.extractMixInMethods = function (fileName, className, paramName, functionBody) {
+        const methodPattern = new RegExp(paramName + '\\.([a-zA-Z_$][a-zA-Z0-9_$]*)\\s*=\\s*function', 'g');
+        let match;
+        let methodCount = 0;
+
+        while ((match = methodPattern.exec(functionBody)) !== null) {
+            const fullMethodName = className + '.prototype.' + match[1];
+            methodCount++;
+            this.recordConflict({
+                methodName: fullMethodName,
+                pluginName: fileName,
+                overrideType: 'MixIn',
+                isOverride: true
+            });
+        }
+
+        debugLog(className, 'のMixInから', methodCount, '個のメソッドを検出');
+    };
+
+    ConflictDetector.prototype.extractClassBody = function (content, startIndex) {
+        let depth = 1;
+        let i = startIndex;
+
+        while (i < content.length && depth > 0) {
+            const char = content[i];
+
+            if (char === '"' || char === "'" || char === '`') {
+                i = this.skipString(content, i, char);
+                continue;
+            }
+
+            if (char === '/' && i + 1 < content.length) {
+                if (content[i + 1] === '/') {
+                    i = this.skipLineComment(content, i);
+                    continue;
+                } else if (content[i + 1] === '*') {
+                    i = this.skipBlockComment(content, i);
+                    continue;
+                }
+            }
+
+            if (char === '{') {
+                depth++;
+            } else if (char === '}') {
+                depth--;
+                if (depth === 0) {
+                    return content.substring(startIndex, i);
+                }
+            }
+
+            i++;
+        }
+
+        return null;
+    };
+
+    ConflictDetector.prototype.skipString = function (content, startIndex, quote) {
+        let i = startIndex + 1;
+        while (i < content.length) {
+            if (content[i] === '\\') {
+                i += 2;
+                continue;
+            }
+            if (content[i] === quote) return i + 1;
+            i++;
+        }
+        return i;
+    };
+
+    ConflictDetector.prototype.skipLineComment = function (content, startIndex) {
+        let i = startIndex + 2;
+        while (i < content.length && content[i] !== '\n') i++;
+        return i;
+    };
+
+    ConflictDetector.prototype.skipBlockComment = function (content, startIndex) {
+        let i = startIndex + 2;
+        while (i < content.length - 1) {
+            if (content[i] === '*' && content[i + 1] === '/') return i + 2;
+            i++;
+        }
+        return i;
+    };
+
+    ConflictDetector.prototype.extractMethodsFromClassBody = function (fileName, className, classBody) {
+        const methodPattern = /^\s*(?!constructor\s*\(|get\s+|set\s+|static\s+|if\s*\(|else|while\s*\(|for\s*\(|switch\s*\(|return\s|super\s*\(|this\s*\.)([a-zA-Z_$][a-zA-Z0-9_$]*)\s*\(/gm;
+        let match;
+        let methodCount = 0;
+
+        const reservedWords = ['if', 'else', 'for', 'while', 'do', 'switch', 'case', 'break', 'continue', 'return', 'try', 'catch', 'finally', 'throw', 'typeof', 'instanceof', 'new', 'delete', 'void', 'super'];
+
+        while ((match = methodPattern.exec(classBody)) !== null) {
+            const methodName = match[1];
+            if (reservedWords.indexOf(methodName) !== -1) continue;
+
+            const fullMethodName = className + '.prototype.' + methodName;
+            methodCount++;
+
+            this.recordConflict({
+                methodName: fullMethodName,
+                pluginName: fileName,
+                overrideType: 'class構文',
+                isOverride: true
+            });
+        }
+
+        debugLog(className, 'から', methodCount, '個のメソッドを検出');
     };
 
     ConflictDetector.prototype.recordConflict = function (data) {
@@ -312,49 +498,47 @@ http://opensource.org/licenses/mit-license.php
             this._conflictMap[data.methodName] = [];
         }
         this._conflictMap[data.methodName].push(data);
-        console.log('[' + pluginName + '] 検出:', data.methodName, 'by', data.pluginName, '(', data.overrideType, ')');
     };
-
 
     //-----------------------------------------------------------------------------
     // CSV Generator
     //-----------------------------------------------------------------------------
 
+    function escapeCSVField(field) {
+        return '"' + String(field).replace(/"/g, '""') + '"';
+    }
+
     ConflictDetector.prototype.generateCSVReport = function () {
         return {
-            pluginList: this.generatePluginListCSV(),       // 01_plugin_list.csv
-            details: this.generateDetailsCSV(),             // 02_override_details.csv (詳細リスト)
-            summary: this.generateSummaryCSV()              // 03_override_summary.csv (集計リスト)
+            pluginList: this.generatePluginListCSV(),
+            details: this.generateDetailsCSV(),
+            summary: this.generateSummaryCSV()
         };
     };
 
-    // 01_plugin_list.csv: ロード順序リスト
     ConflictDetector.prototype.generatePluginListCSV = function () {
-        let csv = config.headerList.join(',') + '\n';
+        let csv = config.headerList.map(escapeCSVField).join(',') + '\n';
         const plugins = $plugins.filter(p => p.status);
 
         for (let i = 0; i < plugins.length; i++) {
-            const plugin = plugins[i];
-            csv += (i + 1) + ',"' + plugin.name + '.js"\n';
+            csv += escapeCSVField(i + 1) + ',' + escapeCSVField(plugins[i].name + '.js') + '\n';
         }
         return csv;
     };
 
-    // 02_override_details.csv: 詳細リスト
     ConflictDetector.prototype.generateDetailsCSV = function () {
-        let csv = config.headerDetails.join(',') + '\n';
+        let csv = config.headerDetails.map(escapeCSVField).join(',') + '\n';
 
         for (let i = 0; i < this._conflicts.length; i++) {
             const conflict = this._conflicts[i];
-
             const recordedPlugins = {};
 
             for (let j = 0; j < conflict.plugins.length; j++) {
                 const plugin = conflict.plugins[j];
 
                 if (!recordedPlugins[plugin.pluginName]) {
-                    csv += conflict.methodName + ',';
-                    csv += plugin.pluginName + '\n';
+                    csv += escapeCSVField(conflict.methodName) + ',';
+                    csv += escapeCSVField(plugin.pluginName) + '\n';
                     recordedPlugins[plugin.pluginName] = true;
                 }
             }
@@ -363,22 +547,22 @@ http://opensource.org/licenses/mit-license.php
         return csv;
     };
 
-    // 03_override_summary.csv: 集計リスト
     ConflictDetector.prototype.generateSummaryCSV = function () {
-        let csv = config.headerSummary.join(',') + '\n';
+        let csv = config.headerSummary.map(escapeCSVField).join(',') + '\n';
 
         for (let i = 0; i < this._conflicts.length; i++) {
             const conflict = this._conflicts[i];
-            const uniquePluginNames = conflict.uniquePlugins.join('|');
-            csv += conflict.methodName + ',' + conflict.pluginCount + ',"' + uniquePluginNames + '"\n';
+            const uniquePluginNames = conflict.uniquePlugins.join(config.pluginSeparator);
+            csv += escapeCSVField(conflict.methodName) + ',';
+            csv += escapeCSVField(conflict.pluginCount) + ',';
+            csv += escapeCSVField(uniquePluginNames) + '\n';
         }
 
         return csv;
     };
 
-
     //-----------------------------------------------------------------------------
-    // Utility Functions (File I/O & Dialog)
+    // File I/O
     //-----------------------------------------------------------------------------
 
     function FileWriter() {
@@ -420,15 +604,11 @@ http://opensource.org/licenses/mit-license.php
         try {
             const fs = require('fs');
             const path = require('path');
-
             const basePath = path.dirname(process.mainModule.filename);
             const fullPath = path.join(basePath, config.outputPath, filename);
 
-            console.log('[' + pluginName + '] ファイル書き込み先:', fullPath);
-
             fs.writeFileSync(fullPath, '\uFEFF' + content, 'utf8');
-
-            console.log('[' + pluginName + '] ファイル書き込み成功:', filename);
+            debugLog('ファイル書き込み成功:', filename);
             callback({ success: true, path: fullPath });
         } catch (error) {
             console.error('[' + pluginName + '] ファイル書き込みエラー:', error);
@@ -444,61 +624,56 @@ http://opensource.org/licenses/mit-license.php
 
         callback({
             success: false,
-            error: 'ブラウザ版では直接ファイル出力できません。コンソールからコピーしてください。'
+            error: 'ブラウザ版では直接ファイル出力できません。'
         });
     };
 
+    //-----------------------------------------------------------------------------
+    // Dialog
+    //-----------------------------------------------------------------------------
+
     function showReportDialog(reportData) {
-        console.log('[' + pluginName + '] ダイアログ表示開始');
         let message = '=== プラグイン オーバーライド/競合調査レポート ===\n\n';
 
         if (reportData.success) {
-            message += '✓ 出力完了\n\n';
+            message += '✔ 出力完了\n\n';
             message += '出力先: ' + (reportData.path || config.outputPath) + '\n\n';
             message += '出力ファイル:\n';
             message += '  - 01_plugin_list.csv (ロード順序リスト)\n';
-            message += '  - 02_override_details.csv (詳細な一次資料: ファイルとメソッドの関連付け)\n';
-            message += '  - 03_override_summary.csv (集計/上書きプラグインリスト)\n\n';
+            message += '  - 02_override_details.csv (詳細情報)\n';
+            message += '  - 03_override_summary.csv (集計情報)\n\n';
 
             const totalMethods = reportData.conflictCount || 0;
             message += '--- 検出されたオーバーライドメソッド ---\n';
-            message += '合計: ' + totalMethods + '件のメソッドが上書きされています。\n\n';
+            message += '合計: ' + totalMethods + '件\n\n';
 
-            if (totalMethods === 0) {
-                message += 'コアスクリプトの上書きは検出されませんでした。\n';
-            } else {
+            if (totalMethods > 0) {
                 const counts = reportData.counts;
-                message += '  高リスク (2件以上のプラグインによる上書き): ' + counts.high + '件\n';
-                message += '  低リスク (1件のプラグインによる上書き): ' + counts.low + '件\n';
+                message += '  高リスク (2件以上の上書き): ' + counts.high + '件\n';
+                message += '  低リスク (1件の上書き): ' + counts.low + '件\n';
                 message += '\n【調査方法】\n';
-                message += '1.「03_override_summary.csv」で上書き回数が多いメソッドを特定。\n';
-                message += '2.「02_override_details.csv」で対象プラグインファイル名を特定。\n';
-                message += '3.「01_plugin_list.csv」でファイルのロード順序を特定。\n';
+                message += '1. 03_override_summary.csvで上書き回数が多いメソッドを特定\n';
+                message += '2. 02_override_details.csvで対象プラグインを特定\n';
+                message += '3. 01_plugin_list.csvでロード順序を確認\n';
+            } else {
+                message += 'コアスクリプトの上書きは検出されませんでした。\n';
             }
         } else {
             message += '× 出力失敗\n\n';
-            message += 'エラー内容:\n';
-            message += (reportData.error || '不明なエラー') + '\n\n';
+            message += 'エラー内容:\n' + (reportData.error || '不明なエラー') + '\n';
         }
 
         alert(message);
     }
 
     function logReportToConsole(reportData) {
-        console.log('%c[プラグインコマンド] レポート出力完了',
-            'color: #0f0; font-weight: bold; font-size: 14px;');
-
         if (reportData.success) {
-            console.log('出力先: ' + reportData.path);
-
-            if (reportData.conflictCount === 0) {
-                console.log('%cコアスクリプトの上書きは検出されませんでした', 'color: #0f0; font-weight: bold;');
-            } else {
-                console.log('高リスク (2件以上のオーバーライド): ' + reportData.counts.high + '件');
-                console.log('低リスク (1件のオーバーライド): ' + reportData.counts.low + '件');
+            console.log('[' + pluginName + '] レポート出力完了:', reportData.path);
+            if (reportData.conflictCount > 0) {
+                console.log('高リスク:', reportData.counts.high, '件 / 低リスク:', reportData.counts.low, '件');
             }
         } else {
-            console.error('エラー: ' + reportData.error);
+            console.error('[' + pluginName + '] エラー:', reportData.error);
         }
     }
 
@@ -510,12 +685,8 @@ http://opensource.org/licenses/mit-license.php
     Scene_Boot.prototype.start = function () {
         _Scene_Boot_start.call(this);
 
-        console.log('[' + pluginName + '] Scene_Boot.start フック実行');
-
         if (config.outputTiming === OutputTiming.START) {
-            console.log('[' + pluginName + '] 1秒後にオーバーライド検出実行予定');
             setTimeout(function () {
-                console.log('[' + pluginName + '] タイマー発火、オーバーライド検出実行');
                 executeConflictDetection();
             }, 1000);
         }
@@ -525,9 +696,7 @@ http://opensource.org/licenses/mit-license.php
         const _Input_onKeyDown = Input._onKeyDown;
         Input._onKeyDown = function (event) {
             _Input_onKeyDown.call(this, event);
-
-            if (event.keyCode === 119) { // F8
-                console.log('[' + pluginName + '] F8キー検出、オーバーライド検出実行');
+            if (event.keyCode === 119) {
                 executeConflictDetection();
             }
         };
@@ -541,36 +710,31 @@ http://opensource.org/licenses/mit-license.php
     let reportGenerated = false;
 
     function executeConflictDetection() {
-        console.log('[' + pluginName + '] executeConflictDetection 開始');
-
         if (!config.outputEnabled) {
-            console.log('[' + pluginName + '] 出力が無効化されています');
+            debugLog('出力が無効化されています');
             return;
         }
 
         if (reportGenerated) {
-            console.log('[' + pluginName + '] レポートは既に生成されています');
+            debugLog('レポートは既に生成されています');
             return;
         }
 
         if (!FileWriter.isNodeJS()) {
-            showReportDialog({ success: false, error: '静的解析にはNode.js (PC版) 環境が必要です。' });
+            showReportDialog({
+                success: false,
+                error: '静的解析にはNode.js (PCバージョン) 環境が必要です。'
+            });
             return;
         }
 
-        console.log('[' + pluginName + '] ConflictDetector インスタンス化');
         conflictDetector = new ConflictDetector();
-
-        console.log('[' + pluginName + '] 解析開始');
         const conflicts = conflictDetector.analyze();
 
-        console.log('[' + pluginName + '] 検出されたオーバーライドメソッド数: ' + conflicts.length);
+        debugLog('検出されたメソッド数:', conflicts.length);
 
-        console.log('[' + pluginName + '] CSVレポート生成開始');
         const csvReport = conflictDetector.generateCSVReport();
         const counts = conflictDetector.getConflictCounts();
-
-        console.log('[' + pluginName + '] CSV書き込み開始');
 
         let completedCount = 0;
         const results = {};
@@ -584,16 +748,14 @@ http://opensource.org/licenses/mit-license.php
                         results.details && results.details.success &&
                         results.summary && results.summary.success,
                     path: (results.summary && results.summary.path) || config.outputPath,
-                    error: (results.pluginList && results.pluginList.error) || (results.details && results.details.error) || (results.summary && results.summary.error),
+                    error: (results.pluginList && results.pluginList.error) ||
+                        (results.details && results.details.error) ||
+                        (results.summary && results.summary.error),
                     counts: counts,
                     conflictCount: conflicts.length
                 };
 
                 reportGenerated = true;
-
-                console.log('[' + pluginName + '] レポート生成完了');
-                console.log('  success:', reportData.success);
-                console.log('  counts:', reportData.counts);
 
                 if (config.showCompletionDialog) {
                     showReportDialog(reportData);
@@ -603,21 +765,17 @@ http://opensource.org/licenses/mit-license.php
             }
         }
 
-        // CSV書き込み（3ファイル）
         FileWriter.writeCSV('01_plugin_list.csv', csvReport.pluginList, function (result) {
-            console.log('[' + pluginName + '] pluginList書き込み結果:', result);
             results.pluginList = result;
             checkCompletion();
         });
 
         FileWriter.writeCSV('02_override_details.csv', csvReport.details, function (result) {
-            console.log('[' + pluginName + '] details書き込み結果:', result);
             results.details = result;
             checkCompletion();
         });
 
         FileWriter.writeCSV('03_override_summary.csv', csvReport.summary, function (result) {
-            console.log('[' + pluginName + '] summary書き込み結果:', result);
             results.summary = result;
             checkCompletion();
         });
