@@ -1,11 +1,18 @@
 /**
  * --------------------------------------------------
  * MNKR_PluginConflictDetectorMZ.js
- *   Ver.0.2.1
+ *   Ver.0.3.0
  * Copyright (c) 2025 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
  * --------------------------------------------------
+ */
+/**
+ * Ver.0.3.0
+ * - 出力ファイル名を変更（誤解削減のため）
+ *   02_override_details.csv → 02_method_details.csv
+ *   03_override_summary.csv → 03_method_summary.csv
+ * - 用語を「オーバーライド」から「メソッド」に統一
  */
 
 /*:
@@ -73,20 +80,18 @@
 
 @param Header_02_Details
 @text [02] 詳細CSV ヘッダー
-@desc 02_override_details.csvのヘッダーをカンマ区切りで指定
+@desc 02_method_details.csvのヘッダーをカンマ区切りで指定
 @default 対象メソッド,操作プラグインファイル名
 
 @param Header_03_Summary
 @text [03] 集計CSV ヘッダー
-@desc 03_override_summary.csvのヘッダーをカンマ区切りで指定
+@desc 03_method_summary.csvのヘッダーをカンマ区切りで指定
 @default 対象メソッド,定義プラグイン数,対象プラグインファイル名リスト
 
 @help
 # このプラグインについて
-このプラグインは、他のプラグインがコアスクリプトのメソッドを
-どのように上書き・エイリアスしているかを自動検出し、
-CSVレポートとして出力します。
-競合調査の調査時のみにプラグインをONにしてください。
+このプラグインは、他のプラグインを自動検出し、CSVレポートとして出力します。
+競合調査時のみにプラグインをONにしてください。
 それ以外の場面ではOFFにすることを推奨します。
 
 ## プラグイン管理画面の配置
@@ -102,8 +107,8 @@ CSVレポートとして出力します。
 
 # 出力ファイル
 - 01_plugin_list.csv: プラグインのロード順序リスト
-- 02_override_details.csv: 詳細なメソッドのリスト
-- 03_override_summary.csv: メソッドの集計とプラグインリスト
+- 02_method_details.csv: 詳細なメソッドのリスト
+- 03_method_summary.csv: メソッドの集計とプラグインリスト
 
 # CSVの見方と競合調査手順
 
@@ -113,14 +118,14 @@ CSVレポートとして出力します。
 - プラグインが独自に定義した新規メソッド
 
 ## 競合リスクの判断基準
-03_override_summary.csvの「定義プラグイン数」列を確認:
+03_method_summary.csvの「定義プラグイン数」列を確認:
 - 2以上: 複数のプラグインが同じメソッドを定義 → 競合リスク高
 - 1: 単一のプラグインのみが定義 → 通常は問題なし
 
 ## 調査手順
-1. 03_override_summary.csvを開く
+1. 03_method_summary.csvを開く
 2. 「定義プラグイン数」列で2以上の行を探す
-3. 該当メソッドを02_override_details.csvで詳細確認
+3. 該当メソッドを02_method_details.csvで詳細確認
 4. 01_plugin_list.csvでプラグインのロード順序を確認
 5. 必要に応じてプラグインの順序を変更、または併用を避ける
 
@@ -774,12 +779,12 @@ http://opensource.org/licenses/mit-license.php
             checkCompletion();
         });
 
-        FileWriter.writeCSV('02_override_details.csv', csvReport.details, function (result) {
+        FileWriter.writeCSV('02_method_details.csv', csvReport.details, function (result) {
             results.details = result;
             checkCompletion();
         });
 
-        FileWriter.writeCSV('03_override_summary.csv', csvReport.summary, function (result) {
+        FileWriter.writeCSV('03_method_summary.csv', csvReport.summary, function (result) {
             results.summary = result;
             checkCompletion();
         });
