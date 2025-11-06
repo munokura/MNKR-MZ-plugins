@@ -1,7 +1,7 @@
 /**
  * --------------------------------------------------
  * MNKR_PluginConflictDetectorMZ.js
- *   Ver.0.2.0
+ *   Ver.0.2.1
  * Copyright (c) 2025 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -79,7 +79,7 @@
 @param Header_03_Summary
 @text [03] 集計CSV ヘッダー
 @desc 03_override_summary.csvのヘッダーをカンマ区切りで指定
-@default 対象メソッド,総上書きプラグイン数,対象プラグインファイル名リスト
+@default 対象メソッド,定義プラグイン数,対象プラグインファイル名リスト
 
 @help
 # このプラグインについて
@@ -102,15 +102,37 @@ CSVレポートとして出力します。
 
 # 出力ファイル
 - 01_plugin_list.csv: プラグインのロード順序リスト
-- 02_override_details.csv: 詳細なオーバーライド情報
-- 03_override_summary.csv: オーバーライドの集計とプラグインリスト
+- 02_override_details.csv: 詳細なメソッドのリスト
+- 03_override_summary.csv: メソッドの集計とプラグインリスト
+
+# CSVの見方と競合調査手順
+
+## 検出されるメソッドについて
+このプラグインは以下のメソッドを検出します:
+- コアスクリプトのメソッドの上書き・エイリアス
+- プラグインが独自に定義した新規メソッド
+
+## 競合リスクの判断基準
+03_override_summary.csvの「定義プラグイン数」列を確認:
+- 2以上: 複数のプラグインが同じメソッドを定義 → 競合リスク高
+- 1: 単一のプラグインのみが定義 → 通常は問題なし
+
+## 調査手順
+1. 03_override_summary.csvを開く
+2. 「定義プラグイン数」列で2以上の行を探す
+3. 該当メソッドを02_override_details.csvで詳細確認
+4. 01_plugin_list.csvでプラグインのロード順序を確認
+5. 必要に応じてプラグインの順序を変更、または併用を避ける
+
+## 注意事項
+- 「定義プラグイン数」が1のメソッドは、通常競合しません。
+- ただし、コアスクリプトの重要なメソッドを上書きしている場合、
+  他のプラグインとの相性に注意が必要です。
+- PCバージョン(Node.js環境)でのみCSVファイルが出力されます。
+- 難読化されたプラグインは正確に検出できない場合があります。
 
 # プラグインコマンド
 レポート出力実行
-
-# 注意事項
-- PCバージョン(Node.js環境)でのみCSVファイルが出力されます。
-- 難読化されたプラグインは正確に検出できない場合があります。
 
 # 利用規約
 MITライセンスです。
@@ -633,34 +655,16 @@ http://opensource.org/licenses/mit-license.php
     //-----------------------------------------------------------------------------
 
     function showReportDialog(reportData) {
-        let message = '=== プラグイン オーバーライド/競合調査レポート ===\n\n';
+        let message = '';
 
         if (reportData.success) {
-            message += '✔ 出力完了\n\n';
-            message += '出力先: ' + (reportData.path || config.outputPath) + '\n\n';
-            message += '出力ファイル:\n';
-            message += '  - 01_plugin_list.csv (ロード順序リスト)\n';
-            message += '  - 02_override_details.csv (詳細情報)\n';
-            message += '  - 03_override_summary.csv (集計情報)\n\n';
-
-            const totalMethods = reportData.conflictCount || 0;
-            message += '--- 検出されたオーバーライドメソッド ---\n';
-            message += '合計: ' + totalMethods + '件\n\n';
-
-            if (totalMethods > 0) {
-                const counts = reportData.counts;
-                message += '  高リスク (2件以上の上書き): ' + counts.high + '件\n';
-                message += '  低リスク (1件の上書き): ' + counts.low + '件\n';
-                message += '\n【調査方法】\n';
-                message += '1. 03_override_summary.csvで上書き回数が多いメソッドを特定\n';
-                message += '2. 02_override_details.csvで対象プラグインを特定\n';
-                message += '3. 01_plugin_list.csvでロード順序を確認\n';
-            } else {
-                message += 'コアスクリプトの上書きは検出されませんでした。\n';
-            }
+            message += 'レポート出力完了\n\n';
+            message += '出力先: ' + config.outputPath + '\n';
+            message += '合計: ' + (reportData.conflictCount || 0) + '件のメソッドを検出\n\n';
+            message += '詳しい使い方はプラグインのヘルプを参照してください。';
         } else {
-            message += '× 出力失敗\n\n';
-            message += 'エラー内容:\n' + (reportData.error || '不明なエラー') + '\n';
+            message += 'レポート出力失敗\n\n';
+            message += 'エラー: ' + (reportData.error || '不明なエラー');
         }
 
         alert(message);
