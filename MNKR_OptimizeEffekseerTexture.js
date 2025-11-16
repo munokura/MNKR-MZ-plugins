@@ -1,7 +1,7 @@
 /**
  * --------------------------------------------------
  * MNKR_OptimizeEffekseerTexture.js
- *   Ver.0.1.0
+ * Ver.0.2.0
  * Copyright (c) 2025 Munokura
  * This software is released under the MIT license.
  * http://opensource.org/licenses/mit-license.php
@@ -38,8 +38,12 @@ Effekseerアニメーションで実際に使用されているテクスチャ�
 - Node.js環境(テストプレー時)でのみ動作します。
 - 必ずバックアップを取ってから実行してください。
 - effects/Texture/フォルダ内のファイルが移動・削除されます。
-それ以外のフォルダは調査対象外です。
+  サブフォルダ内のファイルも対象となります。
+- それ以外のフォルダは調査対象外です。
 - 公開するゲームではプラグインを無効にしてください。
+- 広告ブロック等のブラウザ拡張機能が有効だと、
+  処理がクラッシュ、または失敗する場合があります。
+  その場合は、テストプレイ時に拡張機能を無効にしてください。
 
 # 利用規約
 MITライセンスです。
@@ -165,7 +169,8 @@ http://opensource.org/licenses/mit-license.php
         missingTextures: new Set(),      // 読み込みエラーが出たテクスチャ
         renamed: [],                     // リネームしたファイル
         errors: [],                      // エラーログ
-        processLog: []                   // 処理ログ（すべてのコンソール出力）
+        processLog: [],                  // 処理ログ（すべてのコンソール出力）
+        extensionInterference: false     // 拡張機能の干渉フラグ
     };
 
     // 統計情報
@@ -282,34 +287,36 @@ http://opensource.org/licenses/mit-license.php
         const dateStr = now.toLocaleString('ja-JP');
 
         let content = '';
-        content += '========================================\n';
-        content += 'Optimize Effekseer Texture - Process Log\n';
+        content += `========================================\n`;
+        content += `Optimize Effekseer Texture - Process Log\n`;
         content += `実行日時: ${dateStr}\n`;
-        content += '========================================\n\n';
+        content += `========================================\n\n`;
 
         // すべての処理ログを出力
         textureLog.processLog.forEach(log => {
-            content += log + '\n';
+            content += `${log}\n`;
         });
 
-        content += '\n========================================\n';
-        content += '処理結果:\n';
+        content += `\n========================================\n`;
+        content += `処理結果:\n`;
+
+        // 修正 (シングルクォート ' -> バッククォート `)
         content += `- 検出したテクスチャ: ${statistics.detectedCount}個\n`;
         content += `- 復元したテクスチャ: ${statistics.restoredCount}個\n`;
         content += `- エラー数: ${statistics.errorCount}個\n`;
 
         const elapsedTime = ((Date.now() - statistics.startTime) / 1000).toFixed(1);
         content += `- 処理時間: ${elapsedTime}秒\n`;
-        content += '========================================\n';
+        content += `========================================\n`;
 
         if (textureLog.errors.length > 0) {
-            content += '\n========================================\n';
-            content += 'エラー詳細:\n';
-            content += '========================================\n';
+            content += `\n========================================\n`;
+            content += `エラー詳細:\n`;
+            content += `========================================\n`;
             textureLog.errors.forEach(error => {
-                content += error + '\n';
+                content += `${error}\n`;
             });
-            content += '========================================\n';
+            content += `========================================\n`;
         }
 
         try {
@@ -351,16 +358,21 @@ http://opensource.org/licenses/mit-license.php
         textureLog.renamed = [];
         textureLog.errors = [];
         textureLog.processLog = [];
+        textureLog.extensionInterference = false; // 初期化
         statistics.startTime = Date.now();
         statistics.detectedCount = 0;
         statistics.restoredCount = 0;
         statistics.errorCount = 0;
 
+        // ★★★ 修正箇所: startMessageの改行処理を追加 ★★★
+        let startMessage = PRM_startMessage.replace(/\\n/g, '\n');
+
         // 確認ダイアログ
         const confirmed = showConfirmDialog(
             'テクスチャ整理',
-            PRM_startMessage
+            startMessage // 変換後のメッセージを使用
         );
+        // ★★★ 修正箇所ここまで ★★★
 
         if (!confirmed) {
             addLog('[OptimizeEffekseerTexture] 処理がキャンセルされました');
@@ -449,6 +461,11 @@ http://opensource.org/licenses/mit-license.php
         const elapsedTime = ((Date.now() - statistics.startTime) / 1000).toFixed(1);
         let message = PRM_completeMessage.replace('{count}', statistics.restoredCount);
 
+        // 干渉警告
+        if (textureLog.extensionInterference) {
+            message += `\n\n[警告]\nブラウザ拡張機能(広告ブロック等)の\n干渉が検出されました。\n処理が不完全な可能性があります。`;
+        }
+
         if (statistics.errorCount > 0) {
             message += `\nエラー: ${statistics.errorCount}個（詳細はログファイルを確認）`;
         }
@@ -522,6 +539,7 @@ http://opensource.org/licenses/mit-license.php
             textureLog.missingTextures.clear();
             textureLog.renamed = [];
             textureLog.errors = [];
+            textureLog.extensionInterference = false; // 初期化
         }
 
         if (!$dataAnimations) {
@@ -686,8 +704,15 @@ http://opensource.org/licenses/mit-license.php
                 set: function (value) {
                     // エラーハンドラを先に設定
                     img.addEventListener('error', function () {
+                        // 拡張機能の干渉検出
+                        if (value && (value.startsWith('chrome-extension://') || value.startsWith('moz-extension://'))) {
+                            textureLog.extensionInterference = true;
+                            addError('検出(干渉)', '拡張機能による干渉を検出(Image): ' + value);
+                            return; // 検出ミスのため処理終了
+                        }
+
                         if (value && value.includes('effects/Texture/')) {
-                            const match = value.match(/effects[\/\\]Texture[\/\\]([^\/\\?#]+)/i);
+                            const match = value.match(/effects[\/\\]Texture[\/\\]([^?#]+)/i);
                             if (match) {
                                 const filename = match[1];
                                 textureLog.missingTextures.add(filename);
@@ -724,8 +749,15 @@ http://opensource.org/licenses/mit-license.php
 
         XMLHttpRequest.prototype.send = function (...args) {
             this.addEventListener('error', function () {
+                // 拡張機能の干渉検出
+                if (this._url && (this._url.startsWith('chrome-extension://') || this._url.startsWith('moz-extension://'))) {
+                    textureLog.extensionInterference = true;
+                    addError('検出(干渉)', '拡張機能による干渉を検出(XHR Error): ' + this._url);
+                    return; // 検出ミスのため処理終了
+                }
+
                 if (this._url && this._url.includes('effects/Texture/')) {
-                    const match = this._url.match(/effects[\/\\]Texture[\/\\]([^\/\\?#]+)/i);
+                    const match = this._url.match(/effects[\/\\]Texture[\/\\]([^?#]+)/i);
                     if (match) {
                         const filename = match[1];
                         textureLog.missingTextures.add(filename);
@@ -740,8 +772,15 @@ http://opensource.org/licenses/mit-license.php
             });
 
             this.addEventListener('load', function () {
+                // 拡張機能の干渉検出
+                if (this._url && (this._url.startsWith('chrome-extension://') || this._url.startsWith('moz-extension://'))) {
+                    textureLog.extensionInterference = true;
+                    addError('検出(干渉)', '拡張機能による干渉を検出(XHR Load): ' + this._url);
+                    return; // 検出ミスのため処理終了
+                }
+
                 if (this.status === 404 && this._url && this._url.includes('effects/Texture/')) {
-                    const match = this._url.match(/effects[\/\\]Texture[\/\\]([^\/\\?#]+)/i);
+                    const match = this._url.match(/effects[\/\\]Texture[\/\\]([^?#]+)/i);
                     if (match) {
                         const filename = match[1];
                         textureLog.missingTextures.add(filename);
@@ -761,9 +800,17 @@ http://opensource.org/licenses/mit-license.php
         // Fetchもフック
         const originalFetch = window.fetch;
         window.fetch = function (url, ...args) {
+            // 拡張機能の干渉検出
+            if (typeof url === 'string' && (url.startsWith('chrome-extension://') || url.startsWith('moz-extension://'))) {
+                textureLog.extensionInterference = true;
+                const msg = '拡張機能による干渉を検出(fetch): ' + url;
+                addError('検出(干渉)', msg);
+                return Promise.reject(new Error(msg)); // 処理を即時失敗させる
+            }
+
             return originalFetch.call(this, url, ...args).catch(error => {
                 if (typeof url === 'string' && url.includes('effects/Texture/')) {
-                    const match = url.match(/effects[\/\\]Texture[\/\\]([^\/\\?#]+)/i);
+                    const match = url.match(/effects[\/\\]Texture[\/\\]([^?#]+)/i);
                     if (match) {
                         const filename = match[1];
                         textureLog.missingTextures.add(filename);
@@ -783,6 +830,37 @@ http://opensource.org/licenses/mit-license.php
     //-----------------------------------------------------------------------------
     // テクスチャ復元
     //-----------------------------------------------------------------------------
+
+    /**
+     * @param {string} dirPath 検索するディレクトリのパス
+     * @param {string} originalBasePath 基準となる（バックアップ）フォルダのパス
+     * @param {string[]} [fileList] (内部用) ファイルリスト
+     * @returns {string[]} 基準パスからの相対パスの配列
+     */
+    function getAllFilesRecursive(dirPath, originalBasePath, fileList = []) {
+        if (!fs.existsSync(dirPath)) {
+            return fileList;
+        }
+        try {
+            const files = fs.readdirSync(dirPath);
+            files.forEach(file => {
+                const fullPath = path.join(dirPath, file);
+                try {
+                    if (fs.lstatSync(fullPath).isDirectory()) {
+                        getAllFilesRecursive(fullPath, originalBasePath, fileList);
+                    } else {
+                        const relPath = path.relative(originalBasePath, fullPath).replace(/\\/g, '/');
+                        fileList.push(relPath);
+                    }
+                } catch (e) {
+                    addError('復元(スキャン)', `ファイル ${fullPath} のスキャン失敗: ${e.message}`);
+                }
+            });
+        } catch (e) {
+            addError('復元(スキャン)', `ディレクトリ ${dirPath} の読み取り失敗: ${e.message}`);
+        }
+        return fileList;
+    }
 
     function restoreRequiredTextures() {
         if (!fs || !path) {
@@ -818,48 +896,81 @@ http://opensource.org/licenses/mit-license.php
             return 0;
         }
 
-        // バックアップフォルダ内のファイル一覧を取得
-        const backupFiles = fs.readdirSync(backupPath);
+        // バックアップフォルダ内の全ファイル一覧を再帰的に取得
+        let backupFiles = [];
+        try {
+            backupFiles = getAllFilesRecursive(backupPath, backupPath);
+        } catch (e) {
+            addError('復元', `バックアップファイルの読み取りに失敗: ${e.message}`);
+            return 0;
+        }
+        console.log(`[OptimizeEffekseerTexture] バックアップから ${backupFiles.length} 個のファイルをスキャンしました`);
+
         console.log(`[OptimizeEffekseerTexture] ${textureLog.requiredTextures.size}個のテクスチャを復元します...`);
 
         let restoredCount = 0;
-        for (const texture of textureLog.requiredTextures) {
-            const srcPath = path.join(backupPath, texture);
-            let dstPath = path.join(texturePath, texture);
+        for (const texture of textureLog.requiredTextures) { // (例: "1/1.png")
+            const requestedSrcPath = path.join(backupPath, texture);
+            const requestedDstPath = path.join(texturePath, texture);
 
-            // ファイルの存在確認（大文字小文字の違いを考慮）
-            if (!fs.existsSync(srcPath)) {
+            let actualSrcPath = null;    // バックアップ内の実際のファイルパス
+            let actualDstPath = null;    // 復元先の実際のファイルパス
+            let actualFilename = null; // バックアップ内の実際の相対パス (例: "1/1.PNG")
+            let logMessage = "";
+
+            // 1. ソースファイルを探す
+            if (fs.existsSync(requestedSrcPath)) {
+                // 大文字小文字が一致するファイルが見つかった
+                actualSrcPath = requestedSrcPath;
+                actualFilename = texture;
+            } else {
                 // 大文字小文字を無視して検索
-                const found = backupFiles.find(f => f.toLowerCase() === texture.toLowerCase());
+                const textureLower = texture.toLowerCase();
+                const found = backupFiles.find(f => f.toLowerCase() === textureLower); // (例: "1/1.PNG")
                 if (found) {
-                    const actualSrcPath = path.join(backupPath, found);
+                    actualSrcPath = path.join(backupPath, found);
+                    actualFilename = found;
+                }
+            }
 
-                    try {
-                        if (PRM_renameToMatchCase && found !== texture) {
-                            // リネームして復元
-                            fs.copyFileSync(actualSrcPath, dstPath);
-                            textureLog.renamed.push(`${found} → ${texture}`);
-                            console.log(`  ✓ 復元+リネーム: ${found} → ${texture}`);
-                        } else {
-                            dstPath = path.join(texturePath, found);
-                            fs.copyFileSync(actualSrcPath, dstPath);
-                            console.log(`  ✓ 復元: ${found}`);
-                        }
-                        restoredCount++;
-                    } catch (e) {
-                        addError('復元', `ファイル "${texture}" の復元に失敗: ${e.message}`);
-                    }
+            // 2. ソースが見つからなかった場合
+            if (!actualSrcPath) {
+                addError('復元', `ファイル "${texture}" がバックアップに見つかりません`);
+                continue;
+            }
+
+            // 3. 復元先のパスを決定
+            if (PRM_renameToMatchCase) {
+                actualDstPath = requestedDstPath; // (例: .../Texture/1/1.png)
+                if (actualFilename !== texture) {
+                    logMessage = `  ✓ 復元+リネーム: ${actualFilename} → ${texture}`;
+                    textureLog.renamed.push(`${actualFilename} → ${texture}`);
                 } else {
-                    addError('復元', `ファイル "${texture}" が見つかりません`);
+                    logMessage = `  ✓ 復元: ${texture}`;
                 }
             } else {
-                try {
-                    fs.copyFileSync(srcPath, dstPath);
-                    console.log(`  ✓ 復元: ${texture}`);
-                    restoredCount++;
-                } catch (e) {
-                    addError('復元', `ファイル "${texture}" の復元に失敗: ${e.message}`);
+                actualDstPath = path.join(texturePath, actualFilename); // (例: .../Texture/1/1.PNG)
+                logMessage = `  ✓ 復元: ${actualFilename}`;
+            }
+
+            // 4. 復元先のディレクトリを作成
+            try {
+                const dstDir = path.dirname(actualDstPath);
+                if (!fs.existsSync(dstDir)) {
+                    fs.mkdirSync(dstDir, { recursive: true });
                 }
+            } catch (e) {
+                addError('復元', `ディレクトリ作成失敗 (${path.dirname(actualDstPath)}): ${e.message}`);
+                continue; // このファイルの処理をスキップ
+            }
+
+            // 5. ファイルをコピー
+            try {
+                fs.copyFileSync(actualSrcPath, actualDstPath);
+                console.log(logMessage);
+                restoredCount++;
+            } catch (e) {
+                addError('復元', `ファイル "${actualFilename}" の復元に失敗: ${e.message}`);
             }
         }
 
